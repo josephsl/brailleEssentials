@@ -4,7 +4,7 @@
 
 IMPORTANT: this is a fork of BrailleExtender.
 
-This add-on provides essentials features for NVDA users relying on braille support. The following features, deriving from Braille Extender, are available:
+This add-on provides essential features for NVDA users relying on braille support. The following features, deriving from Braille Extender, are available:
 
 * Reload two favorite braille displays with shortcuts.
 * Automatic review cursor tethering in terminal role like in PuTTY, Powershell, bash, cmd.
@@ -34,6 +34,8 @@ For some braille displays, it extends the braille display commands to provide:
 * Emulate modifier keys, and thus any keyboard shortcut;
 * Offer several keyboard configurations concerning the possibility to input dots 7 and 8, enter and backspace;
 * Add actions and quick navigation through a rotor.
+
+For a list of changes made between each add-on releases, refer to [changelogs for add-on releases][1] document.
 
 ## Features overview
 
@@ -149,3 +151,5 @@ In this mode, each dot is a toggle. You must press the space key as soon as the 
 * Dot 2, then dot 1, then dot 5, then dot 4, and then space.
 
 And so on.
+
+[1]: https://github.com/josephsl/brailleEssentials/blob/main/changes.md
