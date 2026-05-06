@@ -14,14 +14,14 @@ from site_scons.site_tools.NVDATool.utils import _
 # Add-on information variables
 addon_info = AddonInfo(
 	# add-on Name/identifier, internal for NVDA
-	addon_name="BrailleExtender",
+	addon_name="brailleEssentials",
 	# Add-on summary/title, usually the user visible name of the add-on
 	# Translators: Summary/title for this add-on
 	# to be shown on installation and add-on information found in add-on store
-	addon_summary=_("Braille Extender"),
+	addon_summary=_("Braille Essentials"),
 	# Add-on description
 	# Translators: Long description to be shown for this add-on on add-on information from add-on store
-	addon_description=_("""BrailleExtender is a NVDA add-on that provides various features at braille level. Currently, the following features are implemented:
+	addon_description=_("""This add-on provides essential features for NVDA users relying on braille support. The following features, deriving from Braille Extender, are available:
 
 * Reload two favorite braille display with shortcuts.
 * Automatic review cursor tethering in terminal role like in PuTTY, Powershell, bash, cmd.
@@ -55,13 +55,13 @@ For some braille displays, it extends the braille display commands to provide:
 	addon_version="yy.mm.dd",
 	# Brief changelog for this version
 	# Translators: what's new content for the add-on version to be shown in the add-on store
-	addon_changelog=_("""* Initial forked release."""),
+	addon_changelog=_("""* Initial forked release (forked from BrailleExtender)."""),
 	# Author(s)
 	addon_author="Joseph Lee <joseph.lee22590@gmail.com> (originally André-Abush Clause <dev@andreabc.net> and other contributors)",
 	# URL for the add-on documentation support
-	addon_url="https://andreabc.net/projects/NVDA_addons/BrailleExtender",
+	addon_url="https://github.com/josephsl/brailleEssentials",
 	# URL for the add-on repository where the source code can be found
-	addon_sourceURL="https://github.com/aaclause/brailleExtender/",
+	addon_sourceURL="https://github.com/josephsl/brailleEssentials",
 	# Documentation file name
 	addon_docFileName="readme.html",
 	# Minimum NVDA version supported (e.g. "2019.3.0", minor version is optional)
