@@ -57,21 +57,6 @@ class GeneralDlg(gui.settingsDialogs.SettingsPanel):
 		sHelper = gui.guiHelper.BoxSizerHelper(self, sizer=settingsSizer)
 
 		# Translators: label of a dialog.
-		choices = [
-			_("stable channel, automatic check"),
-			_("dev channel, automatic check"),
-			_("stable channel, manual check"),
-			_("dev channel, manual check"),
-		]
-		self.updateCheck = sHelper.addLabeledControl(_("Check for upd&ates:"), wx.Choice, choices=choices)
-		if config.conf["brailleEssentials"]["updateChannel"] in addoncfg.updateChannels.keys():
-			itemToSelect = list(addoncfg.updateChannels.keys()).index(config.conf["brailleEssentials"]["updateChannel"])
-		else:
-			itemToSelect = list(addoncfg.updateChannels.keys()).index(addoncfg.CHANNEL_stable)
-		if not config.conf["brailleEssentials"]["autoCheckUpdate"]: itemToSelect += len(addoncfg.updateChannels.keys())
-		self.updateCheck.SetSelection(itemToSelect)
-
-		# Translators: label of a dialog.
 		self.speakScroll = sHelper.addLabeledControl(_("Say current line while &scrolling in:"), wx.Choice, choices=list(addoncfg.focusOrReviewChoices.values()))
 		self.speakScroll.SetSelection(list(addoncfg.focusOrReviewChoices.keys()).index(config.conf["brailleEssentials"]["speakScroll"]))
 		if NVDA_HAS_SPEAK_ON_NAVIGATING_BY_UNIT:
@@ -158,14 +143,7 @@ class GeneralDlg(gui.settingsDialogs.SettingsPanel):
 			driver_name = config.conf["brailleEssentials"]["brailleDisplay2"]
 		self.brailleDisplay2.SetSelection(self.bds_k.index(driver_name))
 
-	def postInit(self): self.autoCheckUpdate.SetFocus()
-
 	def onSave(self):
-		updateCheckChoice = self.updateCheck.GetSelection()
-		size = len(addoncfg.updateChannels.keys())
-		config.conf["brailleEssentials"]["autoCheckUpdate"] = updateCheckChoice < size
-		config.conf["brailleEssentials"]["updateChannel"] = list(addoncfg.updateChannels.keys())[updateCheckChoice % size]
-
 		config.conf["brailleEssentials"]["reviewModeTerminal"] = self.reviewModeTerminal.IsChecked()
 		if self.reverseScrollBtns.IsChecked(): instanceGP.reverseScrollBtns()
 		else: instanceGP.reverseScrollBtns(None, True)
