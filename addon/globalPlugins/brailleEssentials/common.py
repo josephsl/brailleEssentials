@@ -31,7 +31,6 @@ addonURL = addonHandler.Addon(addonDir).manifest["url"]
 addonGitHubURL = "https://github.com/aaclause/BrailleExtender/"
 addonAuthor = addonHandler.Addon(addonDir).manifest["author"]
 addonDesc = addonHandler.Addon(addonDir).manifest["description"]
-addonUpdateChannel = addonHandler.Addon(addonDir).manifest["updateChannel"]
 
 
 def nvdaVersionAtLeast(year: int, major: int, minor: int = 0) -> bool:
