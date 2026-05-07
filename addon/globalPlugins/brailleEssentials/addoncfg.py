@@ -45,11 +45,6 @@ outputMessage = dict([
 	(CHOICE_speechAndBraille, _("both"))
 ])
 
-updateChannels = dict([
-	(CHANNEL_stable,  _("stable")),
-	(CHANNEL_dev,     _("development"))
-])
-
 focusOrReviewChoices = dict([
 	(CHOICE_none,           _("none")),
 	(CHOICE_focus,          _("focus mode")),
@@ -96,10 +91,6 @@ def getConfspec():
 	REPORT_CHOICES = f'option({CHOICE_likeSpeech}, {CHOICE_disabled}, {CHOICE_enabled}, default={CHOICE_likeSpeech})'
 	REPORT_CHOICES_E = f'option({CHOICE_likeSpeech}, {CHOICE_disabled}, {CHOICE_enabled}, default={CHOICE_enabled})'
 	return {
-		"autoCheckUpdate": "boolean(default=True)",
-		"lastNVDAVersion": 'string(default="unknown")',
-		"updateChannel": f"option({CHANNEL_dev}, {CHANNEL_stable}, default={addonUpdateChannel})",
-		"lastCheckUpdate": "float(min=0, default=0)",
 		"profile_%s" % curBD: 'string(default="default")',
 		"keyboardLayout_%s" % curBD: "string(default=\"?\")",
 		"modifierKeysFeedback": "option({CHOICE_none}, {CHOICE_braille}, {CHOICE_speech}, {CHOICE_speechAndBraille}, default={CHOICE_braille})".format(
@@ -310,7 +301,6 @@ def loadConf():
 		del config.conf["brailleEssentials"]["brailleTables"]
 	try: brlextConf = config.conf["brailleEssentials"].copy()
 	except configobj.validate.VdtValueError:
-		config.conf["brailleEssentials"]["updateChannel"] = "dev"
 		brlextConf = config.conf["brailleEssentials"].copy()
 	if "profile_%s" % curBD not in brlextConf.keys():
 		config.conf["brailleEssentials"]["profile_%s" % curBD] = "default"
