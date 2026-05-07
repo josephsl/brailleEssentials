@@ -419,7 +419,7 @@ def getTabSize():
 	return size
 
 # remove old config files
-cfgFile = globalVars.appArgs.configPath + r"\BrailleExtender.conf"
+cfgFile = globalVars.appArgs.configPath + r"\brailleEssentials.conf"
 cfgFileAttribra = globalVars.appArgs.configPath + r"\attribra-BE.ini"
 if os.path.exists(cfgFile): os.remove(cfgFile)
 if os.path.exists(cfgFileAttribra): os.remove(cfgFileAttribra)
