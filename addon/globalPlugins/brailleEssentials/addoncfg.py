@@ -26,9 +26,6 @@ addonHandler.initTranslation()
 
 Validator = configobj.validate.Validator
 
-CHANNEL_stable = "stable"
-CHANNEL_dev = "dev"
-
 CHOICE_braille = "braille"
 CHOICE_speech = "speech"
 CHOICE_speechAndBraille = "speechAndBraille"
