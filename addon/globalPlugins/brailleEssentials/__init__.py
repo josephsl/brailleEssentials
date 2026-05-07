@@ -258,8 +258,6 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		gui.mainFrame.sysTrayIcon.Bind(wx.EVT_MENU, lambda event: self.script_getTableOverview(None), item)
 		item = self.submenu.Append(wx.ID_ANY, _("&Reload add-on"), _("Reload this add-on."))
 		gui.mainFrame.sysTrayIcon.Bind(wx.EVT_MENU, self.onReload, item)
-		item = self.submenu.Append(wx.ID_ANY, _("Get the latest template &translation file (.pot)"), _("Opens the URL to download the latest Portable Object Template file of the add-on"))
-		gui.mainFrame.sysTrayIcon.Bind(wx.EVT_MENU, self.on_pot_file, item)
 		self.submenu_item = gui.mainFrame.sysTrayIcon.menu.Insert(2, wx.ID_ANY, _("&Braille Essentials"), self.submenu)
 
 	def reloadBrailleTables(self):
@@ -877,10 +875,6 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			self.reverseScrollBtns()
 		if not sil: ui.message(_("Braille Essentials reloaded"))
 		return
-
-	@staticmethod
-	def on_pot_file(evt):
-		return os.startfile(f"{addonURL}/pot")
 
 	def script_reloadAddon(self, gesture): self.onReload()
 	script_reloadAddon.__doc__ = _("Reloads Braille Essentials")
