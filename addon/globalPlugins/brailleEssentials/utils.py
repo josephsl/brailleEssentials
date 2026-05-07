@@ -52,7 +52,8 @@ def make_progress_bar_from_str(percentage, text, method, positive='⢼', negativ
 	brl_repr = getTextInBraille(text)
 	brl_repr_size = len(brl_repr)
 	display_size = braille.handler.displaySize
-	if display_size < brl_repr_size + 3:  return brl_repr
+	if display_size < brl_repr_size + 3:
+		return brl_repr
 	size = display_size if method == REPLACE_TEXT else (display_size - brl_repr_size) % display_size
 	progress_bar = ''
 	if size - 2 > 0:
@@ -68,7 +69,8 @@ def make_progress_bar_from_str(percentage, text, method, positive='⢼', negativ
 
 
 def bkToChar(dots, inTable=-1):
-	if inTable == -1: inTable = config.conf["braille"]["inputTable"]
+	if inTable == -1:
+		inTable = config.conf["braille"]["inputTable"]
 	char = chr(dots | 0x8000)
 	text = louis.backTranslate(
 		[os.path.join(r"louis\tables", inTable),
@@ -85,7 +87,8 @@ def reload_brailledisplay(bd_name):
 		if braille.handler.setDisplayByName(bd_name):
 			speech.speakMessage(_("Reload successful"))
 			return True
-	except RuntimeError: pass
+	except RuntimeError:
+		pass
 	ui.message(_("Reload failed"))
 	return False
 
@@ -93,12 +96,16 @@ def currentCharDesc(
 		ch: str='',
 		display: bool=True
 	) -> str:
-	if not ch: ch = getCurrentChar()
-	if not ch: return ui.message(_("Not a character"))
+	if not ch:
+		ch = getCurrentChar()
+	if not ch:
+		return ui.message(_("Not a character"))
 	c = ord(ch)
 	if c:
-		try: char_name = unicodedata.name(ch)
-		except ValueError: char_name = _("unknown")
+		try:
+			char_name = unicodedata.name(ch)
+		except ValueError:
+			char_name = _("unknown")
 		char_category = unicodedata.category(ch)
 		HUC_repr = "%s, %s" % (huc.translate(ch, False), huc.translate(ch, True))
 		speech_output = getSpeechSymbols(ch)
@@ -109,11 +116,14 @@ def currentCharDesc(
 			f"{speech_output} ({char_name} [{char_category}])\n"
 			f"{brl_repr} ({brl_repr_desc})\n"
 			f"{HUC_repr}")
-		if not display: return s
-		if scriptHandler.getLastScriptRepeatCount() == 0: ui.message(s)
+		if not display:
+			return s
+		if scriptHandler.getLastScriptRepeatCount() == 0:
+			ui.message(s)
 		elif scriptHandler.getLastScriptRepeatCount() == 1:
 			ui.browseableMessage(s, (r"U+%.4x (%s) - " % (c, ch)) + _("Char info"))
-	else: ui.message(_("Not a character"))
+	else:
+		ui.message(_("Not a character"))
 
 def getCurrentChar():
 	info = api.getReviewPosition().copy()
@@ -125,8 +135,10 @@ def getTextSelection():
 	treeInterceptor=obj.treeInterceptor
 	if isinstance(treeInterceptor,treeInterceptorHandler.DocumentTreeInterceptor) and not treeInterceptor.passThrough:
 		obj=treeInterceptor
-	try: info=obj.makeTextInfo(textInfos.POSITION_SELECTION)
-	except (RuntimeError, NotImplementedError): info=None
+	try:
+		info=obj.makeTextInfo(textInfos.POSITION_SELECTION)
+	except (RuntimeError, NotImplementedError):
+		info=None
 	if not info or info.isCollapsed:
 		obj = api.getNavigatorObject()
 		text = obj.name
@@ -147,9 +159,12 @@ def getKeysTranslation(n):
 		return nk + n
 
 def getTextInBraille(t=None, table=[]):
-	if not isinstance(table, list): raise TypeError("Wrong type for table parameter: %s" % repr(table))
-	if not t: t = getTextSelection()
-	if not t: return ''
+	if not isinstance(table, list):
+		raise TypeError("Wrong type for table parameter: %s" % repr(table))
+	if not t:
+		t = getTextSelection()
+	if not t:
+		return ''
 	if not table or "current" in table:
 		table = getCurrentBrailleTables()
 	else:
@@ -201,7 +216,8 @@ def getTableOverview(tbl = ''):
 	return t
 
 def beautifulSht(t, curBD="noBraille", model=True, sep=" / "):
-	if isinstance(t, list): t = ' '.join(t)
+	if isinstance(t, list):
+		t = ' '.join(t)
 	t = t.replace(',', ' ').replace(';', ' ').replace('  ', ' ')
 	reps = {
 		"b10": "b0",
@@ -218,9 +234,11 @@ def beautifulSht(t, curBD="noBraille", model=True, sep=" / "):
 	t = t.replace(';', ',')
 	out = []
 	for gesture in t.split(' '):
-		if not gesture.strip(): continue
+		if not gesture.strip():
+			continue
 		mdl = ''
-		if re.match(pattern, gesture): mdl = re.sub(pattern, r'\1', gesture)
+		if re.match(pattern, gesture):
+			mdl = re.sub(pattern, r'\1', gesture)
 		gesture = re.sub(r'.+:', '', gesture)
 		gesture = '+'.join(sorted(gesture.split('+')))
 		for rep in reps:
@@ -247,14 +265,18 @@ def getText():
 def getTextCarret():
 	obj = api.getFocusObject()
 	treeInterceptor = obj.treeInterceptor
-	if hasattr(treeInterceptor, 'TextInfo') and not treeInterceptor.passThrough: obj = treeInterceptor
+	if hasattr(treeInterceptor, 'TextInfo') and not treeInterceptor.passThrough:
+		obj = treeInterceptor
 	try:
 		p1 = obj.makeTextInfo(textInfos.POSITION_ALL)
 		p2 = obj.makeTextInfo(textInfos.POSITION_CARET)
 		p1.setEndPoint(p2, "endToStart")
-		try: return p1.text
-		except BaseException: return None
-	except BaseException: pass
+		try:
+			return p1.text
+		except BaseException:
+			return None
+	except BaseException:
+		pass
 	return None
 
 
@@ -286,8 +308,10 @@ def refreshBD():
 
 def getSpeechSymbols(text: str | None = None) -> str:
 	"""Return speech symbol description for text (or selection). Shows message if no text."""
-	if not text: text = getTextSelection()
-	if not text: return ui.message(_("No text selected"))
+	if not text:
+		text = getTextSelection()
+	if not text:
+		return ui.message(_("No text selected"))
 	locale = languageHandler.getLanguage()
 	return characterProcessing.processSpeechSymbols(locale, text, get_symbol_level("SYMLVL_CHAR")).strip()
 
@@ -298,11 +322,14 @@ def getTether():
 
 
 def getCharFromValue(s):
-	if not isinstance(s, str): raise TypeError("Wrong type")
-	if not s or len(s) < 2: raise ValueError("Wrong value")
+	if not isinstance(s, str):
+		raise TypeError("Wrong type")
+	if not s or len(s) < 2:
+		raise ValueError("Wrong value")
 	supportedBases = {'b': 2, 'd': 10, 'h': 16, 'o': 8, 'x': 16}
 	base, n = s[0].lower(), s[1:]
-	if base not in supportedBases.keys(): raise ValueError("Wrong base (%s)" % base)
+	if base not in supportedBases.keys():
+		raise ValueError("Wrong base (%s)" % base)
 	b = supportedBases[base]
 	n = int(n, b)
 	return chr(n)
@@ -367,7 +394,8 @@ def getCurrentBrailleTables(input_=False, brf=False):
 			app = appModuleHandler.getAppModuleForNVDAObject(api.getNavigatorObject())
 		except OSError:
 			app = None
-		if app and app.appName != "nvda": tables += tabledictionaries.dictTables
+		if app and app.appName != "nvda":
+			tables += tabledictionaries.dictTables
 		if input_:
 			mainTable = os.path.join(brailleTables.TABLES_DIR, brailleInput.handler._table.fileName)
 		else:

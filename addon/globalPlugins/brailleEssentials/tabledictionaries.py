@@ -55,7 +55,8 @@ def checkTable(path):
 	try:
 		louis.checkTable([path])
 		return True
-	except RuntimeError: invalidDictTables.add(path)
+	except RuntimeError:
+		invalidDictTables.add(path)
 	return False
 
 def getValidPathsDict():
@@ -65,24 +66,32 @@ def getValidPathsDict():
 	return [path for path in paths if valid(path)]
 
 def getPathDict(type_):
-	if type_ == "table": path = os.path.join(configDir, "brailleDicts", getTranslationTable())
-	elif type_ == "tmp": path = os.path.join(configDir, "brailleDicts", "tmp")
-	else: path = os.path.join(configDir, "brailleDicts", "default")
+	if type_ == "table":
+		path = os.path.join(configDir, "brailleDicts", getTranslationTable())
+	elif type_ == "tmp":
+		path = os.path.join(configDir, "brailleDicts", "tmp")
+	else:
+		path = os.path.join(configDir, "brailleDicts", "default")
 	return "%s.cti" % path
 
 def getDictionary(type_):
 	path = getPathDict(type_)
-	if not os.path.exists(path): return False, []
+	if not os.path.exists(path):
+		return False, []
 	out = []
 	with open(path, "rb") as f:
 		for line in f:
 			line = line.decode("UTF-8")
 			line = line.replace(" ", "	").replace("		", "	").replace("		", "	").strip().split("	", 4)
-			if line[0].lower().strip() not in [DIRECTION_BACKWARD, DIRECTION_FORWARD]: line.insert(0, DIRECTION_BOTH)
+			if line[0].lower().strip() not in [DIRECTION_BACKWARD, DIRECTION_FORWARD]:
+				line.insert(0, DIRECTION_BOTH)
 			if len(line) < 4:
-				if line[1] == "replace" and len(line) == 3: line.append("")
-				else: continue
-			if len(line) == 4: line.append("")
+				if line[1] == "replace" and len(line) == 3:
+					line.append("")
+				else:
+					continue
+			if len(line) == 4:
+				line.append("")
 			out.append(TableDictEntry(line[1], line[2], line[3], line[0], ' '.join(line[4:]).replace("	", " ")))
 	return True, out
 
@@ -114,7 +123,8 @@ def notifyInvalidTables():
 
 def removeTmpDict():
 	path = getPathDict("tmp")
-	if os.path.exists(path): os.remove(path)
+	if os.path.exists(path):
+		os.remove(path)
 
 setDictTables()
 notifyInvalidTables()
@@ -191,9 +201,12 @@ class DictionaryDlg(gui.settingsDialogs.SettingsDialog):
 
 	def onOpenFileClick(self, evt):
 		dictPath = getPathDict(self.type_)
-		if not os.path.exists(dictPath): return
-		try: os.startfile(dictPath)
-		except OSError: os.popen("notepad \"%s\"" % dictPath)
+		if not os.path.exists(dictPath):
+			return
+		try:
+			os.startfile(dictPath)
+		except OSError:
+			os.popen("notepad \"%s\"" % dictPath)
 
 	def onReloadDictClick(self, evt):
 		self.tmpDict = getDictionary(self.type_ )[1]
@@ -204,7 +217,8 @@ class DictionaryDlg(gui.settingsDialogs.SettingsDialog):
 		if re.match(r"^\\x[0-9a-f]+$", textPattern, re.IGNORECASE):
 			textPattern = textPattern.lower()
 			textPattern = chr(int(''.join([c for c in textPattern if c in "abcdef1234567890"]), 16))
-		if equiv and len(textPattern) == 1: return "%s (%s, %s)" % (textPattern, hex(ord(textPattern)).replace("0x", r"\x"), unicodedata.name(textPattern).lower())
+		if equiv and len(textPattern) == 1:
+			return "%s (%s, %s)" % (textPattern, hex(ord(textPattern)).replace("0x", r"\x"), unicodedata.name(textPattern).lower())
 		textPattern = textPattern.replace(r"\s", " ").replace(r"\t", "	").replace(r"\ ", r"\s").replace(r"\	", r"\t")
 		return textPattern
 
@@ -240,7 +254,8 @@ class DictionaryDlg(gui.settingsDialogs.SettingsDialog):
 		entryDialog.Destroy()
 
 	def onEditClick(self, evt):
-		if self.dictList.GetSelectedItemCount() != 1: return
+		if self.dictList.GetSelectedItemCount() != 1:
+			return
 		editIndex = self.dictList.GetFirstSelected()
 		entryDialog = DictionaryEntryDlg(self)
 		entryDialog.textPatternTextCtrl.SetValue(self.getReprTextPattern(self.tmpDict[editIndex].textPattern, False))
@@ -272,8 +287,10 @@ class DictionaryDlg(gui.settingsDialogs.SettingsDialog):
 		res = saveDict(self.type_, self.tmpDict)
 		setDictTables()
 		braille.handler.setDisplayByName(braille.handler.display.name)
-		if res: super().onApply(evt)
-		else: RuntimeError("Error during writing file, more info in log.")
+		if res:
+			super().onApply(evt)
+		else:
+			RuntimeError("Error during writing file, more info in log.")
 		notifyInvalidTables()
 		self.dictList.SetFocus()
 
@@ -282,8 +299,10 @@ class DictionaryDlg(gui.settingsDialogs.SettingsDialog):
 		setDictTables()
 		braille.handler.setDisplayByName(braille.handler.display.name)
 		notifyInvalidTables()
-		if res: super().onOk(evt)
-		else: RuntimeError("Error during writing file, more info in log.")
+		if res:
+			super().onOk(evt)
+		else:
+			RuntimeError("Error during writing file, more info in log.")
 		notifyInvalidTables()
 
 class DictionaryEntryDlg(wx.Dialog):
@@ -309,7 +328,8 @@ class DictionaryEntryDlg(wx.Dialog):
 		# Translators: This is a label for an edit field in add dictionary entry dialog.
 		patternLabelText = _("&Text pattern/sign")
 		self.textPatternTextCtrl = sHelper.addLabeledControl(patternLabelText, wx.TextCtrl)
-		if textPattern: self.textPatternTextCtrl.SetValue(textPattern)
+		if textPattern:
+			self.textPatternTextCtrl.SetValue(textPattern)
 
 		# Translators: This is a label for an edit field in add dictionary entry dialog and in punctuation/symbol pronunciation dialog.
 		braillePatternLabelText = _("&Braille representation")
@@ -349,12 +369,14 @@ class DictionaryEntryDlg(wx.Dialog):
 
 	def getOpcode(self):
 		opcodeRadioValue = self.opcodeRadioBox.GetSelection()
-		if opcodeRadioValue == wx.NOT_FOUND: return OPCODE_SIGN
+		if opcodeRadioValue == wx.NOT_FOUND:
+			return OPCODE_SIGN
 		return OPCODE_LABELS_ORDERING[opcodeRadioValue]
 
 	def getDirection(self):
 		directionRadioValue = self.directionRadioBox.GetSelection()
-		if directionRadioValue == wx.NOT_FOUND: return DIRECTION_BOTH
+		if directionRadioValue == wx.NOT_FOUND:
+			return DIRECTION_BOTH
 		return DIRECTION_LABELS_ORDERING[directionRadioValue]
 
 	def getType_(self):
@@ -384,7 +406,8 @@ class DictionaryEntryDlg(wx.Dialog):
 				msg = _("Invalid value for 'braille representation' field. You must enter dot patterns with this opcode. E.g.: %s") % egBRLRepr
 				gui.messageBox(msg, _("Braille Essentials"), wx.OK|wx.ICON_ERROR)
 				return self.braillePatternTextCtrl.SetFocus()
-		else: textPattern = textPattern.lower().replace("\\", r"\\")
+		else:
+			textPattern = textPattern.lower().replace("\\", r"\\")
 		textPattern = textPattern.replace("	", r"\t").replace(" ", r"\s")
 		braillePattern = braillePattern.replace("\\", r"\\").replace("	", r"\t").replace(" ", r"\s")
 		newEntry = TableDictEntry(opcode, textPattern, braillePattern, self.getDirection(), self.commentTextCtrl.GetValue())
@@ -398,7 +421,8 @@ class DictionaryEntryDlg(wx.Dialog):
 			setDictTables()
 			braille.handler.setDisplayByName(braille.handler.display.name)
 			notifyInvalidTables()
-		else: self.dictEntry = newEntry
+		else:
+			self.dictEntry = newEntry
 		evt.Skip()
 
 	def setOpcode(self, opcode):

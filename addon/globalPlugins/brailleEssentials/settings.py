@@ -36,7 +36,8 @@ addonSettingsDialogActiveConfigProfile = None
 addonSettingsDialogWindowHandle = None
 
 def notImplemented(msg='', style=wx.OK|wx.ICON_INFORMATION):
-	if not msg: msg = _("Feature implementation is in progress. Thanks for your patience.")
+	if not msg:
+		msg = _("Feature implementation is in progress. Thanks for your patience.")
 	gui.messageBox(msg, _("Braille Essentials"), wx.OK|wx.ICON_INFORMATION)
 
 class GeneralDlg(gui.settingsDialogs.SettingsPanel):
@@ -139,8 +140,10 @@ class GeneralDlg(gui.settingsDialogs.SettingsPanel):
 
 	def onSave(self):
 		config.conf["brailleEssentials"]["reviewModeTerminal"] = self.reviewModeTerminal.IsChecked()
-		if self.reverseScrollBtns.IsChecked(): instanceGP.reverseScrollBtns()
-		else: instanceGP.reverseScrollBtns(None, True)
+		if self.reverseScrollBtns.IsChecked():
+			instanceGP.reverseScrollBtns()
+		else:
+			instanceGP.reverseScrollBtns(None, True)
 		config.conf["brailleEssentials"]["reverseScrollBtns"] = self.reverseScrollBtns.IsChecked()
 		config.conf["brailleEssentials"]["stopSpeechScroll"] = self.stopSpeechScroll.IsChecked()
 		config.conf["brailleEssentials"]["skipBlankLinesScroll"] = self.skipBlankLinesScroll.IsChecked()
@@ -250,7 +253,8 @@ class BrailleTablesDlg(gui.settingsDialogs.SettingsPanel):
 		config.conf["brailleEssentials"]["postTable"] = "None" if postTableID == 0 else postOutputFNs[postTableID - 1]
 		if self.tabSpace.IsChecked() and config.conf["brailleEssentials"]["tabSpace"] != self.tabSpace.IsChecked():
 			restartRequired = True
-		else: restartRequired = False
+		else:
+			restartRequired = False
 		config.conf["brailleEssentials"]["tabSpace"] = self.tabSpace.IsChecked()
 		config.conf["brailleEssentials"]["tabSize_%s" % addoncfg.curBD] = self.tabSize.Value
 		if restartRequired:
@@ -259,7 +263,8 @@ class BrailleTablesDlg(gui.settingsDialogs.SettingsPanel):
 				_("Braille Essentials"),
 				style=wx.YES_NO|wx.ICON_INFORMATION
 			)
-			if res == wx.YES: core.restart()
+			if res == wx.YES:
+				core.restart()
 
 class QuickLaunchesDlg(gui.settingsDialogs.SettingsDialog):
 
@@ -313,7 +318,8 @@ class QuickLaunchesDlg(gui.settingsDialogs.SettingsDialog):
 			if script is not None:
 				queueHandler.queueFunction(queueHandler.eventQueue, ui.message, _("Unable to associate this gesture. Please enter another gesture"))
 				return False
-			if gesture.isModifier: return False
+			if gesture.isModifier:
+				return False
 			if gesture.normalizedIdentifiers[0].startswith("kb") and not gesture.normalizedIdentifiers[0].endswith(":escape"):
 				queueHandler.queueFunction(queueHandler.eventQueue, ui.message, _(f"Please enter a gesture from your {addoncfg.curBD} braille display. Press space to cancel."))
 				return False
@@ -344,14 +350,16 @@ class QuickLaunchesDlg(gui.settingsDialogs.SettingsDialog):
 			return
 		def askConfirmation():
 			choice = gui.messageBox(_("Are you sure you wish to delete this shortcut?"), '%s – %s' % (addonName, _("Remove shortcut")), wx.YES_NO|wx.ICON_QUESTION)
-			if choice == wx.YES: confirmed()
+			if choice == wx.YES:
+				confirmed()
 		def confirmed():
 			i = self.quickKeys.GetSelection()
 			g = self.quickLaunchGestures.pop(i)
 			self.quickLaunchLocations.pop(i)
 			listQuickLaunches = self.getQuickLaunchList()
 			self.quickKeys.SetItems(listQuickLaunches)
-			if len(listQuickLaunches) > 0: self.quickKeys.SetSelection(i-1 if i > 0 else 0)
+			if len(listQuickLaunches) > 0:
+				self.quickKeys.SetSelection(i-1 if i > 0 else 0)
 			queueHandler.queueFunction(queueHandler.eventQueue, ui.message, _(f'{g} removed'))
 			self.onQuickKeys(None)
 		wx.CallAfter(askConfirmation)
@@ -384,7 +392,8 @@ class QuickLaunchesDlg(gui.settingsDialogs.SettingsDialog):
 			return
 		if not self.quickKeys.GetStringSelection().strip().startswith(':'):
 			self.target.SetValue(self.quickKeys.GetStringSelection().split(': ')[1])
-		else: self.target.SetValue('')
+		else:
+			self.target.SetValue('')
 		return
 
 	def onBrowseBtn(self, event):

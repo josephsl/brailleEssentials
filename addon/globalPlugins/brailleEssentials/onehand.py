@@ -36,10 +36,12 @@ def process(self, dots):
 			addSpace = True
 	elif method == ONE_SIDE:
 		endChar = not endChar
-		if endChar: equiv = "045645688"
+		if endChar:
+			equiv = "045645688"
 		else:
 			equiv = "012312377"
-			if dots == 0: addSpace = True
+			if dots == 0:
+				addSpace = True
 		if dots:
 			translatedBufferBrailleDots = 0
 			if self.bufferBraille:
@@ -50,9 +52,11 @@ def process(self, dots):
 			newDots = ""
 			for dot in translatedDotsBrailleDots:
 				dot = int(dot)
-				if dots >= 0 and dot < 9: newDots += equiv[dot]
+				if dots >= 0 and dot < 9:
+					newDots += equiv[dot]
 			newDots = ''.join(sorted(set(newDots)))
-			if not newDots: newDots = "0"
+			if not newDots:
+				newDots = "0"
 			dots = ord(cellDescriptionsToUnicodeBraille(newDots))-0x2800
 	elif method == DOT_BY_DOT:
 		endChar = dots == 0
@@ -63,9 +67,12 @@ def process(self, dots):
 		translatedDots = chr(dots | 0x2800)
 		translatedDotsBrailleDots = unicodeBrailleToDescription(translatedDots)
 		for dot in translatedDotsBrailleDots:
-			if dot not in translatedBufferBrailleDots: translatedBufferBrailleDots += dot
-			else: translatedBufferBrailleDots = translatedBufferBrailleDots.replace(dot, '')
-		if not translatedBufferBrailleDots: translatedBufferBrailleDots = "0"
+			if dot not in translatedBufferBrailleDots:
+				translatedBufferBrailleDots += dot
+			else:
+				translatedBufferBrailleDots = translatedBufferBrailleDots.replace(dot, '')
+		if not translatedBufferBrailleDots:
+			translatedBufferBrailleDots = "0"
 		newDots = ''.join(sorted(set(translatedBufferBrailleDots)))
 		dots = ord(cellDescriptionsToUnicodeBraille(newDots))-0x2800
 	else:
@@ -73,11 +80,14 @@ def process(self, dots):
 		self.flushBuffer()
 		return False, False
 	if endChar:
-		if not self.bufferBraille: self.bufferBraille.insert(pos, 0)
+		if not self.bufferBraille:
+			self.bufferBraille.insert(pos, 0)
 		if method == DOT_BY_DOT:
 			self.bufferBraille[-1] = dots
-		else: self.bufferBraille[-1] |= dots
-		if not endWord: endWord = self.bufferBraille[-1] == 0
+		else:
+			self.bufferBraille[-1] |= dots
+		if not endWord:
+			endWord = self.bufferBraille[-1] == 0
 		if method == DOT_BY_DOT:
 			self.bufferBraille.append(0)
 		self.untranslatedCursorPos += 1
@@ -86,8 +96,10 @@ def process(self, dots):
 			self.untranslatedCursorPos += 1
 	else:
 		continue_ = False
-		if self.bufferBraille and method == DOT_BY_DOT: self.bufferBraille[-1] = dots
-		else: self.bufferBraille.insert(pos, dots)
+		if self.bufferBraille and method == DOT_BY_DOT:
+			self.bufferBraille[-1] = dots
+		else:
+			self.bufferBraille.insert(pos, dots)
 		self._reportUntranslated(pos)
 	return continue_, endWord
 
@@ -108,8 +120,10 @@ class SettingsDlg(gui.settingsDialogs.SettingsPanel):
 		self.onFeatureEnabled(None)
 
 	def onFeatureEnabled(self, evt):
-		if self.featureEnabled.IsChecked(): self.inputMethod.Enable()
-		else: self.inputMethod.Disable()
+		if self.featureEnabled.IsChecked():
+			self.inputMethod.Enable()
+		else:
+			self.inputMethod.Disable()
 
 	def onSave(self):
 		config.conf["brailleEssentials"]["oneHandedMode"]["enabled"] = self.featureEnabled.IsChecked()

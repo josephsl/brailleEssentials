@@ -11,7 +11,8 @@ class BrailleCellReplacement:
 		replaceBy: str='', insertAfter: str='', insertBefore: str='',
 		addDots: int=0
 	):
-		if start < 0: raise ValueError("start must be a value >= 0")
+		if start < 0:
+			raise ValueError("start must be a value >= 0")
 		self.start = start
 		self.end = start if end < 0 else end
 		self.replaceBy = replaceBy
@@ -47,7 +48,8 @@ def getBraillePosFromRawPos(region, i):
 	return start, end
 
 def streamRegionFromRawText(region):
-	if not region: return None
+	if not region:
+		return None
 	for i, rawText in enumerate(region.rawText):
 		startBraillePos, endBraillePos = getBraillePosFromRawPos(region, i)
 		bc = getBrailleCellFromRawPos(region, i)
@@ -57,10 +59,12 @@ def streamRegionFromRawText(region):
 def findBrailleCellsPattern(region, pattern):
 	y = streamRegionFromRawText(region)
 	for i, rawText, startBraillePos, endBraillePos, bc, uc in y:
-		if uc == pattern: yield i
+		if uc == pattern:
+			yield i
 
 def replaceBrailleCells(region, replacements):
-	if not replacements: return region
+	if not replacements:
+		return region
 	replacements.sort(key=lambda r: (r.start, r.end))
 	replacements = {e.start: e for e in replacements}
 	y = streamRegionFromRawText(region)
@@ -70,7 +74,8 @@ def replaceBrailleCells(region, replacements):
 	newBrailleToRawPos = []
 	newRawToBraillePos = []
 	for i, rawText, startBraillePos, endBraillePos, bc, uc in y:
-		if i in rawPosDone: continue
+		if i in rawPosDone:
+			continue
 		szBefore = 0
 		szRawText = 1
 		addDots = 0
@@ -78,7 +83,8 @@ def replaceBrailleCells(region, replacements):
 			r = replacements[i]
 			addDots = r.addDots
 			szBefore = len(r.insertBefore)
-			if r.replaceBy: uc = r.replaceBy
+			if r.replaceBy:
+				uc = r.replaceBy
 			uc = r.insertBefore + uc + r.insertAfter
 			if r.start < r.end:
 				newPosDone = [e for e in range(r.start, r.end+1)]
@@ -89,7 +95,8 @@ def replaceBrailleCells(region, replacements):
 			newRawToBraillePos += [newRawToBraillePos[-1]]
 			continue
 		newBrailleCells += [ord(c)-0x2800 for c in uc]
-		if addDots: newBrailleCells = [d | addDots for d in newBrailleCells]
+		if addDots:
+			newBrailleCells = [d | addDots for d in newBrailleCells]
 		newBrailleToRawPos += len(uc)*[i]
 		newRawToBraillePos += [cursorPos] * szRawText
 		newPosDone = [e for e in range(startBraillePos, endBraillePos+1)]
@@ -97,4 +104,5 @@ def replaceBrailleCells(region, replacements):
 	region.brailleCells = newBrailleCells
 	region.brailleToRawPos = newBrailleToRawPos
 	region.rawToBraillePos = newRawToBraillePos
-	if isinstance(region.cursorPos, int) and region.cursorPos >= 0: region.brailleCursorPos = region.rawToBraillePos[region.cursorPos]
+	if isinstance(region.cursorPos, int) and region.cursorPos >= 0:
+		region.brailleCursorPos = region.rawToBraillePos[region.cursorPos]

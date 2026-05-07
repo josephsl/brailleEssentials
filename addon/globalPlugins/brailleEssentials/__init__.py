@@ -148,7 +148,8 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		braille.TextInfoRegion._addTextWithFields = documentformatting.decorator(braille.TextInfoRegion._addTextWithFields, "addTextWithFields")
 		braille.TextInfoRegion.update = documentformatting.decorator(braille.TextInfoRegion.update, "update")
 		braille.TextInfoRegion._getTypeformFromFormatField = documentformatting.decorator(braille.TextInfoRegion._getTypeformFromFormatField, "_getTypeformFromFormatField")
-		if config.conf["brailleEssentials"]["reverseScrollBtns"]: self.reverseScrollBtns()
+		if config.conf["brailleEssentials"]["reverseScrollBtns"]:
+			self.reverseScrollBtns()
 		self.createMenu()
 		advancedinput.initialize()
 		if config.conf["brailleEssentials"]["features"]["roleLabels"]:
@@ -170,14 +171,18 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			rotorItem = 0
 			self.bindRotorGES()
 
-		if "tabSize_%s" % addoncfg.curBD not in config.conf["brailleEssentials"].copy().keys(): self.onReload(None, 1)
-		if self.hourDatePlayed: self.script_hourDate(None)
-		if self.autoTestPlayed: self.script_autoTest(None)
+		if "tabSize_%s" % addoncfg.curBD not in config.conf["brailleEssentials"].copy().keys():
+			self.onReload(None, 1)
+		if self.hourDatePlayed:
+			self.script_hourDate(None)
+		if self.autoTestPlayed:
+			self.script_autoTest(None)
 		if braille.handler is not None and addoncfg.curBD != braille.handler.display.name:
 			addoncfg.curBD = braille.handler.display.name
 			self.onReload(None, 1)
 
-		if self.backup__brailleTableDict != config.conf["braille"]["translationTable"]: self.reloadBrailleTables()
+		if self.backup__brailleTableDict != config.conf["braille"]["translationTable"]:
+			self.reloadBrailleTables()
 		nextHandler()
 
 	def event_foreground(self, obj, nextHandler):
@@ -340,9 +345,12 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	def bindRotorGES(self):
 		for k in self.rotorGES:
-			try: self.removeGestureBinding(k)
-			except BaseException: pass
-		if rotorItems[rotorItem][0] == "default": return
+			try:
+				self.removeGestureBinding(k)
+			except BaseException:
+				pass
+		if rotorItems[rotorItem][0] == "default":
+			return
 		if rotorItems[rotorItem][0] in ["object", "review", "textSelection", "moveInText", "moveInTable"]:
 			self.bindGestures(self.rotorGES)
 		else:
@@ -391,8 +399,10 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	def switchSelectionRange(self, previous=False):
 		global rotorRange
-		if previous: rotorRange = rotorRange - 1 if rotorRange > 0 else 5
-		else: rotorRange = rotorRange + 1 if rotorRange < 5 else 0
+		if previous:
+			rotorRange = rotorRange - 1 if rotorRange > 0 else 5
+		else:
+			rotorRange = rotorRange + 1 if rotorRange < 5 else 0
 		ui.message(self.getCurrentSelectionRange())
 
 	@staticmethod
@@ -401,11 +411,13 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		obj = api.getFocusObject()
 		if obj.treeInterceptor is not None:
 			func = getattr(obj.treeInterceptor, "script_%s%s" % (direction, rotorItems[rotorItem][0]), None)
-			if func: return func(gesture)
+			if func:
+				return func(gesture)
 		ui.message(_("Not available here"))
 
 	def script_nextEltRotor(self, gesture):
-		if rotorItems[rotorItem][0] == "default": return self.sendComb('rightarrow', gesture)
+		if rotorItems[rotorItem][0] == "default":
+			return self.sendComb('rightarrow', gesture)
 		if rotorItems[rotorItem][0] in ["moveInText", "textSelection"]:
 			return self.sendComb(self.getCurrentSelectionRange(False), gesture)
 		if rotorItems[rotorItem][0] == "object":
@@ -421,7 +433,8 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 				obj.treeInterceptor.script_nextError(gesture)
 			else:
 				ui.message(_("Not supported here or not in browse mode"))
-		else: return self.moveTo("next", gesture)
+		else:
+			return self.moveTo("next", gesture)
 	script_nextEltRotor.__doc__ = _("Moves to the next item based on rotor setting")
 
 	def script_priorEltRotor(self, gesture):
@@ -442,7 +455,8 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 				obj.treeInterceptor.script_previousError(gesture)
 			else:
 				ui.message(_("Not supported here or not in browse mode"))
-		else: return self.moveTo("previous", gesture)
+		else:
+			return self.moveTo("previous", gesture)
 	script_priorEltRotor.__doc__ = _("Moves to the previous item based on rotor setting")
 
 	def script_nextSetRotor(self, gesture):
@@ -571,12 +585,18 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	def script_reportExtraInfos(self, gesture):
 		obj = api.getNavigatorObject()
 		msg = []
-		if obj.name: msg.append(obj.name)
-		if obj.description: msg.append(obj.description)
-		if obj.value: msg.append(obj.value)
-		if len(msg) == 0: return ui.message(_("No extra info for this element"))
-		if scriptHandler.getLastScriptRepeatCount() == 0: ui.message((punctuationSeparator+": ").join(msg))
-		else: ui.browseableMessage(('\n').join(msg))
+		if obj.name:
+			msg.append(obj.name)
+		if obj.description:
+			msg.append(obj.description)
+		if obj.value:
+			msg.append(obj.value)
+		if len(msg) == 0:
+			return ui.message(_("No extra info for this element"))
+		if scriptHandler.getLastScriptRepeatCount() == 0:
+			ui.message((punctuationSeparator+": ").join(msg))
+		else:
+			ui.browseableMessage(('\n').join(msg))
 	# Translators: Input help mode message for report extra infos command.
 	script_reportExtraInfos.__doc__ = _("Reports some extra infos for the current element. For example, the URL on a link") + HLP_browseModeInfo
 
@@ -591,7 +611,8 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	def script_translateInBRU(self, gesture):
 		tm = time.time()
 		t = utils.getTextInBraille('', patches.getCurrentBrailleTables())
-		if not t.strip(): return ui.message(_("No text selection"))
+		if not t.strip():
+			return ui.message(_("No text selection"))
 		ui.browseableMessage("<pre>%s</pre>" % t, _("Unicode Braille conversion") + (" (%.2f s)" % (time.time()-tm)), True)
 	script_translateInBRU.__doc__ = _("Convert the text selection in unicode braille and display it in a browseable message")
 
@@ -599,14 +620,16 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		tm = time.time()
 		t = utils.getTextInBraille('', patches.getCurrentBrailleTables())
 		t = huc.unicodeBrailleToDescription(t)
-		if not t.strip(): return ui.message(_("No text selection"))
+		if not t.strip():
+			return ui.message(_("No text selection"))
 		ui.browseableMessage(t, _("Braille Unicode to cell descriptions")+(" (%.2f s)" % (time.time()-tm)))
 	script_charsToCellDescriptions.__doc__ = _("Convert text selection in braille cell descriptions and display it in a browseable message")
 
 	def script_cellDescriptionsToChars(self, gesture):
 		tm = time.time()
 		t = utils.getTextSelection()
-		if not t.strip(): return ui.message(_("No text selection"))
+		if not t.strip():
+			return ui.message(_("No text selection"))
 		t = huc.cellDescriptionsToUnicodeBraille(t)
 		ui.browseableMessage(t, _("Cell descriptions to braille Unicode")+(" (%.2f s)" % (time.time()-tm)))
 	script_cellDescriptionsToChars.__doc__ = _("Braille cell description to Unicode Braille. E.g.: in a edit field type '125-24-0-1-123-123'. Then select this text and execute this command")
@@ -731,7 +754,8 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		if g not in quickLaunches.keys():
 			ui.message('Target for %s not defined.' % gesture.id)
 			return
-		try: return subprocess.Popen(quickLaunches[g])
+		try:
+			return subprocess.Popen(quickLaunches[g])
 		except BaseException:
 			try:
 				os.startfile(quickLaunches[g])
@@ -848,8 +872,10 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	def script_getSpeechOutput(self, gesture):
 		out = utils.getSpeechSymbols()
-		if scriptHandler.getLastScriptRepeatCount() == 0: braille.handler.message(out)
-		else: ui.browseableMessage(out)
+		if scriptHandler.getLastScriptRepeatCount() == 0:
+			braille.handler.message(out)
+		else:
+			ui.browseableMessage(out)
 	script_getSpeechOutput.__doc__ = _("Shows the output speech for selected text in braille, useful for emojis for example") + HLP_browseModeInfo
 
 	def script_repeatLastShortcut(self, gesture):
@@ -872,7 +898,8 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		self.gesturesInit()
 		if config.conf["brailleEssentials"]["reverseScrollBtns"]:
 			self.reverseScrollBtns()
-		if not sil: ui.message(_("Braille Essentials reloaded"))
+		if not sil:
+			ui.message(_("Braille Essentials reloaded"))
 		return
 
 	def script_reloadAddon(self, gesture): self.onReload()
@@ -900,7 +927,8 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 
 	def clearModifiers(self, forced = False):
-		if self.modifiersLocked and not forced: return
+		if self.modifiersLocked and not forced:
+			return
 		brailleInput.handler.currentModifiers.clear()
 
 
@@ -933,15 +961,19 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		modifiers = brailleInput.handler.currentModifiers
 		if modifier not in modifiers:
 			modifiers.add(modifier)
-			if beep and config.conf["brailleEssentials"]["beepsModifiers"]: tones.beep(275, 50)
+			if beep and config.conf["brailleEssentials"]["beepsModifiers"]:
+				tones.beep(275, 50)
 		else:
 			modifiers.discard(modifier)
-			if beep and config.conf["brailleEssentials"]["beepsModifiers"]: tones.beep(100, 100 if len(modifiers) > 0 else 200)
-		if len(modifiers) == 0: self.clearModifiers(True)
+			if beep and config.conf["brailleEssentials"]["beepsModifiers"]:
+				tones.beep(100, 100 if len(modifiers) > 0 else 200)
+		if len(modifiers) == 0:
+			self.clearModifiers(True)
 
 	def script_ctrl(self, gesture=None, sil=True):
 		self.toggleModifier("control", sil)
-		if sil: self.getActualModifiers()
+		if sil:
+			self.getActualModifiers()
 		return
 
 	def script_nvda(self, gesture=None):
@@ -951,17 +983,20 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	def script_alt(self, gesture=None, sil=True):
 		self.toggleModifier("alt", sil)
-		if sil: self.getActualModifiers()
+		if sil:
+			self.getActualModifiers()
 		return
 
 	def script_win(self, gesture=None, sil=True):
 		self.toggleModifier("windows", sil)
-		if sil: self.getActualModifiers()
+		if sil:
+			self.getActualModifiers()
 		return
 
 	def script_shift(self, gesture=None, sil=True):
 		self.toggleModifier("shift", sil)
-		if sil: self.getActualModifiers()
+		if sil:
+			self.getActualModifiers()
 		return
 
 	def script_ctrlWin(self, gesture):
@@ -1090,9 +1125,12 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	def script_showBrailleViewSaved(self, gesture):
 		if config.conf["brailleEssentials"]["viewSaved"] != addoncfg.NOVIEWSAVED:
-			if scriptHandler.getLastScriptRepeatCount() == 0: braille.handler.message("⣇ %s ⣸" % config.conf["brailleEssentials"]["viewSaved"])
-			else: ui.browseableMessage(config.conf["brailleEssentials"]["viewSaved"], _("View saved"), True)
-		else: ui.message(_("Buffer empty"))
+			if scriptHandler.getLastScriptRepeatCount() == 0:
+				braille.handler.message("⣇ %s ⣸" % config.conf["brailleEssentials"]["viewSaved"])
+			else:
+				ui.browseableMessage(config.conf["brailleEssentials"]["viewSaved"], _("View saved"), True)
+		else:
+			ui.message(_("Buffer empty"))
 	script_showBrailleViewSaved.__doc__ = _("Shows the saved braille view through a flash message") + HLP_browseModeInfo
 
 	# section autoTest
@@ -1124,8 +1162,10 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	autoTest_RTL = False
 
 	def script_autoTestPause(self, gesture):
-		if self.autoTest_charPtr > 0: self.autoTest_charPtr -= 1
-		else: self.autoTest_charPtr = len(self.autoTest_tests[self.autoTest_type])-1
+		if self.autoTest_charPtr > 0:
+			self.autoTest_charPtr -= 1
+		else:
+			self.autoTest_charPtr = len(self.autoTest_tests[self.autoTest_type])-1
 		self.autoTest_pause = not self.autoTest_pause
 		msg = _("Pause") if self.autoTest_pause else _("Resume",)
 		speech.speakMessage(msg)
@@ -1135,21 +1175,26 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			braille.handler.message("%s" % (self.autoTest_tests[self.autoTest_type][self.autoTest_charPtr]*braille.handler.displaySize))
 		else:
 			braille.handler.message("%s%s" % (' '*self.autoTest_cellPtr, self.autoTest_tests[self.autoTest_type][self.autoTest_charPtr]))
-		if self.autoTest_pause: return
+		if self.autoTest_pause:
+			return
 		if self.autoTest_RTL:
 			if self.autoTest_charPtr == 0:
-				if self.autoTest_cellPtr == 0 or self.autoTest_type == 1: self.autoTest_RTL = False
+				if self.autoTest_cellPtr == 0 or self.autoTest_type == 1:
+					self.autoTest_RTL = False
 				else:
 					self.autoTest_cellPtr -= 1
 					self.autoTest_charPtr = len(self.autoTest_tests[self.autoTest_type])-1
-			else: self.autoTest_charPtr -= 1
+			else:
+				self.autoTest_charPtr -= 1
 		else:
 			if self.autoTest_charPtr+1 == len(self.autoTest_tests[self.autoTest_type]):
-				if self.autoTest_cellPtr+1 == braille.handler.displaySize or self.autoTest_type == 1: self.autoTest_RTL = True
+				if self.autoTest_cellPtr+1 == braille.handler.displaySize or self.autoTest_type == 1:
+					self.autoTest_RTL = True
 				else:
 					self.autoTest_cellPtr += 1
 					self.autoTest_charPtr = 0
-			else: self.autoTest_charPtr += 1
+			else:
+				self.autoTest_charPtr += 1
 
 	def script_autoTestDecrease(self, gesture):
 		self.autoTestInterval += 125
@@ -1158,22 +1203,27 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		speech.speakMessage("%d ms" % self.autoTestInterval)
 
 	def script_autoTestIncrease(self, gesture):
-		if self.autoTestInterval-125 < 125: return
+		if self.autoTestInterval-125 < 125:
+			return
 		self.autoTestInterval -= 125
 		self.autoTestTimer.Stop()
 		self.autoTestTimer.Start(self.autoTestInterval)
 		speech.speakMessage("%d ms" % self.autoTestInterval)
 
 	def script_autoTestPrior(self, gesture):
-		if self.autoTest_type > 0: self.autoTest_type -= 1
-		else: self.autoTest_type = len(self.autoTest_tests)-1
+		if self.autoTest_type > 0:
+			self.autoTest_type -= 1
+		else:
+			self.autoTest_type = len(self.autoTest_tests)-1
 		self.autoTest_charPtr = self.autoTest_cellPtr = 0
 		self.showAutoTest()
 		speech.speakMessage(_("Auto test type %d" % self.autoTest_type))
 
 	def script_autoTestNext(self, gesture):
-		if self.autoTest_type+1 < len(self.autoTest_tests): self.autoTest_type += 1
-		else: self.autoTest_type = 0
+		if self.autoTest_type+1 < len(self.autoTest_tests):
+			self.autoTest_type += 1
+		else:
+			self.autoTest_type = 0
 		self.autoTest_charPtr = self.autoTest_cellPtr = 0
 		self.showAutoTest()
 		speech.speakMessage(_("Auto test type %d" % self.autoTest_type))
@@ -1182,12 +1232,15 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		if self.autoTestPlayed:
 			self.autoTestTimer.Stop()
 			for k in self.autoTest_gestures:
-				try: self.removeGestureBinding(k)
-				except BaseException: pass
+				try:
+					self.removeGestureBinding(k)
+				except BaseException:
+					pass
 			self.autoTest_charPtr = self.autoTest_cellPtr = 0
 			self.clearMessageFlash()
 			speech.speakMessage(_("Auto test stopped"))
-			if addoncfg.noMessageTimeout: config.conf["braille"]["noMessageTimeout"] = self.backupMessageTimeout
+			if addoncfg.noMessageTimeout:
+				config.conf["braille"]["noMessageTimeout"] = self.backupMessageTimeout
 		else:
 			if addoncfg.noMessageTimeout:
 				self.backupMessageTimeout = config.conf["braille"]["noMessageTimeout"]
@@ -1274,7 +1327,8 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 				braille.handler.toggle_auto_scroll()
 			except AttributeError:
 				pass
-		if self.autoTestPlayed: self.autoTestTimer.Stop()
+		if self.autoTestPlayed:
+			self.autoTestTimer.Stop()
 		tabledictionaries.removeTmpDict()
 		advancedinput.terminate()
 		patches.unload_patches()

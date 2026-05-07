@@ -342,7 +342,8 @@ def generateProgressBarString(value, displaySize):
 		intString = ""
 		try:
 			intString = re.search(r"(\d+)", value).group(1)
-		except AttributeError: return
+		except AttributeError:
+			return
 		if not intString == "100" and len(intString) > 2:
 			intString = intString[:2]
 		value = int(intString)

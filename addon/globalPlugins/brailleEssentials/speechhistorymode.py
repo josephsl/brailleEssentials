@@ -81,7 +81,8 @@ def speak(
 	**kwargs
 ):
 	orig_speak(speechSequence, *args, **kwargs)
-	if not saveString: return
+	if not saveString:
+		return
 	string = ""
 	for i in speechSequence:
 		if isinstance(i, str):

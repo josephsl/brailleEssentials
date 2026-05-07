@@ -67,8 +67,10 @@ noMessageTimeout = True if 'noMessageTimeout' in config.conf["braille"] else Fal
 outputTables = inputTables = None
 preTable = []
 postTable = []
-if not os.path.exists(profilesDir): log.error('Profiles\' path not found')
-else: log.debug('Profiles\' path (%s) found' % profilesDir)
+if not os.path.exists(profilesDir):
+	log.error('Profiles\' path not found')
+else:
+	log.debug('Profiles\' path (%s) found' % profilesDir)
 try:
 	import brailleTables
 	tables = brailleTables.listTables()
@@ -298,7 +300,8 @@ def loadConf():
 	curBD = braille.handler.display.name
 	if "brailleTables" in config.conf["brailleEssentials"]:
 		del config.conf["brailleEssentials"]["brailleTables"]
-	try: brlextConf = config.conf["brailleEssentials"].copy()
+	try:
+		brlextConf = config.conf["brailleEssentials"].copy()
 	except configobj.validate.VdtValueError:
 		brlextConf = config.conf["brailleEssentials"].copy()
 	if "profile_%s" % curBD not in brlextConf.keys():
@@ -323,14 +326,18 @@ def loadConf():
 			log.exception("Malformed configuration file")
 			return False
 	else:
-		if curBD != "noBraille": log.warn("%s inaccessible" % confGen)
-		else: log.debug("No braille display present")
+		if curBD != "noBraille":
+			log.warn("%s inaccessible" % confGen)
+		else:
+			log.debug("No braille display present")
 
 	limitCellsRight = int(config.conf["brailleEssentials"]["rightMarginCells_%s" % curBD])
 	if (backupDisplaySize-limitCellsRight <= backupDisplaySize and limitCellsRight > 0):
 		braille.handler.displaySize = backupDisplaySize-limitCellsRight
-	if not noUnicodeTable: loadPreferedTables()
-	if config.conf["brailleEssentials"]["inputTableShortcuts"] not in tablesUFN: config.conf["brailleEssentials"]["inputTableShortcuts"] = '?'
+	if not noUnicodeTable:
+		loadPreferedTables()
+	if config.conf["brailleEssentials"]["inputTableShortcuts"] not in tablesUFN:
+		config.conf["brailleEssentials"]["inputTableShortcuts"] = '?'
 	return True
 
 def loadGestures():
@@ -342,8 +349,10 @@ def loadGestures():
 				inputTable = brailleTables.getDefaultTableForCurLang(brailleTables.TableType.INPUT)
 			else:
 				inputTable = "en-us-comp8.utb"
-		if os.path.exists(os.path.join(profilesDir, "_BrowseMode", inputTable + ".ini")): GLng = inputTable
-		else: GLng = 'en-us-comp8.utb'
+		if os.path.exists(os.path.join(profilesDir, "_BrowseMode", inputTable + ".ini")):
+			GLng = inputTable
+		else:
+			GLng = 'en-us-comp8.utb'
 		gesturesBMPath = os.path.join(profilesDir, "_BrowseMode", "common.ini")
 		gesturesLangBMPath = os.path.join(profilesDir, "_BrowseMode/", GLng + ".ini")
 		inputCore.manager.localeGestureMap.load(gesturesBDPath())
@@ -356,9 +365,11 @@ def loadGestures():
 def gesturesBDPath(a = False):
 	l = ['\\'.join([profilesDir, curBD, config.conf["brailleEssentials"]["profile_%s" % curBD], "gestures.ini"]),
 	'\\'.join([profilesDir, curBD, "default", "gestures.ini"])]
-	if a: return "; ".join(l)
+	if a:
+		return "; ".join(l)
 	for p in l:
-		if os.path.exists(p): return p
+		if os.path.exists(p):
+			return p
 	return '?'
 
 def initGestures():
@@ -372,9 +383,11 @@ def initGestures():
 		if result is not True:
 			log.exception("Malformed configuration file")
 			gesturesFileExists = False
-		else: gesturesFileExists = True
+		else:
+			gesturesFileExists = True
 	else:
-		if curBD != "noBraille": log.warn('No main gestures map (%s) found' % gesturesBDPath(1))
+		if curBD != "noBraille":
+			log.warn('No main gestures map (%s) found' % gesturesBDPath(1))
 		gesturesFileExists = False
 	if gesturesFileExists:
 		for g in iniGestures["globalCommands.GlobalCommands"]:
@@ -391,9 +404,11 @@ def initGestures():
 	return gesturesFileExists, iniGestures
 
 def isContractedTable(table):
-	if not table in tablesFN: return False
+	if not table in tablesFN:
+		return False
 	tablePos = tablesFN.index(table)
-	if brailleTables.listTables()[tablePos].contracted: return True
+	if brailleTables.listTables()[tablePos].contracted:
+		return True
 	return False
 
 def getKeyboardLayout():
@@ -404,14 +419,19 @@ def getKeyboardLayout():
 
 def getTabSize():
 	size = config.conf["brailleEssentials"]["tabSize_%s" % curBD]
-	if size < 0: size = 2
+	if size < 0:
+		size = 2
 	return size
 
 # remove old config files
 cfgFile = globalVars.appArgs.configPath + r"\brailleEssentials.conf"
 cfgFileAttribra = globalVars.appArgs.configPath + r"\attribra-BE.ini"
-if os.path.exists(cfgFile): os.remove(cfgFile)
-if os.path.exists(cfgFileAttribra): os.remove(cfgFileAttribra)
+if os.path.exists(cfgFile):
+	os.remove(cfgFile)
+if os.path.exists(cfgFileAttribra):
+	os.remove(cfgFileAttribra)
 
-if not os.path.exists(configDir): os.mkdir(configDir)
-if not os.path.exists(os.path.join(configDir, "brailleDicts")): os.mkdir(os.path.join(configDir, "brailleDicts"))
+if not os.path.exists(configDir):
+	os.mkdir(configDir)
+if not os.path.exists(os.path.join(configDir, "brailleDicts")):
+	os.mkdir(os.path.join(configDir, "brailleDicts"))

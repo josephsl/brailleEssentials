@@ -172,7 +172,8 @@ def script_braille_routeTo(self, gesture):
 		except IndexError:
 			new_pos = size
 		log.debug(f"Moving from position {cur_pos} to position {new_pos}")
-		if play_beeps: tones.beep(100, 100)
+		if play_beeps:
+			tones.beep(100, 100)
 		if new_pos == 0:
 			keyboardHandler.KeyboardInputGesture.fromName("home").send()
 		elif new_pos >= size:
@@ -188,11 +189,14 @@ def script_braille_routeTo(self, gesture):
 			while i < nb:
 				gestureKB.send()
 				i += 1
-		if play_beeps: tones.beep(150, 100)
+		if play_beeps:
+			tones.beep(150, 100)
 		say_character_under_braille_routing_cursor(gesture)
 		return
-	try: braille.handler.routeTo(gesture.routingIndex)
-	except LookupError: pass
+	try:
+		braille.handler.routeTo(gesture.routingIndex)
+	except LookupError:
+		pass
 	say_character_under_braille_routing_cursor(gesture)
 
 
@@ -837,11 +841,13 @@ def nextLine(self):
 		moved = dest.move(self._getReadingUnit(), 1)
 		if not moved:
 			if self.allowPageTurns and isinstance(dest.obj, textInfos.DocumentWithPageTurns):
-				try: dest.obj.turnPage()
+				try:
+					dest.obj.turnPage()
 				except RuntimeError as err:
 					log.error(err)
 					continue_ = False
-				else: dest = dest.obj.makeTextInfo(textInfos.POSITION_FIRST)
+				else:
+					dest = dest.obj.makeTextInfo(textInfos.POSITION_FIRST)
 			else:
 				if get_auto_scroll():
 					braille.handler.toggle_auto_scroll()
@@ -871,21 +877,25 @@ def nextLine(self):
 def previousLine(self, start=False):
 	dest = self._readingInfo.copy()
 	dest.collapse()
-	if start: unit = self._getReadingUnit()
-	else: unit = textInfos.UNIT_CHARACTER
+	if start:
+		unit = self._getReadingUnit()
+	else:
+		unit = textInfos.UNIT_CHARACTER
 	continue_ = True
 	while continue_:
 		moved = dest.move(unit, -1)
 		if not moved:
 			if self.allowPageTurns and isinstance(dest.obj, textInfos.DocumentWithPageTurns):
-				try: dest.obj.turnPage(previous=True)
+				try:
+					dest.obj.turnPage(previous=True)
 				except RuntimeError as err:
 					log.error(err)
 					continue_ = False
 				else:
 					dest = dest.obj.makeTextInfo(textInfos.POSITION_LAST)
 					dest.expand(unit)
-			else: return
+			else:
+				return
 		if continue_ and config.conf["brailleEssentials"]["skipBlankLinesScroll"] or (get_auto_scroll() and config.conf["brailleEssentials"]["autoScroll"]["ignoreBlankLine"]):
 			dest_ = dest.copy()
 			dest_.expand(textInfos.UNIT_LINE)
@@ -1053,8 +1063,10 @@ def input_(self, dots):
 					return self._reportUntranslated(pos)
 			else:
 				res = huc.isValidHUCInput(advancedInputStr)
-				if res == huc.HUC_INPUT_INCOMPLETE: return self._reportUntranslated(pos)
-				if res == huc.HUC_INPUT_INVALID: return badInput(self)
+				if res == huc.HUC_INPUT_INCOMPLETE:
+					return self._reportUntranslated(pos)
+				if res == huc.HUC_INPUT_INVALID:
+					return badInput(self)
 				res = huc.backTranslate(advancedInputStr)
 				sendChar(res)
 			if res and config.conf["brailleEssentials"]["advancedInputMode"]["stopAfterOneChar"]:
