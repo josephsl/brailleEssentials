@@ -16,7 +16,6 @@ addonHandler.initTranslation()
 
 import braille
 popupSettingsDialog = getattr(gui.mainFrame, 'popupSettingsDialog', gui.mainFrame._popupSettingsDialog)
-import config
 import louis
 
 from . import addoncfg

@@ -24,16 +24,12 @@ import louis
 import louisHelper
 import nvwave
 import queueHandler
-try:
-	import sayAllHandler
-except ModuleNotFoundError:
-	from speech.sayAll import SayAllHandler as sayAllHandler
+from speech.sayAll import SayAllHandler as sayAllHandler
 import scriptHandler
 import speech
 import textInfos
 import tones
 import treeInterceptorHandler
-import watchdog
 import winUser
 from logHandler import log
 
@@ -59,7 +55,7 @@ from .common import (
 from .documentformatting import get_method, get_tags, N_, normalizeTextAlign, normalize_report_key
 from .objectpresentation import getPropertiesBraille, selectedElementEnabled, update_NVDAObjectRegion
 from .onehand import process as processOneHandMode
-from .utils import getCurrentChar, getSpeechSymbols, getTether, getCharFromValue, getCurrentBrailleTables, get_output_reason, get_control_type
+from .utils import getSpeechSymbols, getTether, getCharFromValue, getCurrentBrailleTables, get_output_reason, get_control_type
 
 addonHandler.initTranslation()
 

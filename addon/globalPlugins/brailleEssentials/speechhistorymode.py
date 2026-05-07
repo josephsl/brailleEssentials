@@ -10,8 +10,6 @@ import ui
 import gui
 import wx
 import addonHandler
-import globalCommands
-from logHandler import log
 
 addonHandler.initTranslation()
 TETHER_SPEECH = "speech"

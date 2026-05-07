@@ -3,14 +3,9 @@
 # Part of Braille Essentials (forked from BrailleExtender) Addon for NVDA
 # Copyright 2016-2026 Joseph Lee, André-Abush CLAUSE, released under GPL.
 
-import os
-
 import addonHandler
-import braille
-import brailleInput
 import brailleTables
 import config
-import controlTypes
 import core
 import gui
 import inputCore
@@ -18,7 +13,6 @@ import queueHandler
 import scriptHandler
 import ui
 import wx
-from logHandler import log
 
 from . import addoncfg
 from . import utils

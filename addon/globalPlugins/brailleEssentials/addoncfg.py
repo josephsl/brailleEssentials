@@ -7,7 +7,6 @@ import os
 
 import addonHandler
 import braille
-import brailleInput
 import config
 import configobj
 import globalVars

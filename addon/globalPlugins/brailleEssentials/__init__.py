@@ -17,7 +17,6 @@ import brailleTables
 import config
 import globalCommands
 import globalPluginHandler
-import globalVars
 import gui
 import inputCore
 import keyLabels
@@ -43,7 +42,7 @@ from . import settings
 from . import tabledictionaries
 from . import undefinedchars
 from . import utils
-from .common import (addonName, addonURL, addonVersion, punctuationSeparator,
+from .common import (addonName, addonVersion, punctuationSeparator,
 	RC_NORMAL, RC_EMULATE_ARROWS_BEEP, RC_EMULATE_ARROWS_SILENT,
 	NVDA_HAS_SPEAK_ON_NAVIGATING_BY_UNIT)
 
