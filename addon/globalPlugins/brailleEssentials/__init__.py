@@ -146,14 +146,6 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		addoncfg.initGestures()
 		addoncfg.loadGestures()
 		self.gesturesInit()
-		checkingForced = False
-		if config.conf["brailleEssentials"]["lastNVDAVersion"] != updatecheck.versionInfo.version:
-			config.conf["brailleEssentials"]["lastNVDAVersion"] = updatecheck.versionInfo.version
-			checkingForced = True
-		delayChecking = 86400 if config.conf["brailleEssentials"]["updateChannel"] != addoncfg.CHANNEL_stable else 604800
-		if not globalVars.appArgs.secure and config.conf["brailleEssentials"]["autoCheckUpdate"] and (checkingForced or (time.time() - config.conf["brailleEssentials"]["lastCheckUpdate"]) > delayChecking):
-			updatecheck.checkUpdates(True)
-			config.conf["brailleEssentials"]["lastCheckUpdate"] = time.time()
 		self.backup__brailleTableDict = config.conf["braille"]["translationTable"]
 		braille.TextInfoRegion._addTextWithFields = documentformatting.decorator(braille.TextInfoRegion._addTextWithFields, "addTextWithFields")
 		braille.TextInfoRegion.update = documentformatting.decorator(braille.TextInfoRegion.update, "update")
