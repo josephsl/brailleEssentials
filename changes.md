@@ -8,3 +8,7 @@ Note: forked from BrailleExtender in May 2026.
 
 * Initial forked add-on release.
 * NVDA 2024.1 or later is required.
+* Changes from BrailleExtender:
+	* User interface and documentation now refers to "Braille Essentials".
+	* Removed add-on version from "Braille Essentials" NVDA menu item.
+	* Changed add-on homepage and source URL.
