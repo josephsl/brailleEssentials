@@ -267,13 +267,13 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		gui.mainFrame.sysTrayIcon.Bind(wx.EVT_MENU, lambda event: self.script_getTableOverview(None), item)
 		item = self.submenu.Append(wx.ID_ANY, _("&Reload add-on"), _("Reload this add-on."))
 		gui.mainFrame.sysTrayIcon.Bind(wx.EVT_MENU, self.onReload, item)
-		item = self.submenu.Append(wx.ID_ANY, _("Check for &update..."), _("Checks if Braille Extender update is available"))
+		item = self.submenu.Append(wx.ID_ANY, _("Check for &update..."), _("Checks if Braille Essentials update is available"))
 		gui.mainFrame.sysTrayIcon.Bind(wx.EVT_MENU, self.onUpdate, item)
 		item = self.submenu.Append(wx.ID_ANY, _("&Website"), _("Open addon's website."))
 		gui.mainFrame.sysTrayIcon.Bind(wx.EVT_MENU, self.onWebsite, item)
 		item = self.submenu.Append(wx.ID_ANY, _("Get the latest template &translation file (.pot)"), _("Opens the URL to download the latest Portable Object Template file of the add-on"))
 		gui.mainFrame.sysTrayIcon.Bind(wx.EVT_MENU, self.on_pot_file, item)
-		self.submenu_item = gui.mainFrame.sysTrayIcon.menu.Insert(2, wx.ID_ANY, "%s (%s)" % (_("&Braille Extender"), addonVersion), self.submenu)
+		self.submenu_item = gui.mainFrame.sysTrayIcon.menu.Insert(2, wx.ID_ANY, "%s (%s)" % (_("&Braille Essentials"), addonVersion), self.submenu)
 
 	def reloadBrailleTables(self):
 		patches.louis.liblouis.lou_free()
@@ -714,7 +714,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	def script_getHelp(self, g):
 		from . import addondoc
 		addondoc.AddonDoc(self)
-	script_getHelp.__doc__ = _("Shows the Braille Extender documentation")
+	script_getHelp.__doc__ = _("Shows the Braille Essentials documentation")
 
 	def noKeyboarLayout(self):
 		return self.noKC
@@ -754,13 +754,13 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			except BaseException:
 				ui.message(_("No such file or directory"))
 			return
-	script_quickLaunch.__doc__ = _("Opens a custom program/file. Go to Braille Extender settings to define them")
+	script_quickLaunch.__doc__ = _("Opens a custom program/file. Go to Braille Essentials settings to define them")
 
 	def script_checkUpdate(self, gesture):
 		if not globalVars.appArgs.secure:
 			updatecheck.checkUpdates()
 		return
-	script_checkUpdate.__doc__ = _("Checks for Braille Extender updates")
+	script_checkUpdate.__doc__ = _("Checks for Braille Essentials updates")
 
 	def script_increaseDelayAutoScroll(self, gesture):
 		if not patches.is_patch_applied("braille_handler"):
@@ -894,7 +894,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		self.gesturesInit()
 		if config.conf["brailleEssentials"]["reverseScrollBtns"]:
 			self.reverseScrollBtns()
-		if not sil: ui.message(_("Braille Extender reloaded"))
+		if not sil: ui.message(_("Braille Essentials reloaded"))
 		return
 
 	@staticmethod
@@ -911,7 +911,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 
 	def script_reloadAddon(self, gesture): self.onReload()
-	script_reloadAddon.__doc__ = _("Reloads Braille Extender")
+	script_reloadAddon.__doc__ = _("Reloads Braille Essentials")
 
 	def script_reload_brailledisplay1(self, gesture): self.reload_brailledisplay(1)
 	script_reload_brailledisplay1.__doc__ = _("Reloads the primary braille display defined in settings")
@@ -1320,4 +1320,4 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	@staticmethod
 	def errorMessage(msg):
-		wx.CallAfter(gui.messageBox, msg, _("Braille Extender"), wx.OK|wx.ICON_ERROR)
+		wx.CallAfter(gui.messageBox, msg, _("Braille Essentials"), wx.OK|wx.ICON_ERROR)

@@ -111,7 +111,7 @@ def notifyInvalidTables():
 			getPathDict("tmp"): "tmp"
 		}
 		msg = _("One or more errors are present in dictionary tables: %s. As a result, these dictionaries were not loaded.") % ", ".join([dicts[path] for path in invalidDictTables if path in dicts])
-		wx.CallAfter(gui.messageBox, msg, _("Braille Extender"), wx.OK|wx.ICON_ERROR)
+		wx.CallAfter(gui.messageBox, msg, _("Braille Essentials"), wx.OK|wx.ICON_ERROR)
 
 def removeTmpDict():
 	path = getPathDict("tmp")
@@ -368,22 +368,22 @@ class DictionaryEntryDlg(wx.Dialog):
 		opcode = self.getOpcode()
 		if not textPattern:
 			msg = _("Text pattern/sign field is empty.")
-			gui.messageBox(msg, _("Braille Extender"), wx.OK|wx.ICON_ERROR)
+			gui.messageBox(msg, _("Braille Essentials"), wx.OK|wx.ICON_ERROR)
 			return self.textPatternTextCtrl.SetFocus()
 		if opcode != OPCODE_REPLACE:
 			egBRLRepr = "12345678, 5-123456, 0-138."
 			egTextPattern = r"α, ∪, \x2019."
 			if len(textPattern) > 1 and not re.match(r"^\\x[0-9a-f]+$", textPattern):
 				msg = _("Invalid value for 'text pattern/sign' field. You must specify a character with this opcode. E.g.: %s") % egTextPattern
-				gui.messageBox(msg, _("Braille Extender"), wx.OK|wx.ICON_ERROR)
+				gui.messageBox(msg, _("Braille Essentials"), wx.OK|wx.ICON_ERROR)
 				return self.textPatternTextCtrl.SetFocus()
 			if not braillePattern:
 				msg = _("'Braille representation' field is empty. You must specify something with this opcode. E.g.: %s") % egBRLRepr
-				gui.messageBox(msg, _("Braille Extender"), wx.OK|wx.ICON_ERROR)
+				gui.messageBox(msg, _("Braille Essentials"), wx.OK|wx.ICON_ERROR)
 				return self.braillePatternTextCtrl.SetFocus()
 			if not  re.match(r"^[0-8\-]+$", braillePattern):
 				msg = _("Invalid value for 'braille representation' field. You must enter dot patterns with this opcode. E.g.: %s") % egBRLRepr
-				gui.messageBox(msg, _("Braille Extender"), wx.OK|wx.ICON_ERROR)
+				gui.messageBox(msg, _("Braille Essentials"), wx.OK|wx.ICON_ERROR)
 				return self.braillePatternTextCtrl.SetFocus()
 		else: textPattern = textPattern.lower().replace("\\", r"\\")
 		textPattern = textPattern.replace("	", r"\t").replace(" ", r"\s")

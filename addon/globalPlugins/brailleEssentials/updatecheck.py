@@ -79,7 +79,7 @@ def checkUpdates(sil=False):
 	def errorUpdateDialog(details=None):
 		global checkInProgress
 		checkInProgress = True
-		msg = _("Oops! There was a problem downloading Braille Extender update. Please retry later or download and install manually from %s. Do you want to open this URL in your browser?") % addonInfos["url"]
+		msg = _("Oops! There was a problem downloading Braille Essentials update. Please retry later or download and install manually from %s. Do you want to open this URL in your browser?") % addonInfos["url"]
 		if details:
 			msg += '\n' + _("Details:") + ' ' + repr(details)
 		res = gui.messageBox(
@@ -131,7 +131,7 @@ def checkUpdates(sil=False):
 
 	if checkInProgress:
 		return ui.message(_("An update check dialog is already running!"))
-	title = _("Braille Extender update")
+	title = _("Braille Essentials update")
 	newUpdate = False
 	url = addonInfos["url"]
 	if url.endswith('/'):
