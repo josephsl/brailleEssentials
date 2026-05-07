@@ -746,12 +746,6 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			return
 	script_quickLaunch.__doc__ = _("Opens a custom program/file. Go to Braille Essentials settings to define them")
 
-	def script_checkUpdate(self, gesture):
-		if not globalVars.appArgs.secure:
-			updatecheck.checkUpdates()
-		return
-	script_checkUpdate.__doc__ = _("Checks for Braille Essentials updates")
-
 	def script_increaseDelayAutoScroll(self, gesture):
 		if not patches.is_patch_applied("braille_handler"):
 			ui.message(_("Autoscroll feature unavailable (patch not applied)"))
@@ -886,10 +880,6 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			self.reverseScrollBtns()
 		if not sil: ui.message(_("Braille Essentials reloaded"))
 		return
-
-	@staticmethod
-	def onUpdate(evt):
-		return updatecheck.checkUpdates()
 
 	@staticmethod
 	def onWebsite(evt):
