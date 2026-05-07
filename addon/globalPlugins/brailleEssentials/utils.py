@@ -36,13 +36,13 @@ get_volume_level = volumehelper.get_volume_level
 
 def report_volume_level():
 	from .addoncfg import CHOICE_braille, CHOICE_speech, CHOICE_speechAndBraille
-	if get_mute() and config.conf["brailleExtender"]["volumeChangeFeedback"] in [CHOICE_braille, CHOICE_speechAndBraille]:
+	if get_mute() and config.conf["brailleEssentials"]["volumeChangeFeedback"] in [CHOICE_braille, CHOICE_speechAndBraille]:
 		return braille.handler.message(_("Muted sound"))
 	volume_level = get_volume_level()
-	if config.conf["brailleExtender"]["volumeChangeFeedback"] in [CHOICE_braille, CHOICE_speechAndBraille]:
+	if config.conf["brailleEssentials"]["volumeChangeFeedback"] in [CHOICE_braille, CHOICE_speechAndBraille]:
 		msg = make_progress_bar_from_str(volume_level, "%3d%%" % volume_level, INSERT_AFTER)
 		braille.handler.message(msg)
-	if config.conf["brailleExtender"]["volumeChangeFeedback"] in [CHOICE_speech, CHOICE_speechAndBraille]:
+	if config.conf["brailleEssentials"]["volumeChangeFeedback"] in [CHOICE_speech, CHOICE_speechAndBraille]:
 		speech.speakMessage(str(volume_level))
 
 

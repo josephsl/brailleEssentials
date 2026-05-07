@@ -33,7 +33,7 @@ class SettingsDlg(gui.settingsDialogs.SettingsPanel):
 		sHelper = gui.guiHelper.BoxSizerHelper(self, sizer=settingsSizer)
 
 		self.toggleRoleLabels = sHelper.addItem(wx.CheckBox(self, label=_("Use custom braille &role labels")))
-		self.toggleRoleLabels.SetValue(config.conf["brailleExtender"]["features"]["roleLabels"])
+		self.toggleRoleLabels.SetValue(config.conf["brailleEssentials"]["features"]["roleLabels"])
 		self.toggleRoleLabels.Bind(wx.EVT_CHECKBOX, self.onToggleRoleLabels)
 		self.categories = sHelper.addLabeledControl(_("Role cate&gory:"), wx.Choice, choices=[_("General"), _("Landmarks"), _("Positive states"), _("Negative states")])
 		self.categories.Bind(wx.EVT_CHOICE, self.onCategories)
@@ -161,10 +161,10 @@ class SettingsDlg(gui.settingsDialogs.SettingsPanel):
 
 	def onSave(self):
 		global roleLabels
-		config.conf["brailleExtender"]["features"]["roleLabels"] = self.toggleRoleLabels.IsChecked()
+		config.conf["brailleEssentials"]["features"]["roleLabels"] = self.toggleRoleLabels.IsChecked()
 		saveRoleLabels(self.roleLabels)
 		discardRoleLabels()
-		if config.conf["brailleExtender"]["features"]["roleLabels"]:
+		if config.conf["brailleEssentials"]["features"]["roleLabels"]:
 			loadRoleLabels()
 
 backupRoleLabels = {}
@@ -206,10 +206,10 @@ def loadRoleLabels(roleLabels_=None):
 	roleLabels.clear()
 	if roleLabels_:
 		roleLabels.update(roleLabels_)
-	elif "roleLabels" in config.conf["brailleExtender"] and config.conf["brailleExtender"]["roleLabels"].copy():
-		roleLabels.update(config.conf["brailleExtender"]["roleLabels"].copy())
+	elif "roleLabels" in config.conf["brailleEssentials"] and config.conf["brailleEssentials"]["roleLabels"].copy():
+		roleLabels.update(config.conf["brailleEssentials"]["roleLabels"].copy())
 		saveRoleLabels(roleLabels)
-		config.conf["brailleExtender"]["roleLabels"] = {}
+		config.conf["brailleEssentials"]["roleLabels"] = {}
 	elif os.path.exists(PATH_JSON):
 		f = open(PATH_JSON, "r", encoding="UTF-8")
 		try:

@@ -282,8 +282,8 @@ def loadPreferedTables():
 	if utils.supportsAutomaticBrailleTables():
 		listInputTables = ["auto"] + listInputTables
 		listOutputTables = ["auto"] + listOutputTables
-	inputTables = config.conf["brailleExtender"]["inputTables"]
-	outputTables = config.conf["brailleExtender"]["outputTables"]
+	inputTables = config.conf["brailleEssentials"]["inputTables"]
+	outputTables = config.conf["brailleEssentials"]["outputTables"]
 	if not isinstance(inputTables, list):
 		inputTables = inputTables.replace(', ', ',').split(',')
 	if not isinstance(outputTables, list):
@@ -306,25 +306,25 @@ def loadPreferedTables():
 def loadConf():
 	global curBD, gesturesFileExists, profileFileExists, iniProfile
 	curBD = braille.handler.display.name
-	if "brailleTables" in config.conf["brailleExtender"]:
-		del config.conf["brailleExtender"]["brailleTables"]
-	try: brlextConf = config.conf["brailleExtender"].copy()
+	if "brailleTables" in config.conf["brailleEssentials"]:
+		del config.conf["brailleEssentials"]["brailleTables"]
+	try: brlextConf = config.conf["brailleEssentials"].copy()
 	except configobj.validate.VdtValueError:
-		config.conf["brailleExtender"]["updateChannel"] = "dev"
-		brlextConf = config.conf["brailleExtender"].copy()
+		config.conf["brailleEssentials"]["updateChannel"] = "dev"
+		brlextConf = config.conf["brailleEssentials"].copy()
 	if "profile_%s" % curBD not in brlextConf.keys():
-		config.conf["brailleExtender"]["profile_%s" % curBD] = "default"
+		config.conf["brailleEssentials"]["profile_%s" % curBD] = "default"
 	if "tabSize_%s" % curBD not in brlextConf.keys():
-		config.conf["brailleExtender"]["tabSize_%s" % curBD] = 2
+		config.conf["brailleEssentials"]["tabSize_%s" % curBD] = 2
 	if "leftMarginCells__%s" % curBD not in brlextConf.keys():
-		config.conf["brailleExtender"]["leftMarginCells_%s" % curBD] = 0
+		config.conf["brailleEssentials"]["leftMarginCells_%s" % curBD] = 0
 	if "rightMarginCells_%s" % curBD not in brlextConf.keys():
-		config.conf["brailleExtender"]["rightMarginCells_%s" % curBD] = 0
+		config.conf["brailleEssentials"]["rightMarginCells_%s" % curBD] = 0
 	if "autoScrollDelay_%s" % curBD not in brlextConf.keys():
-		config.conf["brailleExtender"]["autoScrollDelay_%s" % curBD] = 3000
+		config.conf["brailleEssentials"]["autoScrollDelay_%s" % curBD] = 3000
 	if "keyboardLayout_%s" % curBD not in brlextConf.keys():
-		config.conf["brailleExtender"]["keyboardLayout_%s" % curBD] = "?"
-	confGen = (r"%s\%s\%s\profile.ini" % (profilesDir, curBD, config.conf["brailleExtender"]["profile_%s" % curBD]))
+		config.conf["brailleEssentials"]["keyboardLayout_%s" % curBD] = "?"
+	confGen = (r"%s\%s\%s\profile.ini" % (profilesDir, curBD, config.conf["brailleEssentials"]["profile_%s" % curBD]))
 	if (curBD != "noBraille" and os.path.exists(confGen)):
 		profileFileExists = True
 		confspec = config.ConfigObj("", encoding="UTF-8", list_values=False)
@@ -337,11 +337,11 @@ def loadConf():
 		if curBD != "noBraille": log.warn("%s inaccessible" % confGen)
 		else: log.debug("No braille display present")
 
-	limitCellsRight = int(config.conf["brailleExtender"]["rightMarginCells_%s" % curBD])
+	limitCellsRight = int(config.conf["brailleEssentials"]["rightMarginCells_%s" % curBD])
 	if (backupDisplaySize-limitCellsRight <= backupDisplaySize and limitCellsRight > 0):
 		braille.handler.displaySize = backupDisplaySize-limitCellsRight
 	if not noUnicodeTable: loadPreferedTables()
-	if config.conf["brailleExtender"]["inputTableShortcuts"] not in tablesUFN: config.conf["brailleExtender"]["inputTableShortcuts"] = '?'
+	if config.conf["brailleEssentials"]["inputTableShortcuts"] not in tablesUFN: config.conf["brailleEssentials"]["inputTableShortcuts"] = '?'
 	return True
 
 def loadGestures():
@@ -365,7 +365,7 @@ def loadGestures():
 		inputCore.manager.localeGestureMap.update({'browseMode.BrowseModeTreeInterceptor': tmp})
 
 def gesturesBDPath(a = False):
-	l = ['\\'.join([profilesDir, curBD, config.conf["brailleExtender"]["profile_%s" % curBD], "gestures.ini"]),
+	l = ['\\'.join([profilesDir, curBD, config.conf["brailleEssentials"]["profile_%s" % curBD], "gestures.ini"]),
 	'\\'.join([profilesDir, curBD, "default", "gestures.ini"])]
 	if a: return "; ".join(l)
 	for p in l:
@@ -408,13 +408,13 @@ def isContractedTable(table):
 	return False
 
 def getKeyboardLayout():
-	if (config.conf["brailleExtender"]["keyboardLayout_%s" % curBD] is not None
-	and config.conf["brailleExtender"]["keyboardLayout_%s" % curBD] in iniProfile['keyboardLayouts'].keys()):
-		return iniProfile['keyboardLayouts'].keys().index(config.conf["brailleExtender"]["keyboardLayout_%s" % curBD])
+	if (config.conf["brailleEssentials"]["keyboardLayout_%s" % curBD] is not None
+	and config.conf["brailleEssentials"]["keyboardLayout_%s" % curBD] in iniProfile['keyboardLayouts'].keys()):
+		return iniProfile['keyboardLayouts'].keys().index(config.conf["brailleEssentials"]["keyboardLayout_%s" % curBD])
 	return 0
 
 def getTabSize():
-	size = config.conf["brailleExtender"]["tabSize_%s" % curBD]
+	size = config.conf["brailleEssentials"]["tabSize_%s" % curBD]
 	if size < 0: size = 2
 	return size
 

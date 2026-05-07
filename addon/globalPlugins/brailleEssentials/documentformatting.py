@@ -103,7 +103,7 @@ LABELS_REPORTS = {
 }
 
 logTextInfo = False
-conf = config.conf["brailleExtender"]["documentFormatting"]
+conf = config.conf["brailleEssentials"]["documentFormatting"]
 
 
 def normalize_report_key(key):

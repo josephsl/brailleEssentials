@@ -57,7 +57,7 @@ def loadOrderProperties():
 
 def getOrderPropertiesFromConfig():
 	defaultOrderProperties = getDefaultOrderProperties()
-	orderProperties = config.conf["brailleExtender"]["objectPresentation"][
+	orderProperties = config.conf["brailleEssentials"]["objectPresentation"][
 		"orderProperties"
 	].split(",")
 	if len(defaultOrderProperties) > len(orderProperties):
@@ -83,14 +83,14 @@ def setOrderProperties(newOrder, save=False):
 	global orderProperties
 	orderProperties = newOrder
 	if save:
-		config.conf["brailleExtender"]["objectPresentation"][
+		config.conf["brailleEssentials"]["objectPresentation"][
 			"orderProperties"
 		] = ",".join(newOrder)
 
 
 def selectedElementEnabled():
 	return (
-			config.conf["brailleExtender"]["objectPresentation"]["selectedElement"]
+			config.conf["brailleEssentials"]["objectPresentation"]["selectedElement"]
 			!= CHOICE_none
 	)
 
@@ -217,7 +217,7 @@ def getPropertiesBraille(**propertyValues) -> str:
 			states = states.copy()
 			states.discard(get_control_type("STATE_VISITED"))
 			roleText = N_("vlnk")
-		elif not description and config.conf["brailleExtender"]["documentFormatting"][
+		elif not description and config.conf["brailleEssentials"]["documentFormatting"][
 			"cellFormula"] and states and get_control_type("STATE_HASFORMULA") in states and cellInfo and hasattr(cellInfo,
 																										   "formula") and cellInfo.formula:
 			states = states.copy()
@@ -325,14 +325,14 @@ def getPropertiesBraille(**propertyValues) -> str:
 def validProgressBar(obj):
 	List = [
 		isinstance(obj, ProgressBar),
-		config.conf["brailleExtender"]["objectPresentation"]["progressBarUpdate"],
+		config.conf["brailleEssentials"]["objectPresentation"]["progressBarUpdate"],
 		not controlTypes.STATE_INVISIBLE in obj.states,
 		not controlTypes.STATE_OFFSCREEN in obj.states
 	]
 	inForeground = obj.isInForeground
-	if not config.conf["brailleExtender"]["objectPresentation"]["reportBackgroundProgressBars"]:
+	if not config.conf["brailleEssentials"]["objectPresentation"]["reportBackgroundProgressBars"]:
 		List.append(config.conf["presentation"]["progressBarUpdates"]["reportBackgroundProgressBars"] or inForeground)
-	elif config.conf["brailleExtender"]["objectPresentation"]["reportBackgroundProgressBars"] == int(addoncfg.CHOICE_disabled):
+	elif config.conf["brailleEssentials"]["objectPresentation"]["reportBackgroundProgressBars"] == int(addoncfg.CHOICE_disabled):
 		List.append(inForeground)
 	return(List)
 
@@ -464,7 +464,7 @@ class SettingsDlg(gui.settingsDialogs.SettingsPanel):
 						if k != CHOICE_liblouis}
 		try:
 			itemToSelect = list(self.choices.keys()).index(
-				config.conf["brailleExtender"]["objectPresentation"]["selectedElement"]
+				config.conf["brailleEssentials"]["objectPresentation"]["selectedElement"]
 			)
 		except IndexError:
 			itemToSelect = 0
@@ -479,13 +479,13 @@ class SettingsDlg(gui.settingsDialogs.SettingsPanel):
 			wx.Choice,
 			choices=[_("disabled (original behavior)"), _("enabled, show raw value"), _("enabled, show a progress bar using ⣿")]
 		)
-		self.progressBarUpdate.SetSelection(config.conf["brailleExtender"]["objectPresentation"]["progressBarUpdate"])
+		self.progressBarUpdate.SetSelection(config.conf["brailleEssentials"]["objectPresentation"]["progressBarUpdate"])
 		self.background = sHelper.addLabeledControl(
 			_("Report background progress bars:"),
 			wx.Choice,
 			choices=[_("like speech"), _("enabled"), _("disabled")]
 		)
-		self.background.SetSelection(config.conf["brailleExtender"]["objectPresentation"]["reportBackgroundProgressBars"])
+		self.background.SetSelection(config.conf["brailleEssentials"]["objectPresentation"]["reportBackgroundProgressBars"])
 
 
 
@@ -504,10 +504,10 @@ class SettingsDlg(gui.settingsDialogs.SettingsPanel):
 		self.orderPropertiesBtn.SetFocus()
 
 	def onSave(self):
-		config.conf["brailleExtender"]["objectPresentation"]["selectedElement"] = list(
+		config.conf["brailleEssentials"]["objectPresentation"]["selectedElement"] = list(
 			self.choices.keys()
 		)[self.selectedElement.GetSelection()]
-		config.conf["brailleExtender"]["objectPresentation"]["progressBarUpdate"] = self.progressBarUpdate.GetSelection()
-		config.conf["brailleExtender"]["objectPresentation"]["reportBackgroundProgressBars"] = self.background.GetSelection()
+		config.conf["brailleEssentials"]["objectPresentation"]["progressBarUpdate"] = self.progressBarUpdate.GetSelection()
+		config.conf["brailleEssentials"]["objectPresentation"]["reportBackgroundProgressBars"] = self.background.GetSelection()
 
 REASON_FOCUS = get_output_reason("FOCUS")

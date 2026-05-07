@@ -19,7 +19,7 @@ from .common import MIN_AUTO_SCROLL_DELAY, DEFAULT_AUTO_SCROLL_DELAY, MAX_AUTO_S
 
 addonHandler.initTranslation()
 
-conf = config.conf["brailleExtender"]["autoScroll"]
+conf = config.conf["brailleEssentials"]["autoScroll"]
 
 
 class AutoScroll(threading.Thread):

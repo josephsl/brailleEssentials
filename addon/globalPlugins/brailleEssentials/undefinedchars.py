@@ -68,7 +68,7 @@ CHOICES_LABELS = {
 }
 
 def _getUndefinedCharsCfg():
-	return config.conf["brailleExtender"]["undefinedCharsRepr"]
+	return config.conf["brailleEssentials"]["undefinedCharsRepr"]
 
 
 def getHardValue() -> str:

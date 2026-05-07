@@ -32,23 +32,23 @@ class SettingsDlg(gui.settingsDialogs.SettingsPanel):
 			gui.nvdaControls.SelectOnFocusSpinCtrl,
 			min=0,
 			max=1000000,
-			initial=config.conf["brailleExtender"]["speechHistoryMode"]["limit"]
+			initial=config.conf["brailleEssentials"]["speechHistoryMode"]["limit"]
 		)
 
 		# Translators: label of a dialog.
 		label = _("&Prefix entries with their position in the history")
 		self.numberEntries = sHelper.addItem(wx.CheckBox(self, label=label))
-		self.numberEntries.SetValue(config.conf["brailleExtender"]["speechHistoryMode"]["numberEntries"])
+		self.numberEntries.SetValue(config.conf["brailleEssentials"]["speechHistoryMode"]["numberEntries"])
 
 		# Translators: label of a dialog.
 		label = _("&Read entries while browsing history")
 		self.speakEntries = sHelper.addItem(wx.CheckBox(self, label=label))
-		self.speakEntries.SetValue(config.conf["brailleExtender"]["speechHistoryMode"]["speakEntries"])
+		self.speakEntries.SetValue(config.conf["brailleEssentials"]["speechHistoryMode"]["speakEntries"])
 
 	def onSave(self):
-		config.conf["brailleExtender"]["speechHistoryMode"]["limit"] = self.limit.Value
-		config.conf["brailleExtender"]["speechHistoryMode"]["numberEntries"] = self.numberEntries.IsChecked()
-		config.conf["brailleExtender"]["speechHistoryMode"]["speakEntries"] = self.speakEntries.IsChecked()
+		config.conf["brailleEssentials"]["speechHistoryMode"]["limit"] = self.limit.Value
+		config.conf["brailleEssentials"]["speechHistoryMode"]["numberEntries"] = self.numberEntries.IsChecked()
+		config.conf["brailleEssentials"]["speechHistoryMode"]["speakEntries"] = self.speakEntries.IsChecked()
 
 
 orig_speak = speech.speech.speak
@@ -58,14 +58,14 @@ def showSpeech(index, allowReadEntry=False):
 	try:
 		if braille.handler.getTether() == TETHER_SPEECH:
 			text = speechList[index]
-			if config.conf["brailleExtender"]["speechHistoryMode"]["numberEntries"]:
-				size_limit = len(str(config.conf["brailleExtender"]["speechHistoryMode"]["limit"]))
+			if config.conf["brailleEssentials"]["speechHistoryMode"]["numberEntries"]:
+				size_limit = len(str(config.conf["brailleEssentials"]["speechHistoryMode"]["limit"]))
 				text = f"#%.{size_limit}d:{text}" % (index+1)
 			region = braille.TextRegion(text)
 			region.update()
 			region.obj = None
 			braille.handler._doNewObject([region])
-			if allowReadEntry and config.conf["brailleExtender"]["speechHistoryMode"]["speakEntries"]:
+			if allowReadEntry and config.conf["brailleEssentials"]["speechHistoryMode"]["speakEntries"]:
 				speech.cancelSpeech()
 				speak([speechList[index]], saveString=False)
 	except BaseException:
@@ -92,7 +92,7 @@ def speak(
 				string += " "
 	global speechList, index
 	speechList.append(string)
-	speechList = speechList[-config.conf["brailleExtender"]["speechHistoryMode"]["limit"]:]
+	speechList = speechList[-config.conf["brailleEssentials"]["speechHistoryMode"]["limit"]:]
 	index = len(speechList) - 1
 	showSpeech(index, allowReadEntry=allowReadEntry)
 

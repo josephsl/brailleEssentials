@@ -116,11 +116,11 @@ def sayCurrentLine():
 		return
 	if not get_auto_scroll():
 		if getTether() == braille.handler.TETHER_REVIEW:
-			if config.conf["brailleExtender"]["speakScroll"] in [addoncfg.CHOICE_focusAndReview, addoncfg.CHOICE_review]:
+			if config.conf["brailleEssentials"]["speakScroll"] in [addoncfg.CHOICE_focusAndReview, addoncfg.CHOICE_review]:
 				scriptHandler.executeScript(
 					globalCommands.commands.script_review_currentLine, None)
 			return
-		if config.conf["brailleExtender"]["speakScroll"] in [addoncfg.CHOICE_focusAndReview, addoncfg.CHOICE_focus]:
+		if config.conf["brailleEssentials"]["speakScroll"] in [addoncfg.CHOICE_focusAndReview, addoncfg.CHOICE_focus]:
 			obj = api.getFocusObject()
 			treeInterceptor = obj.treeInterceptor
 			if isinstance(treeInterceptor, treeInterceptorHandler.DocumentTreeInterceptor) and not treeInterceptor.passThrough:
@@ -136,7 +136,7 @@ def say_character_under_braille_routing_cursor(gesture):
 	# Skip when NVDA core provides this (since 2024.4)
 	if NVDA_HAS_SPEAK_ON_ROUTING:
 		return
-	if not get_auto_scroll() and scriptHandler.getLastScriptRepeatCount() == 0 and config.conf["brailleExtender"]["speakRoutingTo"]:
+	if not get_auto_scroll() and scriptHandler.getLastScriptRepeatCount() == 0 and config.conf["brailleEssentials"]["speakRoutingTo"]:
 		region = braille.handler.buffer
 		if region.cursorPos is None:
 			return
@@ -159,13 +159,13 @@ def script_braille_routeTo(self, gesture):
 	if get_auto_scroll() and braille.handler.buffer is braille.handler.mainBuffer:
 		braille.handler.toggle_auto_scroll()
 	obj = api.getNavigatorObject()
-	if (config.conf["brailleExtender"]["routingCursorsEditFields"] in [RC_EMULATE_ARROWS_BEEP, RC_EMULATE_ARROWS_SILENT] and
+	if (config.conf["brailleEssentials"]["routingCursorsEditFields"] in [RC_EMULATE_ARROWS_BEEP, RC_EMULATE_ARROWS_SILENT] and
 		braille.handler.buffer is braille.handler.mainBuffer and
 		braille.handler.mainBuffer.cursorPos is not None and
 		obj.hasFocus and
 		obj.role in [get_control_type("ROLE_TERMINAL"), get_control_type("ROLE_EDITABLETEXT")]
 	):
-		play_beeps = config.conf["brailleExtender"]["routingCursorsEditFields"] == RC_EMULATE_ARROWS_BEEP
+		play_beeps = config.conf["brailleEssentials"]["routingCursorsEditFields"] == RC_EMULATE_ARROWS_BEEP
 		nb = 0
 		key = "rightarrow"
 		region = braille.handler.mainBuffer
@@ -212,7 +212,7 @@ def update_region(self):
 	L{brailleCursorPos}, L{brailleSelectionStart} and L{brailleSelectionEnd} are similarly updated based on L{cursorPos}, L{selectionStart} and L{selectionEnd}, respectively.
 	@postcondition: L{brailleCells}, L{brailleCursorPos}, L{brailleSelectionStart} and L{brailleSelectionEnd} are updated and ready for rendering.
 	"""
-	if config.conf["brailleExtender"]["advanced"]["fixCursorPositions"]:
+	if config.conf["brailleEssentials"]["advanced"]["fixCursorPositions"]:
 		pattern = variationSelectorsPattern()
 		matches = re.finditer(pattern, self.rawText)
 		posToRemove = []
@@ -239,8 +239,8 @@ def update_region(self):
 		cursorPos=self.cursorPos
 	)
 	if (self.parseUndefinedChars
-		and config.conf["brailleExtender"]["undefinedCharsRepr"]["method"] != undefinedchars.CHOICE_tableBehaviour
-		and len(self.rawText) <= config.conf["brailleExtender"]["undefinedCharsRepr"]["characterLimit"]
+		and config.conf["brailleEssentials"]["undefinedCharsRepr"]["method"] != undefinedchars.CHOICE_tableBehaviour
+		and len(self.rawText) <= config.conf["brailleEssentials"]["undefinedCharsRepr"]["characterLimit"]
 	):
 		undefinedchars.undefinedCharProcess(self)
 	if selectedElementEnabled():
@@ -249,11 +249,11 @@ def update_region(self):
 			addoncfg.CHOICE_dot8: 128,
 			addoncfg.CHOICE_dots78: 192
 		}
-		if config.conf["brailleExtender"]["objectPresentation"]["selectedElement"] in d:
-			addDots = d[config.conf["brailleExtender"]["objectPresentation"]["selectedElement"]]
+		if config.conf["brailleEssentials"]["objectPresentation"]["selectedElement"] in d:
+			addDots = d[config.conf["brailleEssentials"]["objectPresentation"]["selectedElement"]]
 			if hasattr(self, "obj") and self.obj and hasattr(self.obj, "states") and self.obj.states and self.obj.name and get_control_type("STATE_SELECTED") in self.obj.states:
 				name = self.obj.name
-				if config.conf["brailleExtender"]["advanced"]["fixCursorPositions"]:
+				if config.conf["brailleEssentials"]["advanced"]["fixCursorPositions"]:
 					name = re.sub(variationSelectorsPattern(), r"\1", name)
 				if name in self.rawText:
 					start = self.rawText.index(name)
@@ -500,7 +500,7 @@ def getFormatFieldBraille(field, fieldCache, isAtStart, formatConfig):
 	textList = []
 
 	if isAtStart:
-		if config.conf["brailleExtender"]["documentFormatting"]["processLinePerLine"]:
+		if config.conf["brailleEssentials"]["documentFormatting"]["processLinePerLine"]:
 			fieldCache.clear()
 		if formatConfig["reportParagraphIndentation"]:
 			indentLabels = {
@@ -850,10 +850,10 @@ def nextLine(self):
 				if get_auto_scroll():
 					braille.handler.toggle_auto_scroll()
 				return
-		if continue_ and config.conf["brailleExtender"]["skipBlankLinesScroll"] or (
+		if continue_ and config.conf["brailleEssentials"]["skipBlankLinesScroll"] or (
 			get_auto_scroll() and (
-				config.conf["brailleExtender"]["autoScroll"]["ignoreBlankLine"]
-				or config.conf["brailleExtender"]["autoScroll"]["adjustToContent"])
+				config.conf["brailleEssentials"]["autoScroll"]["ignoreBlankLine"]
+				or config.conf["brailleEssentials"]["autoScroll"]["adjustToContent"])
 		):
 			dest_ = dest.copy()
 			dest_.expand(textInfos.UNIT_LINE)
@@ -890,7 +890,7 @@ def previousLine(self, start=False):
 					dest = dest.obj.makeTextInfo(textInfos.POSITION_LAST)
 					dest.expand(unit)
 			else: return
-		if continue_ and config.conf["brailleExtender"]["skipBlankLinesScroll"] or (get_auto_scroll() and config.conf["brailleExtender"]["autoScroll"]["ignoreBlankLine"]):
+		if continue_ and config.conf["brailleEssentials"]["skipBlankLinesScroll"] or (get_auto_scroll() and config.conf["brailleEssentials"]["autoScroll"]["ignoreBlankLine"]):
 			dest_ = dest.copy()
 			dest_.expand(textInfos.UNIT_LINE)
 			continue_ = not dest_.text.strip()
@@ -933,7 +933,7 @@ def executeGesture(gesture):
 					"script_ctrlAlt", "script_ctrlAltWin", "script_ctrlAltWinShift", "script_ctrlAltShift","script_ctrlWin","script_ctrlWinShift","script_ctrlShift","script_altWin","script_altWinShift","script_altShift","script_winShift"
 				] or (
 					not NVDA_HAS_INTERRUPT_SPEECH_WHILE_SCROLLING
-					and not config.conf["brailleExtender"]['stopSpeechScroll']
+					and not config.conf["brailleEssentials"]['stopSpeechScroll']
 					and script.__func__.__name__ in ["script_braille_scrollBack", "script_braille_scrollForward"]
 				)
 			)
@@ -1009,7 +1009,7 @@ def input_(self, dots):
 	pos = self.untranslatedStart + self.untranslatedCursorPos
 	endWord = dots == 0
 	continue_ = True
-	if config.conf["brailleExtender"]["oneHandedMode"]["enabled"]:
+	if config.conf["brailleEssentials"]["oneHandedMode"]["enabled"]:
 		continue_, endWord = processOneHandMode(self, dots)
 		if not continue_:
 			return
@@ -1031,11 +1031,11 @@ def input_(self, dots):
 				[advancedInputStr])
 			startUnicodeValue = "⠃⠙⠓⠕⠭⡃⡙⡓⡕⡭"
 			if not abreviations and advancedInputStr[0] in startUnicodeValue:
-				advancedInputStr = config.conf["brailleExtender"][
+				advancedInputStr = config.conf["brailleEssentials"][
 					"advancedInputMode"]["escapeSignUnicodeValue"] + advancedInputStr
 			lenEscapeSign = len(
-				config.conf["brailleExtender"]["advancedInputMode"]["escapeSignUnicodeValue"])
-			if advancedInputStr == config.conf["brailleExtender"]["advancedInputMode"]["escapeSignUnicodeValue"] or (advancedInputStr.startswith(config.conf["brailleExtender"]["advancedInputMode"]["escapeSignUnicodeValue"]) and len(advancedInputStr) > lenEscapeSign and advancedInputStr[lenEscapeSign] in startUnicodeValue):
+				config.conf["brailleEssentials"]["advancedInputMode"]["escapeSignUnicodeValue"])
+			if advancedInputStr == config.conf["brailleEssentials"]["advancedInputMode"]["escapeSignUnicodeValue"] or (advancedInputStr.startswith(config.conf["brailleEssentials"]["advancedInputMode"]["escapeSignUnicodeValue"]) and len(advancedInputStr) > lenEscapeSign and advancedInputStr[lenEscapeSign] in startUnicodeValue):
 				equiv = {'⠃': 'b', '⠙': 'd', '⠓': 'h', '⠕': 'o', '⠭': 'x',
 						 '⡃': 'B', '⡙': 'D', '⡓': 'H', '⡕': 'O', '⡭': 'X'}
 				if advancedInputStr[-1] == '⠀':
@@ -1061,7 +1061,7 @@ def input_(self, dots):
 				if res == huc.HUC_INPUT_INVALID: return badInput(self)
 				res = huc.backTranslate(advancedInputStr)
 				sendChar(res)
-			if res and config.conf["brailleExtender"]["advancedInputMode"]["stopAfterOneChar"]:
+			if res and config.conf["brailleEssentials"]["advancedInputMode"]["stopAfterOneChar"]:
 				instanceGP.advancedInput = False
 		return
 	if not self.useContractedForCurrentFocus or endWord:
@@ -1127,7 +1127,7 @@ def _translate(self, endWord):
 			else:
 				self.emulateKey(newText)
 		else:
-			if config.conf["brailleExtender"]["smartCapsLock"] and winUser.getKeyState(winUser.VK_CAPITAL)&1:
+			if config.conf["brailleEssentials"]["smartCapsLock"] and winUser.getKeyState(winUser.VK_CAPITAL)&1:
 				tmp = []
 				for ch in newText:
 					if ch.islower():
@@ -1173,7 +1173,7 @@ def _displayWithCursor(self):
 origGetTether = _originals["BrailleHandler.getTether"]
 
 def getTetherWithRoleTerminal(self):
-	if config.conf["brailleExtender"]["speechHistoryMode"]["enabled"]:
+	if config.conf["brailleEssentials"]["speechHistoryMode"]["enabled"]:
 		return speechhistorymode.TETHER_SPEECH
 	role = None
 	try:
@@ -1183,7 +1183,7 @@ def getTetherWithRoleTerminal(self):
 	if obj:
 		role = api.getNavigatorObject().role
 	if (
-		config.conf["brailleExtender"]["reviewModeTerminal"]
+		config.conf["brailleEssentials"]["reviewModeTerminal"]
 		and role == controlTypes.ROLE_TERMINAL
 	):
 		return braille.handler.TETHER_REVIEW

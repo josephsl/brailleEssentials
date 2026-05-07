@@ -440,17 +440,17 @@ class SettingsDlg(gui.settingsDialogs.SettingsPanel):
 		self.stopAdvancedInputModeAfterOneChar = sHelper.addItem(wx.CheckBox(
 			self, label=_("E&xit the advanced input mode after typing one pattern")))
 		self.stopAdvancedInputModeAfterOneChar.SetValue(
-			config.conf["brailleExtender"]["advancedInputMode"]["stopAfterOneChar"])
+			config.conf["brailleEssentials"]["advancedInputMode"]["stopAfterOneChar"])
 		self.escapeSignUnicodeValue = sHelper.addLabeledControl(
 			_("&Escape character for Unicode values input"),
 			wx.TextCtrl,
-			value=config.conf["brailleExtender"]["advancedInputMode"]
+			value=config.conf["brailleEssentials"]["advancedInputMode"]
 			["escapeSignUnicodeValue"],)
 		
 
 	def onSave(self):
-		config.conf["brailleExtender"]["advancedInputMode"]["stopAfterOneChar"] = self.stopAdvancedInputModeAfterOneChar.IsChecked()
+		config.conf["brailleEssentials"]["advancedInputMode"]["stopAfterOneChar"] = self.stopAdvancedInputModeAfterOneChar.IsChecked()
 		s = self.escapeSignUnicodeValue.Value
 		if s:
-			config.conf["brailleExtender"]["advancedInputMode"][
+			config.conf["brailleEssentials"]["advancedInputMode"][
 				"escapeSignUnicodeValue"] = getTextInBraille(s[0])

@@ -49,7 +49,7 @@ def getFeaturesDoc() -> str:
 		ch = undefinedCharsSamples[i][0]
 		undefinedCharsSamples[i][0] = "%s (%s)" % (ch, utils.getSpeechSymbols(ch))
 
-	braillePattern = config.conf["brailleExtender"]["advancedInputMode"]["escapeSignUnicodeValue"]
+	braillePattern = config.conf["brailleEssentials"]["advancedInputMode"]["escapeSignUnicodeValue"]
 
 	contextualOption = _("Show punctuation/symbol &name for undefined characters if available").replace('&', '')
 	features = {

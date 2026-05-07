@@ -64,42 +64,42 @@ class GeneralDlg(gui.settingsDialogs.SettingsPanel):
 			_("dev channel, manual check"),
 		]
 		self.updateCheck = sHelper.addLabeledControl(_("Check for upd&ates:"), wx.Choice, choices=choices)
-		if config.conf["brailleExtender"]["updateChannel"] in addoncfg.updateChannels.keys():
-			itemToSelect = list(addoncfg.updateChannels.keys()).index(config.conf["brailleExtender"]["updateChannel"])
+		if config.conf["brailleEssentials"]["updateChannel"] in addoncfg.updateChannels.keys():
+			itemToSelect = list(addoncfg.updateChannels.keys()).index(config.conf["brailleEssentials"]["updateChannel"])
 		else:
 			itemToSelect = list(addoncfg.updateChannels.keys()).index(addoncfg.CHANNEL_stable)
-		if not config.conf["brailleExtender"]["autoCheckUpdate"]: itemToSelect += len(addoncfg.updateChannels.keys())
+		if not config.conf["brailleEssentials"]["autoCheckUpdate"]: itemToSelect += len(addoncfg.updateChannels.keys())
 		self.updateCheck.SetSelection(itemToSelect)
 
 		# Translators: label of a dialog.
 		self.speakScroll = sHelper.addLabeledControl(_("Say current line while &scrolling in:"), wx.Choice, choices=list(addoncfg.focusOrReviewChoices.values()))
-		self.speakScroll.SetSelection(list(addoncfg.focusOrReviewChoices.keys()).index(config.conf["brailleExtender"]["speakScroll"]))
+		self.speakScroll.SetSelection(list(addoncfg.focusOrReviewChoices.keys()).index(config.conf["brailleEssentials"]["speakScroll"]))
 		if NVDA_HAS_SPEAK_ON_NAVIGATING_BY_UNIT:
 			self.speakScroll.Enable(False)
 			sHelper.addItem(wx.StaticText(self, label=_("Use NVDA Braille settings → \"Speak when navigating by line or paragraph\" (since 2025.1)")))
 
 		# Translators: label of a dialog.
 		self.stopSpeechScroll = sHelper.addItem(wx.CheckBox(self, label=_("Speech &interrupt when scrolling on same line")))
-		self.stopSpeechScroll.SetValue(config.conf["brailleExtender"]["stopSpeechScroll"])
+		self.stopSpeechScroll.SetValue(config.conf["brailleEssentials"]["stopSpeechScroll"])
 		if NVDA_HAS_INTERRUPT_SPEECH_WHILE_SCROLLING:
 			self.stopSpeechScroll.Enable(False)
 			sHelper.addItem(wx.StaticText(self, label=_("Use NVDA Braille settings → \"Interrupt speech while scrolling\" (since 2022.3)")))
 
 		# Translators: label of a dialog.
 		self.skipBlankLinesScroll = sHelper.addItem(wx.CheckBox(self, label=_("S&kip blank lines during text scrolling")))
-		self.skipBlankLinesScroll.SetValue(config.conf["brailleExtender"]["skipBlankLinesScroll"])
+		self.skipBlankLinesScroll.SetValue(config.conf["brailleEssentials"]["skipBlankLinesScroll"])
 
 		# Translators: label of a dialog.
 		self.smartCapsLock = sHelper.addItem(wx.CheckBox(self, label=_("Smart Caps Loc&k")))
-		self.smartCapsLock.SetValue(config.conf["brailleExtender"]["smartCapsLock"])
+		self.smartCapsLock.SetValue(config.conf["brailleEssentials"]["smartCapsLock"])
 
 		# Translators: label of a dialog.
 		self.stopSpeechUnknown = sHelper.addItem(wx.CheckBox(self, label=_("Speech i&nterrupt for unknown gestures")))
-		self.stopSpeechUnknown.SetValue(config.conf["brailleExtender"]["stopSpeechUnknown"])
+		self.stopSpeechUnknown.SetValue(config.conf["brailleEssentials"]["stopSpeechUnknown"])
 
 		# Translators: label of a dialog.
 		self.speakRoutingTo = sHelper.addItem(wx.CheckBox(self, label=_("Announce character when &routing braille cursor")))
-		self.speakRoutingTo.SetValue(config.conf["brailleExtender"]["speakRoutingTo"])
+		self.speakRoutingTo.SetValue(config.conf["brailleEssentials"]["speakRoutingTo"])
 		if NVDA_HAS_SPEAK_ON_ROUTING:
 			self.speakRoutingTo.Enable(False)
 			sHelper.addItem(wx.StaticText(self, label=_("Use NVDA Braille settings → \"Speak character when routing cursor in text\" (since 2024.4)")))
@@ -107,36 +107,36 @@ class GeneralDlg(gui.settingsDialogs.SettingsPanel):
 		# Translators: label of a dialog.
 		label = _("Routing cursors behavior in edit &fields:")
 		self.routingCursorsEditFields = sHelper.addLabeledControl(label, wx.Choice, choices=list(addoncfg.routingCursorsEditFields_labels.values()))
-		if config.conf["brailleExtender"]["routingCursorsEditFields"] in addoncfg.routingCursorsEditFields_labels:
-			itemToSelect = list(addoncfg.routingCursorsEditFields_labels.keys()).index(config.conf["brailleExtender"]["routingCursorsEditFields"])
+		if config.conf["brailleEssentials"]["routingCursorsEditFields"] in addoncfg.routingCursorsEditFields_labels:
+			itemToSelect = list(addoncfg.routingCursorsEditFields_labels.keys()).index(config.conf["brailleEssentials"]["routingCursorsEditFields"])
 		else:
 			itemToSelect = list(addoncfg.routingCursorsEditFields_labels.keys()).index(RC_NORMAL)
 		self.routingCursorsEditFields.SetSelection(itemToSelect)
 
 		self.reviewModeTerminal = sHelper.addItem(wx.CheckBox(self, label=_("Automatically Switch to review mode in &terminal windows (cmd, bash, PuTTY, PowerShell Maxima…)")))
-		self.reviewModeTerminal.SetValue(config.conf["brailleExtender"]["reviewModeTerminal"])
+		self.reviewModeTerminal.SetValue(config.conf["brailleEssentials"]["reviewModeTerminal"])
 
 		# Translators: label of a dialog.
 		self.volumeChangeFeedback = sHelper.addLabeledControl(_("Announce &volume changes:"), wx.Choice, choices=list(addoncfg.outputMessage.values()))
-		if config.conf["brailleExtender"]["volumeChangeFeedback"] in addoncfg.outputMessage:
-			itemToSelect = list(addoncfg.outputMessage.keys()).index(config.conf["brailleExtender"]["volumeChangeFeedback"])
+		if config.conf["brailleEssentials"]["volumeChangeFeedback"] in addoncfg.outputMessage:
+			itemToSelect = list(addoncfg.outputMessage.keys()).index(config.conf["brailleEssentials"]["volumeChangeFeedback"])
 		else:
 			itemToSelect = list(addoncfg.outputMessage.keys()).index(addoncfg.CHOICE_braille)
 		self.volumeChangeFeedback.SetSelection(itemToSelect)
 
 		# Translators: label of a dialog.
 		self.modifierKeysFeedback = sHelper.addLabeledControl(_("Announce m&odifier key presses:"), wx.Choice, choices=list(addoncfg.outputMessage.values()))
-		if config.conf["brailleExtender"]["modifierKeysFeedback"] in addoncfg.outputMessage:
-			itemToSelect = list(addoncfg.outputMessage.keys()).index(config.conf["brailleExtender"]["modifierKeysFeedback"])
+		if config.conf["brailleEssentials"]["modifierKeysFeedback"] in addoncfg.outputMessage:
+			itemToSelect = list(addoncfg.outputMessage.keys()).index(config.conf["brailleEssentials"]["modifierKeysFeedback"])
 		else:
 			itemToSelect = list(addoncfg.outputMessage.keys()).index(addoncfg.CHOICE_braille)
 		# Translators: label of a dialog.
 		self.beepsModifiers = sHelper.addItem(wx.CheckBox(self, label=_("Play &beeps for modifier keys")))
-		self.beepsModifiers.SetValue(config.conf["brailleExtender"]["beepsModifiers"])
+		self.beepsModifiers.SetValue(config.conf["brailleEssentials"]["beepsModifiers"])
 
 		# Translators: label of a dialog.
 		self.modifierKeysFeedback.SetSelection(itemToSelect)
-		self.rightMarginCells = sHelper.addLabeledControl(_("&Right margin on cells for the active braille display"), gui.nvdaControls.SelectOnFocusSpinCtrl, min=0, max=100, initial=int(config.conf["brailleExtender"]["rightMarginCells_%s" % addoncfg.curBD]))
+		self.rightMarginCells = sHelper.addLabeledControl(_("&Right margin on cells for the active braille display"), gui.nvdaControls.SelectOnFocusSpinCtrl, min=0, max=100, initial=int(config.conf["brailleEssentials"]["rightMarginCells_%s" % addoncfg.curBD]))
 		if addoncfg.gesturesFileExists:
 			lb = [k for k in instanceGP.getKeyboardLayouts()]
 			# Translators: label of a dialog.
@@ -145,17 +145,17 @@ class GeneralDlg(gui.settingsDialogs.SettingsPanel):
 
 		# Translators: label of a dialog.
 		self.reverseScrollBtns = sHelper.addItem(wx.CheckBox(self, label=_("&Reverse forward and back scroll buttons")))
-		self.reverseScrollBtns.SetValue(config.conf["brailleExtender"]["reverseScrollBtns"])
+		self.reverseScrollBtns.SetValue(config.conf["brailleEssentials"]["reverseScrollBtns"])
 
 		self.brailleDisplay1 = sHelper.addLabeledControl(_("Preferred &primary braille display:"), wx.Choice, choices=self.bds_v)
 		driver_name = "last"
-		if config.conf["brailleExtender"]["brailleDisplay1"] in self.bds_k:
-			driver_name = config.conf["brailleExtender"]["brailleDisplay1"]
+		if config.conf["brailleEssentials"]["brailleDisplay1"] in self.bds_k:
+			driver_name = config.conf["brailleEssentials"]["brailleDisplay1"]
 		self.brailleDisplay1.SetSelection(self.bds_k.index(driver_name))
 		self.brailleDisplay2 = sHelper.addLabeledControl(_("Preferred &secondary braille display:"), wx.Choice, choices=self.bds_v)
 		driver_name = "last"
-		if config.conf["brailleExtender"]["brailleDisplay2"] in self.bds_k:
-			driver_name = config.conf["brailleExtender"]["brailleDisplay2"]
+		if config.conf["brailleEssentials"]["brailleDisplay2"] in self.bds_k:
+			driver_name = config.conf["brailleEssentials"]["brailleDisplay2"]
 		self.brailleDisplay2.SetSelection(self.bds_k.index(driver_name))
 
 	def postInit(self): self.autoCheckUpdate.SetFocus()
@@ -163,30 +163,30 @@ class GeneralDlg(gui.settingsDialogs.SettingsPanel):
 	def onSave(self):
 		updateCheckChoice = self.updateCheck.GetSelection()
 		size = len(addoncfg.updateChannels.keys())
-		config.conf["brailleExtender"]["autoCheckUpdate"] = updateCheckChoice < size
-		config.conf["brailleExtender"]["updateChannel"] = list(addoncfg.updateChannels.keys())[updateCheckChoice % size]
+		config.conf["brailleEssentials"]["autoCheckUpdate"] = updateCheckChoice < size
+		config.conf["brailleEssentials"]["updateChannel"] = list(addoncfg.updateChannels.keys())[updateCheckChoice % size]
 
-		config.conf["brailleExtender"]["reviewModeTerminal"] = self.reviewModeTerminal.IsChecked()
+		config.conf["brailleEssentials"]["reviewModeTerminal"] = self.reviewModeTerminal.IsChecked()
 		if self.reverseScrollBtns.IsChecked(): instanceGP.reverseScrollBtns()
 		else: instanceGP.reverseScrollBtns(None, True)
-		config.conf["brailleExtender"]["reverseScrollBtns"] = self.reverseScrollBtns.IsChecked()
-		config.conf["brailleExtender"]["stopSpeechScroll"] = self.stopSpeechScroll.IsChecked()
-		config.conf["brailleExtender"]["skipBlankLinesScroll"] = self.skipBlankLinesScroll.IsChecked()
-		config.conf["brailleExtender"]["smartCapsLock"] = self.smartCapsLock.IsChecked()
-		config.conf["brailleExtender"]["stopSpeechUnknown"] = self.stopSpeechUnknown.IsChecked()
-		config.conf["brailleExtender"]["speakRoutingTo"] = self.speakRoutingTo.IsChecked()
+		config.conf["brailleEssentials"]["reverseScrollBtns"] = self.reverseScrollBtns.IsChecked()
+		config.conf["brailleEssentials"]["stopSpeechScroll"] = self.stopSpeechScroll.IsChecked()
+		config.conf["brailleEssentials"]["skipBlankLinesScroll"] = self.skipBlankLinesScroll.IsChecked()
+		config.conf["brailleEssentials"]["smartCapsLock"] = self.smartCapsLock.IsChecked()
+		config.conf["brailleEssentials"]["stopSpeechUnknown"] = self.stopSpeechUnknown.IsChecked()
+		config.conf["brailleEssentials"]["speakRoutingTo"] = self.speakRoutingTo.IsChecked()
 
-		config.conf["brailleExtender"]["speakScroll"] = list(addoncfg.focusOrReviewChoices.keys())[self.speakScroll.GetSelection()]
+		config.conf["brailleEssentials"]["speakScroll"] = list(addoncfg.focusOrReviewChoices.keys())[self.speakScroll.GetSelection()]
 
-		config.conf["brailleExtender"]["rightMarginCells_%s" % addoncfg.curBD] = self.rightMarginCells.Value
-		config.conf["brailleExtender"]["brailleDisplay1"] = self.bds_k[self.brailleDisplay1.GetSelection()]
-		config.conf["brailleExtender"]["brailleDisplay2"] = self.bds_k[self.brailleDisplay2.GetSelection()]
+		config.conf["brailleEssentials"]["rightMarginCells_%s" % addoncfg.curBD] = self.rightMarginCells.Value
+		config.conf["brailleEssentials"]["brailleDisplay1"] = self.bds_k[self.brailleDisplay1.GetSelection()]
+		config.conf["brailleEssentials"]["brailleDisplay2"] = self.bds_k[self.brailleDisplay2.GetSelection()]
 		if addoncfg.gesturesFileExists:
-			config.conf["brailleExtender"]["keyboardLayout_%s" % addoncfg.curBD] = list(addoncfg.iniProfile["keyboardLayouts"].keys())[self.KBMode.GetSelection()]
-		config.conf["brailleExtender"]["routingCursorsEditFields"] = list(addoncfg.routingCursorsEditFields_labels.keys())[self.routingCursorsEditFields.GetSelection()]
-		config.conf["brailleExtender"]["volumeChangeFeedback"] = list(addoncfg.outputMessage.keys())[self.volumeChangeFeedback.GetSelection()]
-		config.conf["brailleExtender"]["modifierKeysFeedback"] = list(addoncfg.outputMessage.keys())[self.modifierKeysFeedback.GetSelection()]
-		config.conf["brailleExtender"]["beepsModifiers"] = self.beepsModifiers.IsChecked()
+			config.conf["brailleEssentials"]["keyboardLayout_%s" % addoncfg.curBD] = list(addoncfg.iniProfile["keyboardLayouts"].keys())[self.KBMode.GetSelection()]
+		config.conf["brailleEssentials"]["routingCursorsEditFields"] = list(addoncfg.routingCursorsEditFields_labels.keys())[self.routingCursorsEditFields.GetSelection()]
+		config.conf["brailleEssentials"]["volumeChangeFeedback"] = list(addoncfg.outputMessage.keys())[self.volumeChangeFeedback.GetSelection()]
+		config.conf["brailleEssentials"]["modifierKeysFeedback"] = list(addoncfg.outputMessage.keys())[self.modifierKeysFeedback.GetSelection()]
+		config.conf["brailleEssentials"]["beepsModifiers"] = self.beepsModifiers.IsChecked()
 
 
 class BrailleTablesDlg(gui.settingsDialogs.SettingsPanel):
@@ -243,21 +243,21 @@ class BrailleTablesDlg(gui.settingsDialogs.SettingsPanel):
 		for t in addoncfg.tables:
 			if t.output and not t.contracted:
 				lt.append(t[1])
-		iSht = addoncfg.tablesUFN.index(config.conf["brailleExtender"]["inputTableShortcuts"]) + 1 if config.conf["brailleExtender"]["inputTableShortcuts"] in addoncfg.tablesUFN else 0
+		iSht = addoncfg.tablesUFN.index(config.conf["brailleEssentials"]["inputTableShortcuts"]) + 1 if config.conf["brailleEssentials"]["inputTableShortcuts"] in addoncfg.tablesUFN else 0
 		self.inputTableShortcuts = sHelper.addLabeledControl(_("Input braille table for &keyboard shortcut keys:"), wx.Choice, choices=lt)
 		self.inputTableShortcuts.SetSelection(iSht)
 
 		postOutputFNs = [t[0] for t in addoncfg.tables if t.output]
 		lt = [_('None')] + [t[1] for t in addoncfg.tables if t.output]
-		postTableVal = config.conf["brailleExtender"]["postTable"]
+		postTableVal = config.conf["brailleEssentials"]["postTable"]
 		postIdx = postOutputFNs.index(postTableVal) + 1 if postTableVal in postOutputFNs else 0
 		self.postTable = sHelper.addLabeledControl(_("&Secondary output table:"), wx.Choice, choices=lt)
 		self.postTable.SetSelection(postIdx)
 
 		self.tabSpace = sHelper.addItem(wx.CheckBox(self, label=_("Display &tabs as spaces")))
-		self.tabSpace.SetValue(config.conf["brailleExtender"]["tabSpace"])
+		self.tabSpace.SetValue(config.conf["brailleEssentials"]["tabSpace"])
 
-		self.tabSize = sHelper.addLabeledControl(_("&Spaces per tab for the active braille display:"), gui.nvdaControls.SelectOnFocusSpinCtrl, min=1, max=42, initial=int(config.conf["brailleExtender"]["tabSize_%s" % addoncfg.curBD]))
+		self.tabSize = sHelper.addLabeledControl(_("&Spaces per tab for the active braille display:"), gui.nvdaControls.SelectOnFocusSpinCtrl, min=1, max=42, initial=int(config.conf["brailleEssentials"]["tabSize_%s" % addoncfg.curBD]))
 
 	def postInit(self):
 		self.outputTablesList.SetFocus()
@@ -268,19 +268,19 @@ class BrailleTablesDlg(gui.settingsDialogs.SettingsPanel):
 		self.oTables = {outputData[i][0] for i in range(self.outputTablesList.GetCount()) if self.outputTablesList.IsChecked(i)}
 		self.iTables = {inputData[i][0] for i in range(self.inputTablesList.GetCount()) if self.inputTablesList.IsChecked(i)}
 
-		config.conf["brailleExtender"]["outputTables"] = ','.join(sorted(self.oTables))
-		config.conf["brailleExtender"]["inputTables"] = ','.join(sorted(self.iTables))
-		config.conf["brailleExtender"]["inputTableShortcuts"] = addoncfg.tablesUFN[self.inputTableShortcuts.GetSelection() - 1] if self.inputTableShortcuts.GetSelection() > 0 else '?'
+		config.conf["brailleEssentials"]["outputTables"] = ','.join(sorted(self.oTables))
+		config.conf["brailleEssentials"]["inputTables"] = ','.join(sorted(self.iTables))
+		config.conf["brailleEssentials"]["inputTableShortcuts"] = addoncfg.tablesUFN[self.inputTableShortcuts.GetSelection() - 1] if self.inputTableShortcuts.GetSelection() > 0 else '?'
 		addoncfg.loadPreferedTables()
 
 		postOutputFNs = [t[0] for t in addoncfg.tables if t.output]
 		postTableID = self.postTable.GetSelection()
-		config.conf["brailleExtender"]["postTable"] = "None" if postTableID == 0 else postOutputFNs[postTableID - 1]
-		if self.tabSpace.IsChecked() and config.conf["brailleExtender"]["tabSpace"] != self.tabSpace.IsChecked():
+		config.conf["brailleEssentials"]["postTable"] = "None" if postTableID == 0 else postOutputFNs[postTableID - 1]
+		if self.tabSpace.IsChecked() and config.conf["brailleEssentials"]["tabSpace"] != self.tabSpace.IsChecked():
 			restartRequired = True
 		else: restartRequired = False
-		config.conf["brailleExtender"]["tabSpace"] = self.tabSpace.IsChecked()
-		config.conf["brailleExtender"]["tabSize_%s" % addoncfg.curBD] = self.tabSize.Value
+		config.conf["brailleEssentials"]["tabSpace"] = self.tabSpace.IsChecked()
+		config.conf["brailleEssentials"]["tabSize_%s" % addoncfg.curBD] = self.tabSize.Value
 		if restartRequired:
 			res = gui.messageBox(
 				_("NVDA must be restarted for changes to take effect. Would you like to restart now?"),
@@ -299,8 +299,8 @@ class QuickLaunchesDlg(gui.settingsDialogs.SettingsDialog):
 	captureLabelBtn = None
 
 	def makeSettings(self, settingsSizer):
-		self.quickLaunchGestures = list(config.conf["brailleExtender"]["quickLaunches"].copy().keys())
-		self.quickLaunchLocations = list(config.conf["brailleExtender"]["quickLaunches"].copy().values())
+		self.quickLaunchGestures = list(config.conf["brailleEssentials"]["quickLaunches"].copy().keys())
+		self.quickLaunchLocations = list(config.conf["brailleEssentials"]["quickLaunches"].copy().values())
 		sHelper = gui.guiHelper.BoxSizerHelper(self, sizer=settingsSizer)
 		bHelper1 = gui.guiHelper.ButtonHelper(orientation=wx.HORIZONTAL)
 		self.quickKeys = sHelper.addLabeledControl(_("&Gestures:"), wx.Choice, choices=self.getQuickLaunchList())
@@ -321,9 +321,9 @@ class QuickLaunchesDlg(gui.settingsDialogs.SettingsDialog):
 	def onOk(self, evt):
 		if inputCore.manager._captureFunc:
 			inputCore.manager._captureFunc = None
-		config.conf["brailleExtender"]["quickLaunches"] = {}
+		config.conf["brailleEssentials"]["quickLaunches"] = {}
 		for gesture, location in zip(self.quickLaunchGestures, self.quickLaunchLocations):
-			config.conf["brailleExtender"]["quickLaunches"][gesture] = location
+			config.conf["brailleEssentials"]["quickLaunches"][gesture] = location
 		instanceGP.loadQuickLaunchesGes()
 		super().onOk(evt)
 
@@ -444,14 +444,14 @@ class AdvancedDlg(gui.settingsDialogs.SettingsPanel):
 	def makeSettings(self, settingsSizer):
 		sHelper = gui.guiHelper.BoxSizerHelper(self, sizer=settingsSizer)
 		self.fixCursorPositions = sHelper.addItem(wx.CheckBox(self, label=_("Avoid &cursor positions issues with some characters such as variation selectors")))
-		self.fixCursorPositions.SetValue(config.conf["brailleExtender"]["advanced"]["fixCursorPositions"])
+		self.fixCursorPositions.SetValue(config.conf["brailleEssentials"]["advanced"]["fixCursorPositions"])
 
 		self.refreshForegroundObjNameChange = sHelper.addItem(wx.CheckBox(self, label="event_nameChange: " + _("force the refresh of braille region related to &foreground object")))
-		self.refreshForegroundObjNameChange.SetValue(config.conf["brailleExtender"]["advanced"]["refreshForegroundObjNameChange"])
+		self.refreshForegroundObjNameChange.SetValue(config.conf["brailleEssentials"]["advanced"]["refreshForegroundObjNameChange"])
 
 	def onSave(self):
-		config.conf["brailleExtender"]["advanced"]["fixCursorPositions"] = self.fixCursorPositions.IsChecked()
-		config.conf["brailleExtender"]["advanced"]["refreshForegroundObjNameChange"] = self.refreshForegroundObjNameChange.IsChecked()
+		config.conf["brailleEssentials"]["advanced"]["fixCursorPositions"] = self.fixCursorPositions.IsChecked()
+		config.conf["brailleEssentials"]["advanced"]["refreshForegroundObjNameChange"] = self.refreshForegroundObjNameChange.IsChecked()
 
 
 class AddonSettingsDialog(gui.settingsDialogs.MultiCategorySettingsDialog):

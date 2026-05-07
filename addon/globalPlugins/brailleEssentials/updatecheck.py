@@ -28,7 +28,7 @@ addonHandler.initTranslation()
 baseDir = os.path.dirname(__file__)
 _addonDir = os.path.join(baseDir, "..", "..")
 addonInfos = addonHandler.Addon(_addonDir).manifest
-sectionName = "brailleExtender"
+sectionName = "brailleEssentials"
 checkInProgress = False
 
 
