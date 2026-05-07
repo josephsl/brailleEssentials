@@ -1,7 +1,7 @@
 # coding: utf-8
 # settings.py
-# Part of BrailleExtender addon for NVDA
-# Copyright 2016-2020 André-Abush CLAUSE, released under GPL.
+# Part of Braille Essentials (forked from BrailleExtender) Addon for NVDA
+# Copyright 2016-2026 Joseph Lee, André-Abush CLAUSE, released under GPL.
 
 import os
 

@@ -1,7 +1,7 @@
 # coding: utf-8
 # speechhistorymode.py
-# Part of BrailleExtender addon for NVDA
-# Copyright 2021-2023 Emil Hesmyr, André-Abush Clause, released under GPL.
+# Part of Braille Essentials (forked from BrailleExtender) Addon for NVDA
+# Copyright 2021-2026 Joseph Lee, Emil Hesmyr, André-Abush Clause, released under GPL.
 import braille
 import config
 import speech

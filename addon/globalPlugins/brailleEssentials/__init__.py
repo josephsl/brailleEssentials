@@ -1,8 +1,8 @@
 # coding: utf-8
-# BrailleExtender Addon for NVDA
+# Braille Essentials (forked from BrailleExtender) Addon for NVDA
 # This file is covered by the GNU General Public License.
 # See the file LICENSE for more details.
-# Copyright (C) 2016-2023 André-Abush Clause <dev@andreabc.net>
+# Copyright (C) 2016-2026 Joseph Lee, André-Abush Clause <dev@andreabc.net>
 
 import os
 import subprocess

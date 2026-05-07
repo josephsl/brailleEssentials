@@ -1,7 +1,7 @@
 # coding: utf-8
 # updatecheck.py
-# Part of BrailleExtender addon for NVDA
-# Copyright 2021 André-Abush Clause, released under GPL.
+# Part of Braille Essentials (forked from BrailleExtender) Addon for NVDA
+# Copyright 2021-2026 Joseph Lee, André-Abush Clause, released under GPL.
 
 import hashlib
 import json

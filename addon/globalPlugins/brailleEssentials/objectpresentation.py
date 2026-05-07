@@ -1,7 +1,7 @@
 # coding: utf-8
 # objectpresentation.py
-# Part of BrailleExtender addon for NVDA
-# Copyright 2020-2022 Emil Hesmyr, André-Abush Clause, released under GPL.
+# Part of Braille Essentials (forked from BrailleExtender) Addon for NVDA
+# Copyright 2020-2026 Joseph Lee, Emil Hesmyr, André-Abush Clause, released under GPL.
 
 import re
 import gui
