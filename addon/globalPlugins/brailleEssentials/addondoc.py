@@ -55,7 +55,7 @@ def getFeaturesDoc() -> str:
 	features = {
 	_("Speech History Mode"): [
 		"<p>",
-		_("This mode allows to review the last announcements that have been spoken by NVDA."),
+		_("This mode allows you to review the last announcements spoken by NVDA."),
 		"<br />",
 		_("To enable this mode, you can use the appropriate toggle command or the basic gesture NVDA+Control+t."),
 		"<br />",
@@ -68,7 +68,7 @@ def getFeaturesDoc() -> str:
 			_('Please note that specific settings are available for this feature under the category "Speech History Mode".'),
 		"</p>"
 	],
-		_("Representation of undefined characters"): [
+		_("Undefined character representation"): [
 			"<p>",
 			_("The extension allows you to customize how an undefined character should be represented within a braille table. To do so, go to the — Representation of undefined characters — settings. You can choose between the following representations:"),
 			"</p><ul>",
@@ -126,7 +126,7 @@ def getFeaturesDoc() -> str:
 		_("One-hand mode"): [
 			"<p>",
 			_("This feature allows you to compose a cell in several steps. This can be activated in the general settings of the extension's preferences or on the fly using NVDA+Windows+h gesture by default (⡂+space on supported displays). Three input methods are available."),
-			"<h4>" + _("Method #1: fill a cell in 2 stages on both sides") + "</h4>",
+			"<h4>" + _("Method 1: fill a cell in 2 stages on both sides") + "</h4>",
 			"<p>",
 			_("With this method, type the left side dots, then the right side dots. If one side is empty, type the dots correspondig to the opposite side twice, or type the dots corresponding to the non-empty side in 2 steps."),
 			"<br />", _("For example:"),
@@ -135,7 +135,7 @@ def getFeaturesDoc() -> str:
 			"<li>" + _("For ⠃: press dots 1-2 then dots 1-2, or dot 1 then dot 2.") + "</li>",
 			"<li>" + _("For ⠘: press 4-5 then 4-5, or dot 4 then dot 5.") + "</li>",
 			"</ul>",
-			"<h4>" + _("Method #2: fill a cell in two stages on one side (Space = empty side)") + "</h4>",
+			"<h4>" + _("Method 2: fill a cell in two stages on one side (Space = empty side)") + "</h4>",
 			"<p>",
 			_("Using this method, you can compose a cell with one hand, regardless of which side of the Braille keyboard you choose. The first step allows you to enter dots 1-2-3-7 and the second one 4-5-6-8. If one side is empty, press space. An empty cell will be obtained by pressing the space key twice."),
 			"<br />" + _("For example:"),
@@ -144,7 +144,7 @@ def getFeaturesDoc() -> str:
 "<li>" + _("For ⠃: press dots 1-2 then space, or 4-5 then space.") + "</li>",
 "<li>" + _("For ⠘: press space then 1-2, or space then dots 4-5.") + "</li>",
 			"</ul>",
-			"<h4>" + _("Method #3: fill a cell dots by dots (each dot is a toggle, press Space to validate the character)") + "</h4>",
+			"<h4>" + _("Method 3: fill a cell dots by dots (each dot is a toggle, press Space to validate the character)") + "</h4>",
 			"<p>",
 			_("In this mode, each dot is a toggle. You must press the space key as soon as the cell you have entered is the desired one to input the character. Thus, the more dots are contained in the cell, the more ways you have to enter the character."),
 			"<br />" + _("For example, for ⠛, you can compose the cell in the following ways") + ':',
@@ -175,7 +175,7 @@ class AddonDoc:
 		manifestDescription = self.getDescFormated(addonDesc)
 		doc = f"<h1>{addonSummary} {addonVersion} — " + _("Documentation") + "</h1>"
 		doc += f"<p>{manifestDescription}</p>"
-		doc += "<h2>" + _("Let's explore some features") + "</h2>"
+		doc += "<h2>" + _("Features overview") + "</h2>"
 		doc += getFeaturesDoc()
 		doc += "<h2>" + _("Profile gestures") + "</h2>"
 		if addoncfg.gesturesFileExists:
@@ -325,7 +325,7 @@ class AddonDoc:
 				"".join(
 					[
 						"<p>",
-						"Copyright (C) 2016-2021 André-Abush Clause ",
+						"Copyright (C) 2016-2026 Joseph Lee, André-Abush Clause ",
 						_("and other contributors"),
 						":<br />",
 						f"<pre>{addonGitHubURL}\n{addonURL}</pre>",
