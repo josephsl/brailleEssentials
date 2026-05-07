@@ -1201,12 +1201,12 @@ def _try_apply(name: str, apply_fn) -> bool:
 		_appliedPatches.add(name)
 		return True
 	except Exception as e:
-		log.warning("BrailleExtender: Could not apply patch %s: %s", name, e, exc_info=True)
+		log.warning("Braille Essentials: Could not apply patch %s: %s", name, e, exc_info=True)
 		return False
 
 
 def apply_patches() -> None:
-	"""Apply all BrailleExtender patches to NVDA core. Called at add-on load.
+	"""Apply all Braille Essentials patches to NVDA core. Called at add-on load.
 	Each patch is tried individually; failures are logged but do not prevent other patches.
 	"""
 	global _patchesApplied
@@ -1265,9 +1265,9 @@ def apply_patches() -> None:
 
 	_patchesApplied = len(_appliedPatches) > 0
 	if not _patchesApplied:
-		log.error("BrailleExtender: No patches could be applied; add-on may not function correctly")
+		log.error("Braille Essentials: No patches could be applied; add-on may not function correctly")
 	else:
-		log.debug("BrailleExtender: Applied %d patch groups: %s", len(_appliedPatches), _appliedPatches)
+		log.debug("Braille Essentials: Applied %d patch groups: %s", len(_appliedPatches), _appliedPatches)
 
 
 def is_patch_applied(name: str) -> bool:
@@ -1319,7 +1319,7 @@ def unload_patches() -> None:
 				except AttributeError:
 					pass
 		except Exception as e:
-			log.warning("BrailleExtender: Error restoring braille_region patches: %s", e)
+			log.warning("Braille Essentials: Error restoring braille_region patches: %s", e)
 
 	if "braille_input" in applied:
 		try:
@@ -1328,13 +1328,13 @@ def unload_patches() -> None:
 			brailleInput.BrailleInputHandler.input = _originals["BrailleInputHandler.input"]
 			brailleInput.BrailleInputHandler.sendChars = _originals["BrailleInputHandler.sendChars"]
 		except Exception as e:
-			log.warning("BrailleExtender: Error restoring braille_input patches: %s", e)
+			log.warning("Braille Essentials: Error restoring braille_input patches: %s", e)
 
 	if "script_braille_routeTo" in applied:
 		try:
 			globalCommands.GlobalCommands.script_braille_routeTo = _originals["script_braille_routeTo"]
 		except Exception as e:
-			log.warning("BrailleExtender: Error restoring script_braille_routeTo: %s", e)
+			log.warning("Braille Essentials: Error restoring script_braille_routeTo: %s", e)
 
 	if "braille_handler" in applied:
 		try:
@@ -1349,12 +1349,12 @@ def unload_patches() -> None:
 				except AttributeError:
 					pass
 		except Exception as e:
-			log.warning("BrailleExtender: Error restoring braille_handler patches: %s", e)
+			log.warning("Braille Essentials: Error restoring braille_handler patches: %s", e)
 
 	if "louis_createTablesString" in applied and "_createTablesString" in _originals:
 		try:
 			louis._createTablesString = _originals["_createTablesString"]
 		except Exception as e:
-			log.warning("BrailleExtender: Error restoring louis patch: %s", e)
+			log.warning("Braille Essentials: Error restoring louis patch: %s", e)
 
-	log.info("BrailleExtender patches unloaded")
+	log.info("Braille Essentials patches unloaded")
