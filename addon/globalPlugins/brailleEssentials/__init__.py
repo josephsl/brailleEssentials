@@ -42,7 +42,6 @@ from . import rolelabels
 from . import settings
 from . import tabledictionaries
 from . import undefinedchars
-from . import updatecheck
 from . import utils
 from .common import (addonName, addonURL, addonVersion, punctuationSeparator,
 	RC_NORMAL, RC_EMULATE_ARROWS_BEEP, RC_EMULATE_ARROWS_SILENT,
