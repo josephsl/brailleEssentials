@@ -230,13 +230,13 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	def createMenu(self):
 		self.submenu = wx.Menu()
-		item = self.submenu.Append(wx.ID_ANY, _("Docu&mentation"), _("Opens the addon's documentation."))
+		item = self.submenu.Append(wx.ID_ANY, _("Docu&mentation"), _("Opens the add-on documentation."))
 		gui.mainFrame.sysTrayIcon.Bind(
 			wx.EVT_MENU,
 			lambda event: self.script_getHelp(None),
 			item
 		)
-		item = self.submenu.Append(wx.ID_ANY, _("&Settings..."), _("Opens the addons' settings."))
+		item = self.submenu.Append(wx.ID_ANY, _("&Settings..."), _("Opens the add-on settings."))
 		gui.mainFrame.sysTrayIcon.Bind(
 			wx.EVT_MENU,
 			lambda event: wx.CallAfter(_popupSettingsDialog, settings.AddonSettingsDialog),
@@ -257,7 +257,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			lambda event: _popupSettingsDialog(advancedinput.AdvancedInputModeDlg),
 			item
 		)
-		item = self.submenu.Append(wx.ID_ANY, "%s..." % _("&Quick launches"), _("Quick launches configuration"))
+		item = self.submenu.Append(wx.ID_ANY, _("&Quick launches..."), _("Quick launches configuration"))
 		gui.mainFrame.sysTrayIcon.Bind(
 			wx.EVT_MENU,
 			lambda event: wx.CallAfter(_popupSettingsDialog, settings.QuickLaunchesDlg),
