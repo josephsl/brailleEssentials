@@ -3,8 +3,6 @@
 # Part of Braille Essentials (forked from BrailleExtender) Addon for NVDA
 # Copyright 2016-2026 Joseph Lee, André-Abush CLAUSE, released under GPL.
 
-from __future__ import annotations
-
 import re
 from typing import Any, Optional
 
