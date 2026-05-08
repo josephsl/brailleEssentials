@@ -4,6 +4,10 @@ This document lists release changelogs for Braille Essentials add-on.
 
 Note: forked from BrailleExtender in May 2026.
 
+## Version Preview
+
+* NVDA 2025.3.3 or later is required.
+
 ## Version 26.05
 
 * Initial forked add-on release.
