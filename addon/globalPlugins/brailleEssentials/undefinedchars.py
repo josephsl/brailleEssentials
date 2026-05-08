@@ -5,7 +5,7 @@
 
 import re
 import unicodedata
-from typing import Any, Optional
+from typing import Any
 
 import addonHandler
 import characterProcessing
@@ -153,7 +153,7 @@ def _clearCaches() -> None:
 	_excludeDescConfigValue = ""
 
 
-def setUndefinedChar(t: Optional[int] = None) -> None:
+def setUndefinedChar(t: int | None = None) -> None:
 	if not t or t > CHOICE_HUC6 or t < 0:
 		t = _getUndefinedCharsCfg()["method"]
 	if t == 0:
@@ -259,7 +259,7 @@ def getLiblouisStyle(c: str | int) -> str:
 	return r"\z%.6x" % c
 
 
-def getUnicodeNotation(s: str, notation: Optional[int] = None) -> str:
+def getUnicodeNotation(s: str, notation: int | None = None) -> str:
 	if not isinstance(s, str):
 		raise TypeError("wrong type")
 	if not notation:
@@ -300,11 +300,11 @@ def getUndefinedCharSign(method: int) -> str:
 
 def getReplacement(
 	text: str,
-	method: Optional[int] = None,
-	startTag: Optional[str] = None,
-	endTag: Optional[str] = None,
-	lang: Optional[str] = None,
-	table: Optional[list[str]] = None,
+	method: int | None = None,
+	startTag: str | None = None,
+	endTag: str | None = None,
+	lang: str | None = None,
+	table: list[str] | None = None,
 ) -> str:
 	if not method:
 		method = _getUndefinedCharsCfg()["method"]
@@ -507,7 +507,7 @@ class SettingsDlg(gui.settingsDialogs.SettingsPanel):
 			return _getUndefinedCharsCfg()["hardSignPatternValue"]
 		return ""
 
-	def onUndefinedCharDesc(self, evt: Optional[wx.CommandEvent] = None, forceDisable: bool = False) -> None:
+	def onUndefinedCharDesc(self, evt: wx.CommandEvent | None = None, forceDisable: bool = False) -> None:
 		l = [
 			self.unicodeDataDescLastResort,
 			self.excludeDescChars,
@@ -525,7 +525,7 @@ class SettingsDlg(gui.settingsDialogs.SettingsPanel):
 			else:
 				e.Disable()
 
-	def onExtendedDesc(self, evt: Optional[wx.CommandEvent] = None) -> None:
+	def onExtendedDesc(self, evt: wx.CommandEvent | None = None) -> None:
 		if self.extendedDesc.IsChecked():
 			self.fullExtendedDesc.Enable()
 			self.showSize.Enable()
@@ -533,7 +533,7 @@ class SettingsDlg(gui.settingsDialogs.SettingsPanel):
 			self.fullExtendedDesc.Disable()
 			self.showSize.Disable()
 
-	def onUndefinedCharReprList(self, evt: Optional[wx.CommandEvent] = None) -> None:
+	def onUndefinedCharReprList(self, evt: wx.CommandEvent | None = None) -> None:
 		selected = self.undefinedCharReprList.GetSelection()
 		if selected == CHOICE_tableBehaviour:
 			self.undefinedCharDesc.Disable()

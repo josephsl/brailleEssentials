@@ -4,7 +4,7 @@
 # Copyright 2016-2026 Joseph Lee, André-Abush CLAUSE, released under GPL.
 
 import re
-from typing import Any, Optional
+from typing import Any
 
 import addonHandler
 
@@ -164,7 +164,7 @@ def getFeaturesDoc() -> str:
 class AddonDoc:
 	instanceGP = None
 
-	def __init__(self, instanceGP: Optional[Any]) -> None:
+	def __init__(self, instanceGP: Any) -> None:
 		initializeRandomChar()
 		if not instanceGP:
 			return
