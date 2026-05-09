@@ -841,14 +841,10 @@ def nextLine(self):
 			continue_ = False
 	dest.collapse()
 	self._setCursor(dest)
-	if NVDA_HAS_SPEAK_ON_NAVIGATING_BY_UNIT:
-		from braille import _speakOnNavigatingByUnit
-		def _speakLine():
-			_speakOnNavigatingByUnit(dest.copy(), self._getReadingUnit())
-		queueHandler.queueFunction(queueHandler.eventQueue, _speakLine)
-	else:
-		queueHandler.queueFunction(queueHandler.eventQueue, speech.cancelSpeech)
-
+	from braille import _speakOnNavigatingByUnit
+	def _speakLine():
+		_speakOnNavigatingByUnit(dest.copy(), self._getReadingUnit())
+	queueHandler.queueFunction(queueHandler.eventQueue, _speakLine)
 
 def previousLine(self, start=False):
 	dest = self._readingInfo.copy()
@@ -880,14 +876,10 @@ def previousLine(self, start=False):
 			continue_ = False
 	dest.collapse()
 	self._setCursor(dest)
-	if NVDA_HAS_SPEAK_ON_NAVIGATING_BY_UNIT:
-		from braille import _speakOnNavigatingByUnit
-		def _speakLine():
-			_speakOnNavigatingByUnit(dest.copy(), self._getReadingUnit())
-		queueHandler.queueFunction(queueHandler.eventQueue, _speakLine)
-	else:
-		queueHandler.queueFunction(queueHandler.eventQueue, speech.cancelSpeech)
-
+	from braille import _speakOnNavigatingByUnit
+	def _speakLine():
+		_speakOnNavigatingByUnit(dest.copy(), self._getReadingUnit())
+	queueHandler.queueFunction(queueHandler.eventQueue, _speakLine)
 
 def executeGesture(gesture):
 	script = gesture.script
