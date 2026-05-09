@@ -468,7 +468,7 @@ def getFormatFieldBraille(field, fieldCache, isAtStart, formatConfig):
 					else:
 						text.append(noVal)
 			if text:
-				textList.append("⣏%s⣹" % ", ".join(text))
+				textList.append("⣋%s⣙" % ", ".join(text))
 		if formatConfig["reportLineNumber"]:
 			lineNumber = field.get("line-number")
 			if lineNumber:
@@ -491,7 +491,7 @@ def getFormatFieldBraille(field, fieldCache, isAtStart, formatConfig):
 			# Translators: Indicates the page number in a document.
 			# %s will be replaced with the page number.
 			text = N_("page %s") % pageNumber
-			textList.append("⣏%s⣹" % text)
+			textList.append("⣋%s⣙" % text)
 		sectionNumber = field.get("section-number")
 		oldSectionNumber = fieldCache.get(
 			"section-number") if fieldCache is not None else None
@@ -499,7 +499,7 @@ def getFormatFieldBraille(field, fieldCache, isAtStart, formatConfig):
 			# Translators: Indicates the section number in a document.
 			# %s will be replaced with the section number.
 			text = N_("section %s") % sectionNumber
-			textList.append("⣏%s⣹" % text)
+			textList.append("⣋%s⣙" % text)
 
 		textColumnCount = field.get("text-column-count")
 		oldTextColumnCount = fieldCache.get(
@@ -516,12 +516,12 @@ def getFormatFieldBraille(field, fieldCache, isAtStart, formatConfig):
 				# {1} will be replaced with the number of text columns.
 				text = N_("column {0} of {1}").format(
 					textColumnNumber, textColumnCount)
-				textList.append("⣏%s⣹" % text)
+				textList.append("⣋%s⣙" % text)
 			elif textColumnCount:
 				# Translators: Indicates the text column number in a document.
 				# %s will be replaced with the number of text columns.
 				text = N_("%s columns") % (textColumnCount)
-				textList.append("⣏%s⣹" % text)
+				textList.append("⣋%s⣙" % text)
 
 	if formatConfig["reportAlignment"]:
 		textAlign = normalizeTextAlign(field.get("text-align"))
@@ -550,24 +550,24 @@ def getFormatFieldBraille(field, fieldCache, isAtStart, formatConfig):
 				# Translators: Indicates that text has reverted to the default style.
 				# A style is a collection of formatting settings and depends on the application.
 				text = N_("default style")
-			textList.append("⣏%s⣹" % text)
+			textList.append("⣋%s⣙" % text)
 	if formatConfig["reportFontName"]:
 		fontFamily = field.get("font-family")
 		oldFontFamily = fieldCache.get(
 			"font-family") if fieldCache is not None else None
 		if fontFamily and fontFamily != oldFontFamily:
-			textList.append("⣏%s⣹" % fontFamily)
+			textList.append("⣋%s⣙" % fontFamily)
 		fontName = field.get("font-name")
 		oldFontName = fieldCache.get(
 			"font-name") if fieldCache is not None else None
 		if fontName and fontName != oldFontName:
-			textList.append("⣏%s⣹" % fontName)
+			textList.append("⣋%s⣙" % fontName)
 	if formatConfig["reportFontSize"]:
 		fontSize = field.get("font-size")
 		oldFontSize = fieldCache.get(
 			"font-size") if fieldCache is not None else None
 		if fontSize and fontSize != oldFontSize:
-			textList.append("⣏%s⣹" % fontSize)
+			textList.append("⣋%s⣙" % fontSize)
 	if formatConfig["reportColor"]:
 		color = field.get("color")
 		oldColor = fieldCache.get("color") if fieldCache is not None else None
@@ -593,24 +593,24 @@ def getFormatFieldBraille(field, fieldCache, isAtStart, formatConfig):
 			# Translators: Reported when both the text and background colors change.
 			# {color} will be replaced with the text color.
 			# {backgroundColor} will be replaced with the background color.
-			textList.append("⣏%s⣹" % N_("{color} on {backgroundColor}").format(
+			textList.append("⣋%s⣙" % N_("{color} on {backgroundColor}").format(
 				color=color.name if isinstance(color, colors.RGB) else color,
 				backgroundColor=bgColorText))
 		elif color and color != oldColor:
 			# Translators: Reported when the text color changes (but not the background color).
 			# {color} will be replaced with the text color.
-			textList.append("⣏%s⣹" % N_("{color}").format(
+			textList.append("⣋%s⣙" % N_("{color}").format(
 				color=color.name if isinstance(color, colors.RGB) else color))
 		elif backgroundColor and bgColorChanged:
 			# Translators: Reported when the background color changes (but not the text color).
 			# {backgroundColor} will be replaced with the background color.
-			textList.append("⣏%s⣹" % N_("{backgroundColor} background").format(
+			textList.append("⣋%s⣙" % N_("{backgroundColor} background").format(
 				backgroundColor=bgColorText))
 		backgroundPattern = field.get("background-pattern")
 		oldBackgroundPattern = fieldCache.get(
 			"background-pattern") if fieldCache is not None else None
 		if backgroundPattern and backgroundPattern != oldBackgroundPattern:
-			textList.append("⣏%s⣹" % N_("background pattern {pattern}").format(
+			textList.append("⣋%s⣙" % N_("background pattern {pattern}").format(
 				pattern=backgroundPattern))
 
 	if formatConfig["reportRevisions"]:
