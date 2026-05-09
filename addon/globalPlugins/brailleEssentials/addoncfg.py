@@ -116,12 +116,6 @@ def getConfspec():
 			"ignoreBlankLine": "boolean(default=True)",
 		},
 		"skipBlankLinesScroll": "boolean(default=False)",
-		"speakScroll": "option({CHOICE_none}, {CHOICE_focus}, {CHOICE_review}, {CHOICE_focusAndReview}, default={CHOICE_focusAndReview})".format(
-			CHOICE_none=CHOICE_none,
-			CHOICE_focus=CHOICE_focus,
-			CHOICE_review=CHOICE_review,
-			CHOICE_focusAndReview=CHOICE_focusAndReview
-		),
 		"smartCapsLock": "boolean(default=True)",
 		"stopSpeechUnknown": "boolean(default=True)",
 		"routingCursorsEditFields": f"option({RC_NORMAL}, {RC_EMULATE_ARROWS_BEEP}, {RC_EMULATE_ARROWS_SILENT}, default={RC_NORMAL})",
