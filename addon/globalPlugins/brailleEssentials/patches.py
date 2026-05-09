@@ -50,7 +50,7 @@ from . import speechhistorymode
 from . import undefinedchars
 from .common import (
 	baseDir, CHOICE_tags, IS_CURRENT_NO, RC_EMULATE_ARROWS_BEEP, RC_EMULATE_ARROWS_SILENT,
-	NVDA_HAS_SPEAK_ON_ROUTING, NVDA_HAS_SPEAK_ON_NAVIGATING_BY_UNIT,
+	NVDA_HAS_SPEAK_ON_NAVIGATING_BY_UNIT,
 )
 from .documentformatting import get_method, get_tags, N_, normalizeTextAlign, normalize_report_key
 from .objectpresentation import getPropertiesBraille, selectedElementEnabled, update_NVDAObjectRegion
