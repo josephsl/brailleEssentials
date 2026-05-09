@@ -4,7 +4,6 @@
 from ctypes import POINTER
 from ctypes.wintypes import DWORD, BOOL
 
-import comtypes.client
 from comtypes import c_float, COMMETHOD, GUID, HRESULT, IUnknown, STDMETHOD
 
 MMDeviceApiLib = \
