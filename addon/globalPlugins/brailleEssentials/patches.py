@@ -24,7 +24,6 @@ import louis
 import louisHelper
 import nvwave
 import queueHandler
-from speech.sayAll import SayAllHandler as sayAllHandler
 import speech
 import textInfos
 import tones
