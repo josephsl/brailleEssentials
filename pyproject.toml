@@ -119,6 +119,7 @@ reportUnusedCoroutine = true
 reportUnusedExcept = true
 reportUnusedExpression = true
 reportUnusedFunction = true
+reportUnusedImport = true
 reportWildcardImportFromLibrary = true
 
 # Can be enabled by generating type stubs for modules via pyright CLI
@@ -155,5 +156,4 @@ reportUnnecessaryIsInstance = false  # Misuse of isinstance function
 reportUntypedBaseClass = false  # Derives from classes defined in NVDA Core such as base global plugin class
 reportUntypedNamedTuple = false  # Revisit named tuple usage
 reportUnusedCallResult = false  # Not using function returns
-reportUnusedImport = false  # Unused imports in some modules
 reportUnusedVariable = false  # Revisit variable assignments
