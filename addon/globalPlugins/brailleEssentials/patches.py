@@ -50,7 +50,6 @@ from . import speechhistorymode
 from . import undefinedchars
 from .common import (
 	baseDir, CHOICE_tags, IS_CURRENT_NO, RC_EMULATE_ARROWS_BEEP, RC_EMULATE_ARROWS_SILENT,
-	NVDA_HAS_SPEAK_ON_NAVIGATING_BY_UNIT,
 )
 from .documentformatting import get_method, get_tags, N_, normalizeTextAlign, normalize_report_key
 from .objectpresentation import getPropertiesBraille, selectedElementEnabled, update_NVDAObjectRegion
@@ -103,30 +102,6 @@ origFunc = {
 }
 if "_createTablesString" in _originals:
 	origFunc["_createTablesString"] = _originals["_createTablesString"]
-
-
-def sayCurrentLine():
-	global instanceGP
-	# Skip when NVDA core provides this (since 2025.1 via speakOnNavigatingByUnit)
-	if NVDA_HAS_SPEAK_ON_NAVIGATING_BY_UNIT:
-		return
-	if not get_auto_scroll():
-		if getTether() == braille.handler.TETHER_REVIEW:
-			if config.conf["brailleEssentials"]["speakScroll"] in [addoncfg.CHOICE_focusAndReview, addoncfg.CHOICE_review]:
-				scriptHandler.executeScript(
-					globalCommands.commands.script_review_currentLine, None)
-			return
-		if config.conf["brailleEssentials"]["speakScroll"] in [addoncfg.CHOICE_focusAndReview, addoncfg.CHOICE_focus]:
-			obj = api.getFocusObject()
-			treeInterceptor = obj.treeInterceptor
-			if isinstance(treeInterceptor, treeInterceptorHandler.DocumentTreeInterceptor) and not treeInterceptor.passThrough:
-				obj = treeInterceptor
-			try:
-				info = obj.makeTextInfo(textInfos.POSITION_CARET)
-			except (NotImplementedError, RuntimeError):
-				info = obj.makeTextInfo(textInfos.POSITION_FIRST)
-			info.expand(textInfos.UNIT_LINE)
-			speech.speakTextInfo(info, unit=textInfos.UNIT_LINE, reason=REASON_CARET)
 
 def script_braille_routeTo(self, gesture):
 	if braille.handler.buffer == braille.handler.mainBuffer and braille.handler.getTether() == "speech":
