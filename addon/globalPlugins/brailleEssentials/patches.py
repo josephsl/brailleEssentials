@@ -128,27 +128,6 @@ def sayCurrentLine():
 			info.expand(textInfos.UNIT_LINE)
 			speech.speakTextInfo(info, unit=textInfos.UNIT_LINE, reason=REASON_CARET)
 
-def say_character_under_braille_routing_cursor(gesture):
-	# Skip when NVDA core provides this (since 2024.4)
-	if NVDA_HAS_SPEAK_ON_ROUTING:
-		return
-	if not get_auto_scroll() and scriptHandler.getLastScriptRepeatCount() == 0 and config.conf["brailleEssentials"]["speakRoutingTo"]:
-		region = braille.handler.buffer
-		if region.cursorPos is None:
-			return
-		try:
-			start = region.brailleToRawPos[braille.handler.buffer.windowStartPos +
-										   gesture.routingIndex]
-			_, endBraillePos = regionhelper.getBraillePosFromRawPos(
-				region, start)
-			end = region.brailleToRawPos[endBraillePos+1]
-			ch = region.rawText[start:end]
-			if ch:
-				speech.speakMessage(getSpeechSymbols(ch))
-		except IndexError:
-			pass
-
-
 def script_braille_routeTo(self, gesture):
 	if braille.handler.buffer == braille.handler.mainBuffer and braille.handler.getTether() == "speech":
 		return speechhistorymode.showSpeechFromRoutingIndex(gesture.routingIndex)
