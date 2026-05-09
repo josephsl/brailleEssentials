@@ -8,6 +8,7 @@ Note: forked from BrailleExtender in May 2026.
 
 * NVDA 2025.3.3 or later is required.
 * Removed add-on features, commands, and settings included in NVDA screen reader, including speech interrupt when scrolling on same line (2022.3), announce character when routing braille cursor (2024.4), and say current line while scrolling in (2025.1).
+* Document formatting tags are now based on NVDA screen reader tags (⣋tag⣙/dots 1-2-4-7-8, tag, dots 1-4-5-7-8).
 
 ## Version 26.05.1
 
