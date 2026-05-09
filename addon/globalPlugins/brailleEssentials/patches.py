@@ -50,7 +50,7 @@ from . import speechhistorymode
 from . import undefinedchars
 from .common import (
 	baseDir, CHOICE_tags, IS_CURRENT_NO, RC_EMULATE_ARROWS_BEEP, RC_EMULATE_ARROWS_SILENT,
-	NVDA_HAS_INTERRUPT_SPEECH_WHILE_SCROLLING, NVDA_HAS_SPEAK_ON_ROUTING, NVDA_HAS_SPEAK_ON_NAVIGATING_BY_UNIT,
+	NVDA_HAS_SPEAK_ON_ROUTING, NVDA_HAS_SPEAK_ON_NAVIGATING_BY_UNIT,
 )
 from .documentformatting import get_method, get_tags, N_, normalizeTextAlign, normalize_report_key
 from .objectpresentation import getPropertiesBraille, selectedElementEnabled, update_NVDAObjectRegion
@@ -937,11 +937,7 @@ def executeGesture(gesture):
 					"script_hourDate",
 					"script_ctrl", "script_alt", "script_nvda", "script_win",
 					"script_ctrlAlt", "script_ctrlAltWin", "script_ctrlAltWinShift", "script_ctrlAltShift","script_ctrlWin","script_ctrlWinShift","script_ctrlShift","script_altWin","script_altWinShift","script_altShift","script_winShift"
-				] or (
-					not NVDA_HAS_INTERRUPT_SPEECH_WHILE_SCROLLING
-					and not config.conf["brailleEssentials"]['stopSpeechScroll']
-					and script.__func__.__name__ in ["script_braille_scrollBack", "script_braille_scrollForward"]
-				)
+				]
 			)
 		):
 			gesture.speechEffectWhenExecuted = None
