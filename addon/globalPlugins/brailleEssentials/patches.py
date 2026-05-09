@@ -191,13 +191,11 @@ def script_braille_routeTo(self, gesture):
 				i += 1
 		if play_beeps:
 			tones.beep(150, 100)
-		say_character_under_braille_routing_cursor(gesture)
 		return
 	try:
 		braille.handler.routeTo(gesture.routingIndex)
 	except LookupError:
 		pass
-	say_character_under_braille_routing_cursor(gesture)
 
 
 variationSelectorsPattern = lambda: r"([^\ufe00-\ufe0f])[\ufe00-\ufe0f]\u20E3?"
