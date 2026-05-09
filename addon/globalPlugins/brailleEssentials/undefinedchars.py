@@ -250,8 +250,6 @@ def getLiblouisStyle(c: str | int) -> str:
 		if len(c) > 1:
 			return " ".join(getLiblouisStyle(ch) for ch in c)
 		c = ord(c)
-	if not isinstance(c, int):
-		raise TypeError("wrong type")
 	if c < 0x10000:
 		return r"\x%.4x" % c
 	if c <= 0x100000:
@@ -260,8 +258,6 @@ def getLiblouisStyle(c: str | int) -> str:
 
 
 def getUnicodeNotation(s: str, notation: int | None = None) -> str:
-	if not isinstance(s, str):
-		raise TypeError("wrong type")
 	if not notation:
 		notation = _getUndefinedCharsCfg()["method"]
 	matches = {
