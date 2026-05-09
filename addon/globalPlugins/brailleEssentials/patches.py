@@ -848,7 +848,6 @@ def nextLine(self):
 		queueHandler.queueFunction(queueHandler.eventQueue, _speakLine)
 	else:
 		queueHandler.queueFunction(queueHandler.eventQueue, speech.cancelSpeech)
-		queueHandler.queueFunction(queueHandler.eventQueue, sayCurrentLine)
 
 
 def previousLine(self, start=False):
@@ -888,7 +887,6 @@ def previousLine(self, start=False):
 		queueHandler.queueFunction(queueHandler.eventQueue, _speakLine)
 	else:
 		queueHandler.queueFunction(queueHandler.eventQueue, speech.cancelSpeech)
-		queueHandler.queueFunction(queueHandler.eventQueue, sayCurrentLine)
 
 
 def executeGesture(gesture):
