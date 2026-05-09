@@ -19,7 +19,6 @@ from . import utils
 from .advancedinput import SettingsDlg as AdvancedInputModeDlg
 from .common import (
 	addonName, punctuationSeparator, RC_NORMAL,
-	NVDA_HAS_INTERRUPT_SPEECH_WHILE_SCROLLING, NVDA_HAS_SPEAK_ON_ROUTING, NVDA_HAS_SPEAK_ON_NAVIGATING_BY_UNIT,
 )
 from .autoscroll import SettingsDlg as AutoScrollDlg
 from .documentformatting import SettingsDlg as DocumentFormattingDlg
