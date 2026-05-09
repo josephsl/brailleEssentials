@@ -660,7 +660,11 @@ def getFormatFieldBraille(field, fieldCache, isAtStart, formatConfig):
 			"text-position:sub",
 			"text-position:super"] if get_method(tag) == CHOICE_tags
 		]
-	if formatConfig.get("reportSpellingErrors", False):
+	# Report spelling errors key has changed in NVDA 2026.1 (add  "2" as it is an integer).
+	if (
+		formatConfig.get("reportSpellingErrors", False)  # NVDA 2025.3.3
+		or formatConfig.get("reportSpellingErrors2", 0)  # NVDA 2026.1 and later (0 = spelling errors off)
+	):
 		tags += [tag for tag in [
 			"invalid-spelling",
 			"invalid-grammar"] if get_method(tag) == CHOICE_tags
