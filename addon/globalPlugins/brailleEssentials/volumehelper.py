@@ -5,7 +5,7 @@ from ctypes import POINTER
 from ctypes.wintypes import DWORD, BOOL
 
 from comtypes import c_float, COMMETHOD, GUID, HRESULT, IUnknown, STDMETHOD
-
+import comtypes
 MMDeviceApiLib = \
 	GUID('{2FDAAFA3-7523-4F66-9957-9D5E7FE698F6}')
 IID_IMMDevice = \
