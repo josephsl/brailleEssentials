@@ -67,10 +67,6 @@ def _restoreMainBuffer():
 	braille.handler.mainBuffer.clear()
 	braille.handler.initialDisplay()
 
-
-def _popupSettingsDialog(*args, **kwargs):
-	return getattr(gui.mainFrame, 'popupSettingsDialog', gui.mainFrame._popupSettingsDialog)(*args, **kwargs)
-
 rotorItems = [
 	("default", _("Default")),
 	("moveInText", _("Moving in the text")),
@@ -233,7 +229,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		item = self.submenu.Append(wx.ID_ANY, _("&Settings..."), _("Opens the add-on settings."))
 		gui.mainFrame.sysTrayIcon.Bind(
 			wx.EVT_MENU,
-			lambda event: wx.CallAfter(_popupSettingsDialog, settings.AddonSettingsDialog),
+			lambda event: wx.CallAfter(gui.mainFrame.popupSettingsDialog, settings.AddonSettingsDialog),
 			item
 		)
 		dictionariesMenu = wx.Menu()
@@ -248,13 +244,13 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		item = self.submenu.Append(wx.ID_ANY, _("Advanced &input mode dictionary..."), _("Advanced input mode configuration"))
 		gui.mainFrame.sysTrayIcon.Bind(
 			wx.EVT_MENU,
-			lambda event: _popupSettingsDialog(advancedinput.AdvancedInputModeDlg),
+			lambda event: gui.mainFrame.popupSettingsDialog(advancedinput.AdvancedInputModeDlg),
 			item
 		)
 		item = self.submenu.Append(wx.ID_ANY, _("&Quick launches..."), _("Quick launches configuration"))
 		gui.mainFrame.sysTrayIcon.Bind(
 			wx.EVT_MENU,
-			lambda event: wx.CallAfter(_popupSettingsDialog, settings.QuickLaunchesDlg),
+			lambda event: wx.CallAfter(gui.mainFrame.popupSettingsDialog, settings.QuickLaunchesDlg),
 			item
 		)
 		item = self.submenu.Append(wx.ID_ANY, _("Braille input table &overview"), _("Overview of the current input braille table"))
@@ -275,16 +271,16 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	@staticmethod
 	def onDefaultDictionary(evt):
-		_popupSettingsDialog(tabledictionaries.DictionaryDlg, _("Global dictionary"), "default")
+		gui.mainFrame.popupSettingsDialog(tabledictionaries.DictionaryDlg, _("Global dictionary"), "default")
 
 	@staticmethod
 	def onTableDictionary(evt):
 		outTable = addoncfg.tablesTR[addoncfg.tablesFN.index(utils.getTranslationTable())]
-		_popupSettingsDialog(tabledictionaries.DictionaryDlg, _("Table dictionary ({})").format(outTable), "table")
+		gui.mainFrame.popupSettingsDialog(tabledictionaries.DictionaryDlg, _("Table dictionary ({})").format(outTable), "table")
 
 	@staticmethod
 	def onTemporaryDictionary(evt):
-		_popupSettingsDialog(tabledictionaries.DictionaryDlg, _("Temporary dictionary"), "tmp")
+		gui.mainFrame.popupSettingsDialog(tabledictionaries.DictionaryDlg, _("Temporary dictionary"), "tmp")
 
 	def getGestureWithBrailleIdentifier(self, gesture = ''):
 		return ("br(%s):" % addoncfg.curBD if ':' not in gesture else '') + gesture
@@ -1242,7 +1238,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	def script_addDictionaryEntry(self, gesture):
 		curChar = utils.getCurrentChar()
-		_popupSettingsDialog(tabledictionaries.DictionaryEntryDlg, title=_("Add dictionary entry or see a dictionary"), textPattern=curChar, specifyDict=True)
+		gui.mainFrame.popupSettingsDialog(tabledictionaries.DictionaryEntryDlg, title=_("Add dictionary entry or see a dictionary"), textPattern=curChar, specifyDict=True)
 	script_addDictionaryEntry.__doc__ = _("Adds an entry in braille dictionary")
 
 	def script_toggle_blank_line_scroll(self, gesture):
