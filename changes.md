@@ -9,6 +9,10 @@ Note: forked from BrailleExtender in May 2026.
 * NVDA 2025.3.3 or later is required.
 * Removed add-on features, commands, and settings included in NVDA screen reader, including speech interrupt when scrolling on same line (2022.3), announce character when routing braille cursor (2024.4), and say current line while scrolling in (2025.1).
 
+## Version 26.05.1
+
+* NVDA will no longer fail to report spelling errors and other font attributes in braille when using NVDA 2026.1.
+
 ## Version 26.05
 
 * Initial forked add-on release.
