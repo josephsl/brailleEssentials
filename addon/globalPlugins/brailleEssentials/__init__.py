@@ -43,8 +43,7 @@ from . import tabledictionaries
 from . import undefinedchars
 from . import utils
 from .common import (addonName, addonVersion, punctuationSeparator,
-	RC_NORMAL, RC_EMULATE_ARROWS_BEEP, RC_EMULATE_ARROWS_SILENT,
-	NVDA_HAS_SPEAK_ON_NAVIGATING_BY_UNIT)
+	RC_NORMAL, RC_EMULATE_ARROWS_BEEP, RC_EMULATE_ARROWS_SILENT)
 
 addonHandler.initTranslation()
 
