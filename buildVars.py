@@ -55,17 +55,8 @@ For some braille displays, it extends the braille display commands to provide:
 	addon_version="26.05",
 	# Brief changelog for this version
 	# Translators: what's new content for the add-on version to be shown in the add-on store
-	addon_changelog=_("""* Initial forked add-on release.
-* NVDA 2024.1 or later is required.
-
-Changes from BrailleExtender:
-
-* User interface and documentation now refers to "Braille Essentials".
-* Removed add-on version from "Braille Essentials" NVDA menu item.
-* Changed add-on homepage and source URL.
-* Removed add-on update check feature and update channel options (add-on updates done through the add-on store).
-* Remove "website" menu item (add-on website can be opened from add-on store).
-* Remove "translation pot file" menu item (no replacement)."""),
+	addon_changelog=_("""* NVDA 2025.3.3 or later is required.
+* Removed add-on features, commands, and settings included in NVDA screen reader, including speech interrupt when scrolling on same line (2022.3), announce character when routing braille cursor (2024.4), and say current line while scrolling in (2025.1)."""),
 	# Author(s)
 	addon_author="Joseph Lee <joseph.lee22590@gmail.com> (originally André-Abush Clause <dev@andreabc.net> and other contributors)",
 	# URL for the add-on documentation support
