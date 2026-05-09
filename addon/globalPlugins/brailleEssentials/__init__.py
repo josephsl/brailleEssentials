@@ -560,19 +560,6 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		utils.refreshBD()
 	script_toggle_plain_text.__doc__ = _("Toggle plain text mode")
 
-	def script_toggleSpeechScrollFocusMode(self, gesture):
-		if NVDA_HAS_SPEAK_ON_NAVIGATING_BY_UNIT:
-			ui.message(_("Use NVDA Braille settings: \"Speak when navigating by line or paragraph\" (since 2025.1)"))
-			return
-		choices = addoncfg.focusOrReviewChoices
-		curChoice = config.conf["brailleEssentials"]["speakScroll"]
-		curChoiceID = list(choices.keys()).index(curChoice)
-		newChoiceID = (curChoiceID+1) % len(choices)
-		newChoice = list(choices.keys())[newChoiceID]
-		config.conf["brailleEssentials"]["speakScroll"] = newChoice
-		ui.message(list(choices.values())[newChoiceID].capitalize())
-	script_toggleSpeechScrollFocusMode.__doc__ = _("Toggle between say current line while scrolling options between none, focus mode, review mode, or both")
-
 	def script_toggleSpeech(self, gesture):
 		if utils.is_speechMode_talk():
 			utils.set_speech_off()
