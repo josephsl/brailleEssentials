@@ -96,7 +96,7 @@ Changes from BrailleExtender:
 # pythonSources = ["addon/globalPlugins/*.py"]
 # For more information on SCons Glob expressions please take a look at:
 # https://scons.org/doc/production/HTML/scons-user/apd.html
-pythonSources: list[str] = ["addon/globalPlugins/brailleExtender/*.py"]
+pythonSources: list[str] = ["addon/globalPlugins/brailleEssentials/*.py"]
 
 # Files that contain strings for translation. Usually your python sources
 i18nSources: list[str] = pythonSources + ["buildVars.py"]
