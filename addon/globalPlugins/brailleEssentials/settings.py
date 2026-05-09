@@ -52,13 +52,6 @@ class GeneralDlg(gui.settingsDialogs.SettingsPanel):
 		sHelper = gui.guiHelper.BoxSizerHelper(self, sizer=settingsSizer)
 
 		# Translators: label of a dialog.
-		self.speakScroll = sHelper.addLabeledControl(_("Say current line while &scrolling in:"), wx.Choice, choices=list(addoncfg.focusOrReviewChoices.values()))
-		self.speakScroll.SetSelection(list(addoncfg.focusOrReviewChoices.keys()).index(config.conf["brailleEssentials"]["speakScroll"]))
-		if NVDA_HAS_SPEAK_ON_NAVIGATING_BY_UNIT:
-			self.speakScroll.Enable(False)
-			sHelper.addItem(wx.StaticText(self, label=_("Use NVDA Braille settings → \"Speak when navigating by line or paragraph\" (since 2025.1)")))
-
-		# Translators: label of a dialog.
 		self.skipBlankLinesScroll = sHelper.addItem(wx.CheckBox(self, label=_("S&kip blank lines during text scrolling")))
 		self.skipBlankLinesScroll.SetValue(config.conf["brailleEssentials"]["skipBlankLinesScroll"])
 
@@ -134,9 +127,6 @@ class GeneralDlg(gui.settingsDialogs.SettingsPanel):
 		config.conf["brailleEssentials"]["skipBlankLinesScroll"] = self.skipBlankLinesScroll.IsChecked()
 		config.conf["brailleEssentials"]["smartCapsLock"] = self.smartCapsLock.IsChecked()
 		config.conf["brailleEssentials"]["stopSpeechUnknown"] = self.stopSpeechUnknown.IsChecked()
-
-		config.conf["brailleEssentials"]["speakScroll"] = list(addoncfg.focusOrReviewChoices.keys())[self.speakScroll.GetSelection()]
-
 		config.conf["brailleEssentials"]["rightMarginCells_%s" % addoncfg.curBD] = self.rightMarginCells.Value
 		config.conf["brailleEssentials"]["brailleDisplay1"] = self.bds_k[self.brailleDisplay1.GetSelection()]
 		config.conf["brailleEssentials"]["brailleDisplay2"] = self.bds_k[self.brailleDisplay2.GetSelection()]
