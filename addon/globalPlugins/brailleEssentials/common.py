@@ -7,7 +7,7 @@ import os
 import re
 
 import addonHandler
-import versionInfo
+import buildVersion
 import controlTypes
 import globalVars
 import languageHandler
@@ -35,17 +35,10 @@ def nvdaVersionAtLeast(year: int, major: int, minor: int = 0) -> bool:
 	"""Check if current NVDA version is >= year.major.minor.
 	Import from common for custom version checks, e.g. nvdaVersionAtLeast(2024, 4).
 	"""
-	try:
-		parts = versionInfo.version.split(".", 2)
-		def _intPart(s):
-			m = re.search(r"\d+", s)
-			return int(m.group()) if m else 0
-		vYear = _intPart(parts[0]) if len(parts) > 0 else 0
-		vMajor = _intPart(parts[1]) if len(parts) > 1 else 0
-		vMinor = _intPart(parts[2]) if len(parts) > 2 else 0
-		return (vYear, vMajor, vMinor) >= (year, major, minor)
-	except (ValueError, IndexError, AttributeError):
-		return False
+	return  (
+		(buildVersion.version_year, buildVersion.version_major, buildVersion.version_minor)
+		>= (year, major, minor)
+	)
 
 
 # NVDA core features (from changelog), used for addon compatibility:
