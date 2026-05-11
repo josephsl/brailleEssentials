@@ -6,12 +6,16 @@
 # Copyright (C) 2026 by Dalen Bernaca, under GPL
 
 from os import path
-from versionInfo import version_year, version_major, version_minor
 from logHandler import log
 import addonHandler
 import globalVars
 import shutil
 import wx
+
+try:
+	from versionInfo import version_year, version_major, version_minor
+except:
+	from buildVersion import version_year, version_major, version_minor
 
 def getAddonByName (name):
 	"""
