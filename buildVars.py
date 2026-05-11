@@ -57,7 +57,8 @@ For some braille displays, it extends the braille display commands to provide:
 	# Translators: what's new content for the add-on version to be shown in the add-on store
 	addon_changelog=_("""* NVDA 2025.3.3 or later is required.
 * Removed add-on features, commands, and settings included in NVDA screen reader, including speech interrupt when scrolling on same line (2022.3), announce character when routing braille cursor (2024.4), and say current line while scrolling in (2025.1).
-* Document formatting tags are now based on NVDA screen reader tags (⣋tag⣙/dots 1-2-4-7-8, tag, dots 1-4-5-7-8)."""),
+* Document formatting tags are now based on NVDA screen reader tags (⣋tag⣙/dots 1-2-4-7-8, tag, dots 1-4-5-7-8).
+* Added an installation message informing that BrailleExtender must be disabled when installing Braille Essentials (these add-ons are incompatible)."""),
 	# Author(s)
 	addon_author="Joseph Lee <joseph.lee22590@gmail.com> (originally André-Abush Clause <dev@andreabc.net> and other contributors)",
 	# URL for the add-on documentation support
