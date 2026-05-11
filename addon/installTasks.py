@@ -11,11 +11,7 @@ import addonHandler
 import globalVars
 import shutil
 import wx
-
-try:
-	from versionInfo import version_year, version_major, version_minor
-except:
-	from buildVersion import version_year, version_major, version_minor
+from buildVersion import version_year, version_major, version_minor
 
 def getAddonByName (name):
 	"""
