@@ -15,8 +15,8 @@ import wx
 from logHandler import log
 
 from . import regionhelper
-from .common import (
-	N_,
+from .legacyCode import N_
+from .constants import (
 	CHOICE_none,
 	CHOICE_dot7,
 	CHOICE_dot8,
@@ -28,7 +28,7 @@ from .common import (
 	CHOICE_disabled,
 	TAG_SEPARATOR,
 	CHOICE_spacing
-)
+	)
 
 addonHandler.initTranslation()
 

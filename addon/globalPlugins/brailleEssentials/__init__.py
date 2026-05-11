@@ -2,14 +2,31 @@
 # Braille Essentials (forked from BrailleExtender) Addon for NVDA
 # This file is covered by the GNU General Public License.
 # See the file LICENSE for more details.
-# Copyright (C) 2016-2026 Joseph Lee, André-Abush Clause <dev@andreabc.net>
+# Copyright (C) 2016-2026 Joseph Lee, Dalen Bernaca, André-Abush Clause <dev@andreabc.net>
+
+import addonHandler
+import wx
+
+# Check for presence of active BrailleExtender
+try:
+	extender = next(addonHandler.getAvailableAddons(
+		filterFunc=lambda a:a.name=="BrailleExtender"))
+	if extender.isEnabled or extender.isPendingEnable:
+		# Braille Essentials must absolutely not mix with Braille Extender
+		# Due to current design, we will forcefully and rudely just interrupt the addon's load
+		# But we will register a callback to notify user what happened
+		wx.CallLater(100, wx.MessageBox,
+				"Braille Essentials add-on is not loaded due to the presence of active Braille Extender add-on.\nPlease, go to the Add-on Store and choose which one of the add-ons you would like to use.",
+				"Addon Conflict Detected", wx.ICON_ERROR|wx.OK|wx.CENTRE)
+		raise RuntimeError("Both Braille Essentials and Braille Extender cannot run simultaneously!")
+except StopIteration:
+	pass
 
 import os
 import subprocess
 import time
 from collections import OrderedDict
 
-import addonHandler
 import api
 import braille
 import brailleInput
@@ -27,7 +44,6 @@ import tones
 import ui
 import virtualBuffers
 import vision
-import wx
 from logHandler import log
 
 from . import addoncfg
@@ -42,8 +58,8 @@ from . import settings
 from . import tabledictionaries
 from . import undefinedchars
 from . import utils
-from .common import (addonName, addonVersion, punctuationSeparator,
-	RC_NORMAL, RC_EMULATE_ARROWS_BEEP, RC_EMULATE_ARROWS_SILENT)
+from .common import addonName, addonVersion, punctuationSeparator
+from .constants import RC_NORMAL, RC_EMULATE_ARROWS_BEEP, RC_EMULATE_ARROWS_SILENT
 
 addonHandler.initTranslation()
 

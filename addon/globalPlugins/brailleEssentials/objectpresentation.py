@@ -17,7 +17,8 @@ from logHandler import log
 from NVDAObjects.behaviors import ProgressBar
 
 from . import addoncfg
-from .common import N_, CHOICE_liblouis, CHOICE_none, ADDON_ORDER_PROPERTIES, IS_CURRENT_NO
+from .legacyCode import N_
+from .constants import CHOICE_liblouis, CHOICE_none, ADDON_ORDER_PROPERTIES, IS_CURRENT_NO
 from .documentformatting import CHOICES_LABELS, get_report
 from .utils import get_output_reason, get_control_type
 
@@ -41,7 +42,6 @@ PROPERTIES_ORDER = {
 	"placeholder": _("place-holder"),
 	"cellCoordsText": _("cell coordinates text"),
 }
-
 
 def getDefaultOrderProperties(addon=False):
 	if addon:

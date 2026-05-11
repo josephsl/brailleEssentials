@@ -1,10 +1,9 @@
 # coding: utf-8
 # addoncfg.py
 # Part of Braille Essentials (forked from BrailleExtender) Addon for NVDA
-# Copyright 2016-2026 Joseph Lee, André-Abush CLAUSE, released under GPL.
+# Copyright 2016-2026 Dalen Bernaca, Joseph Lee, André-Abush CLAUSE, released under GPL.
 
 import os
-
 import addonHandler
 import braille
 import config
@@ -12,26 +11,14 @@ import configobj
 import globalVars
 import inputCore
 from logHandler import log
-from .common import (
-	configDir, profilesDir,
-	MIN_AUTO_SCROLL_DELAY, DEFAULT_AUTO_SCROLL_DELAY, MAX_AUTO_SCROLL_DELAY, MIN_STEP_DELAY_CHANGE, DEFAULT_STEP_DELAY_CHANGE, MAX_STEP_DELAY_CHANGE,
-	RC_NORMAL, RC_EMULATE_ARROWS_BEEP, RC_EMULATE_ARROWS_SILENT,
-	CHOICE_none, CHOICE_dot7, CHOICE_dot8, CHOICE_dots78, CHOICE_tags,
-	CHOICE_likeSpeech, CHOICE_disabled, CHOICE_enabled,
-	ADDON_ORDER_PROPERTIES, CHOICE_spacing, TAG_SEPARATOR
-)
+from .common import configDir, profilesDir
+from .constants import *
 from .onehand import DOT_BY_DOT, ONE_SIDE, BOTH_SIDES
 
 addonHandler.initTranslation()
 
 Validator = configobj.validate.Validator
 
-CHOICE_braille = "braille"
-CHOICE_speech = "speech"
-CHOICE_speechAndBraille = "speechAndBraille"
-CHOICE_focus = "focus"
-CHOICE_review = "review"
-CHOICE_focusAndReview = "focusAndReview"
 NOVIEWSAVED = chr(4)
 
 outputMessage = dict([
@@ -412,15 +399,8 @@ def getTabSize():
 		size = 2
 	return size
 
-# remove old config files
-cfgFile = globalVars.appArgs.configPath + r"\brailleEssentials.conf"
-cfgFileAttribra = globalVars.appArgs.configPath + r"\attribra-BE.ini"
-if os.path.exists(cfgFile):
-	os.remove(cfgFile)
-if os.path.exists(cfgFileAttribra):
-	os.remove(cfgFileAttribra)
-
 if not os.path.exists(configDir):
 	os.mkdir(configDir)
+
 if not os.path.exists(os.path.join(configDir, "brailleDicts")):
 	os.mkdir(os.path.join(configDir, "brailleDicts"))

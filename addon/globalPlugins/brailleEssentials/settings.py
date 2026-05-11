@@ -17,9 +17,9 @@ import wx
 from . import addoncfg
 from . import utils
 from .advancedinput import SettingsDlg as AdvancedInputModeDlg
-from .common import (
-	addonName, punctuationSeparator, RC_NORMAL,
-)
+from .common import addonName, punctuationSeparator
+from .constants import RC_NORMAL
+
 from .autoscroll import SettingsDlg as AutoScrollDlg
 from .documentformatting import SettingsDlg as DocumentFormattingDlg
 from .objectpresentation import SettingsDlg as ObjectPresentationDlg

@@ -26,7 +26,9 @@ from keyboardHandler import KeyboardInputGesture
 addonHandler.initTranslation()
 import treeInterceptorHandler
 import unicodedata
-from .common import INSERT_AFTER, INSERT_BEFORE, REPLACE_TEXT, baseDir, NVDA_HAS_AUTOMATIC_BRAILLE_TABLES
+from .constants import INSERT_AFTER, INSERT_BEFORE, REPLACE_TEXT
+from .common import baseDir
+from .legacyCode import NVDA_HAS_AUTOMATIC_BRAILLE_TABLES
 from . import huc
 from . import volumehelper
 
@@ -35,7 +37,7 @@ get_volume_level = volumehelper.get_volume_level
 
 
 def report_volume_level():
-	from .addoncfg import CHOICE_braille, CHOICE_speech, CHOICE_speechAndBraille
+	from .constants import CHOICE_braille, CHOICE_speech, CHOICE_speechAndBraille
 	if get_mute() and config.conf["brailleEssentials"]["volumeChangeFeedback"] in [CHOICE_braille, CHOICE_speechAndBraille]:
 		return braille.handler.message(_("Muted sound"))
 	volume_level = get_volume_level()
