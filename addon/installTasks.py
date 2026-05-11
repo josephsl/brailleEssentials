@@ -76,6 +76,7 @@ def fixConfig ():
 def onInstall ():
 	if (version_year, version_major, version_minor) < (2025, 3, 3):
 		# No incompatibility overrides for us
+		# Applicable if attempting to install manually on older NVDA releases
 		wx.MessageBox("We are sorry, but Braille Essentials add-on requires NVDA 2025.3.3 or newer.\nThe add-on will not be installed.\nYou can use original Braille Extender add-on instead.", "Installation Prevented", wx.ICON_ERROR|wx.OK|wx.CENTRE)
 		raise RuntimeError("This add-on cannot be installed on this NVDA version")
 	log.info("Braille Essentials add-on installation started")
