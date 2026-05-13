@@ -70,23 +70,28 @@ LABELS_STATES = {
 }
 
 LABELS_REPORTS = {
+	"fontName": N_("&Font name"),
+	"fontSize": N_("Font &size"),
 	"fontAttributes": N_("Font attrib&utes"),
 	"superscriptsAndSubscripts": N_("Su&perscripts and subscripts"),
 	"emphasis": N_("E&mphasis"),
 	"highlight": N_("Marked (highlighted text)"),
-	"spellingErrors": _("Spelling and grammar &errors"),
-	"alignment": N_("&Alignment"),
-	"color": N_("&Colors"),
 	"style": N_("St&yle"),
-	"borderColor": N_("Border &color"),
 	"borderStyle": N_("Border St&yle"),
-	"fontName": N_("&Font name"),
-	"fontSize": N_("Font &size"),
+	"color": N_("&Colors"),
+	"borderColor": N_("Border &color"),
+	"comments": N_("No&tes and comments"),
+	"revisions": N_("&Editor revisions"),
+	"spellingErrors": _("Spelling and grammar &errors"),
 	"page": N_("&Pages"),
 	"lineNumber": N_("Line &numbers"),
 	"paragraphIndentation": N_("&Paragraph indentation"),
-	"links": N_("Lin&ks"),
+	"alignment": N_("&Alignment"),
+	"tables": N_("&Tables"),
+	"tableHeaders": N_("Row/column h&eaders"),
+	"tableCellCoords": N_("Cell c&oordinates"),
 	"headings": N_("&Headings"),
+	"links": N_("Lin&ks"),
 	"graphics": N_("&Graphics"),
 	"lists": N_("&Lists"),
 	"blockQuotes": N_("Block &quotes"),
@@ -95,11 +100,6 @@ LABELS_REPORTS = {
 	"articles": N_("Arti&cles"),
 	"frames": N_("Fra&mes"),
 	"clickable": N_("&Clickable"),
-	"comments": N_("No&tes and comments"),
-	"revisions": N_("&Editor revisions"),
-	"tables": N_("&Tables"),
-	"tableHeaders": N_("Row/column h&eaders"),
-	"tableCellCoords": N_("Cell c&oordinates")
 }
 
 logTextInfo = False
