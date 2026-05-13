@@ -7,6 +7,7 @@ Note: forked from BrailleExtender in May 2026.
 ## Version Preview
 
 * Some document formatting indicators on braille will resemble NVDA's own braille tags, including strikethrough and list items count in browse mode.
+* The add-on's document formatting settings option labels and order will closely resemble NVDA screen reader's own document formatting settings screen.
 
 ## Version 26.05.2
 
