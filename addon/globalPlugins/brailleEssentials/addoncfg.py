@@ -213,7 +213,7 @@ def getConfspec():
 				"bold": "string(default=%s)" % TAG_SEPARATOR.join(["⣋⠃⣙", "⣋⡃⣙"]),
 				"italic": "string(default=%s)" % TAG_SEPARATOR.join(["⣋⠊⣙", "⣋⡊⣙"]),
 				"underline": "string(default=%s)" % TAG_SEPARATOR.join(["⣋⠥⣙", "⣋⡥⣙"]),
-				"strikethrough": "string(default=%s)" % TAG_SEPARATOR.join(["⣋⠅⣙", "⣋⡅⣙"]),
+				"strikethrough": "string(default=%s)" % TAG_SEPARATOR.join(["⣋⠎⣙", "⣋⡎⣙"]),
 				"text-align:center": "string(default=%s)" % TAG_SEPARATOR.join(["⣋ac⣙", ""]),
 				"text-align:distribute": "string(default=%s)" % TAG_SEPARATOR.join(["⣋ai⣙", ""]),
 				"text-align:justified": "string(default=%s)" % TAG_SEPARATOR.join(["⣋aj⣙", ""]),
