@@ -82,7 +82,7 @@ LABELS_REPORTS = {
 	"borderColor": N_("Border &color"),
 	"comments": N_("No&tes and comments"),
 	"revisions": N_("&Editor revisions"),
-	"spellingErrors": _("Spelling and grammar &errors"),
+	"spellingErrors": _("Spelling and grammar e&rrors"),
 	"page": N_("&Pages"),
 	"lineNumber": N_("Line &numbers"),
 	"paragraphIndentation": N_("&Paragraph indentation"),
