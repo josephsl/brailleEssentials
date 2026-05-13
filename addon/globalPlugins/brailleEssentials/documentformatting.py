@@ -75,7 +75,7 @@ LABELS_REPORTS = {
 	"fontAttributes": N_("Font attrib&utes"),
 	"superscriptsAndSubscripts": N_("Su&perscripts and subscripts"),
 	"emphasis": N_("E&mphasis"),
-	"highlight": N_("Marked (highlighted text)"),
+	"highlight": N_("Highlighted (mar&ked) text"),
 	"style": N_("St&yle"),
 	"borderStyle": N_("Border St&yle"),
 	"color": N_("&Colors"),
