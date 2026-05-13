@@ -358,7 +358,7 @@ def getControlFieldBraille(info, field, ancestors, reportStart, formatConfig):
 	content = field.get("content")
 
 	if childControlCount and role == get_control_type("ROLE_LIST"):
-		roleTextPost = "(%s)" % childControlCount
+		roleTextPost = "%s" % childControlCount
 	if childControlCount and role == get_control_type("ROLE_TABLE"):
 		row_count = field.get("table-rowcount", 0)
 		column_count = field.get("table-columncount", 0)
