@@ -4,6 +4,10 @@ This document lists release changelogs for Braille Essentials add-on.
 
 Note: forked from BrailleExtender in May 2026.
 
+## Version Preview
+
+* Some document formatting indicators on braille will resemble NVDA's own braille tags, including strikethrough and list items count in browse mode.
+
 ## Version 26.05.2
 
 * NVDA 2025.3.3 or later is required.
