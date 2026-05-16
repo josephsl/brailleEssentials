@@ -21,7 +21,6 @@ from .common import (
 	punctuationSeparator,
 	RC_NORMAL,
 	nvdaVersionAtLeast,
-	NVDA_HAS_SPEAK_ON_ROUTING,
 )
 from .autoscroll import SettingsDlg as AutoScrollDlg
 from .documentformatting import SettingsDlg as DocumentFormattingDlg
@@ -89,22 +88,6 @@ class GeneralDlg(gui.settingsDialogs.SettingsPanel):
 			wx.CheckBox(self, label=_("Speech i&nterrupt for unknown gestures"))
 		)
 		self.stopSpeechUnknown.SetValue(config.conf["brailleEssentials"]["stopSpeechUnknown"])
-
-		# Translators: label of a dialog.
-		self.speakRoutingTo = sHelper.addItem(
-			wx.CheckBox(self, label=_("Announce character when &routing braille cursor"))
-		)
-		self.speakRoutingTo.SetValue(config.conf["brailleEssentials"]["speakRoutingTo"])
-		if NVDA_HAS_SPEAK_ON_ROUTING:
-			self.speakRoutingTo.Enable(False)
-			sHelper.addItem(
-				wx.StaticText(
-					self,
-					label=_(
-						'Use NVDA Braille settings → "Speak character when routing cursor in text" (since 2024.4)'
-					),
-				)
-			)
 
 		# Translators: label of a dialog.
 		label = _("Routing cursors behavior in edit &fields:")
@@ -206,8 +189,6 @@ class GeneralDlg(gui.settingsDialogs.SettingsPanel):
 		config.conf["brailleEssentials"]["skipBlankLinesScroll"] = self.skipBlankLinesScroll.IsChecked()
 		config.conf["brailleEssentials"]["smartCapsLock"] = self.smartCapsLock.IsChecked()
 		config.conf["brailleEssentials"]["stopSpeechUnknown"] = self.stopSpeechUnknown.IsChecked()
-		config.conf["brailleEssentials"]["speakRoutingTo"] = self.speakRoutingTo.IsChecked()
-
 		config.conf["brailleEssentials"]["speakScroll"] = list(addoncfg.focusOrReviewChoices.keys())[
 			self.speakScroll.GetSelection()
 		]

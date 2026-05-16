@@ -56,7 +56,6 @@ from .common import (
 	CHOICE_tags,
 	RC_EMULATE_ARROWS_BEEP,
 	RC_EMULATE_ARROWS_SILENT,
-	NVDA_HAS_SPEAK_ON_ROUTING,
 )
 from .documentformatting import (
 	format_config_font_attributes_report_braille,
@@ -182,29 +181,6 @@ def _queue_braille_scroll_line_speech() -> None:
 	queueHandler.queueFunction(queueHandler.eventQueue, sayCurrentLine)
 
 
-def say_character_under_braille_routing_cursor(gesture):
-	# Skip when NVDA core provides this (since 2024.4)
-	if NVDA_HAS_SPEAK_ON_ROUTING:
-		return
-	if (
-		not get_auto_scroll()
-		and scriptHandler.getLastScriptRepeatCount() == 0
-		and config.conf["brailleEssentials"]["speakRoutingTo"]
-	):
-		region = braille.handler.buffer
-		if region.cursorPos is None:
-			return
-		try:
-			start = region.brailleToRawPos[braille.handler.buffer.windowStartPos + gesture.routingIndex]
-			_, endBraillePos = regionhelper.getBraillePosFromRawPos(region, start)
-			end = region.brailleToRawPos[endBraillePos + 1]
-			ch = region.rawText[start:end]
-			if ch:
-				speech.speakMessage(getSpeechSymbols(ch))
-		except IndexError:
-			pass
-
-
 def script_braille_routeTo(self, gesture):
 	if (
 		braille.handler.buffer == braille.handler.mainBuffer
@@ -252,13 +228,11 @@ def script_braille_routeTo(self, gesture):
 				i += 1
 		if play_beeps:
 			tones.beep(150, 100)
-		say_character_under_braille_routing_cursor(gesture)
 		return
 	try:
 		braille.handler.routeTo(gesture.routingIndex)
 	except LookupError:
 		pass
-	say_character_under_braille_routing_cursor(gesture)
 
 
 def update_region(self) -> None:
