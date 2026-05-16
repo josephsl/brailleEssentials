@@ -137,7 +137,7 @@ LABELS_REPORTS = {
 	"highlight": N_("Highlighted (mar&ked) text)"),
 	"style": N_("St&yle"),
 	"color": N_("&Colors"),
-	"comments": N_("No&tes and comments"),
+	"comments": N_("Commen&ts"),
 	"revisions": N_("&Editor revisions"),
 	"spellingErrors": _("Spelling and grammar e&rrors"),
 	"page": N_("&Pages"),
