@@ -9,6 +9,7 @@ import wx
 
 import addonHandler
 import braille
+import buildVersion
 import config
 import controlTypes
 import queueHandler
@@ -187,6 +188,7 @@ def getPropertiesBraille(**propertyValues) -> str:
 	roleTextPost = propertyValues.get("roleTextPost")
 	positionInfo = propertyValues.get("positionInfo")
 	level = positionInfo.get("level") if positionInfo else None
+	childControlCount = positionInfo.get("childControlCount") if positionInfo else None
 	cellCoordsText = propertyValues.get("cellCoordsText")
 	cellInfo = propertyValues.get("cellInfo")
 	rowNumber = propertyValues.get("rowNumber")
@@ -207,6 +209,26 @@ def getPropertiesBraille(**propertyValues) -> str:
 			states = states.copy()
 			states.discard(get_control_type("STATE_VISITED"))
 			roleText = N_("vlnk")
+		# NVDA 2026.1 and later
+		elif role == controlTypes.Role.LIST:
+			if (
+				(buildVersion.version_year, buildVersion.version_major) >= (2026, 1)
+				and states
+				and controlTypes.State.MULTISELECTABLE in states
+				and config.conf["presentation"]["reportMultiSelect"]
+			):
+				# Collapse the list role and multiselectable state into a single role text.
+				# Note that for other cases where this state is found, regular processing with
+				# controlTypes.processAndLabelStates will discard the state if necessary.
+				states = states.copy()
+				states.discard(controlTypes.State.MULTISELECTABLE)
+				# Translators: Displayed in braille for a multi select list.
+				roleText = _("mslst")
+			else:
+				roleText = roleLabels.get(role, role.displayString)
+			if childControlCount:
+				roleText += childControlCount
+				childControlCount = None
 		elif (
 			not description
 			and config.conf["brailleEssentials"]["documentFormatting"]["cellFormula"]
