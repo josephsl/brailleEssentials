@@ -56,7 +56,6 @@ from .common import (
 	CHOICE_tags,
 	RC_EMULATE_ARROWS_BEEP,
 	RC_EMULATE_ARROWS_SILENT,
-	NVDA_HAS_INTERRUPT_SPEECH_WHILE_SCROLLING,
 	NVDA_HAS_SPEAK_ON_ROUTING,
 )
 from .documentformatting import (
@@ -1164,11 +1163,6 @@ def executeGesture(gesture):
 				"script_altShift",
 				"script_winShift",
 			]
-			or (
-				not NVDA_HAS_INTERRUPT_SPEECH_WHILE_SCROLLING
-				and not config.conf["brailleEssentials"]["stopSpeechScroll"]
-				and script.__func__.__name__ in ["script_braille_scrollBack", "script_braille_scrollForward"]
-			)
 		):
 			gesture.speechEffectWhenExecuted = None
 	return True

@@ -21,7 +21,6 @@ from .common import (
 	punctuationSeparator,
 	RC_NORMAL,
 	nvdaVersionAtLeast,
-	NVDA_HAS_INTERRUPT_SPEECH_WHILE_SCROLLING,
 	NVDA_HAS_SPEAK_ON_ROUTING,
 )
 from .autoscroll import SettingsDlg as AutoScrollDlg
@@ -72,20 +71,6 @@ class GeneralDlg(gui.settingsDialogs.SettingsPanel):
 						"NVDA 2025.1+ also has a global braille option, “Speak when navigating by line or paragraph”. "
 						"Disable that NVDA option if you hear duplicate line announcements."
 					),
-				)
-			)
-
-		# Translators: label of a dialog.
-		self.stopSpeechScroll = sHelper.addItem(
-			wx.CheckBox(self, label=_("Speech &interrupt when scrolling on same line"))
-		)
-		self.stopSpeechScroll.SetValue(config.conf["brailleEssentials"]["stopSpeechScroll"])
-		if NVDA_HAS_INTERRUPT_SPEECH_WHILE_SCROLLING:
-			self.stopSpeechScroll.Enable(False)
-			sHelper.addItem(
-				wx.StaticText(
-					self,
-					label=_('Use NVDA Braille settings → "Interrupt speech while scrolling" (since 2022.3)'),
 				)
 			)
 
@@ -218,7 +203,6 @@ class GeneralDlg(gui.settingsDialogs.SettingsPanel):
 		else:
 			instanceGP.reverseScrollBtns(None, True)
 		config.conf["brailleEssentials"]["reverseScrollBtns"] = self.reverseScrollBtns.IsChecked()
-		config.conf["brailleEssentials"]["stopSpeechScroll"] = self.stopSpeechScroll.IsChecked()
 		config.conf["brailleEssentials"]["skipBlankLinesScroll"] = self.skipBlankLinesScroll.IsChecked()
 		config.conf["brailleEssentials"]["smartCapsLock"] = self.smartCapsLock.IsChecked()
 		config.conf["brailleEssentials"]["stopSpeechUnknown"] = self.stopSpeechUnknown.IsChecked()
