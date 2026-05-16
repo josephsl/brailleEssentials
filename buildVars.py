@@ -52,7 +52,7 @@ For some braille displays, it extends the braille display commands to provide:
 * Offer several keyboard configurations concerning the possibility to input dots 7 and 8, enter and backspace
 * Add actions and quick navigation through a rotor"""),
 	# version
-	addon_version="26.05.3",
+	addon_version="26.05.4",
 	# Brief changelog for this version
 	# Translators: what's new content for the add-on version to be shown in the add-on store
 	addon_changelog=_("""* Updated the add-on code to be based on BrailleExtender commit adc4dca206f (2026-05-16). This resolves bugs including inability to open input braille table overview screen.
