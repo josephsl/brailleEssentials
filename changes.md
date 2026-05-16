@@ -4,10 +4,15 @@ This document lists release changelogs for Braille Essentials add-on.
 
 Note: forked from BrailleExtender in May 2026.
 
-## Version Preview
+## Version 26.05.4
 
-* Some document formatting indicators on braille will resemble NVDA's own braille tags, including strikethrough and list items count in browse mode.
-* The add-on's document formatting settings option labels and order will closely resemble NVDA screen reader's own document formatting settings screen.
+* Updated the add-on code to be based on BrailleExtender commit adc4dca206f (2026-05-16). This resolves bugs including inability to open input braille table overview screen.
+* Changes from BrailleExtender:
+	* Removed "user guide" menu item (add-on user guide can be opened from add-on store under help menu item).
+	* Some document formatting indicators on braille will resemble NVDA's own braille tags, including strikethrough and list items count in browse mode.
+	* The add-on's document formatting settings option labels and order will closely resemble NVDA screen reader's own document formatting settings screen.
+	* Strong emphasis braille tag is dots 12478/n/dots 14578.
+	* In add-on settings, automatic braille input;output braill table selectionbased on current NVDA language will always be visible.
 
 ## Version 26.05.2
 
