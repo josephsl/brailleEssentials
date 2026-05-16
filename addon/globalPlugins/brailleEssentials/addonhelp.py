@@ -24,46 +24,6 @@ from . import addoncfg
 from . import utils
 from .common import addonName, addonSummary, addonVersion, punctuationSeparator
 
-
-def open_user_guide() -> None:
-	"""Open the bundled user guide (NVDA manifest ``docFileName``, usually ``readme.html``)."""
-	if globalVars.appArgs.secure:
-		ui.message(_("User guide is not available in secure mode."))
-		return
-	addon = addonHandler.getCodeAddon()
-	if addon is None:
-		ui.message(_("Could not locate the Braille Essentials add-on bundle."))
-		return
-	doc_name = addon.manifest.get("docFileName", "readme.html")
-	lang_full = languageHandler.getLanguage()
-	candidates: list[str] = []
-	for cand in (lang_full, lang_full.split("_")[0] if "_" in lang_full else lang_full, "en"):
-		if cand not in candidates:
-			candidates.append(cand)
-	doc_path: str | None = None
-	for cand in candidates:
-		p = os.path.join(addon.path, "doc", cand, doc_name)
-		if os.path.isfile(p):
-			doc_path = p
-			break
-	if not doc_path:
-		ui.message(
-			_(
-				"User guide not found ({doc}). Install a built copy of the add-on or see README.md in the source tree."
-			).format(doc=doc_name)
-		)
-		return
-
-	def _open() -> None:
-		try:
-			os.startfile(doc_path)  # noqa: S606
-		except Exception:
-			log.debugWarning("Failed to open user guide", exc_info=True)
-			ui.message(_("Could not open the user guide."))
-
-	queueHandler.queueFunction(queueHandler.eventQueue, _open)
-
-
 def show_gesture_reference(instance_gp: Any) -> None:
 	"""Show a browseable HTML summary of profile and keyboard bindings."""
 	GestureReferenceSummary(instance_gp).show()
