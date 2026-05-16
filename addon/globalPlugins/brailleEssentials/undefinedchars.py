@@ -5,7 +5,7 @@
 
 import re
 import unicodedata
-from typing import Any
+from typing import Any, Optional
 
 import addonHandler
 import characterProcessing
@@ -65,6 +65,7 @@ CHOICES_LABELS = {
 	CHOICE_bin: _("Binary"),
 }
 
+
 def _getUndefinedCharsCfg():
 	return config.conf["brailleEssentials"]["undefinedCharsRepr"]
 
@@ -75,7 +76,7 @@ def getHardValue() -> str:
 		return _getUndefinedCharsCfg()["hardDotPatternValue"]
 	if selected == CHOICE_otherSign:
 		return _getUndefinedCharsCfg()["hardSignPatternValue"]
-	return ''
+	return ""
 
 
 _descCharCache = {}
@@ -145,6 +146,16 @@ def _isCharExcludedFromDesc(c: str) -> bool:
 	return cp in excluded_set or any(s <= cp <= e for s, e in excluded_ranges)
 
 
+def _extended_glyph_excluded_from_ranges(
+	glyph: str,
+	excluded_set: frozenset[int],
+	excluded_ranges: tuple[tuple[int, int], ...],
+) -> bool:
+	if not glyph or (not excluded_set and not excluded_ranges):
+		return False
+	return any(ord(ch) in excluded_set or any(s <= ord(ch) <= e for s, e in excluded_ranges) for ch in glyph)
+
+
 def _clearCaches() -> None:
 	global _descCharCache, _undefinedSignCache, _brailledTagCache, _excludeDescConfigValue
 	_descCharCache.clear()
@@ -153,14 +164,38 @@ def _clearCaches() -> None:
 	_excludeDescConfigValue = ""
 
 
-def setUndefinedChar(t: int | None = None) -> None:
+_DESC_CACHE_MAX = 512
+_TAG_CACHE_MAX = 32
+
+
+def _bounded_cache_set(
+	cache: dict[Any, Any],
+	key: Any,
+	value: Any,
+	*,
+	max_size: int = _DESC_CACHE_MAX,
+) -> None:
+	"""Insert into *cache*, evicting one arbitrary entry when at *max_size*."""
+	if len(cache) >= max_size:
+		cache.pop(next(iter(cache)))
+	cache[key] = value
+
+
+def should_apply_undefined_char_processing(region: Any) -> bool:
+	"""True when ``undefinedCharProcess`` should run on this braille region."""
+	if not getattr(region, "parseUndefinedChars", False):
+		return False
+	cfg = _getUndefinedCharsCfg()
+	return cfg["method"] != CHOICE_tableBehaviour and len(region.rawText) <= cfg["characterLimit"]
+
+
+def setUndefinedChar(t: Optional[int] = None) -> None:
 	if not t or t > CHOICE_HUC6 or t < 0:
 		t = _getUndefinedCharsCfg()["method"]
 	if t == 0:
 		return
 	_clearCaches()
-	louis.compileString(getCurrentBrailleTables(), bytes(
-		f"undefined {HUCDotPattern}", "ASCII"))
+	louis.compileString(getCurrentBrailleTables(), bytes(f"undefined {HUCDotPattern}", "ASCII"))
 
 
 def getExtendedSymbolsForString(s: str, lang: str) -> dict[str, tuple[str, list[tuple[int, int]]]]:
@@ -176,11 +211,18 @@ def getExtendedSymbolsForString(s: str, lang: str) -> dict[str, tuple[str, list[
 			lang = "en"
 			extendedSymbols[lang] = getExtendedSymbols(lang)
 	symbols = extendedSymbols[lang]
-	return {
-		c: (d, [(m.start(), m.end() - 1) for m in re.finditer(re.escape(c), s)])
-		for c, d in symbols.items()
-		if c in s
-	}
+	chars_in_s = set(s)
+	out: dict[str, tuple[str, list[tuple[int, int]]]] = {}
+	for c, d in symbols.items():
+		if not c:
+			continue
+		if len(c) == 1:
+			if c not in chars_in_s:
+				continue
+		elif c not in s:
+			continue
+		out[c] = (d, [(m.start(), m.end() - 1) for m in re.finditer(re.escape(c), s)])
+	return out
 
 
 def getAlternativeDescChar(c: str, method: int) -> str:
@@ -194,9 +236,6 @@ def getAlternativeDescChar(c: str, method: int) -> str:
 	return getUndefinedCharSign(method)
 
 
-_DESC_CACHE_MAX = 512
-
-
 def _getDescCharCore(c: str, lang: str, method: int) -> tuple[str, bool]:
 	"""Return (text, use_tags). use_tags=False when using alternative repr (no prefix/suffix)."""
 	key = (c, lang, method)
@@ -205,9 +244,7 @@ def _getDescCharCore(c: str, lang: str, method: int) -> tuple[str, bool]:
 	if _isCharExcludedFromDesc(c):
 		desc = getAlternativeDescChar(c, method)
 		result = (desc, False)
-		if len(_descCharCache) >= _DESC_CACHE_MAX:
-			_descCharCache.pop(next(iter(_descCharCache)))
-		_descCharCache[key] = result
+		_bounded_cache_set(_descCharCache, key, result)
 		return result
 	level = get_symbol_level("SYMLVL_CHAR")
 	desc = characterProcessing.processSpeechSymbols(lang, c, level).strip()
@@ -229,9 +266,7 @@ def _getDescCharCore(c: str, lang: str, method: int) -> tuple[str, bool]:
 			desc = getAlternativeDescChar(c, method)
 			use_tags = False
 	result = (desc, use_tags)
-	if len(_descCharCache) >= _DESC_CACHE_MAX:
-		_descCharCache.pop(next(iter(_descCharCache)))
-	_descCharCache[key] = result
+	_bounded_cache_set(_descCharCache, key, result)
 	return result
 
 
@@ -250,6 +285,8 @@ def getLiblouisStyle(c: str | int) -> str:
 		if len(c) > 1:
 			return " ".join(getLiblouisStyle(ch) for ch in c)
 		c = ord(c)
+	if not isinstance(c, int):
+		raise TypeError("wrong type")
 	if c < 0x10000:
 		return r"\x%.4x" % c
 	if c <= 0x100000:
@@ -257,7 +294,9 @@ def getLiblouisStyle(c: str | int) -> str:
 	return r"\z%.6x" % c
 
 
-def getUnicodeNotation(s: str, notation: int | None = None) -> str:
+def getUnicodeNotation(s: str, notation: Optional[int] = None) -> str:
+	if not isinstance(s, str):
+		raise TypeError("wrong type")
 	if not notation:
 		notation = _getUndefinedCharsCfg()["method"]
 	matches = {
@@ -278,34 +317,33 @@ def getUndefinedCharSign(method: int) -> str:
 	if cached is not None:
 		return cached
 	if method == CHOICE_allDots8:
-		r = '⣿'
+		r = "⣿"
 	elif method == CHOICE_allDots6:
-		r = '⠿'
+		r = "⠿"
 	elif method == CHOICE_otherDots:
-		r = huc.cellDescriptionsToUnicodeBraille(
-			_getUndefinedCharsCfg()["hardDotPatternValue"])
+		r = huc.cellDescriptionsToUnicodeBraille(_getUndefinedCharsCfg()["hardDotPatternValue"])
 	elif method == CHOICE_questionMark:
-		r = getTextInBraille('?')
+		r = getTextInBraille("?")
 	elif method == CHOICE_otherSign:
 		r = getTextInBraille(_getUndefinedCharsCfg()["hardSignPatternValue"])
 	else:
-		r = '⠀'
+		r = "⠀"
 	_undefinedSignCache[method] = r
 	return r
 
 
 def getReplacement(
 	text: str,
-	method: int | None = None,
-	startTag: str | None = None,
-	endTag: str | None = None,
-	lang: str | None = None,
-	table: list[str] | None = None,
+	method: Optional[int] = None,
+	startTag: Optional[str] = None,
+	endTag: Optional[str] = None,
+	lang: Optional[str] = None,
+	table: Optional[list[str]] = None,
 ) -> str:
 	if not method:
 		method = _getUndefinedCharsCfg()["method"]
 	if not text:
-		return ''
+		return ""
 	cfg = _getUndefinedCharsCfg()
 	if cfg["desc"]:
 		if startTag is None:
@@ -316,9 +354,7 @@ def getReplacement(
 			lang = cfg["lang"] if cfg["lang"] != "Windows" else languageHandler.getLanguage()
 		if table is None:
 			table = [cfg["table"]]
-		return getTextInBraille(getDescChar(
-			text, lang=lang, start=startTag, end=endTag
-		), table)
+		return getTextInBraille(getDescChar(text, lang=lang, start=startTag, end=endTag), table)
 	if method in (CHOICE_HUC6, CHOICE_HUC8):
 		HUC6 = method == CHOICE_HUC6
 		return huc.translate(text, HUC6=HUC6)
@@ -329,8 +365,7 @@ def getReplacement(
 
 def undefinedCharProcess(self: Any) -> None:
 	cfg = _getUndefinedCharsCfg()
-	undefinedCharsPos = list(regionhelper.findBrailleCellsPattern(
-		self, undefinedCharPattern))
+	undefinedCharsPos = list(regionhelper.findBrailleCellsPattern(self, undefinedCharPattern))
 	if not undefinedCharsPos:
 		return
 	undefinedCharsPosSet = set(undefinedCharsPos)
@@ -348,9 +383,7 @@ def undefinedCharProcess(self: Any) -> None:
 		except KeyError:
 			startTag = getTextInBraille(startTagRaw) if startTagRaw else ""
 			endTag = getTextInBraille(endTagRaw) if endTagRaw else ""
-			_brailledTagCache[tagKey] = (startTag, endTag)
-			if len(_brailledTagCache) > 32:
-				_brailledTagCache.pop(next(iter(_brailledTagCache)))
+			_bounded_cache_set(_brailledTagCache, tagKey, (startTag, endTag), max_size=_TAG_CACHE_MAX)
 	replacements = []
 	method = cfg["method"]
 	getReplKw = {"method": method}
@@ -360,34 +393,33 @@ def undefinedCharProcess(self: Any) -> None:
 		getReplKw["lang"] = lang
 		getReplKw["table"] = table
 	for pos in undefinedCharsPos:
-		replacements.append(Repl(pos, replaceBy=getReplacement(
-			self.rawText[pos], **getReplKw)))
+		replacements.append(Repl(pos, replaceBy=getReplacement(self.rawText[pos], **getReplKw)))
 	if cfg["desc"] and cfg["extendedDesc"]:
 		extendedSymbolsRawText = getExtendedSymbolsForString(self.rawText, lang)
 		excluded_set, excluded_ranges = _getExcludeDesc()
 		for c, v in extendedSymbolsRawText.items():
 			desc, positions = v[0], v[1]
-			excluded = any(
-				ord(ch) in excluded_set or any(s <= ord(ch) <= e for s, e in excluded_ranges)
-				for ch in c
-			)
+			excluded = _extended_glyph_excluded_from_ranges(c, excluded_set, excluded_ranges)
 			if excluded:
 				replaceByBraille = getReplacement(c[0], **getReplKw)
 			else:
-				toAdd = f":{len(c)}" if showSize and len(c) > 1 else ''
-				replaceByBraille = getTextInBraille(
-					f"{startTag}{desc}{toAdd}{endTag}", table)
-			replForFullDesc = replaceByBraille if (fullExtendedDesc and excluded) else (
-				getReplacement(c[0], **getReplKw) if fullExtendedDesc else None
+				toAdd = f":{len(c)}" if showSize and len(c) > 1 else ""
+				replaceByBraille = getTextInBraille(f"{startTag}{desc}{toAdd}{endTag}", table)
+			replForFullDesc = (
+				replaceByBraille
+				if (fullExtendedDesc and excluded)
+				else (getReplacement(c[0], **getReplKw) if fullExtendedDesc else None)
 			)
 			for start, end in positions:
 				if start in undefinedCharsPosSet:
-					replacements.append(Repl(
-						start,
-						start if fullExtendedDesc else end,
-						replaceBy=replForFullDesc if fullExtendedDesc else replaceByBraille,
-						insertBefore=replaceByBraille if fullExtendedDesc else ''
-					))
+					replacements.append(
+						Repl(
+							start,
+							start if fullExtendedDesc else end,
+							replaceBy=replForFullDesc if fullExtendedDesc else replaceByBraille,
+							insertBefore=replaceByBraille if fullExtendedDesc else "",
+						)
+					)
 	regionhelper.replaceBrailleCells(self, replacements)
 
 
@@ -410,51 +442,53 @@ class SettingsDlg(gui.settingsDialogs.SettingsPanel):
 			_("Specify another &pattern"), wx.TextCtrl, value=self.getHardValue()
 		)
 		self.undefinedCharDesc = sHelper.addItem(
-			wx.CheckBox(self, label=(
-				_("Show punctuation/symbol &name for undefined characters if available (can cause a lag)")
-			))
+			wx.CheckBox(
+				self,
+				label=(
+					_("Show punctuation/symbol &name for undefined characters if available (can cause a lag)")
+				),
+			)
 		)
 		self.undefinedCharDesc.SetValue(cfg["desc"])
 		self.undefinedCharDesc.Bind(wx.EVT_CHECKBOX, self.onUndefinedCharDesc)
 		# Translators: label for checkbox
 		self.unicodeDataDescLastResort = sHelper.addItem(
-			wx.CheckBox(self, label=_("Use Unicode character name at last resort (when no other description is available)"))
+			wx.CheckBox(
+				self,
+				label=_("Use Unicode character name at last resort (when no other description is available)"),
+			)
 		)
 		self.unicodeDataDescLastResort.SetValue(cfg.get("unicodeDataDescLastResort", False))
 		# Translators: label for text field (format: x=hex, d=decimal, or direct chars)
-		excludeLabel = _("E&xclude characters from description (x=hex, d=decimal, or direct characters, comma-separated):") + " e.g.: x00-x1f, xfffc, +"
+		excludeLabel = (
+			_(
+				"E&xclude characters from description (x=hex, d=decimal, or direct characters, comma-separated):"
+			)
+			+ " e.g.: x00-x1f, xfffc, +"
+		)
 		self.excludeDescChars = sHelper.addLabeledControl(
 			excludeLabel,
 			wx.TextCtrl,
 			value=cfg.get("excludeDescChars", ""),
 		)
 		self.extendedDesc = sHelper.addItem(
-			wx.CheckBox(
-				self,
-				label=_("Also describe e&xtended characters (e.g.: country flags)")
-			)
+			wx.CheckBox(self, label=_("Also describe e&xtended characters (e.g.: country flags)"))
 		)
 		self.extendedDesc.SetValue(cfg["extendedDesc"])
 		self.extendedDesc.Bind(wx.EVT_CHECKBOX, self.onExtendedDesc)
-		self.fullExtendedDesc = sHelper.addItem(
-			wx.CheckBox(
-				self,
-				label=_("&Full extended description")
-			)
-		)
+		self.fullExtendedDesc = sHelper.addItem(wx.CheckBox(self, label=_("&Full extended description")))
 		self.fullExtendedDesc.SetValue(cfg["fullExtendedDesc"])
-		self.showSize = sHelper.addItem(
-			wx.CheckBox(
-				self,
-				label=_("Show the si&ze taken")
-			)
-		)
+		self.showSize = sHelper.addItem(wx.CheckBox(self, label=_("Show the si&ze taken")))
 		self.showSize.SetValue(cfg["showSize"])
 		self.startTag = sHelper.addLabeledControl(
-			_("&Start tag:"), wx.TextCtrl, value=cfg["start"],
+			_("&Start tag:"),
+			wx.TextCtrl,
+			value=cfg["start"],
 		)
 		self.endTag = sHelper.addLabeledControl(
-			_("&End tag:"), wx.TextCtrl, value=cfg["end"],
+			_("&End tag:"),
+			wx.TextCtrl,
+			value=cfg["end"],
 		)
 		availableLangs = languageHandler.getAvailableLanguages()
 		self._langValues = [lang[1] for lang in availableLangs]
@@ -467,28 +501,18 @@ class SettingsDlg(gui.settingsDialogs.SettingsPanel):
 			_("&Language:"), wx.Choice, choices=self._langValues
 		)
 		self.undefinedCharLang.SetSelection(undefinedCharLangID)
-		tableKeys = ["current"] + [
-			t.fileName for t in addoncfg.tables if t.output
-		]
-		values = [_("Use the current output table")] + [
-			t.displayName for t in addoncfg.tables if t.output
-		]
+		tableKeys = ["current"] + [t.fileName for t in addoncfg.tables if t.output]
+		values = [_("Use the current output table")] + [t.displayName for t in addoncfg.tables if t.output]
 		undefinedCharTable = cfg["table"]
 		if undefinedCharTable not in addoncfg.tablesFN + ["current"]:
 			undefinedCharTable = "current"
 		undefinedCharTableID = tableKeys.index(undefinedCharTable)
-		self.undefinedCharTable = sHelper.addLabeledControl(
-			_("Braille &table:"), wx.Choice, choices=values
-		)
+		self.undefinedCharTable = sHelper.addLabeledControl(_("Braille &table:"), wx.Choice, choices=values)
 		self.undefinedCharTable.SetSelection(undefinedCharTableID)
 		# Translators: label of dialog
 		label = _("Character limit at which descriptions are disabled (to avoid freezes, >):")
 		self.characterLimit = sHelper.addLabeledControl(
-			label,
-			gui.nvdaControls.SelectOnFocusSpinCtrl,
-			min=0,
-			max=1000000,
-			initial=cfg["characterLimit"]
+			label, gui.nvdaControls.SelectOnFocusSpinCtrl, min=0, max=1000000, initial=cfg["characterLimit"]
 		)
 
 		self.onExtendedDesc()
@@ -503,8 +527,8 @@ class SettingsDlg(gui.settingsDialogs.SettingsPanel):
 			return _getUndefinedCharsCfg()["hardSignPatternValue"]
 		return ""
 
-	def onUndefinedCharDesc(self, evt: wx.CommandEvent | None = None, forceDisable: bool = False) -> None:
-		l = [
+	def onUndefinedCharDesc(self, evt: Optional[wx.CommandEvent] = None, forceDisable: bool = False) -> None:
+		controls = [
 			self.unicodeDataDescLastResort,
 			self.excludeDescChars,
 			self.extendedDesc,
@@ -515,13 +539,13 @@ class SettingsDlg(gui.settingsDialogs.SettingsPanel):
 			self.undefinedCharLang,
 			self.undefinedCharTable,
 		]
-		for e in l:
+		for e in controls:
 			if self.undefinedCharDesc.IsChecked() and not forceDisable:
 				e.Enable()
 			else:
 				e.Disable()
 
-	def onExtendedDesc(self, evt: wx.CommandEvent | None = None) -> None:
+	def onExtendedDesc(self, evt: Optional[wx.CommandEvent] = None) -> None:
 		if self.extendedDesc.IsChecked():
 			self.fullExtendedDesc.Enable()
 			self.showSize.Enable()
@@ -529,7 +553,7 @@ class SettingsDlg(gui.settingsDialogs.SettingsPanel):
 			self.fullExtendedDesc.Disable()
 			self.showSize.Disable()
 
-	def onUndefinedCharReprList(self, evt: wx.CommandEvent | None = None) -> None:
+	def onUndefinedCharReprList(self, evt: Optional[wx.CommandEvent] = None) -> None:
 		selected = self.undefinedCharReprList.GetSelection()
 		if selected == CHOICE_tableBehaviour:
 			self.undefinedCharDesc.Disable()
@@ -572,15 +596,15 @@ class SettingsDlg(gui.settingsDialogs.SettingsPanel):
 
 
 def _shouldIncludeExtendedSymbol(k: str, v: Any) -> bool:
-	if not k or not v or not getattr(v, 'replacement', None):
+	if not k or not v or not getattr(v, "replacement", None):
 		return False
 	try:
-		rep = v.replacement.replace('\u202f', '').strip()
+		rep = v.replacement.replace("\u202f", "").strip()
 	except (AttributeError, TypeError):
 		return False
 	if not rep:
 		return False
-	if ' ' in k:
+	if " " in k:
 		return False
 	if len(k) > 1:
 		return True
@@ -593,8 +617,8 @@ def getExtendedSymbols(locale: str) -> dict[str, str]:
 	try:
 		symbolsForLocale = characterProcessing._getSpeechSymbolsForLocale(locale)
 	except LookupError:
-		if '_' in locale:
-			return getExtendedSymbols(locale.split('_')[0])
+		if "_" in locale:
+			return getExtendedSymbols(locale.split("_")[0])
 		raise
 	except Exception:
 		log.debugWarning("Failed to load extended symbols for %s", locale, exc_info=True)
@@ -602,10 +626,10 @@ def getExtendedSymbols(locale: str) -> dict[str, str]:
 	a = {}
 	for source in symbolsForLocale:
 		try:
-			symbols = getattr(source, 'symbols', {})
+			symbols = getattr(source, "symbols", {})
 			for k, v in symbols.items():
 				if _shouldIncludeExtendedSymbol(k, v):
-					rep = v.replacement.replace('\u202f', '').strip()
+					rep = v.replacement.replace("\u202f", "").strip()
 					a[k.strip()] = rep
 		except (AttributeError, TypeError):
 			continue

@@ -26,67 +26,94 @@ from keyboardHandler import KeyboardInputGesture
 addonHandler.initTranslation()
 import treeInterceptorHandler
 import unicodedata
-from .constants import INSERT_AFTER, INSERT_BEFORE, REPLACE_TEXT
-from .common import baseDir
-from .legacyCode import NVDA_HAS_AUTOMATIC_BRAILLE_TABLES
+from .common import (
+	INSERT_AFTER,
+	INSERT_BEFORE,
+	REPLACE_TEXT,
+	baseDir,
+	default_braille_table_file_for_cur_language,
+	NVDA_HAS_AUTOMATIC_BRAILLE_TABLES,
+)
 from . import huc
 from . import volumehelper
 
 get_mute = volumehelper.get_mute
 get_volume_level = volumehelper.get_volume_level
 
+# liblouis marks “free” input combinations with back-translated text matching this shape.
+_RE_OVERVIEW_UNUSED_COMBO = re.compile(r"^\\.+/$")
+
+
+def _resolveInputTableFileName(table_file: str) -> str:
+	"""Map config or UI value ``auto`` to a concrete input table file name."""
+	if table_file == "auto":
+		return default_braille_table_file_for_cur_language(is_input=True)
+	return table_file
+
+
+def _liblouisTablePaths(table_file: str) -> list[str]:
+	"""Primary table plus ``braille-patterns.cti`` (absolute paths)."""
+	tables_dir = brailleTables.TABLES_DIR
+	return [
+		os.path.join(tables_dir, table_file),
+		os.path.join(tables_dir, "braille-patterns.cti"),
+	]
+
 
 def report_volume_level():
-	from .constants import CHOICE_braille, CHOICE_speech, CHOICE_speechAndBraille
-	if get_mute() and config.conf["brailleEssentials"]["volumeChangeFeedback"] in [CHOICE_braille, CHOICE_speechAndBraille]:
+	from .addoncfg import CHOICE_braille, CHOICE_speech, CHOICE_speechAndBraille
+
+	feedback = config.conf["brailleEssentials"]["volumeChangeFeedback"]
+	braille_feedback = feedback in (CHOICE_braille, CHOICE_speechAndBraille)
+	speech_feedback = feedback in (CHOICE_speech, CHOICE_speechAndBraille)
+
+	if get_mute() and braille_feedback:
 		return braille.handler.message(_("Muted sound"))
 	volume_level = get_volume_level()
-	if config.conf["brailleEssentials"]["volumeChangeFeedback"] in [CHOICE_braille, CHOICE_speechAndBraille]:
+	if braille_feedback:
 		msg = make_progress_bar_from_str(volume_level, "%3d%%" % volume_level, INSERT_AFTER)
 		braille.handler.message(msg)
-	if config.conf["brailleEssentials"]["volumeChangeFeedback"] in [CHOICE_speech, CHOICE_speechAndBraille]:
+	if speech_feedback:
 		speech.speakMessage(str(volume_level))
 
 
-def make_progress_bar_from_str(percentage, text, method, positive='⢼', negative='⠤'):
+def make_progress_bar_from_str(percentage, text, method, positive="⢼", negative="⠤"):
 	if len(positive) != 1 or len(negative) != 1:
 		raise ValueError("positive and negative must be a string of size 1")
-	brl_repr = getTextInBraille(text)
-	brl_repr_size = len(brl_repr)
-	display_size = braille.handler.displaySize
-	if display_size < brl_repr_size + 3:
-		return brl_repr
-	size = display_size if method == REPLACE_TEXT else (display_size - brl_repr_size) % display_size
-	progress_bar = ''
-	if size - 2 > 0:
-		progress_bar = "⣦%s⣴" % ''.join(
-			[positive if k <= int(float(percentage) / 100. * float(size - 2)) - 1
-			else negative for k in range(size - 2)]
+	braille_text = getTextInBraille(text)
+	text_cell_count = len(braille_text)
+	display_cell_count = braille.handler.displaySize
+	if display_cell_count < text_cell_count + 3:
+		return braille_text
+	bar_cell_count = (
+		display_cell_count
+		if method == REPLACE_TEXT
+		else (display_cell_count - text_cell_count) % display_cell_count
+	)
+	progress_bar = ""
+	inner_width = bar_cell_count - 2
+	if inner_width > 0:
+		filled_last_index = int(float(percentage) / 100.0 * float(inner_width)) - 1
+		progress_bar = "⣦%s⣴" % "".join(
+			positive if slot_index <= filled_last_index else negative for slot_index in range(inner_width)
 		)
 	if method == INSERT_AFTER:
-		return brl_repr + progress_bar
+		return braille_text + progress_bar
 	if method == INSERT_BEFORE:
-		return progress_bar + brl_repr
+		return progress_bar + braille_text
 	return progress_bar
 
 
-def bkToChar(dots, inTable=-1):
-	if inTable == -1:
-		inTable = config.conf["braille"]["inputTable"]
-	char = chr(dots | 0x8000)
-	text = louis.backTranslate(
-		[os.path.join(r"louis\tables", inTable),
-		 "braille-patterns.cti"],
-		char, mode=louis.dotsIO)
-	chars = text[0]
-	if len(chars) == 1 and chars.isupper():
-		chars = 'shift+' + chars.lower()
-	return chars if chars != ' ' else 'space'
+def getEffectiveInputTableFileName() -> str:
+	"""Return the liblouis input table file name (never the config value ``auto``)."""
+	if brailleInput.handler is not None:
+		return brailleInput.handler.table.fileName
+	return _resolveInputTableFileName(config.conf["braille"]["inputTable"])
 
 
-def reload_brailledisplay(bd_name):
+def reload_braille_display(display_driver_name: str) -> bool:
 	try:
-		if braille.handler.setDisplayByName(bd_name):
+		if braille.handler.setDisplayByName(display_driver_name):
 			speech.speakMessage(_("Reload successful"))
 			return True
 	except RuntimeError:
@@ -94,219 +121,273 @@ def reload_brailledisplay(bd_name):
 	ui.message(_("Reload failed"))
 	return False
 
-def currentCharDesc(
-		ch: str='',
-		display: bool=True
-	) -> str:
-	if not ch:
-		ch = getCurrentChar()
-	if not ch:
+
+def currentCharDesc(character: str = "", display: bool = True) -> str | None:
+	if not character:
+		character = getCurrentChar()
+	if not character:
 		return ui.message(_("Not a character"))
-	c = ord(ch)
-	if c:
-		try:
-			char_name = unicodedata.name(ch)
-		except ValueError:
-			char_name = _("unknown")
-		char_category = unicodedata.category(ch)
-		HUC_repr = "%s, %s" % (huc.translate(ch, False), huc.translate(ch, True))
-		speech_output = getSpeechSymbols(ch)
-		brl_repr = getTextInBraille(ch)
-		brl_repr_desc = huc.unicodeBrailleToDescription(brl_repr)
-		s = (
-			f"{ch}: {hex(c)}, {c}, {oct(c)}, {bin(c)}\n"
-			f"{speech_output} ({char_name} [{char_category}])\n"
-			f"{brl_repr} ({brl_repr_desc})\n"
-			f"{HUC_repr}")
-		if not display:
-			return s
-		if scriptHandler.getLastScriptRepeatCount() == 0:
-			ui.message(s)
-		elif scriptHandler.getLastScriptRepeatCount() == 1:
-			ui.browseableMessage(s, (r"U+%.4x (%s) - " % (c, ch)) + _("Char info"))
-	else:
+	codepoint = ord(character)
+	if not codepoint:
 		ui.message(_("Not a character"))
+		return None
+	try:
+		char_name = unicodedata.name(character)
+	except ValueError:
+		char_name = _("unknown")
+	char_category = unicodedata.category(character)
+	huc_repr = "%s, %s" % (
+		huc.translate(character, HUC6=False),
+		huc.translate(character, HUC6=True),
+	)
+	speech_output = getSpeechSymbols(character)
+	braille_cells = getTextInBraille(character)
+	braille_cell_desc = huc.unicodeBrailleToDescription(braille_cells)
+	summary = (
+		f"{character}: {hex(codepoint)}, {codepoint}, {oct(codepoint)}, {bin(codepoint)}\n"
+		f"{speech_output} ({char_name} [{char_category}])\n"
+		f"{braille_cells} ({braille_cell_desc})\n"
+		f"{huc_repr}"
+	)
+	if not display:
+		return summary
+	repeat = scriptHandler.getLastScriptRepeatCount()
+	if repeat == 0:
+		ui.message(summary)
+	elif repeat == 1:
+		ui.browseableMessage(
+			summary,
+			(r"U+%.4x (%s) - " % (codepoint, character)) + _("Char info"),
+		)
+	return None
+
 
 def getCurrentChar():
-	info = api.getReviewPosition().copy()
-	info.expand(textInfos.UNIT_CHARACTER)
-	return info.text
+	character_info = api.getReviewPosition().copy()
+	character_info.expand(textInfos.UNIT_CHARACTER)
+	return character_info.text
+
 
 def getTextSelection():
-	obj = api.getFocusObject()
-	treeInterceptor=obj.treeInterceptor
-	if isinstance(treeInterceptor,treeInterceptorHandler.DocumentTreeInterceptor) and not treeInterceptor.passThrough:
-		obj=treeInterceptor
+	focus_object = api.getFocusObject()
+	tree_interceptor = focus_object.treeInterceptor
+	if (
+		isinstance(tree_interceptor, treeInterceptorHandler.DocumentTreeInterceptor)
+		and not tree_interceptor.passThrough
+	):
+		focus_object = tree_interceptor
 	try:
-		info=obj.makeTextInfo(textInfos.POSITION_SELECTION)
+		selection_info = focus_object.makeTextInfo(textInfos.POSITION_SELECTION)
 	except (RuntimeError, NotImplementedError):
-		info=None
-	if not info or info.isCollapsed:
-		obj = api.getNavigatorObject()
-		text = obj.name
-		return "%s" % text if text else ''
-	return info.text
+		selection_info = None
+	if not selection_info or selection_info.isCollapsed:
+		navigator = api.getNavigatorObject()
+		name = navigator.name
+		return name if name else ""
+	return selection_info.text
 
-def getKeysTranslation(n):
-	o = n
-	n = n.lower()
-	nk = 'NVDA+' if 'nvda+' in n else ''
-	if not 'br(' in n:
-		n = n.replace('kb:', '').replace('nvda+', '')
-		try:
-			n = KeyboardInputGesture.fromName(n).displayName
-			n = re.sub('([^a-zA-Z]|^)f([0-9])', r'\1F\2', n)
-		except BaseException:
-			return o
-		return nk + n
 
-def getTextInBraille(t=None, table=[]):
+def getKeysTranslation(gesture_identifier: str) -> str | None:
+	original = gesture_identifier
+	lowered = gesture_identifier.lower()
+	nvda_prefix = "NVDA+" if "nvda+" in lowered else ""
+	if "br(" in lowered:
+		return None
+	normalized = lowered.replace("kb:", "").replace("nvda+", "")
+	try:
+		display_name = KeyboardInputGesture.fromName(normalized).displayName
+		display_name = re.sub(r"([^a-zA-Z]|^)f([0-9])", r"\1F\2", display_name)
+	except Exception:
+		return original
+	return nvda_prefix + display_name
+
+
+def getTextInBraille(text=None, table=None):
+	if table is None:
+		table = []
 	if not isinstance(table, list):
 		raise TypeError("Wrong type for table parameter: %s" % repr(table))
-	if not t:
-		t = getTextSelection()
-	if not t:
-		return ''
+	if not text:
+		text = getTextSelection()
+	if not text:
+		return ""
 	if not table or "current" in table:
-		table = getCurrentBrailleTables()
+		liblouis_tables = getCurrentBrailleTables()
 	else:
-		for i, e in enumerate(table):
-			if '\\' not in e and '/' not in e:
-				table[i] = "%s\\%s" % (brailleTables.TABLES_DIR, e)
-	t = t.split("\n")
-	res = [louis.translateString(table, l, mode=louis.ucBrl|louis.dotsIO) for l in t if l]
-	return '\n'.join(res)
+		liblouis_tables = []
+		tables_root = brailleTables.TABLES_DIR
+		for entry in table:
+			if "\\" not in entry and "/" not in entry:
+				liblouis_tables.append("%s\\%s" % (tables_root, entry))
+			else:
+				liblouis_tables.append(entry)
+	return "\n".join(
+		louis.translateString(liblouis_tables, line, mode=louis.ucBrl | louis.dotsIO)
+		for line in text.split("\n")
+		if line
+	)
 
-def combinationDesign(dots, noDot = '⠤'):
-	out = ""
-	i = 1
-	while i < 9:
-		out += str(i) if str(i) in dots else noDot
-		i += 1
-	return out
 
-def getTableOverview(tbl = ''):
+def format_braille_dot_legend(cell_dot_description: str, vacant_slot: str = "⠤") -> str:
+	"""Eight-character summary of dots 1–8 for a single braille cell.
+
+	``cell_dot_description`` is typically from :func:`huc.unicodeBrailleToDescription`
+	(e.g. ``-146``). Each output position is the dot digit if that dot is raised,
+	otherwise ``vacant_slot`` (Unicode ``⠤`` by default).
 	"""
-	Return an overview of a input braille table.
-	:param tbl: the braille table to use (default: the current input braille table).
-	:type tbl: str
+	raised_dots = frozenset(c for c in cell_dot_description if "1" <= c <= "8")
+	return "".join(
+		str(dot_number) if str(dot_number) in raised_dots else vacant_slot for dot_number in range(1, 9)
+	)
+
+
+def getTableOverview(table_file: str = "") -> str:
+	"""
+	Return an overview of an input braille table.
+	:param table_file: the braille table to use (default: the current input braille table).
+	:type table_file: str
 	:return: an overview of braille table in the form of a textual table
 	:rtype: str
 	"""
-	t = ""
-	tmp = {}
-	available = ""
-	i = 0x2800
-	while i<0x2800+256:
-		text = louis.backTranslate([os.path.join(r"louis\tables", config.conf["braille"]["inputTable"]), "braille-patterns.cti"], chr(i), mode=louis.ucBrl)
-		if i != 0x2800:
-			t = 'Input              Output\n'
-		if not re.match(r'^\\.+/$', text[0]):
-			tmp['%s' % text[0] if text[0] != '' else '?'] = '%s       %-7s' % (
-			'%s (%s)' % (chr(i), combinationDesign(huc.unicodeBrailleToDescription(chr(i)))),
-			'%s%-8s' % (text[0].rstrip('\x00'), '%s' % (' (%-10s)' % str(hex(ord(text[0]))) if len(text[0]) == 1 else '' if text[0] != '' else '#ERROR'))
-			)
+	table_name = _resolveInputTableFileName(table_file) if table_file else getEffectiveInputTableFileName()
+	table_paths = _liblouisTablePaths(table_name)
+	header = "Input              Output\n"
+	overview_lines: dict[str, str] = {}
+	unused_combo_chars: list[str] = []
+	braille_block_start = 0x2800
+	for codepoint in range(braille_block_start, braille_block_start + 256):
+		braille_char = chr(codepoint)
+		back_translated = louis.backTranslate(table_paths, braille_char, mode=louis.ucBrl)[0]
+		if _RE_OVERVIEW_UNUSED_COMBO.match(back_translated):
+			unused_combo_chars.append(braille_char)
+			continue
+		cell_dot_description = huc.unicodeBrailleToDescription(braille_char)
+		input_column = "%s (%s)" % (braille_char, format_braille_dot_legend(cell_dot_description))
+		translated_raw = back_translated.rstrip("\x00")
+		if len(back_translated) == 1 and back_translated:
+			hex_note = " (%-10s)" % hex(ord(back_translated))
+		elif not back_translated:
+			hex_note = "#ERROR"
 		else:
-			available += chr(i)
-		i += 1
-	t += '\n'.join(tmp[k] for k in sorted(tmp))
-	nbAvailable = len(available)
-	if nbAvailable>1:
-		t += '\n'+_("Available combinations")+" (%d): %s" % (nbAvailable, available)
-	elif nbAvailable == 1:
-		t += '\n'+_("One combination available")+": %s" % available
-	return t
+			hex_note = ""
+		output_column = "%s%-8s" % (translated_raw, hex_note)
+		row_key = back_translated if back_translated else "?"
+		overview_lines[row_key] = "%s       %-7s" % (input_column, output_column)
+	body = "\n".join(overview_lines[key] for key in sorted(overview_lines))
+	overview_text = header + body
+	unused_count = len(unused_combo_chars)
+	if unused_count > 1:
+		overview_text += (
+			"\n"
+			+ _("Available combinations")
+			+ " (%d): %s"
+			% (
+				unused_count,
+				"".join(unused_combo_chars),
+			)
+		)
+	elif unused_count == 1:
+		overview_text += "\n" + _("One combination available") + ": %s" % unused_combo_chars[0]
+	return overview_text
 
-def beautifulSht(t, curBD="noBraille", model=True, sep=" / "):
-	if isinstance(t, list):
-		t = ' '.join(t)
-	t = t.replace(',', ' ').replace(';', ' ').replace('  ', ' ')
-	reps = {
+
+def format_gesture_identifiers(gesture_text, sep=" / "):
+	"""Turn raw NVDA gesture id strings into short, readable text (labels, docs, UI)."""
+	if isinstance(gesture_text, list):
+		gesture_text = " ".join(gesture_text)
+	gesture_text = gesture_text.replace(",", " ").replace(";", " ").replace("  ", " ")
+	token_replacements = {
 		"b10": "b0",
 		"braillespacebar": "space",
-		"space": _('space'),
+		"space": _("space"),
 		"leftshiftkey": _("left SHIFT"),
 		"rightshiftkey": _("right SHIFT"),
 		"leftgdfbutton": _("left selector"),
 		"rightgdfbutton": _("right selector"),
-		"dot": _("dot")
+		"dot": _("dot"),
 	}
-	mdl = ''
-	pattern = r"^.+\.([^)]+)\).+$"
-	t = t.replace(';', ',')
-	out = []
-	for gesture in t.split(' '):
-		if not gesture.strip():
+	display_model_re = re.compile(r"^.+\.([^)]+)\).+$")
+	gesture_text = gesture_text.replace(";", ",")
+	formatted_gestures = []
+	for token in gesture_text.split(" "):
+		if not token.strip():
 			continue
-		mdl = ''
-		if re.match(pattern, gesture):
-			mdl = re.sub(pattern, r'\1', gesture)
-		gesture = re.sub(r'.+:', '', gesture)
-		gesture = '+'.join(sorted(gesture.split('+')))
-		for rep in reps:
-			gesture = re.sub(r"(\+|^)%s([0-9]\+|$)" % rep, r"\1%s\2" % reps[rep], gesture)
-			gesture = re.sub(r"(\+|^)%s([0-9]\+|$)" % rep, r"\1%s\2" % reps[rep], gesture)
-		out.append(_('{gesture} on {brailleDisplay}').format(gesture=gesture, brailleDisplay=mdl) if mdl != '' else gesture)
-	return out if not sep else sep.join(out)
+		display_model = ""
+		model_match = display_model_re.match(token)
+		if model_match:
+			display_model = model_match.group(1)
+		token = re.sub(r".+:", "", token)
+		token = "+".join(sorted(token.split("+")))
+		for internal_token, label in token_replacements.items():
+			token = re.sub(
+				r"(\+|^)%s([0-9]\+|$)" % internal_token,
+				r"\1%s\2" % label,
+				token,
+			)
+		formatted_gestures.append(
+			_("{gesture} on {brailleDisplay}").format(gesture=token, brailleDisplay=display_model)
+			if display_model
+			else token
+		)
+	return formatted_gestures if not sep else sep.join(formatted_gestures)
+
 
 def getText():
-	obj = api.getFocusObject()
-	treeInterceptor = obj.treeInterceptor
-	if hasattr(
-			treeInterceptor,
-			'TextInfo') and not treeInterceptor.passThrough:
-		obj = treeInterceptor
+	focus_object = api.getFocusObject()
+	tree_interceptor = focus_object.treeInterceptor
+	if hasattr(tree_interceptor, "TextInfo") and not tree_interceptor.passThrough:
+		focus_object = tree_interceptor
 	try:
-		info = obj.makeTextInfo(textInfos.POSITION_ALL)
-		return info.text
-	except BaseException:
+		document_info = focus_object.makeTextInfo(textInfos.POSITION_ALL)
+		return document_info.text
+	except Exception:
 		pass
 	return None
 
 
-def getTextCarret():
-	obj = api.getFocusObject()
-	treeInterceptor = obj.treeInterceptor
-	if hasattr(treeInterceptor, 'TextInfo') and not treeInterceptor.passThrough:
-		obj = treeInterceptor
+def getTextCaret():
+	focus_object = api.getFocusObject()
+	tree_interceptor = focus_object.treeInterceptor
+	if hasattr(tree_interceptor, "TextInfo") and not tree_interceptor.passThrough:
+		focus_object = tree_interceptor
 	try:
-		p1 = obj.makeTextInfo(textInfos.POSITION_ALL)
-		p2 = obj.makeTextInfo(textInfos.POSITION_CARET)
-		p1.setEndPoint(p2, "endToStart")
+		document_all = focus_object.makeTextInfo(textInfos.POSITION_ALL)
+		caret_pos = focus_object.makeTextInfo(textInfos.POSITION_CARET)
+		document_all.setEndPoint(caret_pos, "endToStart")
 		try:
-			return p1.text
-		except BaseException:
+			return document_all.text
+		except Exception:
 			return None
-	except BaseException:
+	except Exception:
 		pass
 	return None
-
-
-def getLine():
-	info = api.getReviewPosition().copy()
-	info.expand(textInfos.UNIT_LINE)
-	return info.text
 
 
 def getTextPosition():
 	try:
-		total = len(getText())
-		return len(getTextCarret()), total
-	except BaseException:
+		document_text = getText()
+		caret_text = getTextCaret() or ""
+		total_length = len(document_text) if document_text is not None else 0
+		return len(caret_text), total_length
+	except Exception:
 		return 0, 0
 
 
-def uncapitalize(s): return s[:1].lower() + s[1:] if s else ''
+def uncapitalize(text: str) -> str:
+	return text[:1].lower() + text[1:] if text else ""
 
 
-def refreshBD():
-	obj = api.getFocusObject()
-	if obj.treeInterceptor is not None:
-		ti = treeInterceptorHandler.update(obj)
-		if not ti.passThrough:
-			braille.handler.handleGainFocus(ti)
+def refresh_braille_for_current_focus() -> None:
+	"""Re-run braille focus handling for the document or foreground object (after display or config changes)."""
+	focus_object = api.getFocusObject()
+	tree_interceptor = focus_object.treeInterceptor
+	if tree_interceptor is not None:
+		updated_interceptor = treeInterceptorHandler.update(focus_object)
+		if not updated_interceptor.passThrough:
+			braille.handler.handleGainFocus(updated_interceptor)
 	else:
 		braille.handler.handleGainFocus(api.getFocusObject())
+
 
 def getSpeechSymbols(text: str | None = None) -> str:
 	"""Return speech symbol description for text (or selection). Shows message if no text."""
@@ -315,7 +396,12 @@ def getSpeechSymbols(text: str | None = None) -> str:
 	if not text:
 		return ui.message(_("No text selected"))
 	locale = languageHandler.getLanguage()
-	return characterProcessing.processSpeechSymbols(locale, text, get_symbol_level("SYMLVL_CHAR")).strip()
+	return characterProcessing.processSpeechSymbols(
+		locale,
+		text,
+		get_symbol_level("SYMLVL_CHAR"),
+	).strip()
+
 
 def getTether():
 	if hasattr(braille.handler, "getTether"):
@@ -323,18 +409,18 @@ def getTether():
 	return braille.handler.tether
 
 
-def getCharFromValue(s):
-	if not isinstance(s, str):
+def getCharFromValue(value_spec: str) -> str:
+	if not isinstance(value_spec, str):
 		raise TypeError("Wrong type")
-	if not s or len(s) < 2:
+	if not value_spec or len(value_spec) < 2:
 		raise ValueError("Wrong value")
-	supportedBases = {'b': 2, 'd': 10, 'h': 16, 'o': 8, 'x': 16}
-	base, n = s[0].lower(), s[1:]
-	if base not in supportedBases.keys():
-		raise ValueError("Wrong base (%s)" % base)
-	b = supportedBases[base]
-	n = int(n, b)
-	return chr(n)
+	radix_by_prefix = {"b": 2, "d": 10, "h": 16, "o": 8, "x": 16}
+	prefix, digits = value_spec[0].lower(), value_spec[1:]
+	if prefix not in radix_by_prefix:
+		raise ValueError("Wrong base (%s)" % prefix)
+	radix = radix_by_prefix[prefix]
+	codepoint = int(digits, radix)
+	return chr(codepoint)
 
 
 def supportsAutomaticBrailleTables():
@@ -342,53 +428,53 @@ def supportsAutomaticBrailleTables():
 	return NVDA_HAS_AUTOMATIC_BRAILLE_TABLES
 
 
-def getAutomaticTableDisplayName(tableType):
+def getAutomaticTableDisplayName(*, is_input: bool) -> str:
 	"""Get the display string for automatic table, e.g. 'Automatic (en-us-comp8.utb)'."""
 	# Translators: An option to select a braille table automatically, according to the current language.
+	file_name = default_braille_table_file_for_cur_language(is_input=is_input)
 	return _("Automatic ({name})").format(
-		name=brailleTables.getTable(
-			brailleTables.getDefaultTableForCurLang(tableType)
-		).displayName
+		name=brailleTables.getTable(file_name).displayName,
 	)
 
 
 def getTranslationTable():
-	translationTable = config.conf["braille"]["translationTable"]
-	if translationTable == "auto":
-		return brailleTables.getDefaultTableForCurLang(brailleTables.TableType.OUTPUT)
-	return translationTable
+	translation_table = config.conf["braille"]["translationTable"]
+	if translation_table == "auto":
+		return default_braille_table_file_for_cur_language(is_input=False)
+	return translation_table
 
 
 def getActiveOutputTableForSwitch():
 	"""Returns the effective output table identifier for switching: 'auto' or table fileName."""
-	tt = config.conf["braille"]["translationTable"]
-	if tt == "auto":
+	configured = config.conf["braille"]["translationTable"]
+	if configured == "auto":
 		return "auto"
 	if supportsAutomaticBrailleTables():
-		defaultTable = brailleTables.getDefaultTableForCurLang(brailleTables.TableType.OUTPUT)
-		if braille.handler.table.fileName == defaultTable:
+		default_file = default_braille_table_file_for_cur_language(is_input=False)
+		if braille.handler.table.fileName == default_file:
 			return "auto"
-	return tt
+	return configured
 
 
 def getActiveInputTableForSwitch():
 	"""Returns the effective input table identifier for switching: 'auto' or table fileName."""
-	it = config.conf["braille"]["inputTable"]
-	if it == "auto":
+	configured = config.conf["braille"]["inputTable"]
+	if configured == "auto":
 		return "auto"
 	if supportsAutomaticBrailleTables():
-		defaultTable = brailleTables.getDefaultTableForCurLang(brailleTables.TableType.INPUT)
-		if brailleInput.handler.table.fileName == defaultTable:
+		default_file = default_braille_table_file_for_cur_language(is_input=True)
+		if brailleInput.handler.table.fileName == default_file:
 			return "auto"
 	return brailleInput.handler.table.fileName
 
 
-def getCurrentBrailleTables(input_=False, brf=False):
+def getCurrentBrailleTables(for_input: bool = False, brf: bool = False):
 	from . import tabledictionaries
+
 	if brf:
 		tables = [
 			os.path.join(baseDir, "res", "brf.ctb").encode("UTF-8"),
-			os.path.join(brailleTables.TABLES_DIR, "braille-patterns.cti")
+			os.path.join(brailleTables.TABLES_DIR, "braille-patterns.cti"),
 		]
 	else:
 		tables = []
@@ -398,25 +484,38 @@ def getCurrentBrailleTables(input_=False, brf=False):
 			app = None
 		if app and app.appName != "nvda":
 			tables += tabledictionaries.dictTables
-		if input_:
-			mainTable = os.path.join(brailleTables.TABLES_DIR, brailleInput.handler._table.fileName)
+		if for_input:
+			table_file = brailleInput.handler._table.fileName
 		else:
-			mainTable = os.path.join(brailleTables.TABLES_DIR, getTranslationTable())
-		tables += [
-			mainTable,
-			os.path.join(brailleTables.TABLES_DIR, "braille-patterns.cti")
-		]
+			table_file = getTranslationTable()
+		tables += _liblouisTablePaths(table_file)
 	return tables
 
 
 def get_output_reason(reason_name):
-	old_attr = "REASON_%s" % reason_name
+	legacy_attr = "REASON_%s" % reason_name
 	if hasattr(controlTypes, "OutputReason") and hasattr(controlTypes.OutputReason, reason_name):
 		return getattr(controlTypes.OutputReason, reason_name)
-	elif hasattr(controlTypes, old_attr):
-		return getattr(controlTypes, old_attr)
-	else:
-		raise AttributeError("Reason \"%s\" unknown" % reason_name)
+	if hasattr(controlTypes, legacy_attr):
+		return getattr(controlTypes, legacy_attr)
+	raise AttributeError('Reason "%s" unknown' % reason_name)
+
+
+def is_braille_unicode_normalization_enabled() -> bool:
+	"""Whether NVDA's braille Unicode normalization feature is active (2025.2+ / 2026.x).
+
+	When True, Region.update normalizes text before liblouis translation and remaps offsets.
+	"""
+	try:
+		value = config.conf["braille"]["unicodeNormalization"]
+	except (KeyError, LookupError, AttributeError, TypeError):
+		return False
+	if hasattr(value, "calculated"):
+		try:
+			return bool(value.calculated())
+		except Exception:
+			return bool(value)
+	return bool(value)
 
 
 def get_speech_mode():
@@ -426,10 +525,10 @@ def get_speech_mode():
 
 
 def is_speechMode_talk() -> bool:
-	speechMode = get_speech_mode()
+	speech_mode = get_speech_mode()
 	if hasattr(speech, "SpeechMode"):
-		return speechMode == speech.SpeechMode.talk
-	return speechMode == speech.speechMode_talk
+		return speech_mode == speech.SpeechMode.talk
+	return speech_mode == speech.speechMode_talk
 
 
 def set_speech_off():
@@ -443,24 +542,26 @@ def set_speech_talk():
 		return speech.setSpeechMode(speech.SpeechMode.talk)
 	speech.speechMode = speech.speechMode_talk
 
-newControlTypes = hasattr(controlTypes, "Role")
+
 def get_control_type(control_type):
 	if not isinstance(control_type, str):
-		raise TypeError()
-	if newControlTypes:
-		attr = '_'.join(control_type.split('_')[1:])
+		raise TypeError("control_type must be a string")
+	if hasattr(controlTypes, "Role"):
+		attr = "_".join(control_type.split("_")[1:])
 		if control_type.startswith("ROLE_"):
 			return getattr(controlTypes.Role, attr)
-		elif control_type.startswith("STATE_"):
+		if control_type.startswith("STATE_"):
 			return getattr(controlTypes.State, attr)
-		else:
-			raise ValueError(control_type)
+		raise ValueError(control_type)
 	return getattr(controlTypes, control_type)
 
-newSymbolLevel = hasattr(characterProcessing, "SymbolLevel")
+
 def get_symbol_level(symbol_level):
 	if not isinstance(symbol_level, str):
-		raise TypeError()
-	if newSymbolLevel:
-		return getattr(characterProcessing.SymbolLevel, '_'.join(symbol_level.split('_')[1:]))
+		raise TypeError("symbol_level must be a string")
+	if hasattr(characterProcessing, "SymbolLevel"):
+		return getattr(
+			characterProcessing.SymbolLevel,
+			"_".join(symbol_level.split("_")[1:]),
+		)
 	return getattr(characterProcessing, symbol_level)

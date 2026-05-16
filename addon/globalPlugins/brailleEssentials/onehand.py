@@ -8,6 +8,7 @@ import wx
 
 addonHandler.initTranslation()
 import config
+import speech
 from .huc import unicodeBrailleToDescription, cellDescriptionsToUnicodeBraille
 
 ONE_SIDE = "side"
@@ -17,10 +18,11 @@ DOT_BY_DOT = "dot"
 INPUT_METHODS = {
 	ONE_SIDE: _("Fill a cell in two stages using one side only"),
 	BOTH_SIDES: _("Fill a cell in two stages using both sides"),
-	DOT_BY_DOT: _("Fill a cell dots by dots")
+	DOT_BY_DOT: _("Fill a cell dots by dots"),
 }
 
 endChar = True
+
 
 def process(self, dots):
 	global endChar
@@ -54,10 +56,10 @@ def process(self, dots):
 				dot = int(dot)
 				if dots >= 0 and dot < 9:
 					newDots += equiv[dot]
-			newDots = ''.join(sorted(set(newDots)))
+			newDots = "".join(sorted(set(newDots)))
 			if not newDots:
 				newDots = "0"
-			dots = ord(cellDescriptionsToUnicodeBraille(newDots))-0x2800
+			dots = ord(cellDescriptionsToUnicodeBraille(newDots)) - 0x2800
 	elif method == DOT_BY_DOT:
 		endChar = dots == 0
 		translatedBufferBrailleDots = "0"
@@ -70,11 +72,11 @@ def process(self, dots):
 			if dot not in translatedBufferBrailleDots:
 				translatedBufferBrailleDots += dot
 			else:
-				translatedBufferBrailleDots = translatedBufferBrailleDots.replace(dot, '')
+				translatedBufferBrailleDots = translatedBufferBrailleDots.replace(dot, "")
 		if not translatedBufferBrailleDots:
 			translatedBufferBrailleDots = "0"
-		newDots = ''.join(sorted(set(translatedBufferBrailleDots)))
-		dots = ord(cellDescriptionsToUnicodeBraille(newDots))-0x2800
+		newDots = "".join(sorted(set(translatedBufferBrailleDots)))
+		dots = ord(cellDescriptionsToUnicodeBraille(newDots)) - 0x2800
 	else:
 		speech.speakMessage(_("Unsupported input method"))
 		self.flushBuffer()
@@ -103,8 +105,8 @@ def process(self, dots):
 		self._reportUntranslated(pos)
 	return continue_, endWord
 
-class SettingsDlg(gui.settingsDialogs.SettingsPanel):
 
+class SettingsDlg(gui.settingsDialogs.SettingsPanel):
 	# Translators: title of a dialog.
 	title = _("One-handed mode")
 
@@ -114,7 +116,9 @@ class SettingsDlg(gui.settingsDialogs.SettingsPanel):
 		self.featureEnabled.SetValue(config.conf["brailleEssentials"]["oneHandedMode"]["enabled"])
 		self.featureEnabled.Bind(wx.EVT_CHECKBOX, self.onFeatureEnabled)
 		choices = list(INPUT_METHODS.values())
-		itemToSelect = list(INPUT_METHODS.keys()).index(config.conf["brailleEssentials"]["oneHandedMode"]["inputMethod"])
+		itemToSelect = list(INPUT_METHODS.keys()).index(
+			config.conf["brailleEssentials"]["oneHandedMode"]["inputMethod"]
+		)
 		self.inputMethod = sHelper.addLabeledControl(_("Input &method"), wx.Choice, choices=choices)
 		self.inputMethod.SetSelection(itemToSelect)
 		self.onFeatureEnabled(None)
@@ -127,4 +131,6 @@ class SettingsDlg(gui.settingsDialogs.SettingsPanel):
 
 	def onSave(self):
 		config.conf["brailleEssentials"]["oneHandedMode"]["enabled"] = self.featureEnabled.IsChecked()
-		config.conf["brailleEssentials"]["oneHandedMode"]["inputMethod"] = list(INPUT_METHODS.keys())[self.inputMethod.GetSelection()]
+		config.conf["brailleEssentials"]["oneHandedMode"]["inputMethod"] = list(INPUT_METHODS.keys())[
+			self.inputMethod.GetSelection()
+		]

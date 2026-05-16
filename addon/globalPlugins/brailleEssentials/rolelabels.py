@@ -18,11 +18,11 @@ from .common import configDir
 
 addonHandler.initTranslation()
 
-CUR_LANG = languageHandler.getLanguage().split('_')[0]
+CUR_LANG = languageHandler.getLanguage().split("_")[0]
 PATH_JSON = os.path.join(configDir, f"roleLabels-{CUR_LANG}.json")
 
-class SettingsDlg(gui.settingsDialogs.SettingsPanel):
 
+class SettingsDlg(gui.settingsDialogs.SettingsPanel):
 	# Translators: title of a dialog.
 	title = _("Role labels")
 
@@ -35,7 +35,11 @@ class SettingsDlg(gui.settingsDialogs.SettingsPanel):
 		self.toggleRoleLabels = sHelper.addItem(wx.CheckBox(self, label=_("Use custom braille &role labels")))
 		self.toggleRoleLabels.SetValue(config.conf["brailleEssentials"]["features"]["roleLabels"])
 		self.toggleRoleLabels.Bind(wx.EVT_CHECKBOX, self.onToggleRoleLabels)
-		self.categories = sHelper.addLabeledControl(_("Role cate&gory:"), wx.Choice, choices=[_("General"), _("Landmarks"), _("Positive states"), _("Negative states")])
+		self.categories = sHelper.addLabeledControl(
+			_("Role cate&gory:"),
+			wx.Choice,
+			choices=[_("General"), _("Landmarks"), _("Positive states"), _("Negative states")],
+		)
 		self.categories.Bind(wx.EVT_CHOICE, self.onCategories)
 		self.categories.SetSelection(0)
 
@@ -50,23 +54,27 @@ class SettingsDlg(gui.settingsDialogs.SettingsPanel):
 		self.label.Bind(wx.EVT_TEXT, self.onLabel)
 
 		bHelper = gui.guiHelper.ButtonHelper(orientation=wx.HORIZONTAL)
-		self.resetLabelBtn = bHelper.addButton(self, wx.ID_ANY, _("&Reset this role label"), wx.DefaultPosition)
+		self.resetLabelBtn = bHelper.addButton(
+			self, wx.ID_ANY, _("&Reset this role label"), wx.DefaultPosition
+		)
 		self.resetLabelBtn.Bind(wx.EVT_BUTTON, self.onResetLabelBtn)
-		self.resetAllLabelsBtn = bHelper.addButton(self, wx.ID_ANY, _("Reset a&ll role labels"), wx.DefaultPosition)
+		self.resetAllLabelsBtn = bHelper.addButton(
+			self, wx.ID_ANY, _("Reset a&ll role labels"), wx.DefaultPosition
+		)
 		self.resetAllLabelsBtn.Bind(wx.EVT_BUTTON, self.onResetAllLabelsBtn)
 		sHelper.addItem(bHelper)
 		self.onToggleRoleLabels(None)
 		self.onCategories(None)
 
 	def onToggleRoleLabels(self, evt):
-		l = [
+		controls = [
 			self.categories,
 			self.labels,
 			self.label,
 			self.resetLabelBtn,
 			self.resetAllLabelsBtn,
 		]
-		for e in l:
+		for e in controls:
 			if self.toggleRoleLabels.IsChecked():
 				e.Enable()
 			else:
@@ -137,7 +145,6 @@ class SettingsDlg(gui.settingsDialogs.SettingsPanel):
 		idCategory = self.categories.GetSelection()
 		iLabel = self.labels.GetSelection()
 		idLabel = getIDFromIndexes(idCategory, iLabel)
-		key = "%d:%s" % (idCategory, idLabel)
 		actualLabel = getLabelFromID(idCategory, idLabel)
 		originalLabel = self.getOriginalLabel(idCategory, idLabel, actualLabel)
 		self.label.SetValue(originalLabel)
@@ -148,23 +155,26 @@ class SettingsDlg(gui.settingsDialogs.SettingsPanel):
 		nbCustomizedLabels = len(self.roleLabels)
 		if not nbCustomizedLabels:
 			msg = _("You have no customized role labels.")
-			res = gui.messageBox(msg, _("Reset role labels"),
-			wx.OK|wx.ICON_INFORMATION)
+			res = gui.messageBox(msg, _("Reset role labels"), wx.OK | wx.ICON_INFORMATION)
 			return
-		msg = _("You have %d customized role labels defined. Do you want to reset all labels?") % nbCustomizedLabels
-		flags = wx.YES|wx.NO|wx.ICON_INFORMATION
+		msg = (
+			_("You have %d customized role labels defined. Do you want to reset all labels?")
+			% nbCustomizedLabels
+		)
+		flags = wx.YES | wx.NO | wx.ICON_INFORMATION
 		res = gui.messageBox(msg, _("Reset role labels"), flags)
 		if res == wx.YES:
 			self.roleLabels = {}
 			self.onCategories(None)
 
-	def getOriginalLabel(self, idCategory, idLabel, defaultValue = ''):
+	def getOriginalLabel(self, idCategory, idLabel, defaultValue=""):
 		key = f"{idCategory}:{idLabel}"
 		if key in backupRoleLabels.keys():
 			return backupRoleLabels[key][1]
 		return getLabelFromID(idCategory, idLabel)
 
-	def postInit(self): self.toggleRoleLabels.SetFocus()
+	def postInit(self):
+		self.toggleRoleLabels.SetFocus()
 
 	def onSave(self):
 		global roleLabels
@@ -174,8 +184,10 @@ class SettingsDlg(gui.settingsDialogs.SettingsPanel):
 		if config.conf["brailleEssentials"]["features"]["roleLabels"]:
 			loadRoleLabels()
 
+
 backupRoleLabels = {}
 roleLabels = {}
+
 
 def getIDFromIndexes(idCategory, idLabel):
 	oldRoleLabels = hasattr(controlTypes, "roleLabels")
@@ -198,6 +210,7 @@ def getIDFromIndexes(idCategory, idLabel):
 		idRole = idRole.value
 	return idRole
 
+
 def getLabelFromID(idCategory, idLabel):
 	if idCategory == 0:
 		return braille.roleLabels[int(idLabel)]
@@ -208,6 +221,7 @@ def getLabelFromID(idCategory, idLabel):
 	if idCategory == 3:
 		return braille.negativeStateLabels[int(idLabel)]
 	raise ValueError("Invalid value: %d" % idCategory)
+
 
 def setLabelFromID(idCategory, idLabel, newLabel):
 	if idCategory == 0:
@@ -221,12 +235,15 @@ def setLabelFromID(idCategory, idLabel, newLabel):
 	else:
 		raise ValueError(f"Unknown category {idCategory}")
 
+
 def loadRoleLabels(roleLabels_=None):
 	global backupRoleLabels, roleLabels
 	roleLabels.clear()
 	if roleLabels_:
 		roleLabels.update(roleLabels_)
-	elif "roleLabels" in config.conf["brailleEssentials"] and config.conf["brailleEssentials"]["roleLabels"].copy():
+	elif (
+		"roleLabels" in config.conf["brailleEssentials"] and config.conf["brailleEssentials"]["roleLabels"].copy()
+	):
 		roleLabels.update(config.conf["brailleEssentials"]["roleLabels"].copy())
 		saveRoleLabels(roleLabels)
 		config.conf["brailleEssentials"]["roleLabels"] = {}
@@ -238,14 +255,14 @@ def loadRoleLabels(roleLabels_=None):
 			pass
 		f.close()
 	for k, v in roleLabels.items():
-		idCategory, idRole = k.split(':')
+		idCategory, idRole = k.split(":")
 		idCategory = int(idCategory)
 		backupRoleLabels[k] = (v, getLabelFromID(idCategory, idRole))
 		setLabelFromID(idCategory, idRole, v)
 
 
 def saveRoleLabels(roleLabels_):
-	f = open(PATH_JSON, 'w')
+	f = open(PATH_JSON, "w")
 	json.dump(roleLabels_, f, ensure_ascii=False, indent=2)
 	f.close()
 
@@ -253,7 +270,7 @@ def saveRoleLabels(roleLabels_):
 def discardRoleLabels():
 	global backupRoleLabels, roleLabels
 	for k, v in backupRoleLabels.items():
-		idCategory, idRole = k.split(':')
+		idCategory, idRole = k.split(":")
 		idCategory = int(idCategory)
 		setLabelFromID(idCategory, idRole, v[1])
 	backupRoleLabels = {}
