@@ -47,7 +47,7 @@ class GestureReferenceSummary:
 				"<p>",
 				_(
 					"This window lists bindings that depend on your braille display profile and the add-on’s keyboard assignments. "
-					"Concepts, settings, and credits are in the user guide—open User guide from the NVDA menu under Braille Essentials."
+					"Concepts, settings, and credits are in the user guide—open User guide from the NVDA add-on store under help menu item."
 				),
 				"</p>",
 				'<h2 id="be-doc-profile-gestures">',
