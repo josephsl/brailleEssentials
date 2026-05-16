@@ -874,12 +874,6 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			if braille.handler.buffer is braille.handler.messageBuffer:
 				braille.handler._dismissMessage()
 
-	@script(description=_("Open the Braille Extender user guide (readme.html)"))
-	def script_getHelp(self, g):
-		from . import addonhelp
-
-		addonhelp.open_user_guide()
-
 	@script(
 		description=_("Show a browseable summary of braille profile gestures and add-on keyboard shortcuts")
 	)
