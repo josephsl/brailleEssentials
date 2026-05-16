@@ -42,7 +42,7 @@ addonSettingsDialogWindowHandle = None
 def notImplemented(msg="", style=wx.OK | wx.ICON_INFORMATION):
 	if not msg:
 		msg = _("Feature implementation is in progress. Thanks for your patience.")
-	gui.messageBox(msg, _("Braille Extender"), wx.OK | wx.ICON_INFORMATION)
+	gui.messageBox(msg, _("Braille Essentials"), wx.OK | wx.ICON_INFORMATION)
 
 
 class GeneralDlg(gui.settingsDialogs.SettingsPanel):
@@ -369,7 +369,7 @@ class BrailleTablesDlg(gui.settingsDialogs.SettingsPanel):
 		if restartRequired:
 			res = gui.messageBox(
 				_("NVDA must be restarted for changes to take effect. Would you like to restart now?"),
-				_("Braille Extender"),
+				_("Braille Essentials"),
 				style=wx.YES_NO | wx.ICON_INFORMATION,
 			)
 			if res == wx.YES:
@@ -379,7 +379,7 @@ class BrailleTablesDlg(gui.settingsDialogs.SettingsPanel):
 class RotorDlg(gui.settingsDialogs.SettingsPanel):
 	# Translators: title of a dialog.
 	title = _("Rotor")
-	# Translators: Shown as the short description for this category in Braille Extender settings.
+	# Translators: Shown as the short description for this category in Braille Essentials settings.
 	panelDescription = _("Configure which items appear in the rotor and in what order.")
 
 	def makeSettings(self, settingsSizer):
@@ -514,7 +514,7 @@ class RotorDlg(gui.settingsDialogs.SettingsPanel):
 
 class QuickLaunchesDlg(gui.settingsDialogs.SettingsDialog):
 	# Translators: title of a dialog.
-	title = _("Braille Extender - Quick launches")
+	title = _("Braille Essentials - Quick launches")
 	quickLaunchGestures = []
 	quickLaunchLocations = []
 	captureEnabled = False
@@ -767,7 +767,7 @@ class AddonSettingsDialog(gui.settingsDialogs.MultiCategorySettingsDialog):
 
 	def __init__(self, parent, initialCategory=None):
 		# Translators: title of add-on settings dialog.
-		self.title = _("Braille Extender settings")
+		self.title = _("Braille Essentials settings")
 		super().__init__(parent, initialCategory)
 
 	def makeSettings(self, settingsSizer):

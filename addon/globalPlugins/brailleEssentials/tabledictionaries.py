@@ -141,7 +141,7 @@ def notifyInvalidTables():
 		msg = _(
 			"One or more errors are present in dictionary tables: %s. As a result, these dictionaries were not loaded."
 		) % ", ".join([dicts[path] for path in invalidDictTables if path in dicts])
-		wx.CallAfter(gui.messageBox, msg, _("Braille Extender"), wx.OK | wx.ICON_ERROR)
+		wx.CallAfter(gui.messageBox, msg, _("Braille Essentials"), wx.OK | wx.ICON_ERROR)
 
 
 def removeTmpDict():
@@ -445,7 +445,7 @@ class DictionaryEntryDlg(wx.Dialog):
 		opcode = self.getOpcode()
 		if not textPattern:
 			msg = _("Text pattern/sign field is empty.")
-			gui.messageBox(msg, _("Braille Extender"), wx.OK | wx.ICON_ERROR)
+			gui.messageBox(msg, _("Braille Essentials"), wx.OK | wx.ICON_ERROR)
 			return self.textPatternTextCtrl.SetFocus()
 		if opcode != OPCODE_REPLACE:
 			egBRLRepr = "12345678, 5-123456, 0-138."
@@ -457,7 +457,7 @@ class DictionaryEntryDlg(wx.Dialog):
 					)
 					% egTextPattern
 				)
-				gui.messageBox(msg, _("Braille Extender"), wx.OK | wx.ICON_ERROR)
+				gui.messageBox(msg, _("Braille Essentials"), wx.OK | wx.ICON_ERROR)
 				return self.textPatternTextCtrl.SetFocus()
 			if not braillePattern:
 				msg = (
@@ -466,7 +466,7 @@ class DictionaryEntryDlg(wx.Dialog):
 					)
 					% egBRLRepr
 				)
-				gui.messageBox(msg, _("Braille Extender"), wx.OK | wx.ICON_ERROR)
+				gui.messageBox(msg, _("Braille Essentials"), wx.OK | wx.ICON_ERROR)
 				return self.braillePatternTextCtrl.SetFocus()
 			if not re.match(r"^[0-8\-]+$", braillePattern):
 				msg = (
@@ -475,7 +475,7 @@ class DictionaryEntryDlg(wx.Dialog):
 					)
 					% egBRLRepr
 				)
-				gui.messageBox(msg, _("Braille Extender"), wx.OK | wx.ICON_ERROR)
+				gui.messageBox(msg, _("Braille Essentials"), wx.OK | wx.ICON_ERROR)
 				return self.braillePatternTextCtrl.SetFocus()
 		else:
 			textPattern = textPattern.lower().replace("\\", r"\\")

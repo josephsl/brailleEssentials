@@ -273,7 +273,7 @@ def report_row_follows_nvda(key: str) -> bool:
 
 
 def use_be_format_field_chrome(key: str) -> bool:
-	"""When False, skip BrailleExtender-only braille (⣏ wrappers, configured Tags for that row, …) and match NVDA core."""
+	"""When False, skip Braille Essentials only braille (⣏ wrappers, configured Tags for that row, …) and match NVDA core."""
 	return not report_row_follows_nvda(key)
 
 
@@ -681,7 +681,7 @@ class ManageMethods(wx.Dialog):
 		try:
 			return list(CHOICES_LABELS.keys()).index(conf["methods"].get(attribute, CHOICE_none))
 		except ValueError:
-			log.debugWarning("BrailleExtender: unknown formatting method %r", attribute)
+			log.debugWarning("Braille Essentials: unknown formatting method %r", attribute)
 			return 0
 
 	def onOk(self, evt):

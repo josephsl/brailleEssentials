@@ -446,7 +446,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	@script(
 		description=_(
-			"Braille Extender: select the previous rotor category (links, headings, review, and so on)"
+			"Braille Essentials: select the previous rotor category (links, headings, review, and so on)"
 		)
 	)
 	def script_priorRotor(self, gesture):
@@ -454,7 +454,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		self.bindRotorGES()
 		return ui.message(msg)
 
-	@script(description=_("Braille Extender: select the next rotor category"))
+	@script(description=_("Braille Essentials: select the next rotor category"))
 	def script_nextRotor(self, gesture):
 		msg = rotor.advance_rotor(1)
 		self.bindRotorGES()
@@ -504,7 +504,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	@script(
 		description=_(
-			"Braille Extender rotor: move forward (next character, link, review line, and so on, depending on the rotor)"
+			"Braille Essentials rotor: move forward (next character, link, review line, and so on, depending on the rotor)"
 		)
 	)
 	def script_nextEltRotor(self, gesture):
@@ -530,7 +530,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	@script(
 		description=_(
-			"Braille Extender rotor: move backward (previous character, link, review line, and so on)"
+			"Braille Essentials rotor: move backward (previous character, link, review line, and so on)"
 		)
 	)
 	def script_priorEltRotor(self, gesture):
@@ -555,7 +555,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	@script(
 		description=_(
-			"Braille Extender rotor: next step (next line, next object group, larger selection unit, depending on the rotor)"
+			"Braille Essentials rotor: next step (next line, next object group, larger selection unit, depending on the rotor)"
 		)
 	)
 	def script_nextSetRotor(self, gesture):
@@ -573,7 +573,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	@script(
 		description=_(
-			"Braille Extender rotor: previous step (previous line, object group, or selection unit)"
+			"Braille Essentials rotor: previous step (previous line, object group, or selection unit)"
 		)
 	)
 	def script_priorSetRotor(self, gesture):
@@ -590,7 +590,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			self.sendComb("uparrow", gesture)
 
 	@script(
-		description=_("Braille Extender rotor: activate the item (press Enter or the rotor’s default action)")
+		description=_("Braille Essentials rotor: activate the item (press Enter or the rotor’s default action)")
 	)
 	def script_selectElt(self, gesture):
 		if rotor.current_rotor_id() == rotor.RotorId.object:
@@ -605,7 +605,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		else:
 			ui.message(_("Braille keyboard unlocked"))
 
-	@script(description=_("Turn Braille Extender one-handed braille input on or off"))
+	@script(description=_("Turn Braille Essentials one-handed braille input on or off"))
 	def script_toggleOneHandMode(self, gesture):
 		config.conf["brailleEssentials"]["oneHandedMode"]["enabled"] = not config.conf["brailleEssentials"][
 			"oneHandedMode"
@@ -846,7 +846,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		currentHourDate = time.strftime("%X %x (%a, %W/53, %b)", time.localtime())
 		return _brailleMessagePersistent(currentHourDate)
 
-	@script(description=_("Turn Braille Extender automatic braille scrolling on or off"))
+	@script(description=_("Turn Braille Essentials automatic braille scrolling on or off"))
 	def script_autoScroll(self, gesture):
 		if patches.is_patch_applied("braille_handler"):
 			braille.handler.toggle_auto_scroll()
@@ -941,7 +941,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	@script(
 		description=_(
-			"Run a quick-launch item (application, file, or URL) configured in Braille Extender settings"
+			"Run a quick-launch item (application, file, or URL) configured in Braille Essentials settings"
 		)
 	)
 	def script_quickLaunch(self, gesture):
@@ -979,7 +979,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	@script(
 		description=_(
-			"Switch to the next Liblouis input table from your Braille Extender list (including automatic selection)"
+			"Switch to the next Liblouis input table from your Braille Essentials list (including automatic selection)"
 		),
 		gesture="kb:shift+NVDA+i",
 	)
@@ -1022,7 +1022,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	@script(
 		description=_(
-			"Switch to the next Liblouis output table from your Braille Extender list (including automatic selection)"
+			"Switch to the next Liblouis output table from your Braille Essentials list (including automatic selection)"
 		),
 		gesture="kb:shift+NVDA+u",
 	)
@@ -1131,18 +1131,18 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		if config.conf["brailleEssentials"]["reverseScrollBtns"]:
 			self.reverseScrollBtns()
 		if not sil:
-			ui.message(_("Braille Extender reloaded"))
+			ui.message(_("Braille Essentials reloaded"))
 		return
 
 	@script(
-		description=_("Reload Braille Extender settings, gesture maps, and patches without restarting NVDA")
+		description=_("Reload Braille Essentials settings, gesture maps, and patches without restarting NVDA")
 	)
 	def script_reloadAddon(self, gesture):
 		self.onReload()
 
 	@script(
 		description=_(
-			"Reload the primary braille display chosen in Braille Extender or NVDA (when that slot follows NVDA's active display)"
+			"Reload the primary braille display chosen in Braille Essentials or NVDA (when that slot follows NVDA's active display)"
 		),
 		gesture="kb:nvda+j",
 	)
@@ -1150,14 +1150,14 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		self.reload_configured_braille_display(1)
 
 	@script(
-		description=_("Reload the secondary braille display chosen in Braille Extender settings"),
+		description=_("Reload the secondary braille display chosen in Braille Essentials settings"),
 		gesture="kb:nvda+shift+j",
 	)
 	def script_reload_brailledisplay2(self, gesture):
 		self.reload_configured_braille_display(2)
 
 	def reload_configured_braille_display(self, slot: int) -> None:
-		"""Reload primary (1) or secondary (2) display from Braille Extender / NVDA settings."""
+		"""Reload primary (1) or secondary (2) display from Braille Essentials/ NVDA settings."""
 		display_setting_key = "brailleDisplay2" if slot == 2 else "brailleDisplay1"
 		if config.conf["brailleEssentials"][display_setting_key] == "last":
 			if config.conf["braille"]["display"] == "noBraille":
@@ -1591,7 +1591,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	@script(
 		description=_(
-			"Turn Braille Extender speech history mode on or off (captures speech for later review)"
+			"Turn Braille Essentials speech history mode on or off (captures speech for later review)"
 		)
 	)
 	def script_toggleSpeechHistoryMode(self, gesture):
@@ -1633,4 +1633,4 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	@staticmethod
 	def errorMessage(msg):
-		wx.CallAfter(gui.messageBox, msg, _("Braille Extender"), wx.OK | wx.ICON_ERROR)
+		wx.CallAfter(gui.messageBox, msg, _("Braille Essentials"), wx.OK | wx.ICON_ERROR)

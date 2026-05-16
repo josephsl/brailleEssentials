@@ -26,7 +26,7 @@ def get_is_current_no():
 
 IS_CURRENT_NO = get_is_current_no()
 
-configDir = "%s/brailleExtender" % globalVars.appArgs.configPath
+configDir = "%s/brailleEssentials" % globalVars.appArgs.configPath
 baseDir = os.path.dirname(__file__)
 addonDir = os.path.join(baseDir, "..", "..")
 addonName = addonHandler.Addon(addonDir).manifest["name"]
@@ -62,7 +62,7 @@ def nvdaVersionAtLeast(year: int, major: int, minor: int = 0) -> bool:
 # - 2022.3: interruptSpeechWhileScrolling (speech interrupt when scrolling)
 # - 2024.4: speakOnRouting (announce character when routing cursor)
 # - 2025.1: speakOnNavigatingByUnit (NVDA braille), automatic braille table selection (inputTable/translationTable "auto")
-# BrailleExtender speakScroll stays independent; turn off NVDA's "Speak when navigating by line or paragraph" to avoid duplicates.
+# Braille Essentials speakScroll stays independent; turn off NVDA's "Speak when navigating by line or paragraph" to avoid duplicates.
 NVDA_HAS_INTERRUPT_SPEECH_WHILE_SCROLLING = nvdaVersionAtLeast(2022, 3)
 NVDA_HAS_SPEAK_ON_ROUTING = nvdaVersionAtLeast(2024, 4)
 NVDA_HAS_AUTOMATIC_BRAILLE_TABLES = nvdaVersionAtLeast(2025, 1)

@@ -32,7 +32,7 @@ def open_user_guide() -> None:
 		return
 	addon = addonHandler.getCodeAddon()
 	if addon is None:
-		ui.message(_("Could not locate the Braille Extender add-on bundle."))
+		ui.message(_("Could not locate the Braille Essentials add-on bundle."))
 		return
 	doc_name = addon.manifest.get("docFileName", "readme.html")
 	lang_full = languageHandler.getLanguage()
@@ -87,7 +87,7 @@ class GestureReferenceSummary:
 				"<p>",
 				_(
 					"This window lists bindings that depend on your braille display profile and the add-on’s keyboard assignments. "
-					"Concepts, settings, and credits are in the user guide—open User guide from the NVDA menu under Braille Extender."
+					"Concepts, settings, and credits are in the user guide—open User guide from the NVDA menu under Braille Essentials."
 				),
 				"</p>",
 				'<h2 id="be-doc-profile-gestures">',
@@ -181,7 +181,7 @@ class GestureReferenceSummary:
 				"<h3>"
 				+ _("Warning:")
 				+ "</h3><p>"
-				+ _("BrailleExtender has no gesture map yet for your braille display.")
+				+ _("Braille Essentials has no gesture map yet for your braille display.")
 				+ "<br />"
 				+ _(
 					'However, you can still assign your own gestures in the "Input Gestures" dialog (under Preferences menu).'

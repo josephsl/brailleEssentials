@@ -1,7 +1,7 @@
 # coding: utf-8
 # Rotor navigation for BrailleExtender
-# Part of Braille Extender addon for NVDA
-# Copyright (C) 2016-2023 André-Abush Clause, released under GPL.
+# Part of Braille Essentials (forked from BrailleExtender) Addon for NVDA
+# Copyright 2016-2026 Joseph Lee, André-Abush CLAUSE, released under GPL.
 
 from enum import StrEnum, auto
 from typing import Any, Dict, List, Optional, Sequence, Tuple, Final
