@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: BrailleExtender\n"
 "Report-Msgid-Bugs-To: nvda-translations@groups.io\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2026-05-09 01:09-0600\n"
+"PO-Revision-Date: 2026-05-16 09:31-0600\n"
 "Last-Translator: René Linke <rene.linke@hamburg.de>\n"
 "Language-Team: b-a-c.at/YetiAnt\n"
 "Language: de\n"
@@ -48,437 +48,14 @@ msgstr "Alternativ: Emulation der linken und rechten Pfeiltasten ohne Ansage"
 msgid "last known"
 msgstr "zuletzt bekannt"
 
-msgid "Character"
-msgstr "Zeichen"
-
-msgid "Hexadecimal"
-msgstr "Hexadezimal"
-
-msgid "Decimal"
-msgstr "Dezimal"
-
-msgid "Octal"
-msgstr "Oktal"
-
-msgid "Binary"
-msgstr "Binär"
-
-msgid "Show punctuation/symbol &name for undefined characters if available"
+msgid "Gestures and profiles"
 msgstr ""
-"Interpunktion/Symbol&name für undefinierte Zeichen anzeigen, falls verfügbar"
-
-#. Translators: title of a dialog.
-msgid "Speech History Mode"
-msgstr "Sprachausgabenverlauf"
-
-#, fuzzy
-#| msgid ""
-#| "This mode allows to review the last announcements that have been spoken "
-#| "by NVDA."
-msgid "This mode allows you to review the last announcements spoken by NVDA."
-msgstr ""
-"In diesem Modus können Sie die letzten Mitteilungen von NVDA nochmals "
-"durchgehen."
 
 msgid ""
-"To enable this mode, you can use the appropriate toggle command or the basic "
-"gesture NVDA+Control+t."
+"This window lists bindings that depend on your braille display profile and "
+"the add-ons keyboard assignments. Concepts, settings, and credits are in the "
+"user guideopen User guide from the NVDA add-on store under help menu item."
 msgstr ""
-"Um diesen Modus zu aktivieren, können Sie den entsprechenden Umschaltbefehl "
-"oder NVDA+Strg+T betätigen."
-
-msgid "In this mode, you can use:"
-msgstr "In diesem Modus können Sie Folgendes verwenden:"
-
-msgid ""
-"the first routing cursor to copy the current announcement to the Clipboard."
-msgstr ""
-"Der erste Routing-Cursor kopiert die aktuelle Mitteilung in die "
-"Zwischenablage."
-
-msgid ""
-"the last routing cursor to show the current announcement in a browseable "
-"message."
-msgstr ""
-"Der letzte Routing-Cursor zeigt die aktuelle Mitteilung in einer Nachricht "
-"an."
-
-msgid "the other routing cursors to navigate through history entries."
-msgstr "Die anderen Routing-Cursor navigieren durch die Verlaufseinträge."
-
-msgid ""
-"Please note that specific settings are available for this feature under the "
-"category \"Speech History Mode\"."
-msgstr ""
-"Bitte beachten Sie, dass es für diese Funktion spezielle Einstellungen unter "
-"der Kategorie \"Sprachausgabenverlauf\" gibt."
-
-#. Translators: title of dialog
-msgid "Undefined character representation"
-msgstr "Darstellung undefinierter Zeichen"
-
-#, fuzzy
-#| msgid ""
-#| "The extension allows you to customize how an undefined character should "
-#| "be represented within a braille table. To do so, go to the — "
-#| "Representation of undefined characters — settings. You can choose between "
-#| "the following representations:"
-msgid ""
-"The extension allows you to customize how an undefined character should be "
-"represented within a braille table. To do so, go to the  Representation of "
-"undefined characters  settings. You can choose between the following "
-"representations:"
-msgstr ""
-"Mit der Erweiterung können Sie anpassen, wie ein undefiniertes Zeichen "
-"innerhalb einer Braille-Tabelle dargestellt werden soll. Gehen Sie dazu in "
-"die Einstellungen - Darstellung undefinierter Zeichen -. Sie können zwischen "
-"den folgenden Darstellungen wählen:"
-
-#, fuzzy
-#| msgid ""
-#| "You can also combine this option with the “describe the character if "
-#| "possible” setting."
-msgid ""
-"You can also combine this option with the describe the character if possible "
-"setting."
-msgstr ""
-"Sie können diese Option auch mit der Einstellung \"Zeichen, wenn möglich, "
-"beschreiben\" kombinieren."
-
-msgid "Notes:"
-msgstr "Hinweise:"
-
-#, fuzzy, python-brace-format
-#| msgid ""
-#| "To distinguish the undefined set of characters while maximizing space, "
-#| "the best combination is the usage of the HUC8 representation without "
-#| "checking the “{contextualOption}” option."
-msgid ""
-"To distinguish the undefined set of characters while maximizing space, the "
-"best combination is the usage of the HUC8 representation without checking "
-"the {contextualOption} option."
-msgstr ""
-"Um den undefinierten Zeichensatz zu unterscheiden und gleichzeitig den Platz "
-"zu maximieren, ist die beste Kombination die Verwendung der HUC8-"
-"Darstellung, ohne die Option \"{contextualOption}\" zu aktivieren."
-
-#, python-brace-format
-msgid "To learn more about the HUC representation, see {url}"
-msgstr ""
-"Um mehr über die HUC-Darstellung zu erfahren, schauen Sie auf folgender "
-"Weseite unter {url}"
-
-msgid ""
-"Keep in mind that definitions in tables and those in your table dictionaries "
-"take precedence over character descriptions, which also take precedence over "
-"the chosen representation for undefined characters."
-msgstr ""
-"Denken Sie daran, dass Definitionen in Tabellen und die in Ihren "
-"Tabellenwörterbüchern Vorrang vor Zeichenbeschreibungen haben, die auch bei "
-"undefinierten Zeichen Vorrang vor der gewählten Darstellung haben."
-
-msgid "Getting Current Character Info"
-msgstr "Aktuelle Zeichen-Informationen abrufen"
-
-msgid ""
-"This feature allows you to obtain various information regarding the "
-"character under the cursor using the current input braille table, such as:"
-msgstr ""
-"Diese Funktion ermöglicht es Ihnen, verschiedene Informationen bezüglich des "
-"Zeichens unter dem Cursor mit Hilfe der aktuellen Braille-Eingabetabelle zu "
-"erhalten, wie z. B.:"
-
-msgid ""
-"the HUC8 and HUC6 representations; the hexadecimal, decimal, octal or binary "
-"values; A description of the character if possible; the Unicode braille "
-"representation and the braille pattern dots."
-msgstr ""
-"die HUC8- und HUC6-Darstellungen; die hexadezimalen, dezimalen, oktalen oder "
-"binären Werte; eine Beschreibung des Zeichens, wenn möglich; die Unicode-"
-"Braille-Darstellung und die Punkte des Braille-Musters."
-
-msgid ""
-"Pressing the defined gesture associated to this function once shows you the "
-"information in a flash message and a double-press displays the same "
-"information in a virtual NVDA buffer."
-msgstr ""
-"Bei einmal Drücken werden die Informationen in einer Blitzmeldung angezeigt "
-"und bei zweim Drücken in einem virtuellen Ansicht angezeigt."
-
-#, fuzzy
-#| msgid ""
-#| "On supported displays the defined gesture is ⡉+space. No system gestures "
-#| "are defined by default."
-msgid ""
-"On supported displays the defined gesture is +space. No system gestures are "
-"defined by default."
-msgstr ""
-"Auf unterstützten Zeilen ist der definierte Befehl ⡉+Leerzeichen. "
-"Standardmäßig sind keine Systembefehle definiert."
-
-#, python-brace-format
-msgid ""
-"For example, for the '{chosenChar}' character, we will get the following "
-"information:"
-msgstr ""
-"Für das Zeichen \"{chosenChar}\" erhält man z. B. die folgenden "
-"Informationen:"
-
-msgid "Advanced braille input"
-msgstr "Erweiterte Braille-Eingabe"
-
-#, fuzzy
-#| msgid ""
-#| "This feature allows you to enter any character from its HUC8 "
-#| "representation or its hexadecimal/decimal/octal/binary value. Moreover, "
-#| "it allows you to develop abbreviations. To use this function, enter the "
-#| "advanced input mode and then enter the desired pattern. Default gestures: "
-#| "NVDA+Windows+i or ⡊+space (on supported displays). Press the same gesture "
-#| "to exit this mode. Alternatively, an option allows you to automatically "
-#| "exit this mode after entering a single pattern. "
-msgid ""
-"This feature allows you to enter any character from its HUC8 representation "
-"or its hexadecimal/decimal/octal/binary value. Moreover, it allows you to "
-"develop abbreviations. To use this function, enter the advanced input mode "
-"and then enter the desired pattern. Default gestures: NVDA+Windows+i or "
-"+space (on supported displays). Press the same gesture to exit this mode. "
-"Alternatively, an option allows you to automatically exit this mode after "
-"entering a single pattern. "
-msgstr ""
-"Mit dieser Funktion können Sie jedes beliebige Zeichen aus der HUC8-"
-"Darstellung oder dem hexadezimalen, dezimalen, oktalen oder binären Wert "
-"eingeben. Darüber hinaus können Sie Abkürzungen entwickeln. Um diese "
-"Funktion zu verwenden, gehen Sie in den erweiterten Eingabemodus und geben "
-"Sie das gewünschte Muster dort ein. Standardmäßige Tastenbefehle: NVDA+Win+I "
-"oder ⡊+Leertaste (auf unterstützten Zeilen). Drücken Sie den gleichen "
-"Befehl, um diesen Modus zu verlassen. Alternativ gibt es auch die Option, "
-"das den Modus nach der Eingabe eines einzelnen Musters automatisch wieder "
-"verlässt. "
-
-msgid ""
-"If you want to enter a character from its HUC8 representation, simply enter "
-"the HUC8 pattern. Since a HUC8 sequence must fit on 3 or 4 cells, the "
-"interpretation will be performed each time 3 or 4 dot combinations are "
-"entered. If you wish to enter a character from its hexadecimal, decimal, "
-"octal or binary value, do the following:"
-msgstr ""
-"Wenn Sie ein Zeichen aus der HUC8-Darstellung eingeben möchten, geben Sie "
-"einfach das HUC8-Muster ein. Da eine HUC8-Sequenz drei oder vier Module "
-"umfasst, wird die Interpretation jedes Mal durchgeführt, wenn drei oder vier "
-"Punktkombinationen eingegeben werden. Wenn Sie ein Zeichen von als "
-"Hexadezimal-, Dezimal-, Oktal- oder Binärwert eingeben möchten, gehen Sie "
-"wie folgt vor:"
-
-#, python-brace-format
-msgid "Enter {braillePattern}"
-msgstr "Geben Sie {braillePattern} ein"
-
-msgid "Specify the basis as follows"
-msgstr "Bestimmen sie die Basis wiefolgt"
-
-msgid " or "
-msgstr ""
-
-msgid "for a hexadecimal value"
-msgstr "Für einen hexadezimalen Wert"
-
-msgid "for a decimal value"
-msgstr "Für einen dezimalen Wert"
-
-msgid "for an octal value"
-msgstr "Für einen oktalen Wert"
-
-msgid "for a binary value"
-msgstr "Für einen binären Wert"
-
-msgid ""
-"Enter the value of the character according to the previously selected basis."
-msgstr ""
-"Geben Sie den Wert des Zeichens entsprechend der zuvor ausgewählten Basis "
-"ein."
-
-msgid "Press Space to validate."
-msgstr "Drücken Sie zum Bestätigen die Leertaste."
-
-#, fuzzy
-#| msgid ""
-#| "For abbreviations, you must first add them in the dialog box — Advanced "
-#| "input mode dictionary —. Then, you just have to enter your abbreviation "
-#| "and press space to expand it. For example, you can define the following "
-#| "abbreviations: \"⠎⠺\" with \"sandwich\", \"⠋⠛⠋⠗\" to \"🇫🇷\"."
-msgid ""
-"For abbreviations, you must first add them in the dialog box  Advanced input "
-"mode dictionary . Then, you just have to enter your abbreviation and press "
-"space to expand it. For example, you can define the following abbreviations: "
-"\"\" with \"sandwich\", \"\" to \"\"."
-msgstr ""
-"Bei Abkürzungen müssen Sie diese zunächst im Dialogfeld - Wörterbuch für den "
-"erweiterten Eingabemodus - hinzufügen. Dann müssen Sie nur noch Ihre "
-"Abkürzung eingeben und die Leertaste drücken, um sie zu erweitern. Sie "
-"können z.B. die folgenden Abkürzungen definieren: \"⠎⠺\" mit \"Sandwich\", "
-"\"⠋⠛⠋⠗\" bis \"🇫🇷\"."
-
-msgid "Here are some examples of sequences to be entered for given characters:"
-msgstr ""
-"Hier sind einige Beispiele für Sequenzen, die für bestimmte Zeichen "
-"eingegeben werden müssen:"
-
-msgid "Note: the HUC6 input is currently not supported."
-msgstr "Hinweis: Die Eingabe von HUC6 wird derzeit nicht unterstützt."
-
-msgid "One-hand mode"
-msgstr "Einhandmodus"
-
-#, fuzzy
-#| msgid ""
-#| "This feature allows you to compose a cell in several steps. This can be "
-#| "activated in the general settings of the extension's preferences or on "
-#| "the fly using NVDA+Windows+h gesture by default (⡂+space on supported "
-#| "displays). Three input methods are available."
-msgid ""
-"This feature allows you to compose a cell in several steps. This can be "
-"activated in the general settings of the extension's preferences or on the "
-"fly using NVDA+Windows+h gesture by default (+space on supported displays). "
-"Three input methods are available."
-msgstr ""
-"Diese Funktion ermöglicht es Ihnen, ein Modul in mehreren Schritten "
-"zusammenzustellen. Dies kann in den allgemeinen Einstellungen der Optionen "
-"der Erweiterung oder auf die Schnelle mittels NVDA+Windows+h standardmäßig "
-"aktiviert werden (⡂+Leerzeichen auf unterstützten Zeilen). Es stehen drei "
-"Eingabemethoden zur Verfügung."
-
-#, fuzzy
-#| msgid "Method #1: fill a cell in 2 stages on both sides"
-msgid "Method 1: fill a cell in 2 stages on both sides"
-msgstr "Methode #1: Füllen eines Moduls in zwei Schritten auf beiden Seiten"
-
-msgid ""
-"With this method, type the left side dots, then the right side dots. If one "
-"side is empty, type the dots correspondig to the opposite side twice, or "
-"type the dots corresponding to the non-empty side in 2 steps."
-msgstr ""
-"Bei dieser Methode geben Sie zuerst die Punkte auf der linken und dann die "
-"Punkte auf der rechten Seite ein. Wenn eine Seite leer ist, geben Sie die "
-"Punkte, die der gegenüberliegenden Seite entsprechen, zweimal ein, oder "
-"geben Sie die Punkte, die der nicht leeren Seite entsprechen, in zwei "
-"Schritten ein."
-
-msgid "For example:"
-msgstr "Zum Beispiel:"
-
-#, fuzzy
-#| msgid "For ⠛: press dots 1-2 then dots 4-5."
-msgid "For : press dots 1-2 then dots 4-5."
-msgstr "Für ⠛: drücken Sie Punkte 1-2 und dann Punkte 4-5."
-
-#, fuzzy
-#| msgid "For ⠃: press dots 1-2 then dots 1-2, or dot 1 then dot 2."
-msgid "For : press dots 1-2 then dots 1-2, or dot 1 then dot 2."
-msgstr ""
-"Für ⠃: drücken Sie Punkte 1-2, dann Punkte 1-2, oder Punkt 1, dann Punkt 2."
-
-#, fuzzy
-#| msgid "For ⠘: press 4-5 then 4-5, or dot 4 then dot 5."
-msgid "For : press 4-5 then 4-5, or dot 4 then dot 5."
-msgstr "Für ⠘: drücken Sie 4-5 und dann 4-5, oder Punkt 4 und dann Punkt 5."
-
-#, fuzzy
-#| msgid ""
-#| "Method #2: fill a cell in two stages on one side (Space = empty side)"
-msgid "Method 2: fill a cell in two stages on one side (Space = empty side)"
-msgstr ""
-"Methode #2: Füllen eines Moduls in zwei Schritten auf einer Seite "
-"(Leerzeichen = leere Seite)"
-
-msgid ""
-"Using this method, you can compose a cell with one hand, regardless of which "
-"side of the Braille keyboard you choose. The first step allows you to enter "
-"dots 1-2-3-7 and the second one 4-5-6-8. If one side is empty, press space. "
-"An empty cell will be obtained by pressing the space key twice."
-msgstr ""
-"Mit dieser Methode können Sie ein Modul mit einer Hand zusammensetzen, "
-"unabhängig davon, welche Seite der Braille-Tastatur Sie wählen. Im ersten "
-"Schritt können Sie die Punkte 1-2-3-7 und im zweiten Schritt 4-5-6-8 "
-"eingeben. Wenn eine Seite leer ist, drücken Sie die Leertaste. Eine leere "
-"Zelle erhalten Sie durch zweimaliges Drücken der Leertaste."
-
-#, fuzzy
-#| msgid "For ⠛: press dots 1-2 then dots 1-2, or dots 4-5 then dots 4-5."
-msgid "For : press dots 1-2 then dots 1-2, or dots 4-5 then dots 4-5."
-msgstr ""
-"Für ⠛: drücken Sie Punkte 1-2, dann Punkte 1-2, oder Punkte 4-5, dann Punkte "
-"4-5."
-
-#, fuzzy
-#| msgid "For ⠃: press dots 1-2 then space, or 4-5 then space."
-msgid "For : press dots 1-2 then space, or 4-5 then space."
-msgstr ""
-"Für ⠃: Drücken Sie Punkte 1-2 und dann Leertaste, oder 4-5 und dann "
-"Leertaste."
-
-#, fuzzy
-#| msgid "For ⠘: press space then 1-2, or space then dots 4-5."
-msgid "For : press space then 1-2, or space then dots 4-5."
-msgstr ""
-"Für ⠘: Drücken Sie Leertaste und dann 1-2, oder Leertaste und dann Punkte "
-"4-5."
-
-#, fuzzy
-#| msgid ""
-#| "Method #3: fill a cell dots by dots (each dot is a toggle, press Space to "
-#| "validate the character)"
-msgid ""
-"Method 3: fill a cell dots by dots (each dot is a toggle, press Space to "
-"validate the character)"
-msgstr ""
-"Methode #3: eine Zelle Punkt für Punkt füllen (jeder Punkt ist ein "
-"Umschalter, drücken Sie die Leertaste, um das Zeichen zu bestätigen)"
-
-msgid ""
-"In this mode, each dot is a toggle. You must press the space key as soon as "
-"the cell you have entered is the desired one to input the character. Thus, "
-"the more dots are contained in the cell, the more ways you have to enter the "
-"character."
-msgstr ""
-"In diesem Modus ist jeder Punkt ein Umschalter. Sie müssen die Leertaste "
-"drücken, sobald das Modul, das Sie eingegeben haben, das gewünschte Modul "
-"zur Eingabe des Zeichens ist. Je mehr Punkte im Modul enthalten sind, desto "
-"mehr Möglichkeiten zur Eingabe des Zeichens stehen Ihnen also zur Verfügung."
-
-#, fuzzy
-#| msgid "For example, for ⠛, you can compose the cell in the following ways"
-msgid "For example, for , you can compose the cell in the following ways"
-msgstr ""
-"Zum Beispiel können Sie für ⠛ das Modul auf folgende Weise zusammensetzen"
-
-msgid "Dots 1-2, then dots 4-5, then space."
-msgstr "Punkte 1-2, dann Punkte 4-5, dann Leerzeichen."
-
-msgid "Dots 1-2-3, then dot 3 (to correct), then dots 4-5, then space."
-msgstr ""
-"Punkte 1-2-3, dann Punkt 3 (zur Korrektur), dann Punkte 4-5, dann "
-"Leerzeichen."
-
-msgid "Dot 1, then dots 2-4-5, then space."
-msgstr "Punkt 1, dann Punkte 2-4-5, dann Leerzeichen."
-
-msgid "Dots 1-2-4, then dot 5, then space."
-msgstr "Punkte 1-2-4, dann Punkt 5, dann Leerzeichen."
-
-msgid "Dot 2, then dot 1, then dot 5, then dot 4, and then space."
-msgstr ""
-"Punkt 2, dann Punkt 1, dann Punkt 5, dann Punkt 4 und dann Leerzeichen."
-
-msgid "Etc."
-msgstr "etc."
-
-msgid "Documentation"
-msgstr "Dokumentation"
-
-#, fuzzy
-#| msgid "Table overview (%s)"
-msgid "Features overview"
-msgstr "Tabellen-Übersicht (%s)"
 
 msgid "Profile gestures"
 msgstr "Profilbefehle"
@@ -516,13 +93,15 @@ msgstr "Erweiterungsexterne Tastenbefehle"
 msgid "Keyboard configurations provided"
 msgstr "Verfügbare Tastatur-Einstellungen"
 
-msgid "Keyboard configurations are"
-msgstr "Folgende Tastatur-Einstellungen sind verfügbar"
+msgid "The following keyboard layouts are available for this display"
+msgstr ""
 
 msgid "Warning:"
 msgstr "Warnung:"
 
-msgid "BrailleExtender has no gesture map yet for your braille display."
+#, fuzzy
+#| msgid "BrailleExtender has no gesture map yet for your braille display."
+msgid "Braille Essentials has no gesture map yet for your braille display."
 msgstr ""
 "Braille Extender enthält noch keine Tastenbefehle für die Braillezeile."
 
@@ -536,81 +115,10 @@ msgstr ""
 msgid "Add-on gestures on the system keyboard"
 msgstr "Befehle der Erweiterung auf der Systemtastatur ergänzen"
 
-msgid "Arabic"
-msgstr "Arabisch"
-
-msgid "Chinese (Taiwan)"
-msgstr "Chinesisch (Taiwan)"
-
-msgid "Croatian"
-msgstr "Kroatisch"
-
-msgid "Danish"
-msgstr "Dänisch"
-
-msgid "English and French"
-msgstr "Englisch und Französisch"
-
-msgid "German"
-msgstr "Deutsch"
-
-msgid "Hebrew"
-msgstr "Hebräisch"
-
-msgid "Italian"
-msgstr "Italienisch"
-
-msgid "Persian"
-msgstr "Persisch"
-
-msgid "Polish"
-msgstr "Polnisch"
-
-msgid "Russian"
-msgstr "Russisch"
-
-#, fuzzy
-#| msgid "Danish"
-msgid "Spanish"
-msgstr "Dänisch"
-
-msgid "Turkish"
-msgstr ""
-
-msgid "Ukrainian"
-msgstr ""
-
-msgid "Copyrights and acknowledgements"
-msgstr "Urheberrechte und Anerkennungen"
-
-msgid "and other contributors"
-msgstr "Und andere Mitwirkende"
-
-msgid "Translators"
-msgstr "Übersetzer"
-
-msgid "Code contributions and other"
-msgstr "Code-Beiträge und andere"
-
-msgid "Speech mode feature:"
-msgstr "Sprachausgabenverlauf:"
-
-msgid "Code maintenance (cleanup, rewrites, optimizations) thanks to:"
-msgstr "Code-Wartung (Bereinigung, Neuschreiben, Optimierungen) dank:"
-
-msgid "Additional third party copyrighted code is included:"
-msgstr "Zusätzlicher Programm-Code mit Copyright von Dritten ist enthalten:"
-
-msgid "Thanks also to"
-msgstr "Dank geht auch an"
-
-msgid "Finally thank you very much for all your feedback and comments."
-msgstr ""
-"Zum Schluss noch vielen Dank für all Ihre Rückmeldungen und Kommentare."
-
-#, python-format
-msgid "%s's documentation"
-msgstr "Dokumentation für %s"
+#, fuzzy, python-format
+#| msgid "Profile gestures"
+msgid "%s: gestures"
+msgstr "Profilbefehle"
 
 #, python-format
 msgid "Emulates pressing %s on the system keyboard"
@@ -622,10 +130,8 @@ msgstr "Es gibt momentan keine Beschreibung für diese Tastenkombination"
 msgid "caps lock"
 msgstr "Dauergroßschreibtaste"
 
-#, fuzzy
-#| msgid "all tables"
 msgid "Any (all tables)"
-msgstr "alle Tabellen"
+msgstr "Alle Tabellen"
 
 #. Translators: title of a dialog.
 msgid "Advanced input mode dictionary"
@@ -708,22 +214,16 @@ msgstr "Wörterbucheintrag bearbeiten"
 
 #. Translators: This is a label for an edit field in add dictionary
 #. entry dialog.
-#, fuzzy
-#| msgid "&Abreviation"
 msgid "&Abreviation:"
-msgstr "&Abkürzung"
+msgstr "&Abkürzung:"
 
 #. Translators: This is a label for an edit field in add dictionary
 #. entry dialog.
-#, fuzzy
-#| msgid "&Replace by"
 msgid "&Replace by:"
-msgstr "&Ersetzen mit"
+msgstr "&Ersetzen mit:"
 
-#, fuzzy
-#| msgid "Input table"
 msgid "Input table:"
-msgstr "Eingabetabelle"
+msgstr "Eingabetabelle:"
 
 msgid "The abreviation field is empty, please enter something."
 msgstr "Das Feld für die Abkürzung ist leer, bitte geben Sie etwas ein."
@@ -783,6 +283,9 @@ msgstr "Punkt 8"
 msgid "tags"
 msgstr "tags"
 
+msgid "Pad display line (blanks)"
+msgstr ""
+
 msgid "bold"
 msgstr "Fett"
 
@@ -794,6 +297,15 @@ msgstr "Unterstrichen"
 
 msgid "strikethrough"
 msgstr "Durchgestrichen"
+
+msgid "strong emphasis"
+msgstr ""
+
+msgid "emphasised text"
+msgstr ""
+
+msgid "marked (highlighted)"
+msgstr ""
 
 msgid "subscript"
 msgstr "Tiefgestellt"
@@ -807,45 +319,36 @@ msgstr "Rechtschreibfehler"
 msgid "grammar errors"
 msgstr "Grammatikfehler"
 
-#, fuzzy
-#| msgid "Manage a&lignments"
 msgid "centered alignment"
 msgstr "Aus&richtungen verwalten"
 
 msgid "distributed alignment"
-msgstr ""
+msgstr "verteilte Ausrichtung"
 
 msgid "justified alignment"
-msgstr ""
+msgstr "Blockausrichtung"
 
-#, fuzzy
-#| msgid "Manage a&lignments"
 msgid "left alignment"
-msgstr "Aus&richtungen verwalten"
+msgstr "linke Ausrichtung"
 
-#, fuzzy
-#| msgid "Manage a&lignments"
 msgid "right alignment"
-msgstr "Aus&richtungen verwalten"
+msgstr "rechte Ausrichtung"
 
-#, fuzzy
-#| msgid "Manage a&lignments"
 msgid "default alignment"
-msgstr "Aus&richtungen verwalten"
+msgstr "Standardausrichtung"
 
 msgid "inserted revision"
-msgstr ""
+msgstr "Revision eingefügt"
 
 msgid "deleted revision"
-msgstr ""
+msgstr "gelöschte Revision"
 
-#, fuzzy
-#| msgid "Copyrights and acknowledgements"
 msgid "notes and comments"
-msgstr "Urheberrechte und Anerkennungen"
+msgstr "Notizen und Kommentare"
 
-msgid "like speech"
-msgstr "Wie sprache"
+#. Translators: First option in each document-formatting report row. This follows NVDA’s “Document formatting” category (what NVDA reports, including braille-related bits), and NVDA’s own braille markers when NVDA defines them. It is not the same as “output like speech only”. If your language needs a shorter string, consider: “Use NVDA defaults (document formatting & core braille)”.
+msgid "Follow NVDA document formatting"
+msgstr ""
 
 msgid "enabled"
 msgstr "Aktiviert"
@@ -854,29 +357,39 @@ msgid "disabled"
 msgstr "deaktiviert"
 
 #, fuzzy
-#| msgid "Spelling &errors:"
-msgid "Spelling and grammar &errors"
-msgstr "&Rechtschreibfehler:"
+#| msgid "Spelling and grammar &errors"
+msgid "Spelling and grammar e&rrors"
+msgstr "&Rechtschreib- und Grammatikfehler"
 
 msgid "{}: {}"
-msgstr ""
+msgstr "{}: {}"
 
 #. Translators: title of a dialog.
 msgid "Formatting Method"
+msgstr "Formatierungsmethode"
+
+msgid ""
+"For each item, choose how it is shown in braille (nothing, Liblouis, dots "
+"78, tags, ). For alignment, you can use nothing, pad the line with blanks, "
+"dots 7 / 8 / 7+8 on the line, or tags."
 msgstr ""
 
+#. --- Spelling and grammar ---
 #, fuzzy
-#| msgid "Spelling &errors:"
+#| msgid "Spelling and grammar &errors"
+msgid "Spelling and grammar"
+msgstr "&Rechtschreib- und Grammatikfehler"
+
 msgid "&Spelling errors:"
 msgstr "&Rechtschreibfehler:"
 
-#, fuzzy
-#| msgid "grammar errors"
 msgid "&Grammar errors:"
-msgstr "Grammatikfehler"
+msgstr "&Grammatikfehler:"
 
-#, fuzzy
-#| msgid "&Bold:"
+#. --- Classic font attributes ---
+msgid "Font styling (bold, italic, )"
+msgstr ""
+
 msgid "B&old:"
 msgstr "&Fett:"
 
@@ -889,58 +402,85 @@ msgstr "&Unterstrichen:"
 msgid "Strike&through:"
 msgstr "&Durchgestrichen:"
 
+#. --- Semantic emphasis / highlight ---
+msgid "Emphasis and highlighting"
+msgstr ""
+
+msgid "Strong e&mphasis:"
+msgstr ""
+
+msgid "E&mphasised text:"
+msgstr ""
+
+msgid "Mar&ked (highlighted):"
+msgstr ""
+
+#. --- Subscript / superscript ---
+msgid "Subscripts and superscripts"
+msgstr ""
+
 msgid "Su&bscripts:"
 msgstr "&Tiefgestellt:"
 
 msgid "Su&perscripts:"
 msgstr "&Hochgestellt:"
 
-#. Translators: title of a dialog.
+#. --- Alignment (subset of methods) ---
 #, fuzzy
-#| msgid "Customize attribute tags"
+#| msgid "left alignment"
+msgid "Text alignment (braille)"
+msgstr "linke Ausrichtung"
+
+msgid "&Left / start:"
+msgstr ""
+
+msgid "C&entered:"
+msgstr ""
+
+msgid "&Right:"
+msgstr ""
+
+msgid "&Justified:"
+msgstr ""
+
+#. Translators: title of a dialog.
 msgid "Customize formatting tags"
 msgstr "Tags der Atribute anpassen"
 
-#, fuzzy
-#| msgid "Confirmation"
 msgid "&Formatting"
-msgstr "Bestätigung"
+msgstr "&Formatierung"
 
-#, fuzzy
-#| msgid "&Start tag:"
 msgid "&Start tag"
-msgstr "&Start-Tag:"
+msgstr "&Start-Tag"
 
-#, fuzzy
-#| msgid "&End tag:"
 msgid "&End tag"
-msgstr "&End-Tag:"
+msgstr "&End-Tag"
 
 msgid ""
-"The following options control the types of document formatting reported by "
-"NVDA in braille only."
+"Each row: follow NVDAs Document formatting settings, always show this "
+"information in braille (see Methods and Tags), or turn it off. Follow NVDA "
+"is not limited to speech; it uses the same report toggles as NVDAs Document "
+"formatting dialog."
 msgstr ""
-"Die folgenden Optionen steuern die Arten der Dokumentenformatierung, die von "
-"NVDA nur in Braille gemeldet werden."
 
 msgid "Plain text mode (disable all text formatting)"
-msgstr ""
+msgstr "Nur-Text-Modus (alle Textformatierungen deaktivieren)"
 
 msgid "Process formatting line per line"
-msgstr ""
+msgstr "Zeile für Zeile formatieren"
 
 #, python-brace-format
 msgid "{label}:"
-msgstr ""
+msgstr "{label}:"
 
 msgid "Cell &formula (Excel only for now)"
-msgstr ""
+msgstr "Zelle &Formel (vorerst nur Excel)"
 
 msgid "Le&vel of items in a nested list"
-msgstr ""
+msgstr "Ebene der E&lemente in einer verschachtelten Liste"
 
 msgid "Met&hods..."
-msgstr ""
+msgstr "Met&hoden..."
 
 msgid "name"
 msgstr "name"
@@ -975,11 +515,13 @@ msgstr "Platzhalter"
 msgid "cell coordinates text"
 msgstr "Text für Zellkoordinaten"
 
+#. Translators: Displayed in braille for a multi select list.
+msgid "mslst"
+msgstr ""
+
 #. Translators: title of a dialog.
-#, fuzzy
-#| msgid "Properties"
 msgid "Order Properties"
-msgstr "Eigenschaften"
+msgstr "Reihenfolgeeigenschaften"
 
 msgid "Properties"
 msgstr "Eigenschaften"
@@ -1002,25 +544,23 @@ msgstr "Danach"
 msgid "before"
 msgstr "Davor"
 
-#, fuzzy
-#| msgid "&Selected elements:"
 msgid "Selected &elements:"
 msgstr "&Ausgewählte Elemente:"
 
 msgid "Progress bar output using braille messages:"
-msgstr ""
+msgstr "Ausgabe des Fortschrittsbalkens mittels Braille-Meldungen:"
 
 msgid "disabled (original behavior)"
-msgstr ""
+msgstr "deaktiviert (ursprüngliches Verhalten)"
 
 msgid "enabled, show raw value"
-msgstr ""
+msgstr "aktiviert, Rohwert anzeigen"
 
 msgid "enabled, show a progress bar using "
-msgstr ""
+msgstr "aktiviert, zeigen Sie mit einen Fortschrittsbalken an "
 
 msgid "Report background progress bars:"
-msgstr ""
+msgstr "Fortschrittsbalken im Hintergrund melden:"
 
 msgid "Fill a cell in two stages using one side only"
 msgstr ""
@@ -1044,6 +584,18 @@ msgstr "&Einhand-Modus einschalten"
 
 msgid "Input &method"
 msgstr "Eingabe&methode"
+
+#. Translators: Brailled when text contains a draft comment.
+msgid "drft cmnt"
+msgstr ""
+
+#. Translators: Brailled when text contains a resolved comment.
+msgid "rslvd cmnt"
+msgstr ""
+
+#. Translators: Brailled when text contains a generic comment.
+msgid "cmnt"
+msgstr ""
 
 #. Translators: Reported when translation didn't succeed due to unsupported input.
 msgid "Unsupported input"
@@ -1101,18 +653,201 @@ msgstr ""
 "Sie haben %d benutzerdefinierte Elementtypsbeschriftungen definiert. Wollen "
 "Sie alle Etiketten zurücksetzen?"
 
+msgid "Default"
+msgstr "Standard"
+
+#, fuzzy
+#| msgid "Text selection"
+msgid "Text navigation"
+msgstr "Textauswahl"
+
+msgid "Selection navigation"
+msgstr ""
+
+#, fuzzy
+#| msgid "Quick navigation keys"
+msgid "Object navigation"
+msgstr "Schnellnavigationstasten"
+
+#, fuzzy
+#| msgid "Review"
+msgid "Review cursor"
+msgstr "Darstellung"
+
+msgid "Links"
+msgstr "Links"
+
+msgid "Unvisited links"
+msgstr "Nicht besuchte Links"
+
+msgid "Visited links"
+msgstr "Besuchte Links"
+
+msgid "Headings"
+msgstr "Überschriften"
+
+#, fuzzy
+#| msgid "Headings"
+msgid "Heading level 1"
+msgstr "Überschriften"
+
+#, fuzzy
+#| msgid "Headings"
+msgid "Heading level 2"
+msgstr "Überschriften"
+
+#, fuzzy
+#| msgid "Headings"
+msgid "Heading level 3"
+msgstr "Überschriften"
+
+#, fuzzy
+#| msgid "Headings"
+msgid "Heading level 4"
+msgstr "Überschriften"
+
+#, fuzzy
+#| msgid "Headings"
+msgid "Heading level 5"
+msgstr "Überschriften"
+
+#, fuzzy
+#| msgid "Headings"
+msgid "Heading level 6"
+msgstr "Überschriften"
+
+msgid "Lists"
+msgstr "Listen"
+
+msgid "List items"
+msgstr "Listeneinträge"
+
+msgid "Images and graphics"
+msgstr ""
+
+#, fuzzy
+#| msgid "Annotations"
+msgid "Quotations"
+msgstr "Anmerkungen"
+
+msgid "Buttons"
+msgstr "Schalter"
+
+msgid "Form fields"
+msgstr "Formularfelder"
+
+msgid "Edit fields"
+msgstr "Eingabefelder"
+
+msgid "Radio buttons"
+msgstr "Auswahlschalter"
+
+msgid "Combo boxes"
+msgstr "Kombinationsfelder"
+
+msgid "Check boxes"
+msgstr "Kontrollkästchen"
+
+#, fuzzy
+#| msgid "Radio buttons"
+msgid "Toggle buttons"
+msgstr "Auswahlschalter"
+
+msgid "Text blocks (not links)"
+msgstr ""
+
+msgid "Frames"
+msgstr "Rahmen"
+
+msgid "Separators"
+msgstr "Trennlinien"
+
+msgid "Embedded objects"
+msgstr "Eingebettete Objekte"
+
+msgid "Annotations"
+msgstr "Anmerkungen"
+
+msgid "Articles"
+msgstr ""
+
+msgid "Groupings"
+msgstr ""
+
+msgid "Tabs"
+msgstr ""
+
+msgid "Figures"
+msgstr ""
+
+#, fuzzy
+#| msgid "List items"
+msgid "Menu items"
+msgstr "Listeneinträge"
+
+msgid "Progress bars"
+msgstr ""
+
+msgid "Math content"
+msgstr ""
+
+#, fuzzy
+#| msgid "Paragraph"
+msgid "Paragraphs"
+msgstr "Absatz"
+
+#, fuzzy
+#| msgid "role text"
+msgid "Vertical text"
+msgstr "Rollentext"
+
+msgid "Same text formatting (font, emphasis, )"
+msgstr ""
+
+#, fuzzy
+#| msgid "&Formatting"
+msgid "Formatting changes"
+msgstr "&Formatierung"
+
+msgid "References"
+msgstr ""
+
+msgid "Tables"
+msgstr "Tabellen"
+
+#, fuzzy
+#| msgid "&Table dictionary"
+msgid "Table navigation"
+msgstr "&Tabellen-Wörterbuch"
+
+#, fuzzy
+#| msgid "Braille tables"
+msgid "Output braille tables"
+msgstr "Braille-Tabellen"
+
+#, fuzzy
+#| msgid "Braille tables"
+msgid "Input braille tables"
+msgstr "Braille-Tabellen"
+
 msgid "Feature implementation is in progress. Thanks for your patience."
 msgstr "Dieses Feature ist noch in Arbeit. Vielen Dank für Ihre geduld."
 
 #. Add-on summary/title, usually the user visible name of the add-on
 #. Translators: Summary/title for this add-on
 #. to be shown on installation and add-on information found in add-on store
-#, fuzzy
-#| msgid "Braille tables"
 msgid "Braille Essentials"
-msgstr "Braille-Tabellen"
+msgstr "Braille-Essentials"
 
-#. Translators: label of a dialog.
+msgid "Say current line while &scrolling in:"
+msgstr ""
+
+msgid ""
+"NVDA 2025.1+ also has a global braille option, Speak when navigating by line "
+"or paragraph. Disable that NVDA option if you hear duplicate line "
+"announcements."
+msgstr ""
+
 msgid "S&kip blank lines during text scrolling"
 msgstr "&Leerzeilen beim Lesen überspringen"
 
@@ -1120,7 +855,6 @@ msgstr "&Leerzeilen beim Lesen überspringen"
 msgid "Smart Caps Loc&k"
 msgstr "Intelligente &Feststelltaste"
 
-#. Translators: label of a dialog.
 msgid "Speech i&nterrupt for unknown gestures"
 msgstr "Sprachausgabe bei u&nbekannten Befehlen unterbrechen"
 
@@ -1128,10 +862,6 @@ msgstr "Sprachausgabe bei u&nbekannten Befehlen unterbrechen"
 msgid "Routing cursors behavior in edit &fields:"
 msgstr "Verhalten des Routing-Cursors in Eingabe&feldern:"
 
-#, fuzzy
-#| msgid ""
-#| "Automatically Switch to review mode in &terminal windows (cmd, bash, "
-#| "PuTTY, PowerShell Maxima…)"
 msgid ""
 "Automatically Switch to review mode in &terminal windows (cmd, bash, PuTTY, "
 "PowerShell Maxima)"
@@ -1139,11 +869,9 @@ msgstr ""
 "Automatisches Umschalten in den Darstellungsmodus in &Eingabeaufforderungen  "
 "(cmd, bash, PuTTY, PowerShell Maxima...)"
 
-#. Translators: label of a dialog.
 msgid "Announce &volume changes:"
 msgstr "Änderungen der &Lautstärkeänderungen mitteilen:"
 
-#. Translators: label of a dialog.
 msgid "Announce m&odifier key presses:"
 msgstr "Teilt die M&odifikationstasten beim Drücken mit:"
 
@@ -1154,11 +882,9 @@ msgstr "&Signaltöne für Modifikatortasten"
 msgid "&Right margin on cells for the active braille display"
 msgstr "&Rechter Rand für die Module auf der Braillezeile"
 
-#. Translators: label of a dialog.
 msgid "Braille &keyboard configuration:"
 msgstr "Konfiguration der Braille-&Tastatur:"
 
-#. Translators: label of a dialog.
 msgid "&Reverse forward and back scroll buttons"
 msgstr "Navigationstasten für links und rechts ver&tauschen"
 
@@ -1172,15 +898,11 @@ msgstr "&Zweite bevorzugte Braillezeile:"
 msgid "Braille tables"
 msgstr "Braille-Tabellen"
 
-#, fuzzy
-#| msgid "Preferred &output tables"
 msgid "Preferred &output braille tables:"
-msgstr "Bevorzugte &Ausgabetabellen"
+msgstr "Bevorzugte &Ausgabetabellen:"
 
-#, fuzzy
-#| msgid "Preferred &input tables"
 msgid "Preferred &input braille tables:"
-msgstr "Bevorzugte &Eingabetabellen"
+msgstr "Bevorzugte &Eingabetabellen:"
 
 msgid "Use the current input table"
 msgstr "Aktuelle Braille-Eingabetabelle verwenden"
@@ -1209,10 +931,29 @@ msgstr ""
 "Sie dies jetzt tun?"
 
 #. Translators: title of a dialog.
+msgid "Rotor"
+msgstr ""
+
+#. Translators: Shown as the short description for this category in Braille Essentials settings.
+msgid "Configure which items appear in the rotor and in what order."
+msgstr ""
+
+msgid "Rotor &items (checked entries are included when you cycle the rotor):"
+msgstr ""
+
 #, fuzzy
-#| msgid "Braille Extender - Quick launches"
+#| msgid "before"
+msgid "Move &before"
+msgstr "Davor"
+
+#, fuzzy
+#| msgid "Move &up"
+msgid "Move &after"
+msgstr "Nach &oben verschieben"
+
+#. Translators: title of a dialog.
 msgid "Braille Essentials - Quick launches"
-msgstr "Braille Extender-Schnellstarts"
+msgstr "Braille-Essentials-Schnellstarts"
 
 msgid "&Gestures:"
 msgstr "&Tastenbefehle:"
@@ -1284,26 +1025,27 @@ msgstr ""
 
 msgid "force the refresh of braille region related to &foreground object"
 msgstr ""
+"Erzwingen Sie die Aktualisierung des Braille-Bereichs im Zusammenhang mit "
+"dem &Vordergrund-Objekt"
 
 #. Translators: title of add-on settings dialog.
-#, fuzzy
-#| msgid "Braille Extender settings"
 msgid "Braille Essentials settings"
-msgstr "Braille Extender-Einstellungen"
+msgstr "Braille Essentials-Einstellungen"
 
 #. Translators: The profile name for normal configuration
 msgid "normal configuration"
 msgstr "Standard-Konfiguration"
 
-#. Translators: label of a dialog.
+#. Translators: title of a dialog.
+msgid "Speech History Mode"
+msgstr "Sprachausgabenverlauf"
+
 msgid "&Number of last announcements to retain:"
 msgstr "&Anzahl der letzten Meldungen, die beibehalten werden sollen:"
 
-#. Translators: label of a dialog.
 msgid "&Prefix entries with their position in the history"
 msgstr "Einträge mit Position im Verlauf &vorangestellt"
 
-#. Translators: label of a dialog.
 msgid "&Read entries while browsing history"
 msgstr "&Einträge beim Navigieren im Verlauf mitteilen"
 
@@ -1438,20 +1180,14 @@ msgstr ""
 msgid "Use braille table behavior (no description possible)"
 msgstr "Verhalten der Braille-Tabelle verwenden (keine Beschreibung möglich)"
 
-#, fuzzy
-#| msgid "Dots 1-8 (⣿)"
 msgid "Dots 1-8 ()"
 msgstr "Punkte 1 bis 8 (⣿)"
 
-#, fuzzy
-#| msgid "Dots 1-6 (⠿)"
 msgid "Dots 1-6 ()"
 msgstr "Punkte 1 bis 6 (⠿)"
 
-#, fuzzy
-#| msgid "Empty cell (⠀)"
 msgid "Empty cell ()"
-msgstr "Leeres Modul (⠀)"
+msgstr "Leere Zelle (⠀)"
 
 #, python-brace-format
 msgid "Other dot pattern (e.g.: {dotPatternSample})"
@@ -1473,6 +1209,22 @@ msgstr "Hexadezimal (HUC8)"
 msgid "Hexadecimal, HUC6"
 msgstr "Hexadezimal (HUC6)"
 
+msgid "Hexadecimal"
+msgstr "Hexadezimal"
+
+msgid "Decimal"
+msgstr "Dezimal"
+
+msgid "Octal"
+msgstr "Oktal"
+
+msgid "Binary"
+msgstr "Binär"
+
+#. Translators: title of dialog
+msgid "Undefined character representation"
+msgstr "Darstellung undefinierter Zeichen"
+
 #. Translators: label of dialog
 msgid "Representation &method:"
 msgstr "Darstellungs&methode:"
@@ -1491,12 +1243,15 @@ msgid ""
 "Use Unicode character name at last resort (when no other description is "
 "available)"
 msgstr ""
+"Als letzten Ausweg Unicode-Zeichennamen verwenden (wenn keine andere "
+"Beschreibung verfügbar ist)"
 
-#. Translators: label for text field (format: x=hex, d=decimal, or direct chars)
 msgid ""
 "E&xclude characters from description (x=hex, d=decimal, or direct "
 "characters, comma-separated):"
 msgstr ""
+"Schließen Sie Zeichen aus der Beschreibung aus (x=hex, d=dezimal oder "
+"direkte Zeichen, durch Kommas getrennt):"
 
 msgid "Also describe e&xtended characters (e.g.: country flags)"
 msgstr "Auch mehrsymbolige Zeichen (wie die &Flaggen eines Landes) beschreiben"
@@ -1526,6 +1281,8 @@ msgstr "Braille-&Tabelle:"
 msgid ""
 "Character limit at which descriptions are disabled (to avoid freezes, >):"
 msgstr ""
+"Zeichenbeschränkung, bei der Beschreibungen deaktiviert werden (um ein "
+"Einfrieren zu vermeiden, >):"
 
 msgid "Muted sound"
 msgstr "Audio stummgeschaltet"
@@ -1576,127 +1333,32 @@ msgstr "{gesture} auf {brailleDisplay}"
 msgid "No text selected"
 msgstr "Kein Text ausgewählt"
 
-#. Translators: An option to select a braille table automatically, according to the current language.
 #, python-brace-format
 msgid "Automatic ({name})"
-msgstr ""
+msgstr "Automatisch ({name})"
 
-msgid "Default"
-msgstr "Standard"
-
-msgid "Moving in the text"
-msgstr "Im Text navigieren"
-
-msgid "Text selection"
-msgstr "Textauswahl"
-
-msgid "Objects"
-msgstr "Objekte"
-
-msgid "Review"
-msgstr "Darstellung"
-
-msgid "Links"
-msgstr "Links"
-
-msgid "Unvisited links"
-msgstr "Nicht besuchte Links"
-
-msgid "Visited links"
-msgstr "Besuchte Links"
-
-msgid "Headings"
-msgstr "Überschriften"
-
-msgid "Level 1 headings"
-msgstr "Überschrift Ebene 1"
-
-msgid "Level 2 headings"
-msgstr "Überschrift Ebene 2"
-
-msgid "Level 3 headings"
-msgstr "Überschrift Ebene 3"
-
-msgid "Level 4 headings"
-msgstr "Überschrift Ebene 4"
-
-msgid "Level 5 headings"
-msgstr "Überschrift Ebene 5"
-
-msgid "Level 6 headings"
-msgstr "Überschrift Ebene 6"
-
-msgid "Lists"
-msgstr "Listen"
-
-msgid "List items"
-msgstr "Listeneinträge"
-
-msgid "Graphics"
-msgstr "Grafiken"
-
-msgid "Block quotes"
-msgstr "Zitatblöcke"
-
-msgid "Buttons"
-msgstr "Schalter"
-
-msgid "Form fields"
-msgstr "Formularfelder"
-
-msgid "Edit fields"
-msgstr "Eingabefelder"
-
-msgid "Radio buttons"
-msgstr "Auswahlschalter"
-
-msgid "Combo boxes"
-msgstr "Kombinationsfelder"
-
-msgid "Check boxes"
-msgstr "Kontrollkästchen"
-
-msgid "Non-link blocks"
-msgstr "Textabschnitte ohne Links"
-
-msgid "Frames"
-msgstr "Rahmen"
-
-msgid "Separators"
-msgstr "Trennlinien"
-
-msgid "Embedded objects"
-msgstr "Eingebettete Objekte"
-
-msgid "Annotations"
-msgstr "Anmerkungen"
-
-msgid "Spelling errors"
-msgstr "Rechtschreibfehler"
-
-msgid "Tables"
-msgstr "Tabellen"
-
-msgid "Move in table"
-msgstr "In Tabelle navigieren"
+#, fuzzy, python-format
+#| msgid " on the system keyboard"
+msgid "Emulate on the system keyboard: %s"
+msgstr " auf der System-Tastatur"
 
 msgid "If pressed twice, presents the information in browse mode"
 msgstr "Bei zweimaligem Drücken wird die Information im Lesemodus angezeigt"
 
-msgid "Docu&mentation"
-msgstr "&Dokumentation"
+msgid "&Gestures for this display"
+msgstr ""
 
-#, fuzzy
-#| msgid "Opens the addon's documentation."
-msgid "Opens the add-on documentation."
-msgstr "Öffnet die Dokumentation der Erweiterung."
+msgid ""
+"Shows a browseable summary of braille profile bindings and add-on keyboard "
+"shortcuts."
+msgstr ""
 
 msgid "&Settings..."
 msgstr "&Einstellungen..."
 
 #, fuzzy
-#| msgid "Opens the addons' settings."
-msgid "Opens the add-on settings."
+#| msgid "Opens the add-on settings."
+msgid "Opens the addons' settings."
 msgstr "Öffnet die Einstellungen der Erweiterung."
 
 msgid "Table &dictionaries"
@@ -1742,9 +1404,9 @@ msgid "Advanced input mode configuration"
 msgstr "Erweiterten Eingabemodus konfigurieren"
 
 #, fuzzy
-#| msgid "&Quick launches"
-msgid "&Quick launches..."
-msgstr "&Schnellstarts"
+#| msgid "&Quick launches..."
+msgid "&Quick launches"
+msgstr "&Schnellstarts..."
 
 msgid "Quick launches configuration"
 msgstr "Schnellstart-Einstellungen"
@@ -1761,16 +1423,21 @@ msgstr "Erweiterung neu &laden"
 msgid "Reload this add-on."
 msgstr "Lädt die Erweiterung neu."
 
-#, fuzzy
-#| msgid "Braille tables"
 msgid "&Braille Essentials"
-msgstr "Braille-Tabellen"
+msgstr "&Braille-Essentials"
 
-msgid "Switches to the previous rotor setting"
-msgstr "Wechselt zur vorherigen Rotor-Einstellung"
+msgid ""
+"Braille Essentials: select the previous rotor category (links, headings, "
+"review, and so on)"
+msgstr ""
 
-msgid "Switches to the next rotor setting"
-msgstr "Wechselt zur nächsten Rotor-Einstellung"
+#, fuzzy
+#| msgid "Braille Essentials settings"
+msgid "Braille Essentials: select the next rotor category"
+msgstr "Braille Essentials-Einstellungen"
+
+msgid "Character"
+msgstr "Zeichen"
 
 msgid "Word"
 msgstr "Wort"
@@ -1790,21 +1457,34 @@ msgstr "Dokument"
 msgid "Not available here"
 msgstr "Hier nicht verfügbar"
 
-msgid "Not supported here or not in browse mode"
-msgstr "Hier nicht unterstützt oder nicht im Lesemodus"
-
-msgid "Moves to the next item based on rotor setting"
-msgstr "Wechselt zum nächsten Element basierend auf der Rotor-Einstellung"
-
-msgid "Moves to the previous item based on rotor setting"
-msgstr "Wechselt zum vorherigen Element basierend auf der Rotor-Einstellung"
+msgid ""
+"Braille Essentials rotor: move forward (next character, link, review line, "
+"and so on, depending on the rotor)"
+msgstr ""
 
 msgid ""
-"Selects the item under the braille cursor e.g. doing default action if "
-"moving by objects"
+"Braille Essentials rotor: move backward (previous character, link, review "
+"line, and so on)"
 msgstr ""
-"Wählt das Element unter dem Braille-Cursor aus, z.B. Ausführung der "
-"Standardaktion beim bewegen zwischen Objekten"
+
+msgid ""
+"Braille Essentials rotor: next step (next line, next object group, larger "
+"selection unit, depending on the rotor)"
+msgstr ""
+
+msgid ""
+"Braille Essentials rotor: previous step (previous line, object group, or "
+"selection unit)"
+msgstr ""
+
+msgid ""
+"Braille Essentials rotor: activate the item (press Enter or the rotors "
+"default action)"
+msgstr ""
+
+msgid ""
+"Lock or unlock the braille keyboard so dots are not translated as you type"
+msgstr ""
 
 msgid "Braille keyboard locked"
 msgstr "Braille-Tastatur gesperrt"
@@ -1812,8 +1492,8 @@ msgstr "Braille-Tastatur gesperrt"
 msgid "Braille keyboard unlocked"
 msgstr "Braille-Tastatur freigegeben"
 
-msgid "Toggle braille keyboard lock"
-msgstr "Schaltet die Blockierung der Braille-Tastatur ein oder aus"
+msgid "Turn Braille Essentials one-handed braille input on or off"
+msgstr ""
 
 msgid "One-handed mode enabled"
 msgstr "Einhandmodus eingeschaltet"
@@ -1821,8 +1501,8 @@ msgstr "Einhandmodus eingeschaltet"
 msgid "One handed mode disabled"
 msgstr "Einhandmodus ausgeschaltet"
 
-msgid "Toggle one-handed mode"
-msgstr "Schaltet den Einhandmodus ein oder aus"
+msgid "Hide or show dots 7 and 8 in contracted braille output"
+msgstr ""
 
 msgid "Dots 7 and 8 disabled"
 msgstr "Punkte 7 und 8 ausgeschaltet"
@@ -1830,8 +1510,8 @@ msgstr "Punkte 7 und 8 ausgeschaltet"
 msgid "Dots 7 and 8 enabled"
 msgstr "Punkte 7 und 8 eingeschaltet"
 
-msgid "Toggle showing or hiding dots 7 and 8"
-msgstr "Schaltet die Punkte 7 und 8 ein oder aus"
+msgid "Switch BRF output mode (braille file / literary layout handling)"
+msgstr ""
 
 msgid "BRF mode enabled"
 msgstr "BRF-Modus eingeschaltet"
@@ -1839,8 +1519,13 @@ msgstr "BRF-Modus eingeschaltet"
 msgid "BRF mode disabled"
 msgstr "BRF-Modus ausgeschaltet"
 
-msgid "Toggle BRF mode"
-msgstr "Schaltet den BRF-Modus ein oder aus"
+#, fuzzy
+#| msgid "Toggle locking modifier keys when using braille input"
+msgid ""
+"Lock or unlock modifier keys when entering text from the braille keyboard"
+msgstr ""
+"Schaltet die Blockierung der Modifikator-Tasten bei der Braille-Eingabe ein "
+"oder aus"
 
 msgid "Modifier keys locked"
 msgstr "Modifikator-Tasten gesperrt"
@@ -1848,33 +1533,33 @@ msgstr "Modifikator-Tasten gesperrt"
 msgid "Modifier keys unlocked"
 msgstr "Modifikator-Tasten freigegeben"
 
-msgid "Toggle locking modifier keys when using braille input"
+msgid ""
+"Turn reporting of font attributes in braille (bold, italic, underline, and "
+"so on) on or off"
 msgstr ""
-"Schaltet die Blockierung der Modifikator-Tasten bei der Braille-Eingabe ein "
-"oder aus"
 
-msgid "Toggle font attributes report"
-msgstr "Schaltet die Anzeige der Formatierung ein oder aus"
+msgid ""
+"Turn alignment indicators in braille (left, center, right, justified) on or "
+"off"
+msgstr ""
 
-#, fuzzy
-#| msgid "Enable/disable alignments report"
-msgid "Toggle alignments report"
-msgstr "Anzeige der Ausrichtung aktivieren / deaktivieren"
+msgid ""
+"Show only plain text in braille (strip most structure and attribute marks)"
+msgstr ""
 
-#, fuzzy
-#| msgid "One-handed mode enabled"
 msgid "Plain text mode enabled"
-msgstr "Einhandmodus eingeschaltet"
+msgstr "Nur-Text-Modus aktiviert"
 
-#, fuzzy
-#| msgid "One handed mode disabled"
 msgid "Plain text mode disabled"
-msgstr "Einhandmodus ausgeschaltet"
+msgstr "Nur-Text-Modus deaktiviert"
 
-#, fuzzy
-#| msgid "Toggle one-handed mode"
-msgid "Toggle plain text mode"
-msgstr "Schaltet den Einhandmodus ein oder aus"
+msgid ""
+"Cycle how NVDA speaks the current line when you scroll braille (off, focus, "
+"review, or both)"
+msgstr ""
+
+msgid "Turn NVDA speech on or off (same as the built-in speech toggle)"
+msgstr ""
 
 msgid "Speech off"
 msgstr "Sprachausgabe ausgeschaltet"
@@ -1882,22 +1567,20 @@ msgstr "Sprachausgabe ausgeschaltet"
 msgid "Speech on"
 msgstr "Sprachausgabe eingeschaltet"
 
-msgid "Toggle speech on or off"
-msgstr "Schaltet die Sprachausgabe ein oder aus"
+msgid ""
+"Read extra details for the review cursor (name, description, value; for "
+"example a link URL)"
+msgstr ""
 
 msgid "No extra info for this element"
 msgstr "Keine zusätzlichen Informationen für dieses Element"
 
-#. Translators: Input help mode message for report extra infos command.
 msgid ""
-"Reports some extra infos for the current element. For example, the URL on a "
-"link"
+"Open a browseable list of dot patterns for the current Liblouis input table"
 msgstr ""
-"Zeigt zusätzliche Informationen für ein Element, wie etwa die URL eines "
-"Links, an"
 
 msgid " Input table"
-msgstr "Eingabe-Tabelle"
+msgstr " Eingabe-Tabelle"
 
 msgid "Output table"
 msgstr "Ausgabetabelle"
@@ -1906,10 +1589,15 @@ msgstr "Ausgabetabelle"
 msgid "Table overview (%s)"
 msgstr "Tabellen-Übersicht (%s)"
 
+#, fuzzy
+#| msgid ""
+#| "Convert the text selection in unicode braille and display it in a "
+#| "browseable message"
 msgid ""
-"Shows an overview of current input braille table in a browseable message"
+"Translate the selection to Unicode braille and show it in a browseable window"
 msgstr ""
-"Zeigt eine Übersichtsmeldung der aktuell eingegebenen Braille-Tabelle an"
+"Konvertiert den ausgewählten Text in Unicode-Braille, der dann anschließend "
+"in einer Nachricht angezeigt wird"
 
 msgid "No text selection"
 msgstr "Kein Text ausgewählt"
@@ -1917,98 +1605,118 @@ msgstr "Kein Text ausgewählt"
 msgid "Unicode Braille conversion"
 msgstr "Unicode-Braille-Umwandlung"
 
+#, fuzzy
+#| msgid ""
+#| "Convert text selection in braille cell descriptions and display it in a "
+#| "browseable message"
 msgid ""
-"Convert the text selection in unicode braille and display it in a browseable "
-"message"
+"Translate the selection to dot numbers (cell descriptions) and show them in "
+"a browseable window"
 msgstr ""
-"Konvertiert den ausgewählten Text in Unicode-Braille, der dann anschließend "
+"Konvertiert den ausgewählten Text in Modulbeschreibungen, der anschließend "
 "in einer Nachricht angezeigt wird"
 
 msgid "Braille Unicode to cell descriptions"
 msgstr "Unicode-Braille in Modulbeschreibungen umwandeln"
 
 msgid ""
-"Convert text selection in braille cell descriptions and display it in a "
-"browseable message"
+"Convert selected dot-number text (for example 125-24-0) to Unicode braille "
+"cells"
 msgstr ""
-"Konvertiert den ausgewählten Text in Modulbeschreibungen, der anschließend "
-"in einer Nachricht angezeigt wird"
 
 msgid "Cell descriptions to braille Unicode"
 msgstr "Modulbeschreibungen in Unicode-Braille umwandeln"
 
 msgid ""
-"Braille cell description to Unicode Braille. E.g.: in a edit field type "
-"'125-24-0-1-123-123'. Then select this text and execute this command"
+"Turn advanced braille input mode on or off (HUC or numeric character codes "
+"and abbreviation expansions)"
 msgstr ""
-"Braillemodulbeschreibung zu Unicode Braille. Beispiel: Geben Sie in einem "
-"Eingabefeld \"125-24-0-1-123-123\" ein. markieren Sie dann diesen Text und "
-"führen diesen Befehl aus"
 
-msgid "Toggle advanced input mode"
-msgstr "Schaltet den erweiterten Eingabemodus ein oder aus"
+#, fuzzy
+#| msgid "Show punctuation/symbol &name for undefined characters if available"
+msgid ""
+"Turn punctuation or symbol names in braille for undefined characters on or "
+"off"
+msgstr ""
+"Interpunktion/Symbol&name für undefinierte Zeichen anzeigen, falls verfügbar"
 
-msgid "Describe undefined characters enabled"
-msgstr "Beschreibung undefinierter Zeichen eingeschaltet"
+#, fuzzy
+#| msgid "Show punctuation/symbol &name for undefined characters if available"
+msgid "Punctuation or symbol names for undefined characters in braille on"
+msgstr ""
+"Interpunktion/Symbol&name für undefinierte Zeichen anzeigen, falls verfügbar"
 
-msgid "Describe undefined characters disabled"
-msgstr "Beschreibung undefinierter Zeichen ausgeschaltet"
+#, fuzzy
+#| msgid "Show punctuation/symbol &name for undefined characters if available"
+msgid "Punctuation or symbol names for undefined characters in braille off"
+msgstr ""
+"Interpunktion/Symbol&name für undefinierte Zeichen anzeigen, falls verfügbar"
 
-msgid "Toggle description of undefined characters"
-msgstr "Schaltet die Beschreibung undefinierter Zeichen ein oder aus"
+msgid ""
+"Report how far the caret has moved through the text under the braille cursor "
+"(percentage and character count)"
+msgstr ""
 
 msgid "No text"
 msgstr "Kein Text"
 
-msgid "Reports the cursor position of text under the braille cursor"
-msgstr "Teilt die Cursor-Position im Text unter dem Braille-Cursor mit"
-
+#, fuzzy
+#| msgid ""
+#| "Toggles showing the current time and date on the braille display. Updates "
+#| "every second and stays visible on the main braille buffer."
 msgid ""
-"Toggles showing the current time and date on the braille display. Updates "
-"every second and stays visible on the main braille buffer."
+"Show the current time and date on the braille display, updating every "
+"second. Press again to return to normal braille."
 msgstr ""
-
-msgid "Autoscroll feature unavailable (patch not applied)"
-msgstr ""
-
-msgid "Toggle automatic braille scroll"
-msgstr "Schaltet das automatische Weiterlesen in Braille ein oder aus"
-
-msgid "Increases the master volume"
-msgstr "Erhöht die Hauptlautstärke"
-
-msgid "Decreases the master volume"
-msgstr "Verringert die Hauptlautstärke"
-
-msgid "Toggle sound mute"
-msgstr "Schaltet die Audio-Stummschaltung ein oder aus"
+"Schaltet die Anzeige der aktuellen Uhrzeit und des Datums auf der "
+"Braillezeile um. Wird jede Sekunde aktualisiert und bleibt im Hauptbraille-"
+"Puffer sichtbar."
 
 #, fuzzy
-#| msgid "Shows the Braille Extender documentation"
-msgid "Shows the Braille Essentials documentation"
-msgstr "Zeigt die Dokumentation für Braille Extender an"
+#| msgid "Toggle automatic braille scroll"
+msgid "Turn Braille Essentials automatic braille scrolling on or off"
+msgstr "Schaltet das automatische Weiterlesen in Braille ein oder aus"
+
+msgid "Autoscroll feature unavailable (patch not applied)"
+msgstr "Autoscroll-Funktion nicht verfügbar (Patch nicht angewendet)"
+
+msgid ""
+"Press the system volume up key and report the new level in braille or speech"
+msgstr ""
+
+msgid ""
+"Press the system volume down key and report the new level in braille or "
+"speech"
+msgstr ""
+
+msgid "Press the system mute key and report the new mute or volume state"
+msgstr ""
+
+msgid ""
+"Show a browseable summary of braille profile gestures and add-on keyboard "
+"shortcuts"
+msgstr ""
+
+msgid ""
+"Run a quick-launch item (application, file, or URL) configured in Braille "
+"Essentials settings"
+msgstr ""
 
 msgid "No such file or directory"
 msgstr "Datei oder Ordner existiert nicht"
 
-#, fuzzy
-#| msgid ""
-#| "Opens a custom program/file. Go to Braille Extender settings to define "
-#| "them"
 msgid ""
-"Opens a custom program/file. Go to Braille Essentials settings to define them"
+"Increase the delay before the braille display auto-scrolls to the next chunk"
 msgstr ""
-"Öffnet ein benutzerdefiniertes Programm oder eine Datei. Gehen Sie in die "
-"Einstellungen von Braille Extender, um diese zu definieren"
 
-msgid "Increase braille autoscroll delay"
+msgid ""
+"Decrease the delay before the braille display auto-scrolls to the next chunk"
 msgstr ""
-"Erhöht die Verzögerung beim automatischen Weiterlesen auf der Braillezeile"
 
-msgid "Decrease braille autoscroll delay"
+msgid ""
+"Switch to the next Liblouis input table from your Braille Essentials list "
+"(including automatic selection)"
 msgstr ""
-"Verringert die Verzögerung beim automatischen Weiterlesen auf der "
-"Braillezeile"
 
 msgid "NVDA 2017.3 or later is required to use this feature"
 msgstr "NVDA 2017.3 oder neuer ist erforderlich, um diese Funktion zu nutzen"
@@ -2024,18 +1732,21 @@ msgstr ""
 msgid "Input: %s"
 msgstr "Eingabe: %s"
 
-msgid "Switches between configured braille input tables"
-msgstr "Wechselt zwischen den Braille-Eingabetabellen"
+msgid ""
+"Switch to the next Liblouis output table from your Braille Essentials list "
+"(including automatic selection)"
+msgstr ""
 
 #, python-format
 msgid "Output: %s"
 msgstr "Ausgabe: %s"
 
-msgid "Switches between configured braille output tables"
-msgstr "Wechselt zwischen konfigurierten Braille-Ausgabetabellen"
+msgid ""
+"Announce the active Liblouis input and output table names in speech and "
+"braille"
+msgstr ""
 
-#, fuzzy, python-brace-format
-#| msgid "I⣿O:{I}"
+#, python-brace-format
 msgid "IO:{I}"
 msgstr "I⣿O:{I}"
 
@@ -2043,8 +1754,7 @@ msgstr "I⣿O:{I}"
 msgid "Input and output: {I}."
 msgstr "Eingabe und Ausgabe: {I}."
 
-#, fuzzy, python-brace-format
-#| msgid "I:{I} ⣿ O: {O}"
+#, python-brace-format
 msgid "I:{I}  O: {O}"
 msgstr "I:{I} ⣿ O: {O}"
 
@@ -2052,43 +1762,39 @@ msgstr "I:{I} ⣿ O: {O}"
 msgid "Input: {I}; Output: {O}"
 msgstr "Eingabe: {I}; Ausgabe: {O}"
 
-msgid "Reports the current braille input and output tables"
-msgstr "Meldet die aktuellen Braille-Eingabe- und -Ausgabetabellen"
-
 msgid ""
-"Reports the Unicode value of the character where the cursor is located and "
-"the decimal, binary and octal values"
+"Show character information for the review cursor: Unicode name, speech "
+"symbol, braille cells, and numeric bases"
 msgstr ""
-"Gibt dem Unicode-Wert des aktuellen Zeichens unter dem Cursor aus sowie den "
-"Dezimal-, Binär- und Oktalwert"
 
-msgid ""
-"Shows the output speech for selected text in braille, useful for emojis for "
-"example"
+msgid "Show the speech symbol string for the current selection in braille"
 msgstr ""
-"Zeigt die Sprachausgabe für ausgewählten Text in Braille an (nützlich z. B. "
-"für Emojis)"
+
+#, fuzzy
+#| msgid "Repeats the last shortcut performed from a braille display"
+msgid "Repeat the last keyboard shortcut you issued from the braille display"
+msgstr "Wiederholt das letzte auf einer Braillezeile gedrückte Tastenkürzel"
 
 msgid "No shortcut performed from a braille display"
 msgstr "Kein Tastenkürzel auf der Braillezeile verwendet"
 
-msgid "Repeats the last shortcut performed from a braille display"
-msgstr "Wiederholt das letzte auf einer Braillezeile gedrückte Tastenkürzel"
-
-#, fuzzy
-#| msgid "Braille Extender reloaded"
 msgid "Braille Essentials reloaded"
-msgstr "Braille Extender neu geladen"
+msgstr "Braille Essentials neu geladen"
+
+msgid ""
+"Reload Braille Essentials settings, gesture maps, and patches without "
+"restarting NVDA"
+msgstr ""
+
+msgid ""
+"Reload the primary braille display chosen in Braille Essentials or NVDA "
+"(when that slot follows NVDA's active display)"
+msgstr ""
 
 #, fuzzy
-#| msgid "Reloads Braille Extender"
-msgid "Reloads Braille Essentials"
-msgstr "Lädt Braile Extender neu"
-
-msgid "Reloads the primary braille display defined in settings"
-msgstr "Lädt die erste in den Einstellungen ausgewählte Braillezeile neu"
-
-msgid "Reloads the secondary braille display defined in settings"
+#| msgid "Reloads the secondary braille display defined in settings"
+msgid ""
+"Reload the secondary braille display chosen in Braille Essentials settings"
 msgstr "Lädt die zweite in den Einstellungen ausgewählte Braillezeile neu"
 
 msgid "No braille display specified. No reload to do"
@@ -2108,15 +1814,32 @@ msgstr "Umschalt"
 msgid "ALT"
 msgstr "Alt"
 
+msgid ""
+"Cancel staged modifier keys from the braille keyboard before emulating a PC "
+"shortcut"
+msgstr ""
+
 msgid "Keyboard shortcut cancelled"
 msgstr "Tastenkürzel verworfen"
 
-#. /* docstrings for modifier keys */
-msgid "Emulate pressing down "
-msgstr "Tastendruck Pfeiltaste nach unten emulieren"
+msgid "Scroll the braille display backward by one full width"
+msgstr ""
 
-msgid " on the system keyboard"
-msgstr " auf der System-Tastatur"
+msgid "Scroll the braille display forward by one full width"
+msgstr ""
+
+msgid "Developer: toggle verbose logging of text info at the review cursor"
+msgstr ""
+
+#, fuzzy
+#| msgid ""
+#| "Saves the current braille view. Press twice quickly to clean the buffer"
+msgid ""
+"Save the current braille window as a snapshot; press twice quickly to clear "
+"the saved snapshot"
+msgstr ""
+"Speichert die aktuelle Braille-Ansicht. Zweimal schnell drücken, um den "
+"Puffer zu leeren"
 
 msgid "Current braille view saved"
 msgstr "Aktuelle Braille-Ansicht gespeichert"
@@ -2124,10 +1847,9 @@ msgstr "Aktuelle Braille-Ansicht gespeichert"
 msgid "Buffer cleaned"
 msgstr "Puffer geleert"
 
-msgid "Saves the current braille view. Press twice quickly to clean the buffer"
+msgid ""
+"Show the saved braille snapshot briefly; press twice for a browseable copy"
 msgstr ""
-"Speichert die aktuelle Braille-Ansicht. Zweimal schnell drücken, um den "
-"Puffer zu leeren"
 
 msgid "View saved"
 msgstr "Ansicht gespeichert"
@@ -2135,8 +1857,8 @@ msgstr "Ansicht gespeichert"
 msgid "Buffer empty"
 msgstr "Puffer ist leer"
 
-msgid "Shows the saved braille view through a flash message"
-msgstr "Zeigt die aktuelle Braille-Ansicht in einer Blitzmeldung an"
+msgid "Pause or resume the braille display cell test pattern"
+msgstr ""
 
 msgid "Pause"
 msgstr "Anhalten"
@@ -2144,9 +1866,32 @@ msgstr "Anhalten"
 msgid "Resume"
 msgstr "Fortfahren"
 
+msgid ""
+"Slow down the braille cell test pattern (longer interval between updates)"
+msgstr ""
+
+msgid ""
+"Speed up the braille cell test pattern (shorter interval between updates)"
+msgstr ""
+
+#, fuzzy
+#| msgid "Switches to the previous rotor setting"
+msgid "Switch to the previous braille cell test pattern"
+msgstr "Wechselt zur vorherigen Rotor-Einstellung"
+
 #, python-format
 msgid "Auto test type %d"
 msgstr "Auto-Test-Typ %d"
+
+#, fuzzy
+#| msgid "Switches to the next rotor setting"
+msgid "Switch to the next braille cell test pattern"
+msgstr "Wechselt zur nächsten Rotor-Einstellung"
+
+msgid ""
+"Start or stop the built-in braille cell test pattern (for display alignment "
+"and timing)"
+msgstr ""
 
 msgid "Auto test stopped"
 msgstr "Auto-Test angehalten"
@@ -2162,14 +1907,16 @@ msgstr ""
 "den Test anzuhalten oder fortzusetzen. DrückenSie die Escape-Taste zum "
 "Beenden"
 
-msgid "Auto test"
-msgstr "Auto-Test"
+msgid ""
+"Open the dialog to add or inspect a Liblouis dictionary entry for the "
+"character under the review cursor"
+msgstr ""
 
 msgid "Add dictionary entry or see a dictionary"
 msgstr "Wörterbucheintrag hinzufügen oder Wörterbuch einsehen"
 
-msgid "Adds an entry in braille dictionary"
-msgstr "Fügt einen Eintrag dem Braille-Wörterbuch hinzu"
+msgid "Skip or include blank lines when scrolling long text in braille"
+msgstr ""
 
 msgid "Skip blank lines enabled"
 msgstr "Leerzeilen überspringen eingeschaltet"
@@ -2177,22 +1924,21 @@ msgstr "Leerzeilen überspringen eingeschaltet"
 msgid "Skip blank lines disabled"
 msgstr "Leerzeilen überspringen ausgeschaltet"
 
-msgid "Toggle blank lines during text scrolling"
-msgstr "Schaltet die Leerzeilen beim Lesen ein oder aus"
+msgid ""
+"Cycle how routing keys behave in edit fields (normal, emulate arrows with "
+"beeps, or emulate arrows silently)"
+msgstr ""
 
-msgid "Toggle routing cursors behavior in edit fields"
-msgstr "Schaltet das Verhalten des Routing-Cursors in Eingabefeldern um"
+msgid ""
+"Turn Braille Essentials speech history mode on or off (captures speech for "
+"later review)"
+msgstr ""
 
-#, fuzzy
-#| msgid "Speech History Mode disabled (%s)"
 msgid "Speech History Mode disabled"
 msgstr "Sprachausgabenverlauf ausgeschaltet (%s)"
 
 msgid "Speech History Mode enabled"
 msgstr "Sprachausgabenverlauf eingeschaltet"
-
-msgid "Toggle Speech History Mode"
-msgstr "Schaltet den Sprachausgabenverlauf ein oder aus"
 
 #. Add-on description
 #. Translators: Long description to be shown for this add-on on add-on information from add-on store
@@ -2237,21 +1983,59 @@ msgid ""
 "dots 7 and 8, enter and backspace\n"
 "* Add actions and quick navigation through a rotor"
 msgstr ""
+"Dieses Add-on bietet wesentliche Funktionen für NVDA-Benutzer, die auf "
+"Braille-Unterstützung angewiesen sind. Die folgenden vom Braille Extender "
+"abgeleiteten Funktionen sind verfügbar:\\n\n"
+"\\n\n"
+"* Laden Sie zwei beliebte Braillezeilen mit Verknüpfungen neu.\\n\n"
+"* Automatisches Review-Cursor-Tethering in der Terminal-Rolle wie in PuTTY, "
+"Powershell, Bash, cmd.\\n\n"
+"* Automatisches Scrollen.\\n\n"
+"* Wechseln Sie zwischen mehreren Eingabe-/Ausgabe-Braille-Tabellen.\\n\n"
+"* Markieren Sie den Text mit besonderen Attributen bis Punkt 7, Punkt 8 oder "
+"beide.\\n\n"
+"* Verwenden Sie zwei Ausgabe-Braille-Tabellen gleichzeitig.\\n\n"
+"* Tabulatorzeichen als Leerzeichen anzeigen.\\n\n"
+"* Schaltflächen zum Rückwärts-Vorwärts-Scrollen und Zurück-Scrollen.\\n\n"
+"* Sagen Sie die aktuelle Zeile beim Scrollen des Textes entweder im "
+"Überprüfungsmodus oder im Fokusmodus oder in beiden.\\n\n"
+"* Übersetzen Sie Text einfach in Unicode-Braille und umgekehrt. Beispiel: z "
+"<--> .\\n\n"
+"* Zellbeschreibung in Unicode-Braille umwandeln und umgekehrt. Beispiel: 123 "
+"<--> .\\n\n"
+"* Braille-Tastatur sperren.\\n\n"
+"* Starten Sie eine Anwendung/URL mit einer Geste.\\n\n"
+"* Braille-Wörterbücher.\\n\n"
+"* Tippen Sie mit einer Hand über die Braille-Tastatur.\\n\n"
+"* Zeigen Sie undefinierte Zeichen aus Braille-Tabellen (einschließlich "
+"Emojis) mit alternativen Darstellungen an.\\n\n"
+"* Geben Sie ein beliebiges Zeichen über die Braille-Tastatur ein "
+"(einschließlich Emojis).\\n\n"
+"* Leerzeilen beim Scrollen des Textes überspringen.\\n\n"
+"* Sprachverlaufsmodus.\\n\n"
+"\\n\n"
+"Und noch viel mehr.\\n\n"
+"\\n\n"
+"Für einige Braillezeilen werden die Braillezeilenbefehle um Folgendes "
+"erweitert:\\n\n"
+"\\n\n"
+"* Bieten Sie vollständige Gestenkarten an, einschließlich Funktionstasten, "
+"Multimediatasten, Schnellnavigation usw.\\n\n"
+"* Modifikatortasten und damit alle Tastenkombinationen emulieren\\n\n"
+"* Bieten Sie verschiedene Tastaturkonfigurationen mit der Möglichkeit zur "
+"Eingabe der Punkte 7 und 8, der Eingabetaste und der Rücktaste an.\\n\n"
+"* Fügen Sie Aktionen und schnelle Navigation durch einen Rotor hinzu"
 
 #. Brief changelog for this version
 #. Translators: what's new content for the add-on version to be shown in the add-on store
 msgid ""
-"* Initial forked add-on release.\n"
-"* NVDA 2024.1 or later is required.\n"
-"\n"
-"Changes from BrailleExtender:\n"
-"\n"
-"* User interface and documentation now refers to \"Braille Essentials\".\n"
-"* Removed add-on version from \"Braille Essentials\" NVDA menu item.\n"
-"* Changed add-on homepage and source URL.\n"
-"* Removed add-on update check feature and update channel options (add-on "
-"updates done through the add-on store).\n"
-"* Remove \"website\" menu item (add-on website can be opened from add-on "
-"store).\n"
-"* Remove \"translation pot file\" menu item (no replacement)."
+"* NVDA 2025.3.3 or later is required.\n"
+"* Removed add-on features, commands, and settings included in NVDA screen "
+"reader, including speech interrupt when scrolling on same line (2022.3), "
+"announce character when routing braille cursor (2024.4), and say current "
+"line while scrolling in (2025.1).\n"
+"* Document formatting tags are now based on NVDA screen reader tags (tag/"
+"dots 1-2-4-7-8, tag, dots 1-4-5-7-8).\n"
+"* Added an installation message informing that BrailleExtender must be "
+"disabled when installing Braille Essentials (these add-ons are incompatible)."
 msgstr ""
