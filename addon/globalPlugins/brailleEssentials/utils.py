@@ -32,7 +32,6 @@ from .common import (
 	REPLACE_TEXT,
 	baseDir,
 	default_braille_table_file_for_cur_language,
-	NVDA_HAS_AUTOMATIC_BRAILLE_TABLES,
 )
 from . import huc
 from . import volumehelper
@@ -423,11 +422,6 @@ def getCharFromValue(value_spec: str) -> str:
 	return chr(codepoint)
 
 
-def supportsAutomaticBrailleTables():
-	"""Returns True if NVDA supports automatic braille table selection (NVDA 2025.1+)."""
-	return NVDA_HAS_AUTOMATIC_BRAILLE_TABLES
-
-
 def getAutomaticTableDisplayName(*, is_input: bool) -> str:
 	"""Get the display string for automatic table, e.g. 'Automatic (en-us-comp8.utb)'."""
 	# Translators: An option to select a braille table automatically, according to the current language.
@@ -449,10 +443,9 @@ def getActiveOutputTableForSwitch():
 	configured = config.conf["braille"]["translationTable"]
 	if configured == "auto":
 		return "auto"
-	if supportsAutomaticBrailleTables():
-		default_file = default_braille_table_file_for_cur_language(is_input=False)
-		if braille.handler.table.fileName == default_file:
-			return "auto"
+	default_file = default_braille_table_file_for_cur_language(is_input=False)
+	if braille.handler.table.fileName == default_file:
+		return "auto"
 	return configured
 
 
@@ -461,10 +454,9 @@ def getActiveInputTableForSwitch():
 	configured = config.conf["braille"]["inputTable"]
 	if configured == "auto":
 		return "auto"
-	if supportsAutomaticBrailleTables():
-		default_file = default_braille_table_file_for_cur_language(is_input=True)
-		if brailleInput.handler.table.fileName == default_file:
-			return "auto"
+	default_file = default_braille_table_file_for_cur_language(is_input=True)
+	if brailleInput.handler.table.fileName == default_file:
+		return "auto"
 	return brailleInput.handler.table.fileName
 
 
