@@ -256,12 +256,6 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		self.submenu = wx.Menu()
 		item = self.submenu.Append(
 			wx.ID_ANY,
-			_("&User guide"),
-			_("Opens the add-on user guide (readme.html) in your default viewer."),
-		)
-		gui.mainFrame.sysTrayIcon.Bind(wx.EVT_MENU, lambda event: self.script_getHelp(None), item)
-		item = self.submenu.Append(
-			wx.ID_ANY,
 			_("&Gestures for this display…"),
 			_("Shows a browseable summary of braille profile bindings and add-on keyboard shortcuts."),
 		)
