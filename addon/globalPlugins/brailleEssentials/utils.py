@@ -8,7 +8,6 @@ import re
 
 import addonHandler
 import api
-import appModuleHandler
 import braille
 import brailleInput
 import brailleTables
@@ -22,6 +21,7 @@ import speech
 import textInfos
 import ui
 from keyboardHandler import KeyboardInputGesture
+from logHandler import log
 
 addonHandler.initTranslation()
 import treeInterceptorHandler
@@ -30,11 +30,13 @@ from .common import (
 	INSERT_AFTER,
 	INSERT_BEFORE,
 	REPLACE_TEXT,
-	baseDir,
 	default_braille_table_file_for_cur_language,
+	NVDA_HAS_AUTOMATIC_BRAILLE_TABLES,
+	NVDA_HAS_CUSTOM_BRAILLE_TABLES,
 )
 from . import huc
 from . import volumehelper
+from .addoncfg import CHOICE_braille, CHOICE_speech, CHOICE_speechAndBraille
 
 get_mute = volumehelper.get_mute
 get_volume_level = volumehelper.get_volume_level
@@ -52,16 +54,12 @@ def _resolveInputTableFileName(table_file: str) -> str:
 
 def _liblouisTablePaths(table_file: str) -> list[str]:
 	"""Primary table plus ``braille-patterns.cti`` (absolute paths)."""
-	tables_dir = brailleTables.TABLES_DIR
-	return [
-		os.path.join(tables_dir, table_file),
-		os.path.join(tables_dir, "braille-patterns.cti"),
-	]
+	from . import braille_table_chain
+
+	return braille_table_chain.liblouis_paths_for_table(table_file)
 
 
 def report_volume_level():
-	from .addoncfg import CHOICE_braille, CHOICE_speech, CHOICE_speechAndBraille
-
 	feedback = config.conf["brailleEssentials"]["volumeChangeFeedback"]
 	braille_feedback = feedback in (CHOICE_braille, CHOICE_speechAndBraille)
 	speech_feedback = feedback in (CHOICE_speech, CHOICE_speechAndBraille)
@@ -213,11 +211,15 @@ def getTextInBraille(text=None, table=None):
 	if not table or "current" in table:
 		liblouis_tables = getCurrentBrailleTables()
 	else:
+		from . import braille_table_chain
+
 		liblouis_tables = []
-		tables_root = brailleTables.TABLES_DIR
 		for entry in table:
 			if "\\" not in entry and "/" not in entry:
-				liblouis_tables.append("%s\\%s" % (tables_root, entry))
+				try:
+					liblouis_tables.append(braille_table_chain.resolve_table_path(entry))
+				except FileNotFoundError:
+					liblouis_tables.append(os.path.join(brailleTables.TABLES_DIR, entry))
 			else:
 				liblouis_tables.append(entry)
 	return "\n".join(
@@ -422,6 +424,23 @@ def getCharFromValue(value_spec: str) -> str:
 	return chr(codepoint)
 
 
+def supportsAutomaticBrailleTables():
+	"""Returns True if NVDA supports automatic braille table selection (NVDA 2025.1+)."""
+	return NVDA_HAS_AUTOMATIC_BRAILLE_TABLES
+
+
+def supports_custom_braille_tables():
+	"""Returns True if NVDA supports registering custom braille tables (NVDA 2024.3+)."""
+	return NVDA_HAS_CUSTOM_BRAILLE_TABLES
+
+
+def custom_braille_tables_enabled():
+	"""Returns True if a custom braille table is active for input or output."""
+	from .custom_braille_tables import get_active_custom_input_table, get_active_custom_output_table
+
+	return bool(get_active_custom_input_table() or get_active_custom_output_table())
+
+
 def getAutomaticTableDisplayName(*, is_input: bool) -> str:
 	"""Get the display string for automatic table, e.g. 'Automatic (en-us-comp8.utb)'."""
 	# Translators: An option to select a braille table automatically, according to the current language.
@@ -432,56 +451,91 @@ def getAutomaticTableDisplayName(*, is_input: bool) -> str:
 
 
 def getTranslationTable():
-	translation_table = config.conf["braille"]["translationTable"]
-	if translation_table == "auto":
-		return default_braille_table_file_for_cur_language(is_input=False)
-	return translation_table
+	from . import braille_table_chain
+
+	return braille_table_chain.get_translation_table_file()
 
 
-def getActiveOutputTableForSwitch():
-	"""Returns the effective output table identifier for switching: 'auto' or table fileName."""
-	configured = config.conf["braille"]["translationTable"]
-	if configured == "auto":
-		return "auto"
-	default_file = default_braille_table_file_for_cur_language(is_input=False)
-	if braille.handler.table.fileName == default_file:
-		return "auto"
-	return configured
+def getActiveOutputTableForSwitch() -> str:
+	"""Return the output table id used for preferred-table cycling (``auto`` or file name)."""
+	from .custom_braille_tables import get_effective_output_table_id
+
+	return get_effective_output_table_id()
 
 
-def getActiveInputTableForSwitch():
-	"""Returns the effective input table identifier for switching: 'auto' or table fileName."""
-	configured = config.conf["braille"]["inputTable"]
-	if configured == "auto":
-		return "auto"
+def getActiveInputTableForSwitch() -> str:
+	"""Return the input table id used for preferred-table cycling (``auto`` or file name)."""
+	from .custom_braille_tables import get_effective_input_table_id
+
+	return get_effective_input_table_id()
+
+
+def get_braille_table_display_name(table_id: str, *, is_input: bool) -> str:
+	"""Display name for a table id from the preferred-table list (``auto`` or file name)."""
+	if table_id == "auto":
+		return getAutomaticTableDisplayName(is_input=is_input)
+	try:
+		return brailleTables.getTable(table_id).displayName
+	except LookupError:
+		return table_id
+
+
+def apply_braille_input_table(table_id: str) -> None:
+	"""Apply an input table by preferred-list id (``auto`` or registered file name)."""
+	from .custom_braille_tables import is_table_usable, persist_input_table_selection
+
 	default_file = default_braille_table_file_for_cur_language(is_input=True)
-	if brailleInput.handler.table.fileName == default_file:
-		return "auto"
-	return brailleInput.handler.table.fileName
+	if table_id != "auto" and not is_table_usable(table_id):
+		log.warning(
+			"cannot apply unavailable input table %r; using automatic",
+			table_id,
+		)
+		table_id = "auto"
+	if table_id == "auto":
+		if brailleInput.handler:
+			brailleInput.handler._table = brailleTables.getTable(default_file)
+		persist_input_table_selection("auto")
+		return
+	try:
+		table = brailleTables.getTable(table_id)
+	except LookupError:
+		table = brailleTables.getTable(default_file)
+		table_id = table.fileName
+	if brailleInput.handler:
+		brailleInput.handler._table = table
+	persist_input_table_selection(table_id)
+
+
+def apply_braille_output_table(table_id: str) -> None:
+	"""Apply an output table by preferred-list id (``auto`` or registered file name)."""
+	from .custom_braille_tables import is_table_usable, persist_output_table_selection
+
+	default_file = default_braille_table_file_for_cur_language(is_input=False)
+	if table_id != "auto" and not is_table_usable(table_id):
+		log.warning(
+			"cannot apply unavailable output table %r; using automatic",
+			table_id,
+		)
+		table_id = "auto"
+	if table_id == "auto":
+		if braille.handler:
+			braille.handler._table = brailleTables.getTable(default_file)
+		persist_output_table_selection("auto")
+		return
+	try:
+		table = brailleTables.getTable(table_id)
+	except LookupError:
+		table = brailleTables.getTable(default_file)
+		table_id = table.fileName
+	if braille.handler:
+		braille.handler._table = table
+	persist_output_table_selection(table_id)
 
 
 def getCurrentBrailleTables(for_input: bool = False, brf: bool = False):
-	from . import tabledictionaries
+	from . import braille_table_chain
 
-	if brf:
-		tables = [
-			os.path.join(baseDir, "res", "brf.ctb").encode("UTF-8"),
-			os.path.join(brailleTables.TABLES_DIR, "braille-patterns.cti"),
-		]
-	else:
-		tables = []
-		try:
-			app = appModuleHandler.getAppModuleForNVDAObject(api.getNavigatorObject())
-		except OSError:
-			app = None
-		if app and app.appName != "nvda":
-			tables += tabledictionaries.dictTables
-		if for_input:
-			table_file = brailleInput.handler._table.fileName
-		else:
-			table_file = getTranslationTable()
-		tables += _liblouisTablePaths(table_file)
-	return tables
+	return braille_table_chain.get_liblouis_table_chain(for_input=for_input, brf=brf)
 
 
 def get_output_reason(reason_name):

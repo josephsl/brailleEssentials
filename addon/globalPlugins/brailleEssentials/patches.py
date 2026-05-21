@@ -71,6 +71,11 @@ from .documentformatting import (
 )
 from .objectpresentation import getPropertiesBraille, selectedElementEnabled, update_NVDAObjectRegion
 from .onehand import process as processOneHandMode
+from .braille_table_chain import (
+	disable_additional_output_for_session,
+	get_liblouis_table_chain,
+	has_additional_output,
+)
 from .utils import (
 	getCharFromValue,
 	getCurrentBrailleTables,
@@ -278,13 +283,35 @@ def update_region(self) -> None:
 				if translate_cursor is not None:
 					translate_cursor = converter.strToEncodedOffsets(translate_cursor)
 
-	self.brailleCells, braille_to_raw_pos, raw_to_braille_pos, self.brailleCursorPos = louisHelper.translate(
-		getCurrentBrailleTables(brf=bool(instanceGP and instanceGP.BRFMode)),
-		text_to_translate,
-		typeform=text_typeforms,
-		mode=mode,
-		cursorPos=translate_cursor,
-	)
+	brf_mode = bool(instanceGP and instanceGP.BRFMode)
+	table_list = get_liblouis_table_chain(brf=brf_mode)
+	try:
+		self.brailleCells, braille_to_raw_pos, raw_to_braille_pos, self.brailleCursorPos = (
+			louisHelper.translate(
+				table_list,
+				text_to_translate,
+				typeform=text_typeforms,
+				mode=mode,
+				cursorPos=translate_cursor,
+			)
+		)
+	except Exception:
+		if not has_additional_output():
+			raise
+		log.warning(
+			"translation failed with additional output pass; disabling it for this session",
+			exc_info=True,
+		)
+		disable_additional_output_for_session()
+		self.brailleCells, braille_to_raw_pos, raw_to_braille_pos, self.brailleCursorPos = (
+			louisHelper.translate(
+				get_liblouis_table_chain(brf=brf_mode),
+				text_to_translate,
+				typeform=text_typeforms,
+				mode=mode,
+				cursorPos=translate_cursor,
+			)
+		)
 	if converter is not None:
 		braille_to_raw_pos = [converter.encodedToStrOffsets(i) for i in braille_to_raw_pos]
 		raw_to_braille_pos = [raw_to_braille_pos[i] for i in converter.computedStrToEncodedOffsets]
@@ -925,6 +952,15 @@ def getFormatFieldBraille(field, fieldCache, isAtStart, formatConfig):
 	return braille.TEXT_SEPARATOR.join([x for x in textList if x])
 
 
+def _typeform_and_brlex_mask_from_format_field(region, field, formatConfig):
+	"""Return Liblouis typeform flags and Braille Extender cell mask for a format field."""
+	result = region._getTypeformFromFormatField(field, formatConfig)
+	if isinstance(result, tuple):
+		return result
+	# NVDA core returns only the Liblouis typeform int until documentformatting is applied.
+	return result, 0
+
+
 def _addTextWithFields(
 	self, info: textInfos.TextInfo, formatConfig: dict[str, Any], isSelection: bool = False
 ) -> None:
@@ -967,7 +1003,9 @@ def _addTextWithFields(
 			if cmd == "formatChange":
 				if isinstance(field, dict):
 					_prepare_format_field_for_braille(field)
-				typeform, brlex_typeform = self._getTypeformFromFormatField(field, formatConfig)
+				typeform, brlex_typeform = _typeform_and_brlex_mask_from_format_field(
+					self, field, formatConfig
+				)
 				text = getFormatFieldBraille(
 					field, format_field_attributes_cache, self._isFormatFieldAtStart, formatConfig
 				)
@@ -1107,9 +1145,16 @@ def previousLine(self, start: bool = False) -> None:
 def executeGesture(gesture):
 	script = gesture.script
 	if "brailleDisplayDrivers" in str(type(gesture)):
-		if instanceGP.brailleKeyboardLocked and (
-			(hasattr(script, "__func__") and script.__func__.__name__ != "script_toggleLockBrailleKeyboard")
-			or not hasattr(script, "__func__")
+		if (
+			instanceGP
+			and instanceGP.brailleKeyboardLocked
+			and (
+				(
+					hasattr(script, "__func__")
+					and script.__func__.__name__ != "script_toggleLockBrailleKeyboard"
+				)
+				or not hasattr(script, "__func__")
+			)
 		):
 			return
 		if hasattr(script, "__func__") and (
@@ -1138,6 +1183,8 @@ def executeGesture(gesture):
 				"script_winShift",
 			]
 		):
+			gesture.speechEffectWhenExecuted = None
+		elif script is None and not config.conf["brailleEssentials"]["stopSpeechUnknown"]:
 			gesture.speechEffectWhenExecuted = None
 	return True
 
