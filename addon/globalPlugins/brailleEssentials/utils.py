@@ -428,11 +428,6 @@ def supportsAutomaticBrailleTables():
 	return NVDA_HAS_AUTOMATIC_BRAILLE_TABLES
 
 
-def supports_custom_braille_tables():
-	"""Returns True if NVDA supports registering custom braille tables (NVDA 2024.3+)."""
-	return True
-
-
 def custom_braille_tables_enabled():
 	"""Returns True if a custom braille table is active for input or output."""
 	from .custom_braille_tables import get_active_custom_input_table, get_active_custom_output_table

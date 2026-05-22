@@ -362,17 +362,6 @@ class CustomBrailleTablesDlg(gui.settingsDialogs.SettingsDialog):
 		self._active_output_file_names: list[str] = []
 		self.customTablesList = None
 		self._custom_table_buttons: list[wx.Button] = []
-		if not utils.supports_custom_braille_tables():
-			sHelper.addItem(
-				wx.StaticText(
-					self,
-					label=_(
-						"Custom braille tables require NVDA 2024.3 or later. "
-						"Update NVDA to add your own Liblouis tables."
-					),
-				)
-			)
-			return
 
 		sHelper.addItem(
 			wx.StaticText(
@@ -747,19 +736,8 @@ class BrailleTablesDlg(gui.settingsDialogs.SettingsPanel):
 			initial=int(config.conf["brailleEssentials"]["tabSize_%s" % addoncfg.curBD]),
 		)
 
-		if utils.supports_custom_braille_tables():
-			manage_btn = sHelper.addItem(wx.Button(self, label=_("&Manage custom braille tables…")))
-			manage_btn.Bind(wx.EVT_BUTTON, self._on_manage_custom_braille_tables)
-		else:
-			sHelper.addItem(
-				wx.StaticText(
-					self,
-					label=_(
-						"Custom braille tables require NVDA 2024.3 or later. "
-						"Update NVDA to add your own Liblouis tables."
-					),
-				)
-			)
+		manage_btn = sHelper.addItem(wx.Button(self, label=_("&Manage custom braille tables…")))
+		manage_btn.Bind(wx.EVT_BUTTON, self._on_manage_custom_braille_tables)
 
 	def _on_manage_custom_braille_tables(self, evt: wx.CommandEvent) -> None:
 		getattr(gui.mainFrame, "popupSettingsDialog", gui.mainFrame._popupSettingsDialog)(
