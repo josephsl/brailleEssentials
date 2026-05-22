@@ -17,7 +17,6 @@ import config
 from logHandler import log
 
 from .common import (
-	NVDA_HAS_CUSTOM_BRAILLE_TABLES,
 	POST_TABLE_NONE,
 	baseDir,
 	default_braille_table_file_for_cur_language,
@@ -49,7 +48,7 @@ def resolve_table_path(table_file: str) -> str:
 	except LookupError:
 		table = None
 	directories: list[str] = []
-	if table is not None and NVDA_HAS_CUSTOM_BRAILLE_TABLES and hasattr(brailleTables, "_tablesDirs"):
+	if table is not None and hasattr(brailleTables, "_tablesDirs"):
 		source_dir = brailleTables._tablesDirs.get(getattr(table, "source", None))
 		if source_dir:
 			directories.append(source_dir)
@@ -60,7 +59,7 @@ def resolve_table_path(table_file: str) -> str:
 		path = os.path.join(directory, file_name)
 		if os.path.isfile(path):
 			return path
-	if NVDA_HAS_CUSTOM_BRAILLE_TABLES and hasattr(brailleTables, "_tablesDirs"):
+	if hasattr(brailleTables, "_tablesDirs"):
 		for directory in brailleTables._tablesDirs.values():
 			if directory in directories:
 				continue

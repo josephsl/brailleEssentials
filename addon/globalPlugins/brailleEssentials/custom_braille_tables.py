@@ -19,7 +19,6 @@ from logHandler import log
 
 from .common import (
 	NVDA_HAS_AUTOMATIC_BRAILLE_TABLES,
-	NVDA_HAS_CUSTOM_BRAILLE_TABLES,
 	POST_TABLE_NONE,
 	configDir,
 	default_braille_table_file_for_cur_language,
@@ -73,7 +72,7 @@ _tables_dir = os.path.join(configDir, TABLES_SUBDIR)
 
 def is_supported() -> bool:
 	"""True when NVDA exposes custom braille table registration (2024.3+)."""
-	return NVDA_HAS_CUSTOM_BRAILLE_TABLES and hasattr(brailleTables, "addTable")
+	return hasattr(brailleTables, "addTable")
 
 
 def get_active_custom_input_table() -> str:
