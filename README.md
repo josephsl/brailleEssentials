@@ -23,10 +23,14 @@ NVDA add-on that extends braille output, input, scrolling, and display-specific 
 
 ## Quick start
 
-1. Install the add-on package (or from the NVDA Add-on Store when it is listed there).
-2. Open settings: **NVDA menu → Braille Essentials→ Settings…**.
-3. Assign commands: **NVDA → Preferences → Input gestures → Braille Essentials** for global shortcuts, and use **Gestures for this display…** when you want to see what your braille profile defines.
-4. Open **User guide** once from the menu if you want the same information in a separate window while you use NVDA.
+These steps are enough for most users. You do not need custom braille tables unless you want your own table files.
+
+1. **Install** the add-on (`.nvda-addon` file, or form the NVDA Add-on Store when it is listed there).
+2. **Settings:** **NVDA menu → Braille Essentials → Settings…** — review the tabs you care about (for example **General**, **Braille tables**, **Document formatting**).
+3. **Gestures:** **NVDA → Preferences → Input gestures → Category: Braille Essentials** — assign the commands you will use. **NVDA menu → Braille Essentials → Gestures for this display…** shows what your current braille display profile already defines.
+4. Open **User guide** from the add-on store/menu/help if you want the same information in a separate window while you use NVDA.
+
+**Optional features** (only when you need them): custom braille tables, table dictionaries, quick launches, advanced input mode, and more. They are **not** part of the default setup — see [Documentation in NVDA](#documentation-in-nvda) for menu paths, or the detailed sections below.
 
 ---
 
@@ -42,7 +46,7 @@ NVDA’s own **Settings → Braille** (and related panels) have since gained opt
 |-----------|----------------------------|
 | **2022.3** | **Interrupt speech** when scrolling the braille display. |
 | **2024.2** | **`NVDA+Alt+t`** toggles **braille mode**; new **display speech output** mode (braille mirrors what NVDA speaks). |
-| **2024.3** | **Unicode normalization** for speech and braille. |
+| **2024.3** | **Unicode normalization** for speech and braille; **custom braille tables** from add-ons and NVDA’s scratchpad folder. Braille Essentials can add its own tables and use tables from other add-ons, not only NVDA’s built-in list. |
 | **2024.4** | **Speak character when routing** in text; more **formatting in braille** choices (e.g. tags); **paragraph start** in braille when reading by paragraph; routing fixes. |
 | **2025.1** | **Input and output tables** can follow NVDA’s **interface language**; **speak line or paragraph** when using braille **navigation** keys. |
 | **2026.1** | **List item count** and **spelling and grammar errors** are reported in braille. |
@@ -97,7 +101,83 @@ These match the tabs in **Braille Essentials settings**:
 - **Rotation lists:** your **input** and **output** table lists are **names in order, separated by commas**. The **next/previous table** commands move through that order (assign them in **Input gestures** if your display profile does not already).
 - **Automatic table row:** On **NVDA 2025.1+**, you can include **automatic** entries; the add-on resolves them with NVDA’s language-based default tables. On older NVDA, **auto** is not supported the same way—use explicit table files.
 - **Shortcut input table:** optional separate table used for certain shortcuts.
-- **Table dictionaries:** three layers—**default** (for all tables), **per output table**, and **temporary**—are combined when the add-on loads; if one file has errors, that layer is skipped until you fix the file. Edit them from the Braille tables category; **temporary** entries are for short-lived overrides.
+- **Additional Liblouis output pass:** optional **second output table** applied after the main one (tables from your preferred output list; not inactive custom tables).
+- **Tabs as spaces:** show tab characters as a run of spaces; **tab width** is per active display (range **1–42**).
+- **Manage custom braille tables…:** opens the custom-tables dialog (see below).
+
+**Table dictionaries** (not in settings tabs)
+
+Three layers work together: **Global** (applies to all tables), **Table** (for the current **output** table), and **Temporary** (short-lived overrides until you restart NVDA). If a dictionary file has errors, that layer is skipped until you fix it.
+
+Open **NVDA menu → Braille Essentials → Table dictionaries** → **Global dictionary**, **Table dictionary**, or **Temporary dictionary**.
+
+#### Custom braille tables
+
+Braille Essentials can **store and use your own braille tables** when you select them in the manager. They apply to braille **input** and **output** through the add-on (not through **NVDA → Settings → Braille** or the add-on’s table rotation lists).
+
+**Requirement**: Table files must be **`.utb`**, **`.ctb`**, or **`.tbl`** (not helper files such as `.cti` or `.dis`).
+
+**Where to open the manager**
+
+| Location | Use |
+|----------|-----|
+| **NVDA menu → Braille Essentials → Custom braille tables…** | Dedicated dialog (list and all actions). |
+| **Braille Essentials settings → Braille tables → Manage custom braille tables…** | Opens the same dialog. |
+
+**What you can do**
+
+| Action | Description |
+|--------|-------------|
+| **Add…** | **Copy from an existing table** or **create an empty table** with a minimal starter rule file. The copy list includes built-in NVDA tables, other add-ons’ tables, and tables already stored by Braille Essentials. Set display name, contracted, and input/output flags in the next dialog. |
+| **Remove** | Deletes metadata and the stored `.utb` / `.ctb` / `.tbl` file after confirmation. |
+| **Edit…** | Opens the table file in your default editor (under the user storage folder below). |
+| **Properties…** | Change display name, contracted, and whether the table is used for **input** and/or **output**. |
+
+To **clone a custom table you already manage**, use **Add… → Copy from an existing table** and pick it from the list (same display name as in the custom-tables list).
+
+**Add dialog**
+
+- Choose **Copy from an existing table** (built-in, other add-ons, or your own custom tables) or **Create an empty table**.
+- **Copy** keeps the source file extension (`.utb`, `.ctb`, or `.tbl`).
+- **Create empty** writes a minimal starter file as **`.utb`**, or **`.ctb`** if you mark the table **contracted** in the properties step.
+
+**Choosing which custom table to use**
+
+At the top of the custom braille tables dialog:
+
+| Control | Effect |
+|---------|--------|
+| **Active custom input table** | **None** (default) uses your normal NVDA input table. Pick a custom table to use it for braille input. |
+| **Active custom output table** | **None** uses your normal NVDA output table. Pick a custom table to use it for braille translation. |
+
+Only the table(s) you select here are active. They **do not** appear in **NVDA → Settings → Braille** or in Braille Essentials’ table rotation lists, so NVDA can still start normally if the add-on is not loaded.
+
+Press **OK** to apply your choice. To stop using custom tables, set both lists to **None** (files are kept). To delete tables permanently, use **Remove** in the manager.
+
+**Storage**
+
+Table files and a small settings file are saved in your **NVDA user configuration folder** ( **NVDA menu → Preferences → General → Open NVDA user configuration directory** ), under **brailleExtender\customBrailleTables\**.
+
+After you add, remove, or change tables, braille **updates immediately**.
+
+**Using custom tables day to day**
+
+1. Add the table (**Add… → Copy from an existing table**, or **create an empty table**).
+2. In **Properties**, allow it for **input** and/or **output** (capabilities of the table file).
+3. Set **Active custom input table** and/or **Active custom output table** to that table (or leave **None** for that direction).
+4. Press **OK**. New tables are selected automatically for the directions you enabled when you add them.
+
+**If you turn the add-on off**
+
+Your custom table choice is kept in Braille Essentials’ own settings so NVDA’s braille settings stay on a safe built-in table. When you enable the add-on again, your custom selection comes back.
+
+**Tables from other add-ons (NVDA 2024.3+)**
+
+You do **not** need to copy a table into Braille Essentials’ folder. Tables from another add-on (for example **Experimental braille tables**) or NVDA’s scratchpad work like built-in tables: add them to your **rotation lists**, switch to them with the table commands, or use them as the **additional output pass**. On **NVDA 2024.1–2024.2**, only NVDA’s built-in tables are supported.
+
+**If a table file is missing**
+
+The add-on falls back to a safe table where it can and clears broken entries from your lists so braille keeps working.
 
 ### Document formatting
 
