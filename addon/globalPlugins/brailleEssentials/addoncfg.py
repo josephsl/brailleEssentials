@@ -334,9 +334,8 @@ def sync_preferred_table_lists() -> None:
 	global inputTables, outputTables
 	listInputTables = [table.fileName for table in brailleTables.listTables() if table.input]
 	listOutputTables = [table.fileName for table in brailleTables.listTables() if table.output]
-	if utils.supportsAutomaticBrailleTables():
-		listInputTables = ["auto"] + listInputTables
-		listOutputTables = ["auto"] + listOutputTables
+	listInputTables = ["auto"] + listInputTables
+	listOutputTables = ["auto"] + listOutputTables
 	inputTables = parse_braille_table_list(config.conf["brailleEssentials"]["inputTables"])
 	outputTables = parse_braille_table_list(config.conf["brailleEssentials"]["outputTables"])
 	inputTables = [
@@ -349,11 +348,10 @@ def sync_preferred_table_lists() -> None:
 		for t in outputTables
 		if t and t in listOutputTables and not custom_braille_tables.is_custom_table_configured(t)
 	]
-	if utils.supportsAutomaticBrailleTables():
-		if "auto" not in inputTables:
-			inputTables.insert(0, "auto")
-		if "auto" not in outputTables:
-			outputTables.insert(0, "auto")
+	if "auto" not in inputTables:
+		inputTables.insert(0, "auto")
+	if "auto" not in outputTables:
+		outputTables.insert(0, "auto")
 	activeInput = utils.getActiveInputTableForSwitch()
 	activeOutput = utils.getActiveOutputTableForSwitch()
 	if (

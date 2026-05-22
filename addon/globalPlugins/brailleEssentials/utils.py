@@ -422,11 +422,6 @@ def getCharFromValue(value_spec: str) -> str:
 	return chr(codepoint)
 
 
-def supportsAutomaticBrailleTables():
-	"""Returns True if NVDA supports automatic braille table selection (NVDA 2025.1+)."""
-	return True
-
-
 def custom_braille_tables_enabled():
 	"""Returns True if a custom braille table is active for input or output."""
 	from .custom_braille_tables import get_active_custom_input_table, get_active_custom_output_table
