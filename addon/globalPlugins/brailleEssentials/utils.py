@@ -31,7 +31,6 @@ from .common import (
 	INSERT_BEFORE,
 	REPLACE_TEXT,
 	default_braille_table_file_for_cur_language,
-	NVDA_HAS_AUTOMATIC_BRAILLE_TABLES,
 )
 from . import huc
 from . import volumehelper
@@ -425,7 +424,7 @@ def getCharFromValue(value_spec: str) -> str:
 
 def supportsAutomaticBrailleTables():
 	"""Returns True if NVDA supports automatic braille table selection (NVDA 2025.1+)."""
-	return NVDA_HAS_AUTOMATIC_BRAILLE_TABLES
+	return True
 
 
 def custom_braille_tables_enabled():

@@ -75,18 +75,10 @@ POST_TABLE_NONE = "None"
 
 def default_braille_table_file_for_cur_language(*, is_input: bool) -> str:
 	"""Return a concrete braille table file name for the current NVDA language.
-
-	On NVDA 2025.1 and later this follows NVDA’s automatic table selection.
-	On NVDA 2024.x (no ``TableType`` / ``getDefaultTableForCurLang``) this returns
-	addon-consistent fallbacks and must not touch those APIs.
+	This follows NVDA’s automatic table selection.
 	"""
-	if NVDA_HAS_AUTOMATIC_BRAILLE_TABLES:
-		table_type = brailleTables.TableType.INPUT if is_input else brailleTables.TableType.OUTPUT
-		return brailleTables.getDefaultTableForCurLang(table_type)
-	if is_input:
-		# Matches historical ``addoncfg.loadGestures`` fallback when ``inputTable == "auto"``.
-		return "en-us-comp8.utb"
-	return brailleTables.DEFAULT_TABLE
+	table_type = brailleTables.TableType.INPUT if is_input else brailleTables.TableType.OUTPUT
+	return brailleTables.getDefaultTableForCurLang(table_type)
 
 
 lang = languageHandler.getLanguage().split("_")[-1].lower()

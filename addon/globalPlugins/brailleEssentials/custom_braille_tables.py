@@ -18,7 +18,6 @@ import globalVars
 from logHandler import log
 
 from .common import (
-	NVDA_HAS_AUTOMATIC_BRAILLE_TABLES,
 	POST_TABLE_NONE,
 	configDir,
 	default_braille_table_file_for_cur_language,
@@ -261,9 +260,7 @@ def nvda_persisted_table_value(table_id: str, *, is_input: bool) -> str:
 	if table_id == "auto":
 		return "auto"
 	if is_custom_table_configured(table_id):
-		if NVDA_HAS_AUTOMATIC_BRAILLE_TABLES:
-			return "auto"
-		return default_braille_table_file_for_cur_language(is_input=is_input)
+		return "auto"
 	return table_id
 
 
