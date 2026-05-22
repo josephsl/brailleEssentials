@@ -31,8 +31,8 @@ ACTIVE_TABLE_NONE = ""
 
 addonHandler.initTranslation()
 
-SOURCE_ID = "brailleExtender"
-CONFIG_FILE_NAME = "brailleExtenderCustomTables.json"
+SOURCE_ID = "brailleEssentials"
+CONFIG_FILE_NAME = "brailleEssentialsCustomTables.json"
 TABLES_SUBDIR = "customBrailleTables"
 # Extensions for tables registered in NVDA brailleTables (__tables.py): .utb, .ctb, and .tbl (e.g. kmr.tbl).
 # Liblouis also ships .cti / .dis / .uti / .dic as includes or auxiliary files; those are not NVDA tables.
@@ -323,7 +323,7 @@ def ensure_nvda_braille_config_valid() -> None:
 				is_input=is_input,
 			)
 			log.debug(
-				"moved custom %s table %r from NVDA config to brailleExtender.%s",
+				"moved custom %s table %r from NVDA config to brailleEssentials.%s",
 				"input" if is_input else "output",
 				configured,
 				active_key,

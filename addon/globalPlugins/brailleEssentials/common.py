@@ -69,7 +69,7 @@ NVDA_HAS_SPEAK_ON_ROUTING = nvdaVersionAtLeast(2024, 4)
 NVDA_HAS_CUSTOM_BRAILLE_TABLES = nvdaVersionAtLeast(2024, 3)
 NVDA_HAS_AUTOMATIC_BRAILLE_TABLES = nvdaVersionAtLeast(2025, 1)
 
-# Config value for disabled additional Liblouis output pass (``brailleExtender.postTable``).
+# Config value for disabled additional Liblouis output pass (``brailleEssentials.postTable``).
 POST_TABLE_NONE = "None"
 
 
