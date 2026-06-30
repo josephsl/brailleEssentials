@@ -1,9 +1,7 @@
 # coding: utf-8
 # brailleExtenderExcel.py
-# Part of Braille Extender addon for NVDA
-# Copyright 2026 André-Abush Clause, released under GPL.
-
-from __future__ import annotations
+# Part of Braille Essentials addon for NVDA
+# Copyright 2026 Joseph Lee, André-Abush Clause, released under GPL.
 
 import ctypes
 import itertools
