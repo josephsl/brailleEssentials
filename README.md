@@ -43,8 +43,6 @@ NVDA add-on that extends braille output, input, scrolling, and display-specific 
 3. **Gestures:** **NVDA → Preferences → Input gestures → Category: Braille Essentials** — assign the commands you will use. **NVDA menu → Braille Essentials → Gestures for this display…** shows what your current braille display profile already defines.
 4. Open **User guide** from the add-on store/menu/help if you want the same information in a separate window while you use NVDA.
 
-**Optional features** (only when you need them): custom braille tables, table dictionaries, quick launches, advanced input mode, and more. They are **not** part of the default setup — see [Documentation in NVDA](#documentation-in-nvda) for menu paths, or the detailed sections below.
-
 ---
 
 ## How Braille Essentials relates to NVDA
