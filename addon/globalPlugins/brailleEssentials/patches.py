@@ -187,6 +187,10 @@ def _queue_braille_scroll_line_speech() -> None:
 
 
 def script_braille_routeTo(self, gesture):
+	# Let app modules customize braille routing behavior.
+	obj = api.getNavigatorObject()
+	if hasattr(obj.appModule, "script_braille_routeTo"):
+		return obj.appModule.script_braille_routeTo(gesture)
 	if (
 		braille.handler.buffer == braille.handler.mainBuffer
 		and braille.handler.getTether() == speechhistorymode.TETHER_SPEECH
@@ -194,7 +198,6 @@ def script_braille_routeTo(self, gesture):
 		return speechhistorymode.showSpeechFromRoutingIndex(gesture.routingIndex)
 	if get_auto_scroll() and braille.handler.buffer is braille.handler.mainBuffer:
 		braille.handler.toggle_auto_scroll()
-	obj = api.getNavigatorObject()
 	if (
 		config.conf["brailleEssentials"]["routingCursorsEditFields"]
 		in [RC_EMULATE_ARROWS_BEEP, RC_EMULATE_ARROWS_SILENT]
