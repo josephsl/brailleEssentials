@@ -65,12 +65,14 @@ def nvdaVersionAtLeast(year: int, major: int, minor: int = 0) -> bool:
 # - 2024.3: custom braille tables (brailleTables.addTable, per-addon/scratchpad directories)
 # - 2025.1: speakOnNavigatingByUnit (NVDA braille), automatic braille table selection (inputTable/translationTable "auto")
 # - 2026.1: EXCEL_CELLINFO moved to NVDAHelper.localLib; localLib is a module (was the helper CDLL binding)
+# - 2026.3: braille.py becomes braille package with content split into focused modules
 # Braille Essentials speakScroll stays independent; turn off NVDA's "Speak when navigating by line or paragraph" to avoid duplicates.
 NVDA_HAS_INTERRUPT_SPEECH_WHILE_SCROLLING = nvdaVersionAtLeast(2022, 3)
 NVDA_HAS_SPEAK_ON_ROUTING = nvdaVersionAtLeast(2024, 4)
 NVDA_HAS_CUSTOM_BRAILLE_TABLES = nvdaVersionAtLeast(2024, 3)
 NVDA_HAS_AUTOMATIC_BRAILLE_TABLES = nvdaVersionAtLeast(2025, 1)
 NVDA_HAS_LOCAL_LIB_MODULE = nvdaVersionAtLeast(2026, 1)
+NVDA_HAS_BRAILLE_PACKAGE = nvdaVersionAtLeast(2026, 3)
 
 # Config value for disabled additional Liblouis output pass (``brailleEssentials.postTable``).
 POST_TABLE_NONE = "None"
