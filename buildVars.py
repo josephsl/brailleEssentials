@@ -56,8 +56,9 @@ For some braille displays, it extends the braille display commands to provide:
 	# Brief changelog for this version
 	# Translators: what's new content for the add-on version to be shown in the add-on store
 	addon_changelog=_("""* Updated the add-on code to Braille Extender commit 550d652c (2026-06-16), introducing enhanced braille support for Microsoft Excel and localization updates.
+* NVDA will honor custom braille routing commands from apps, specifically Punktum (issue 2).
 
-* Changes from BrailleExtender:
+Changes from BrailleExtender:
 
 * No statement on add-on store based update process in add-on settings/general category (Braille Essentials does not have a self-updating mechanism)."""),
 	# Author(s)
