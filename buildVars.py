@@ -55,15 +55,11 @@ For some braille displays, it extends the braille display commands to provide:
 	addon_version="26.05.4",
 	# Brief changelog for this version
 	# Translators: what's new content for the add-on version to be shown in the add-on store
-	addon_changelog=_("""* Updated the add-on code to be based on BrailleExtender commit adc4dca206f (2026-05-16). This resolves bugs including inability to open input braille table overview screen.
+	addon_changelog=_("""* Updated the add-on code to Braille Extender commit 550d652c (2026-06-16), introducing enhanced braille support for Microsoft Excel and localization updates.
 
-Changes from BrailleExtender:
+* Changes from BrailleExtender:
 
-* Removed "user guide" menu item (add-on user guide can be opened from add-on store under help menu item).
-* Some document formatting indicators on braille will resemble NVDA's own braille tags, including strikethrough and list items count in browse mode.
-* The add-on's document formatting settings option labels and order will closely resemble NVDA screen reader's own document formatting settings screen.
-* Strong emphasis braille tag is dots 12478/n/dots 14578.
-* In add-on settings, automatic braille input;output braill table selectionbased on current NVDA language will always be visible."""),
+* No statement on add-on store based update process in add-on settings/general category (Braille Essentials does not have a self-updating mechanism)."""),
 	# Author(s)
 	addon_author="Joseph Lee <joseph.lee22590@gmail.com> (originally André-Abush Clause <dev@andreabc.net> and other contributors)",
 	# URL for the add-on documentation support
