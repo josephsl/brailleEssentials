@@ -4,6 +4,12 @@ This document lists release changelogs for Braille Essentials add-on.
 
 Note: forked from BrailleExtender in May 2026.
 
+## Version 26.07
+
+* Updated the add-on code to Braille Extender commit 550d652c (2026-06-16), introducing enhanced braille support for Microsoft Excel and localization updates.
+* Changes from BrailleExtender:
+	* No statement on add-on store based update process in add-on settings/general category (Braille Essentials does not have a self-updating mechanism).
+
 ## Version 26.05.4
 
 * Updated the add-on code to be based on BrailleExtender commit adc4dca206f (2026-05-16). This resolves bugs including inability to open input braille table overview screen.
