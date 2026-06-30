@@ -90,17 +90,8 @@ def default_braille_table_file_for_cur_language(*, is_input: bool) -> str:
 	On NVDA 2024.x (no ``TableType`` / ``getDefaultTableForCurLang``) this uses
 	the configured NVDA table when set, otherwise addon-consistent fallbacks.
 	"""
-	if NVDA_HAS_AUTOMATIC_BRAILLE_TABLES:
-		table_type = brailleTables.TableType.INPUT if is_input else brailleTables.TableType.OUTPUT
-		return brailleTables.getDefaultTableForCurLang(table_type)
-	conf_key = "inputTable" if is_input else "translationTable"
-	configured = config.conf["braille"][conf_key]
-	if configured and configured != "auto":
-		return configured
-	if is_input:
-		# Matches historical ``addoncfg.loadGestures`` fallback when ``inputTable == "auto"``.
-		return _LEGACY_DEFAULT_INPUT_TABLE
-	return getattr(brailleTables, "DEFAULT_TABLE", _LEGACY_DEFAULT_OUTPUT_TABLE)
+	table_type = brailleTables.TableType.INPUT if is_input else brailleTables.TableType.OUTPUT
+	return brailleTables.getDefaultTableForCurLang(table_type)
 
 
 lang = languageHandler.getLanguage().split("_")[-1].lower()
