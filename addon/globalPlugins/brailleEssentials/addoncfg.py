@@ -120,6 +120,20 @@ def getValidBrailleDisplayPrefered():
 	return displays
 
 
+def _excelConfspec() -> dict[str, str]:
+	from appModules.brailleExtenderExcel import FormulaScope, ScopeFormulaDisplay
+
+	return {
+		"cellFormula": "boolean(default=True)",
+		"cellFormulaScope": f"option({', '.join(s.value for s in FormulaScope)}, default={FormulaScope.CELL})",
+		"scopeFormulaDisplay": f"option({', '.join(s.value for s in ScopeFormulaDisplay)}, default={ScopeFormulaDisplay.ACTIVE_CELL})",
+		"cellFormulaNeighbors": "integer(min=0, max=50, default=9)",
+		"cellFormulaSeparator": "string(default=' | ')",
+		"rowAxisPrefix": "string(default='')",
+		"columnAxisPrefix": "string(default='')",
+	}
+
+
 def getConfspec():
 	global curBD
 	curBD = braille.handler.display.name
@@ -222,7 +236,6 @@ def getConfspec():
 				"center": f"option({CHOICE_none}, {CHOICE_linePad}, {CHOICE_dot7}, {CHOICE_dot8}, {CHOICE_dots78}, {CHOICE_spacing}, {CHOICE_tags}, default={CHOICE_tags})",
 				"justified": f"option({CHOICE_none}, {CHOICE_linePad}, {CHOICE_dot7}, {CHOICE_dot8}, {CHOICE_dots78}, {CHOICE_spacing}, {CHOICE_tags}, default={CHOICE_tags})",
 			},
-			"cellFormula": "boolean(default=True)",
 			"methods": {
 				"bold": f"option({CHOICE_none}, {CHOICE_dot7}, {CHOICE_dot8}, {CHOICE_dots78}, {CHOICE_tags}, default={CHOICE_tags})",
 				"italic": f"option({CHOICE_none}, {CHOICE_dot7}, {CHOICE_dot8}, {CHOICE_dots78}, {CHOICE_tags}, default={CHOICE_tags})",
@@ -314,6 +327,7 @@ def getConfspec():
 			"fixCursorPositions": "boolean(default=True)",
 			"refreshForegroundObjNameChange": "boolean(default=False)",
 		},
+		"excel": _excelConfspec(),
 	}
 
 
@@ -377,6 +391,20 @@ def loadPreferredTables() -> None:
 	sync_preferred_table_lists()
 
 
+def _migrate_excel_settings_from_document_formatting() -> None:
+	be = config.conf["brailleEssentials"]
+	df = be.get("documentFormatting")
+	if df is None or "cellFormula" not in df:
+		return
+	excel = be.setdefault("excel", {})
+	if "cellFormula" not in excel:
+		excel["cellFormula"] = df["cellFormula"]
+	try:
+		del df["cellFormula"]
+	except KeyError:
+		pass
+
+
 def loadConf():
 	global curBD, gesturesFileExists, profileFileExists, iniProfile
 	curBD = braille.handler.display.name
@@ -387,6 +415,7 @@ def loadConf():
 	except configobj.validate.VdtValueError:
 		config.conf["brailleEssentials"]["updateChannel"] = "dev"
 		brlextConf = config.conf["brailleEssentials"].copy()
+	_migrate_excel_settings_from_document_formatting()
 	if "profile_%s" % curBD not in brlextConf.keys():
 		config.conf["brailleEssentials"]["profile_%s" % curBD] = "default"
 	if "tabSize_%s" % curBD not in brlextConf.keys():

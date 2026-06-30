@@ -681,7 +681,7 @@ class ManageMethods(wx.Dialog):
 		try:
 			return list(CHOICES_LABELS.keys()).index(conf["methods"].get(attribute, CHOICE_none))
 		except ValueError:
-			log.debugWarning("Braille Essentials: unknown formatting method %r", attribute)
+			log.debugWarning("unknown formatting method %r", attribute)
 			return 0
 
 	def onOk(self, evt):
@@ -787,10 +787,6 @@ class SettingsDlg(gui.settingsDialogs.SettingsPanel):
 			)
 			self.dynamic_options[-1].SetSelection(keys.index(get_report(key, 0)))
 
-		label = _("Cell &formula (Excel only for now)")
-		self.cellFormula = sHelper.addItem(wx.CheckBox(self, label=label))
-		self.cellFormula.SetValue(conf["cellFormula"])
-
 		label = _("Le&vel of items in a nested list")
 		self.levelItemsList = sHelper.addItem(wx.CheckBox(self, label=label))
 		self.levelItemsList.SetValue(conf["lists"]["showLevelItem"])
@@ -823,4 +819,3 @@ class SettingsDlg(gui.settingsDialogs.SettingsPanel):
 		for i, key in enumerate(LABELS_REPORTS.keys()):
 			val = list(LABELS_STATES.keys())[self.dynamic_options[i].GetSelection()]
 			set_report(key, val)
-		conf["cellFormula"] = self.cellFormula.IsChecked()

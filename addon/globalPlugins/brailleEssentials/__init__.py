@@ -27,6 +27,7 @@ import subprocess
 import time
 from collections import OrderedDict
 
+import appModuleHandler
 import api
 import braille
 import brailleInput
@@ -160,6 +161,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	def __init__(self):
 		startTime = time.time()
 		super(globalPluginHandler.GlobalPlugin, self).__init__()
+		appModuleHandler.registerExecutableWithAppModule("excel", "brailleExtenderExcel")
 		patches.instanceGP = self
 		patches.apply_patches()
 		braille.TextInfoRegion._addTextWithFields = documentformatting.decorator(
@@ -1567,6 +1569,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	def terminate(self):
 		from .custom_braille_tables import ensure_nvda_braille_config_valid
 
+		appModuleHandler.unregisterExecutable("excel")
 		ensure_nvda_braille_config_valid()
 		self.removeMenu()
 		rolelabels.discardRoleLabels()
