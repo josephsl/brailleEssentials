@@ -2,7 +2,7 @@
 
 * Authors: Joseph Lee, Dalen
 
-IMPORTANT: this is a fork of BrailleExtender (original author: André-Abush Clause). The rest of this document is based on BrailleExtender user guide with changes to add-on names and usage details. For a list of changes made between each Braille Essentials add-on releases, refer to [changelogs for add-on releases][1] document.
+IMPORTANT: this is a fork of Braille Extender (original author: André-Abush Clause). The rest of this document is based on Braille Extender user guide with changes to add-on names and usage details. For a list of changes made between each Braille Essentials add-on releases, refer to [changelogs for add-on releases][1] document.
 
 NVDA add-on that extends braille output, input, scrolling, and display-specific gestures.
 
@@ -374,7 +374,7 @@ If you work on the **source code**, build steps and developer tooling are descri
 
 ## Acknowledgements
 
-- **Copyright:** Braille Essentials is copyright 2026 Joseph Lee and contributors. BrailleExtender is © 2016-2026 André-Abush Clause and other contributors. BraileExtender repository can be found [here](https://github.com/aaclause/BrailleExtender/).
+- **Copyright:** Braille Essentials is copyright 2026 Joseph Lee and contributors. Braille Extender is © 2016-2026 André-Abush Clause and other contributors. BraileExtender repository can be found [here](https://github.com/aaclause/BrailleExtender/).
 
 ### Translators
 
