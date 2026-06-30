@@ -112,7 +112,7 @@ class ScopedBrailleSegment(NamedTuple):
 
 
 def _conf() -> Any:
-	return config.conf["brailleExtender"]["excel"]
+	return config.conf["brailleEssentials"]["excel"]
 
 
 def _scope() -> FormulaScope:
