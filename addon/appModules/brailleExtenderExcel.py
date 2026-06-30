@@ -36,9 +36,9 @@ except ImportError:
 		return f"{file_and_sheet}!{cell_range.replace(',', sep)}"
 
 
-from appModules.excel import AppModule as _NVDAExcelAppModule
+from nvdaBuiltin.appModules.excel import AppModule as _NVDAExcelAppModule
 
-from globalPlugins.brailleExtender.common import addonName
+from globalPlugins.brailleEssentials.common import addonName
 
 from NVDAObjects import NVDAObject
 from NVDAObjects.window.excel import ExcelCell
