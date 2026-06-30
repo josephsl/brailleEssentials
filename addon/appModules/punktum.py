@@ -1,15 +1,14 @@
 # Unterstützung für "Punktum"
 
+import appModuleHandler.
 import api
 import braille
-import globalCommands
-import globalPluginHandler
 import threading
 
 def setCursorAndClick(routingIndex):
 	braille.handler.routeTo(routingIndex)
 
-class GlobalPlugin(globalPluginHandler.GlobalPlugin):
+class AppModule(appModuleHandler.AppModule):
 	def script_braille_routeTo(self, gesture):
 		routingIndex = gesture.routingIndex
 		region = braille.handler.mainBuffer
@@ -23,5 +22,3 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			if FormClassName == "TAT_Text_Dlg" and MemoClassName == "TMemo":
 				Timer = threading.Timer(0.050, setCursorAndClick, args=(routingIndex, ))
 				Timer.start()
-
-globalCommands.GlobalCommands.script_braille_routeTo = GlobalPlugin().script_braille_routeTo
