@@ -12,7 +12,7 @@ from appModules.brailleExtenderExcel import FormulaScope, SCOPE_LABELS, ScopeFor
 
 addonHandler.initTranslation()
 
-conf = config.conf["brailleExtender"]["excel"]
+conf = config.conf["brailleEssentials"]["excel"]
 
 # Translators: formula display when Braille view is row or column range (Braille Extender Excel settings).
 _SCOPE_FORMULA_LABELS = {
