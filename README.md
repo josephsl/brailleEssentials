@@ -76,6 +76,7 @@ These match the tabs in **Braille Essentials settings**:
 | **Auto scroll** | Delays and behavior for automatic braille scrolling. |
 | **Speech History Mode** | History length, numbering, optional speech while browsing history. |
 | **Document formatting** | How formatting (bold, links, alignment, …) appears in braille, on top of NVDA’s document formatting (see [Detailed topics](#document-formatting)). |
+| **Excel** | Show cell values and formulas in braille; optional row or column overview with routing (see [Excel](#excel)). |
 | **Object Presentation** | Order of name, state, value, and other fields on the focus line; highlight selection with dots 7/8; progress bar messages on the display. |
 | **Braille tables** | Preferred input/output table lists, optional automatic tables on NVDA 2025.1+, shortcut input table, second translation pass, tabs as spaces, **Manage custom braille tables…** (NVDA 2024.3+). |
 | **Undefined character representation** | How characters missing from the table appear (dots, numbers, descriptions, HUC, …). |
