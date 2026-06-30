@@ -4,6 +4,7 @@
 # Copyright 2016-2026 Dalen Bernaca, Joseph Lee, André-Abush CLAUSE, released under GPL.
 
 import os
+from typing import Any
 
 import addonHandler
 import braille
@@ -391,43 +392,153 @@ def loadPreferredTables() -> None:
 	sync_preferred_table_lists()
 
 
-def _migrate_excel_settings_from_document_formatting() -> None:
-	be = config.conf["brailleEssentials"]
-	df = be.get("documentFormatting")
-	if df is None or "cellFormula" not in df:
-		return
-	excel = be.setdefault("excel", {})
-	if "cellFormula" not in excel:
-		excel["cellFormula"] = df["cellFormula"]
+# Keys formerly stored under documentFormatting before the dedicated excel section existed.
+_EXCEL_KEYS_FROM_DOCUMENT_FORMATTING = ("cellFormula",)
+
+# Top-level brailleExtender keys dropped from the confspec (best-effort removal).
+_DEPRECATED_BRAILLE_EXTENDER_KEYS = ("brailleTables", "useCustomBrailleTables")
+
+# Per-display defaults written when a display has no saved profile value yet.
+_DISPLAY_PROFILE_DEFAULTS = {
+	"profile_%s": "default",
+	"tabSize_%s": 2,
+	"leftMarginCells_%s": 0,
+	"rightMarginCells_%s": 0,
+	"keyboardLayout_%s": "?",
+}
+
+
+def _config_section_has_key(section: Any, key: str) -> bool:
+	"""Return whether *key* resolves on an NVDA config section (including confspec defaults)."""
+	if section is None:
+		return False
 	try:
-		del df["cellFormula"]
-	except KeyError:
-		pass
+		return key in section
+	except TypeError:
+		return False
+
+
+def _config_section_is_set(section: Any, key: str) -> bool:
+	"""Return whether *key* was explicitly stored in a profile (NVDA ``AggregatedSection.isSet``)."""
+	if section is None:
+		return False
+	is_set = getattr(section, "isSet", None)
+	if not callable(is_set):
+		return _config_section_has_key(section, key)
+	try:
+		return bool(is_set(key))
+	except (KeyError, TypeError):
+		return False
+
+
+def _try_remove_config_key(section: Any, key: str) -> bool:
+	"""Remove *key* when NVDA allows it.
+
+	NVDA's ``AggregatedSection`` (``source/config/__init__.py``) implements read/write via
+	``__getitem__`` / ``__setitem__`` but not ``__delitem__``, so ``del section[key]`` raises
+	``AttributeError`` for add-on keys. NVDA core upgrades use ``profileUpgrader`` on raw
+	``ConfigObj`` profiles instead. This helper attempts deletion and returns False when
+	NVDA blocks it (expected).
+	"""
+	if not _config_section_is_set(section, key):
+		return False
+	try:
+		del section[key]
+		return True
+	except AttributeError:
+		# AggregatedSection has no __delitem__; see nvaccess/nvda issue #13664.
+		return False
+	except (KeyError, TypeError):
+		return False
+
+
+def _copy_braille_extender_option(source_section: str, dest_section: str, key: str) -> bool:
+	"""Copy one option between brailleExtender subsections (NVDA AggregatedSection-safe).
+
+	Use ``section[key] = value`` only (never ``setdefault``). Migrate when the legacy key is
+	stored in a profile (``isSet``), or still resolves on the source section if ``isSet`` is
+	unavailable. Always write to *dest* even when it already has a confspec default.
+	"""
+	be = config.conf["brailleEssentials"]
+	source = be.get(source_section)
+	if source is None or not _config_section_is_set(source, key):
+		return False
+	be[dest_section][key] = source[key]
+	return True
+
+
+def _move_braille_extender_option(source_section: str, dest_section: str, key: str) -> bool:
+	"""Move one option between subsections (copy, then best-effort delete on the source)."""
+	if not _copy_braille_extender_option(source_section, dest_section, key):
+		return False
+	source = config.conf["brailleEssentials"].get(source_section)
+	_try_remove_config_key(source, key)
+	return True
+
+
+def _migrate_excel_settings_from_document_formatting() -> None:
+	for key in _EXCEL_KEYS_FROM_DOCUMENT_FORMATTING:
+		_move_braille_extender_option("documentFormatting", "excel", key)
+
+
+def _migrate_legacy_auto_scroll_delay() -> None:
+	"""Move flat ``autoScrollDelay_<display>`` to ``autoScroll.delay_<display>``."""
+	be = config.conf["brailleEssentials"]
+	legacy_key = f"autoScrollDelay_{curBD}"
+	if not _config_section_is_set(be, legacy_key):
+		return
+	delay_key = f"delay_{curBD}"
+	auto_scroll = be["autoScroll"]
+	if not _config_section_is_set(auto_scroll, delay_key):
+		auto_scroll[delay_key] = be[legacy_key]
+	_try_remove_config_key(be, legacy_key)
+
+
+def _migrate_deprecated_braille_extender_keys() -> None:
+	"""Drop keys removed from the confspec (deletion may be ignored by NVDA)."""
+	be = config.conf["brailleEssentials"]
+	for key in _DEPRECATED_BRAILLE_EXTENDER_KEYS:
+		_try_remove_config_key(be, key)
+
+
+def _ensure_display_profile_defaults() -> None:
+	"""Persist per-display defaults the first time a braille display is used."""
+	be = config.conf["brailleEssentials"]
+	for pattern, default in _DISPLAY_PROFILE_DEFAULTS.items():
+		key = pattern % curBD
+		if not _config_section_is_set(be, key):
+			be[key] = default
+	auto_scroll = be["autoScroll"]
+	delay_key = f"delay_{curBD}"
+	if not _config_section_is_set(auto_scroll, delay_key):
+		auto_scroll[delay_key] = DEFAULT_AUTO_SCROLL_DELAY
+
+
+def _run_config_migrations() -> None:
+	_migrate_legacy_auto_scroll_delay()
+	_migrate_excel_settings_from_document_formatting()
+	from . import custom_braille_tables
+
+	custom_braille_tables._migrate_legacy_custom_table_settings()
+	_migrate_deprecated_braille_extender_keys()
+	_ensure_display_profile_defaults()
+
+
+def is_display_profile_initialized(display_name: str | None = None) -> bool:
+	"""Return whether per-display Braille Extender settings exist for *display_name*."""
+	be = config.conf["brailleEssentials"]
+	name = display_name if display_name is not None else curBD
+	return _config_section_is_set(be, f"tabSize_{name}")
 
 
 def loadConf():
 	global curBD, gesturesFileExists, profileFileExists, iniProfile
 	curBD = braille.handler.display.name
-	if "brailleTables" in config.conf["brailleEssentials"]:
-		del config.conf["brailleEssentials"]["brailleTables"]
 	try:
-		brlextConf = config.conf["brailleEssentials"].copy()
+		config.conf["brailleEssentials"].copy()
 	except configobj.validate.VdtValueError:
 		config.conf["brailleEssentials"]["updateChannel"] = "dev"
-		brlextConf = config.conf["brailleEssentials"].copy()
-	_migrate_excel_settings_from_document_formatting()
-	if "profile_%s" % curBD not in brlextConf.keys():
-		config.conf["brailleEssentials"]["profile_%s" % curBD] = "default"
-	if "tabSize_%s" % curBD not in brlextConf.keys():
-		config.conf["brailleEssentials"]["tabSize_%s" % curBD] = 2
-	if "leftMarginCells__%s" % curBD not in brlextConf.keys():
-		config.conf["brailleEssentials"]["leftMarginCells_%s" % curBD] = 0
-	if "rightMarginCells_%s" % curBD not in brlextConf.keys():
-		config.conf["brailleEssentials"]["rightMarginCells_%s" % curBD] = 0
-	if "autoScrollDelay_%s" % curBD not in brlextConf.keys():
-		config.conf["brailleEssentials"]["autoScrollDelay_%s" % curBD] = 3000
-	if "keyboardLayout_%s" % curBD not in brlextConf.keys():
-		config.conf["brailleEssentials"]["keyboardLayout_%s" % curBD] = "?"
+	_run_config_migrations()
 	confGen = r"%s\%s\%s\profile.ini" % (
 		profilesDir,
 		curBD,

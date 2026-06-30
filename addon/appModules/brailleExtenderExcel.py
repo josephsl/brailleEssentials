@@ -25,8 +25,18 @@ from logHandler import log
 from scriptHandler import script
 from speech import speakMessage
 import NVDAHelper
-from NVDAHelper.localLib import EXCEL_CELLINFO
-from NVDAObjects.window.excel import convertAddressToLocal
+
+try:
+	from NVDAObjects.window.excel import convertAddressToLocal
+except ImportError:
+	# NVDA 2024.1 and earlier (see nvaccess/nvda commit for Excel locale-aware ranges).
+	_XL_LIST_SEPARATOR = 5  # XlApplicationInternational.LIST_SEPARATOR
+
+	def convertAddressToLocal(application: Any, address: str) -> str:
+		file_and_sheet, cell_range = address.rsplit("!", 1)
+		sep = application.International(_XL_LIST_SEPARATOR)
+		return f"{file_and_sheet}!{cell_range.replace(',', sep)}"
+
 
 from appModules.excel import AppModule as _NVDAExcelAppModule
 
@@ -37,6 +47,13 @@ if TYPE_CHECKING:
 	from NVDAObjects.window.excel import ExcelCell
 
 addonHandler.initTranslation()
+
+try:
+	from NVDAHelper.localLib import EXCEL_CELLINFO
+except (ImportError, ModuleNotFoundError):
+	from NVDAObjects.window.excel import ExcelCellInfo as EXCEL_CELLINFO
+
+_nvdaHelperLocalLib = NVDAHelper.localLib
 
 _CELL_INFO_FLAGS = 0x1 | 0x2 | 0x10 | 0x80
 _XL_A1 = 1
@@ -288,7 +305,7 @@ def _fetchCellInfos(obj: NVDAObject, rangeAddress: str, cellCount: int) -> list[
 	except (AttributeError, COMError):
 		return []
 	if (
-		NVDAHelper.localLib.nvdaInProcUtils_excel_getCellInfos(
+		_nvdaHelperLocalLib.nvdaInProcUtils_excel_getCellInfos(
 			handle,
 			obj.windowHandle,
 			BSTR(localAddress),

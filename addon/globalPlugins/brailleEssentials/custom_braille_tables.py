@@ -165,10 +165,15 @@ def _apply_active_table_handlers() -> None:
 
 def _migrate_legacy_custom_table_settings() -> None:
 	"""Drop deprecated master toggle; clear active keys when it was off."""
-	if not config.conf["brailleEssentials"].get("useCustomBrailleTables", True):
+	from .addoncfg import _config_section_is_set, _try_remove_config_key
+
+	be = config.conf["brailleEssentials"]
+	if _config_section_is_set(be, "useCustomBrailleTables") and not be["useCustomBrailleTables"]:
 		for key in (ACTIVE_INPUT_TABLE_KEY, ACTIVE_OUTPUT_TABLE_KEY):
-			if is_custom_table_configured(config.conf["brailleEssentials"].get(key, "")):
-				config.conf["brailleEssentials"][key] = ACTIVE_TABLE_NONE
+			active = be.get(key, "")
+			if is_custom_table_configured(active):
+				be[key] = ACTIVE_TABLE_NONE
+	_try_remove_config_key(be, "useCustomBrailleTables")
 
 
 def get_config_path() -> str:
