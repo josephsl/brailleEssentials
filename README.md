@@ -49,7 +49,7 @@ NVDA add-on that extends braille output, input, scrolling, and display-specific 
 
 Braille Essentials is a fork of Braille Extender (see below). It includes most of the features discussed below and shares common history and code. However, Braile Essentials is designed with more recent NVDA releases in mind, including using NVDA features such as add-on store's add-on update feature and support for document formatting tags provided by NVDA.
 
-From Braile Extender documentation: Braille Extender used to cover a lot of ground that **NVDA did not do yet** in braille. The first public release was **August 2017**, the same week as **NVDA 2017.3**, which is the version that best matches that moment in time.
+From Braille Extender documentation: Braille Extender used to cover a lot of ground that **NVDA did not do yet** in braille. The first public release was **August 2017**, the same week as **NVDA 2017.3**, which is the version that best matches that moment in time.
 
 NVDA’s own **Settings → Braille** (and related panels) have since gained options many people once relied on the add-on for. Braille Essentials still adds extra behavior; check NVDA’s **release notes** if you want the exact wording for each item below.
 
@@ -75,14 +75,14 @@ These match the tabs in **Braille Essentials settings**:
 | **Rotor** | Which rotor items exist and their order. |
 | **Auto scroll** | Delays and behavior for automatic braille scrolling. |
 | **Speech History Mode** | History length, numbering, optional speech while browsing history. |
-| **Document formatting** | Braille mirrors/overrides for NVDA document formatting (see [Detailed topics](#document-formatting)). |
-| **Object Presentation** | **Order properties** (name, state, value, role text, description, shortcuts, position, table coords, …), **selected** marking (dots 7/8 or tags), **progress bar** style, **background** progress rules. |
-| **Braille tables** | Input/output table rotation lists, optional automatic tables on NVDA 2025.1+, shortcut table, table dictionaries. |
-| **Undefined character representation** | How characters missing from the table appear (HUC8, numeric bases, custom patterns, descriptions). |
-| **Advanced input mode** | Escape sign, exit-after-one-character, abbreviation dictionary. |
+| **Document formatting** | How formatting (bold, links, alignment, …) appears in braille, on top of NVDA’s document formatting (see [Detailed topics](#document-formatting)). |
+| **Object Presentation** | Order of name, state, value, and other fields on the focus line; highlight selection with dots 7/8; progress bar messages on the display. |
+| **Braille tables** | Preferred input/output table lists, optional automatic tables on NVDA 2025.1+, shortcut input table, second translation pass, tabs as spaces, **Manage custom braille tables…** (NVDA 2024.3+). |
+| **Undefined character representation** | How characters missing from the table appear (dots, numbers, descriptions, HUC, …). |
+| **Advanced input mode** | Escape sign and exit-after-one-character (abbreviation dictionary is a separate menu dialog—see [Documentation in NVDA](#documentation-in-nvda)). |
 | **One-handed mode** | Enable and choose one of three one-hand input methods. |
 | **Role labels** | Custom braille labels for roles, landmarks, and states. |
-| **Advanced** | Compatibility toggles (cursor fixes, hide dots 7–8, foreground refresh on name changes). |
+| **Advanced** | Variation-selector cursor fix; refresh braille when the foreground object’s name changes. |
 
 ---
 
@@ -96,20 +96,19 @@ These match the tabs in **Braille Essentials settings**:
 - **Smart Caps Lock:** when this option is **on** and **Windows Caps Lock** is **on**, letters produced from the **braille keyboard** in an ordinary **text field** are **sent with swapped case** (each **A–Z** becomes the opposite case; other characters are unchanged). This only applies to normal typing, not when you are holding **modifier keys** for shortcuts. Turn it **off** if you want the braille table’s output exactly as translated, regardless of Caps Lock.
 - **Modifier / volume feedback:** optional **braille**, **speech**, **both**, or **none** when modifier locks or volume change gestures are used; optional **beeps** with modifiers.
 - **Two favorite displays:** pick two saved display names and use the reload gestures to **switch the active braille display** quickly.
-- **Margins:** per-display **left** and **right** margin in cells (each up to **80**).
+- **Right margin:** per active braille display, in cells (up to **80** in your profile; the settings spin control may allow a higher value).
 - **Reverse scroll buttons:** swaps which physical key means “scroll back” vs “scroll forward”.
-- **Tabs as spaces:** show tab characters as a run of spaces; **tab width** is per display (range **1–42**).
-- **Terminals (braille follows review):** when **on**, entering a **terminal** (classic console role, or **Windows Terminal**’s window) makes **braille follow the review cursor**, keeps the **review cursor aligned with the text caret**, and refreshes braille when the **caret moves**, even when NVDA would usually switch braille back to the focused control—so line-based keys act on the terminal text. When you **leave** the terminal, the add-on stops this behavior and returns to your normal NVDA braille settings. **Off** if you prefer stock NVDA behavior. **Does not apply** on the secure desktop when NVDA blocks the check, or when **braille mode** is set to follow speech output only.
+- **Terminals (braille follows review):** when **on**, in a **terminal** (Command Prompt, PowerShell, PuTTY, **Windows Terminal**, and similar) braille **follows the review cursor** and stays aligned with the text you are editing, even when NVDA would usually tie braille to the focused control. When you leave the terminal, normal NVDA behavior returns. Turn **off** if you prefer NVDA’s default. Not available on the secure sign-in screen, or when braille is set to follow **speech output** only.
 - **Routing in edit fields:** **normal** passes the key to NVDA; **emulate arrows** sends Home/End or repeated Left/Right so the caret jumps to the braille cell under the router (optional **beeps**). This applies when you are on the usual braille view, the system caret has **focus**, and you are in a **terminal** or **editable text** field.
 - **Announce character when routing braille cursor:** when enabled, after **routing** the add-on speaks the **character under the routing cursor** using NVDA’s speech-symbol rules. On **NVDA 2024.4+** this checkbox is **disabled** in favor of NVDA **Braille → Speak character when routing cursor in text** (same idea).
-- **Speech interrupt for unknown gestures:** checkbox that is saved in your profile; the current add-on code **does not read** this setting, so changing it has **no effect** (reserved for a possible future use).
-- **Post-output table:** optional second **Liblouis** pass after the usual table translation.
-- **Quick launches:** map gestures to **applications** or **URLs**; entries live in the “Quick launches” dialog.
-- **Unicode tools:** commands (assign in **Input gestures**) work on **selected text** in a **browse mode** document when a selection exists; if there is no selection, they use the **navigator object’s name** (the same object the **review cursor** is on—select text or move the review cursor first). They convert between **plain text and Unicode braille** (e.g. **z** ↔ **⠵** depending on table) and between **Unicode braille and dot numbers**.
+- **Speech interrupt for unknown gestures:** for **braille display** keys with **no assigned command**, controls whether NVDA **stops speech** when you press them. **Checked** (default): unassigned keys interrupt speech like most NVDA keys. **Unchecked**: unassigned keys do **not** cancel speech. Does not apply to braille **typing** (dots/enter), volume keys, modifier emulation, or line scroll when the scroll-interrupt rule above allows speech to continue.
+- **Braille keyboard configuration:** shown only when your display profile defines **keyboard layouts** (not all displays).
+- **Unicode tools** (assign in **Input gestures**): work on **selected text** on a web page when you have a selection; otherwise on the text at the **review cursor**. Convert plain text ↔ Unicode braille and Unicode braille ↔ dot numbers.
+- **Character information** (assign in **Input gestures**): at the review cursor, reports Unicode name, speech symbol, braille cells, and numeric bases; double-press for a browseable block.
 
 ### Braille tables
 
-- **Rotation lists:** your **input** and **output** table lists are **names in order, separated by commas**. The **next/previous table** commands move through that order (assign them in **Input gestures** if your display profile does not already).
+- **Rotation lists:** your **input** and **output** table lists are **names in order, separated by commas**. The **next/previous table** commands move through that order (assign them in **Input gestures** if your display profile does not already). **Custom Braille Essentials tables are not listed here**—choose them only in the custom braille tables dialog (see below).
 - **Automatic table row:** On **NVDA 2025.1+**, you can include **automatic** entries; the add-on resolves them with NVDA’s language-based default tables. On older NVDA, **auto** is not supported the same way—use explicit table files.
 - **Shortcut input table:** optional separate table used for certain shortcuts.
 - **Additional Liblouis output pass:** optional **second output table** applied after the main one (tables from your preferred output list; not inactive custom tables).
@@ -161,13 +160,13 @@ At the top of the custom braille tables dialog:
 | **Active custom input table** | **None** (default) uses your normal NVDA input table. Pick a custom table to use it for braille input. |
 | **Active custom output table** | **None** uses your normal NVDA output table. Pick a custom table to use it for braille translation. |
 
-Only the table(s) you select here are active. They **do not** appear in **NVDA → Settings → Braille** or in Braille Essentials’ table rotation lists, so NVDA can still start normally if the add-on is not loaded.
+Only the table(s) you select here are active. They **do not** appear in **NVDA → Settings → Braille** or in Braille Essentials’s table rotation lists, so NVDA can still start normally if the add-on is not loaded.
 
 Press **OK** to apply your choice. To stop using custom tables, set both lists to **None** (files are kept). To delete tables permanently, use **Remove** in the manager.
 
 **Storage**
 
-Table files and a small settings file are saved in your **NVDA user configuration folder** ( **NVDA menu → Preferences → General → Open NVDA user configuration directory** ), under **brailleExtender\customBrailleTables\**.
+Table files and a small settings file are saved in your **NVDA user configuration folder** ( **NVDA menu → Preferences → General → Open NVDA user configuration directory** ), under **brailleEssentials\customBrailleTables\**.
 
 After you add, remove, or change tables, braille **updates immediately**.
 
@@ -180,11 +179,11 @@ After you add, remove, or change tables, braille **updates immediately**.
 
 **If you turn the add-on off**
 
-Your custom table choice is kept in Braille Essentials’ own settings so NVDA’s braille settings stay on a safe built-in table. When you enable the add-on again, your custom selection comes back.
+Your custom table choice is kept in Braille Essentials’s own settings so NVDA’s braille settings stay on a safe built-in table. When you enable the add-on again, your custom selection comes back.
 
 **Tables from other add-ons (NVDA 2024.3+)**
 
-You do **not** need to copy a table into Braille Essentials’ folder. Tables from another add-on (for example **Experimental braille tables**) or NVDA’s scratchpad work like built-in tables: add them to your **rotation lists**, switch to them with the table commands, or use them as the **additional output pass**. On **NVDA 2024.1–2024.2**, only NVDA’s built-in tables are supported.
+You do **not** need to copy a table into Braille Essentials’s folder. Tables from another add-on (for example **Experimental braille tables**) or NVDA’s scratchpad work like built-in tables: add them to your **rotation lists**, switch to them with the table commands, or use them as the **additional output pass**. On **NVDA 2024.1–2024.2**, only NVDA’s built-in tables are supported.
 
 **If a table file is missing**
 
@@ -192,51 +191,80 @@ The add-on falls back to a safe table where it can and clears broken entries fro
 
 ### Document formatting
 
-Braille Essentials does **not** replace NVDA’s **Document formatting** dialog. It adds a **separate braille presentation** step on top of NVDA’s choices:
+Braille Essentials does **not** replace NVDA’s **Document formatting** dialog. The **Document formatting** settings tab adds a separate braille layer:
 
-- **Per-row mode:** for each report row, typically **Follow NVDA** (same toggles as NVDA Document formatting—speech **and** braille, not speech alone), **Always in braille** (force on the display, with **Methods** / **Tags** where applicable), or **Off** for that row in this layer.
-- **Plain text:** show content without the usual structure chrome from this layer.
-- **Line by line:** braille is built **line-at-a-time** for the reading unit.
-- **Alignments:** for **left / center / right / justified**, choose **none**, **line padding** (leading blanks on the physical line), **dot 7/8/78**, **tags**, or legacy **spacing** (treated like line padding where relevant).
-- **Methods:** for font-like attributes (**bold**, **italic**, **underline**, **strikethrough**, **strong**, **emphasised**, **marked**, sub/superscript, spelling/grammar flags) choose **none**, **dots 7/8**, **tags**, etc. NVDA’s own spelling/grammar attributes can still be driven by NVDA when you use **Follow NVDA** on those rows.
-- **Lists:** options such as **show level** for list items.
-- **Tags:** configurable **start/end** strings (defaults often `[` / `]`) for tag-style markers.
-- **Report options:** a long list of choices (alignment names, colors, links, tables, line numbers, spelling, …) aligned with NVDA’s document-formatting categories—each can follow NVDA, always show in braille, or stay off.
-- **Excel cell formulas:** when **on**, if a cell reports **has formula** and a formula string exists, the **formula** can be moved into the **description** field for braille so the state line is not overloaded (states are adjusted accordingly).
+- **Per category:** each row is **Follow NVDA document formatting**, **enabled**, or **disabled** (see the panel description at the top of the tab).
+- **Plain text mode** — disable all text formatting from this layer.
+- **Process formatting line per line** — build braille one line at a time.
+- **Report rows** — one combo per category (font attributes, emphasis, alignment, colors, links, headings, lists, tables, cell coordinates, spelling/grammar, and others listed on the tab).
+- **Level of items in a nested list** — show list nesting level in braille.
+- **Methods…** — per-attribute display (nothing, hand over to the table, dots 7/8, tags, line padding for alignments, etc.).
+- **Tags…** — start/end tag strings used by tag-style methods.
 
-On **NVDA 2024.4+**, NVDA adds its own global braille formatting choices; Braille Essentials still offers this row-by-row layout, tags, padding, and methods.
+On **NVDA 2024.4+**, NVDA also has global braille formatting options; this tab remains the add-on’s row-by-row control.
 
 ### Object presentation
 
-**Order properties**
+This tab changes what appears on the braille display when NVDA shows **one object at a time**—the summary line for the focused control (button, link, table cell, and similar). It does **not** change how NVDA **speaks** object information; use NVDA **Settings → Object presentation** for speech options.
 
-Controls the **left-to-right sequence** of pieces on the braille line when NVDA shows a **single object’s summary** (focus/context): **state**, **table cell coordinates**, **value**, **name**, **role text**, **description**, **keyboard shortcut**, **position** (e.g. `3/10`), **outline level** (`lv n`), **current** markers (for example “current page” on the web), **placeholder**, and similar fields.
+#### Order properties…
 
-- Open **Object presentation → Order Properties…** to move lines up/down. Buttons reset to **NVDA’s default order** or the **add-on default** (add-on default puts **states** and **cell coordinates** ahead of **name** for quicker scanning).
-- Only properties that **exist** for the current object are shown; empty pieces are skipped.
-- **Description**, **shortcut**, **position**, and **cell coordinates** still respect NVDA’s own presentation toggles (e.g. “report descriptions”) or the add-on’s document-formatting **report** for table cell coordinates—if NVDA omits them, they are not magically recreated here.
-- **Math:** if the object is **math** and NVDA can provide math braille, that content can be **added after** the usual summary.
-- **Visited links:** visited state may be folded into shorter **role text** (e.g. “vlnk”) so the state list stays compact.
+Open **Object presentation → Order Properties…** to set **which parts come first**, reading left to right on the display. Parts with no content for the current object are skipped.
 
-**Selected element marking**
+You can reorder these fields (labels match the dialog):
 
-How to **highlight the current selection** in braille: **none**, **dot 7**, **dot 8**, **dots 7 and 8**, or **tags**. When this is **not none** and a **name** is present, **selected** / **selectable** states are dropped from the **state** text so you do not hear redundant “selected” next to dots 7–8 marking.
+- **name**, **value**, **state**, **role text** (type of control, for example heading level)
+- **description**, **keyboard shortcut**, **position info** (shown as `3/10` in braille, not “3 of 10”)
+- **position info level** (outline level, `lv 2`)
+- **current labels** (for example “current page” on the web)
+- **place-holder**, **cell coordinates text**
 
-**Progress bar output**
+**Reset to the default NVDA order** — same order as NVDA without this add-on (name, then value, state, role text, and so on).
 
-Matches the choices in **Object presentation** settings:
+**Reset to the default add-on order** — puts **state** and **cell coordinates** before **name** (default for new profiles).
 
-- **Disabled:** same idea as NVDA’s usual progress reporting.
-- **Enabled, raw value:** shows the underlying value as a **temporary braille message** while the bar updates. NVDA may still **speak** progress according to its own **Progress bar updates** settings; this add-on option does not drive speech by itself.
-- **Enabled, bar:** a row of **⣿** cells whose length reflects the percentage across your **display width** (very long percentage text is shortened).
+**What still follows NVDA**
 
-**Background progress windows**
+- **Description**, **keyboard shortcut**, and **position** only appear if the matching options are enabled in NVDA **Settings → Object presentation**.
+- **Cell coordinates** also follow **Braille Essentials → Document formatting → Cell coordinates**.
 
-These choices work together with NVDA’s **Report background progress bars** setting: you can match NVDA, always allow background bars, or **foreground only** so braille is not filled by progress bars for windows you are not working in.
+Row and column headers from the application may still be added after the main summary when available.
+
+#### Selected elements
+
+**Selected elements** controls how a **selected** item is marked on that object summary line:
+
+| Choice | Effect |
+|--------|--------|
+| **nothing** | No extra marking from this add-on |
+| **dot 7**, **dot 8**, or **dots 7 and 8** | Adds dots 7 and/or 8 to the braille cells that spell the object’s **name** |
+| **tags** | Does not draw tag characters on the name; only affects state text as below |
+
+When the choice is not **nothing** and the object has a **name**, the words **selected** and **selectable** are omitted from the **state** text so you are not told “selected” twice. Highlighting **inside running text** still follows NVDA’s own **show selection** setting.
+
+#### Progress bar output using braille messages
+
+When a progress bar’s value changes, the add-on can show a **short message on the braille display** (speech is unchanged—use NVDA **Settings → Object presentation → Progress bar updates** for speech):
+
+| Option | What you see |
+|--------|----------------|
+| **disabled (original behavior)** | No extra braille messages from this add-on |
+| **enabled, show raw value** | The bar’s value text (default) |
+| **enabled, show a progress bar using ⣿** | A row of filled cells across the display, length based on the percentage |
+
+#### Report background progress bars
+
+The three choices (**Follow NVDA document formatting**, **enabled**, **disabled**) use the same wording as on the Document formatting tab, but here they only decide **which windows’** progress bars can trigger the braille messages above:
+
+| Choice | Effect |
+|--------|--------|
+| **Follow NVDA document formatting** | Follows NVDA **Report background progress bars**, or shows bars in the window you are working in |
+| **enabled** | Progress bars in background and foreground windows |
+| **disabled** | Only progress bars in the **foreground** window |
 
 ### Undefined character representation
 
-Characters **not defined** in the active output table (including many **emoji**) use the chosen **method**: table default, full **1–8** or **1–6** dot cell, **empty**, custom **dot pattern** (`6-123456` style), **question mark**, custom **sign** (`??` style), **hex** (Liblouis, **HUC8**, **HUC6**), **decimal**, **octal**, **binary**.
+Characters **not defined** in the active output table (including many **emoji**) use the chosen **method**: **use braille table behavior**, full **1–8** or **1–6** dot cell, **empty**, custom **dot pattern** (for example `6-123456`), **question mark**, custom **sign** (for example `??`), **hex** (table style, **HUC8**, **HUC6**), **decimal**, **octal**, **binary**.
 
 **Descriptions:** optional character **description**, **extended** description, **full extended**, optional **size** line, optional **Unicode data** as a last resort, and an **exclude** list (character codes or ranges) so description is skipped for ranges you find noisy.
 
@@ -246,11 +274,15 @@ More on **HUC**: [danielmayr.at/huc](https://danielmayr.at/huc/)
 
 ### Advanced input mode
 
+**Settings tab:** escape sign for numeric/Unicode input and **exit after one character**.
+
+**Menu dialog:** **NVDA menu → Braille Essentials → Advanced input mode dictionary…** — abbreviation entries per input table (separate from table dictionaries).
+
 Toggle **advanced input** (defaults include **NVDA+Windows+i** or **⡊+space**). While active:
 
 - **HUC8:** type the **Unicode HUC8 braille pattern** for the character; the add-on waits until the sequence is **valid and complete**, then inserts the character (many symbols need **about four** cells; some need **more**—see the [HUC](https://danielmayr.at/huc/) site). Works for **emoji** and other supported code points.
 - **Numeric bases:** after the **escape** sign, send **⠭** or **⠓** (hex), **⠙** (decimal), **⠕** (octal), **⠃** (binary), type digits, then **Space**.
-- **Abbreviations:** stored with the add-on’s **advanced input dictionary** (one entry per abbreviation and table); if you add the same abbreviation twice, the new text **replaces** the old one. Expand with **abbreviation + Space**.
+- **Abbreviations:** stored in the **advanced input mode dictionary** (menu dialog above; one entry per abbreviation and table). If you add the same abbreviation twice, the new text **replaces** the old one. Expand with **abbreviation + Space**.
 
 **HUC6 input** is not implemented.
 
@@ -260,19 +292,6 @@ Toggle **advanced input** (defaults include **NVDA+Windows+i** or **⡊+space**)
 | 😀 grinning face | ⣭⡤⣺ | 1F600 | 128512 | 373000 | 11111011000000000 |
 | 🍑 peach | ⣭⠤⠕ | 1F351 | 127825 | 371521 | 11111001101010001 |
 | 🌊 water wave | ⣭⠤⠺ | 1F30A | 127754 | 371412 | 11111001100001010 |
-
-### Current character information
-
-Uses the character at the **review cursor** (navigator). The **braille cells** in the report are produced with your **current output translation table** (the same Liblouis chain used for on-screen braille, including table dictionaries when they apply)—not the separate **input** table. One press: short summary; double press: **browseable** block.
-
-**Example** (“.”):
-
-```text
-.: 0x2e, 46, 0o56, 0b101110
-dot (FULL STOP [Po])
-⠲ (256)
-⣥⣺⢃, ⠿⠺⠏⠔
-```
 
 ### One-handed mode
 
@@ -306,7 +325,7 @@ Each key press **flips** a dot. Press **Space** when the cell is the one you wan
 
 In current NVDA (see **Commands Quick Reference → Braille** and **Input help**):
 
-- **`NVDA+Alt+t`** — **Toggle braille mode** (shortcut documented since **NVDA 2024.2**, which added **display speech output** mode: braille can mirror what NVDA speaks). NVDA cycles its braille modes, including **display** vs **speech output**. That is still **not** Braille Essentials’ separate **speech history list** and **routing** workflow.
+- **`NVDA+Alt+t`** — **Toggle braille mode** (shortcut documented since **NVDA 2024.2**, which added **display speech output** mode: braille can mirror what NVDA speaks). NVDA cycles its braille modes, including **display** vs **speech output**. That is still **not** Braille Essentials’s separate **speech history list** and **routing** workflow.
 
 **What Braille Essentials does instead**
 
@@ -318,7 +337,7 @@ While **Speech History Mode** is **on**, the add-on **records what NVDA speaks**
 - **Limit:** how many lines to keep (the settings panel allows a very high maximum).
 - **Number entries:** each line is prefixed with **`#`** and the **entry number** (padded with leading zeros so all numbers use the same width), then **`:`** and the text—for example **`#3:`** or **`#0003:`** depending on your history limit.
 - **Speak entries:** optionally read the line aloud when you move in the history.
-- **Routing:** key **0** copies the current line; key **`displaySize − 1`** opens **browseable** text; **middle keys** jump by a distance that depends on **left vs right of center** on the display.
+- **Routing:** the **leftmost** routing key copies the current line; the **rightmost** opens **browseable** text; **middle keys** jump forward or backward in the list depending on which side of the display you press.
 
 ### Rotor
 
@@ -344,9 +363,8 @@ When **Use custom role labels** is checked, you can edit **role**, **landmark**,
 
 ### Advanced
 
-- **Fix cursor positions:** helps in awkward controls by cleaning up **combining Unicode symbols** next to letters so braille and the routing cursor line up more reliably.
-- **Hide dots 7–8:** toggle (assign **Input gestures → Braille Essentials** if you want a shortcut) that **clears dots 7 and 8** from braille cells when NVDA is **not** showing an in-line **text selection** on that line—useful for a flatter view with **contracted** braille (NVDA describes this command as hiding dots 7–8 in contracted output).
-- **Refresh when object name changes:** when enabled, a **name-change** event causes the add-on to **refresh braille for the foreground window**—useful when **titles or labels** update often (timers, live counters) so the display does not look stuck.
+- **Avoid cursor positions issues with some characters such as variation selectors** — improves braille alignment when certain Unicode characters (variation selectors) are next to letters.
+- **Force the refresh of braille region related to foreground object** — updates the display when the focused item’s **name** changes often (timers, live counters, changing window titles).
 
 ---
 
@@ -356,13 +374,15 @@ When **Use custom role labels** is checked, you can edit **role**, **landmark**,
 - **Terminals:** braille can follow the **review cursor** while you edit (PuTTY, PowerShell, cmd, bash, …).
 - **Auto scroll** with timing and blank-line options.
 - **Multiple input/output tables** and **automatic** selection on NVDA 2025.1+.
-- **Dots 7/8**, **tags**, and spacing / line padding for structure and attributes.
-- **Post-output** Liblouis table.
+- **Custom braille tables** (add, copy, edit) on NVDA 2024.3+; activate only from the custom-tables dialog (**None** = off).
+- **Dots 7/8**, **tags**, and line padding for structure and attributes (document formatting **Methods**).
+- **Hide/show dots 7 and 8** — command in **Input gestures** (not an Advanced settings checkbox).
+- **Second translation pass** (optional extra output table after the main one).
 - **Tabs as spaces**; **reverse** scroll buttons.
 - **Speak current line** while scrolling (coordinate with NVDA’s braille speech options).
 - **Unicode braille** and **cell-description** tools for the selection.
 - **Lock** braille keyboard; **lock modifiers** from braille.
-- **Quick launches** and **dictionaries**.
+- **Quick launches** and **table dictionaries** (NVDA menu → Braille Essentials).
 - **One-handed** input; **undefined characters** (including emoji); **advanced input** and abbreviations.
 - **Speech History Mode**; extended **display gesture** maps where profiles exist.
 
@@ -370,14 +390,15 @@ When **Use custom role labels** is checked, you can edit **role**, **landmark**,
 
 ## Gestures and profiles
 
-- **Keyboard:** listed under **Input gestures → Braille Essentials**. **Gestures for this display…** shows a live list for your **current** braille profile and add-on keyboard bindings.
-- **Braille display:** some displays ship with a predefined map for this add-on. If yours does not, assign the commands you need in **Input gestures** like any other NVDA command.
+- **Keyboard:** listed under **Input gestures → Category: Braille Essentials**. **Gestures for this display…** shows bindings for your **current** braille display profile (including display-specific keys when a profile exists).
+- **Braille display:** some displays ship with a predefined gesture map. If yours does not, assign commands in **Input gestures** like any other NVDA command.
+- **Not in settings tabs** (menu or Input gestures only): hide/show dots 7–8, lock braille keyboard, lock modifier keys, quick launches, table dictionaries, advanced input dictionary, custom braille tables manager, table overview, Unicode tools, character information, and others—search **Braille Essentials** in Input gestures to browse them.
 
 ---
 
 ## Feedback and contributing
 
-Bug reports, suggestions, and pull requests are welcome on [GitHub — Braille Essentials](https://github.com/josephsl/brailleEssentials/). If you change user-visible text or behavior, please update this guide and any translations you maintain so everyone stays in sync.
+Bug reports, suggestions, and pull requests are welcome on [GitHub — BrailleExtender](https://github.com/aaclause/BrailleExtender/). If you change user-visible text or behavior, please update this guide and any translations you maintain so everyone stays in sync.
 
 If you work on the **source code**, build steps and developer tooling are described in the repository on GitHub (not in this user guide).
 
@@ -385,7 +406,7 @@ If you work on the **source code**, build steps and developer tooling are descri
 
 ## Acknowledgements
 
-- **Copyright:** Braille Essentials is copyright 2026 Joseph Lee and contributors. Braille Extender is © 2016-2026 André-Abush Clause and other contributors. BraileExtender repository can be found [here](https://github.com/aaclause/BrailleExtender/).
+- **Copyright:** Braille Essentials is copyright 2026 Joseph Lee and contributors. Braille Extender is © 2016-2026 André-Abush Clause and other contributors. BrailleExtender repository can be found [here](https://github.com/aaclause/BrailleExtender/).
 
 ### Translators
 
