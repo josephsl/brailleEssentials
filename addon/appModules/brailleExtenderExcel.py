@@ -40,9 +40,8 @@ from appModules.excel import AppModule as _NVDAExcelAppModule
 
 from globalPlugins.brailleExtender.common import addonName
 
-if TYPE_CHECKING:
-	from NVDAObjects import NVDAObject
-	from NVDAObjects.window.excel import ExcelCell
+from NVDAObjects import NVDAObject
+from NVDAObjects.window.excel import ExcelCell
 
 addonHandler.initTranslation()
 
