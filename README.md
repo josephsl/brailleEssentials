@@ -10,20 +10,33 @@ NVDA add-on that extends braille output, input, scrolling, and display-specific 
 
 ## Table of contents
 
-1. [Quick start](#quick-start)
-2. [How Braille Essentials relates to NVDA](#how-braille-extender-relates-to-nvda)
-3. [Settings categories (overview)](#settings-categories-overview)
-4. [Detailed topics](#detailed-topics)
-5. [Feature highlights](#feature-highlights)
-6. [Gestures and profiles](#gestures-and-profiles)
-7. [Feedback and contributing](#feedback-and-contributing)
-8. [Acknowledgements](#acknowledgements)
+1. [Documentation in NVDA](#documentation-in-nvda)
+2. [Quick start](#quick-start)
+3. [How Braille Essentials relates to NVDA](#how-braille-essentials-relates-to-nvda)
+4. [Settings categories (overview)](#settings-categories-overview)
+5. [Detailed topics](#detailed-topics)
+6. [Feature highlights](#feature-highlights)
+7. [Gestures and profiles](#gestures-and-profiles)
+8. [Feedback and contributing](#feedback-and-contributing)
+9. [Acknowledgements](#acknowledgements)
+
+---
+
+## Documentation in NVDA
+
+| What | Where |
+|------|--------|
+| **This guide (as a web page)** | **Add-on Store → Braille Essentials → Help**. |
+| **Gestures for your display** | **NVDA menu → Braille Essentials → Gestures for this display…** — a list based on your current braille display profile and the add-on’s keyboard shortcuts. |
+| **Custom braille tables** | **NVDA menu → Braille Essentials → Custom braille tables…** (NVDA 2024.3+), or **Braille Essentials settings → Braille tables → Manage custom braille tables…**. |
+| **Table dictionaries** | **NVDA menu → Braille Essentials → Table dictionaries** (Global, Table, Temporary—not a settings tab). |
+| **Quick launches** | **NVDA menu → Braille Essentials → Quick launches…** (not a settings tab). |
+| **Advanced input mode dictionary** | **NVDA menu → Braille Essentials → Advanced input mode dictionary…** (not a settings tab). |
+| **On the web** | This page on GitHub or the project site, if you are reading online. |
 
 ---
 
 ## Quick start
-
-These steps are enough for most users. You do not need custom braille tables unless you want your own table files.
 
 1. **Install** the add-on (`.nvda-addon` file, or form the NVDA Add-on Store when it is listed there).
 2. **Settings:** **NVDA menu → Braille Essentials → Settings…** — review the tabs you care about (for example **General**, **Braille tables**, **Document formatting**).
