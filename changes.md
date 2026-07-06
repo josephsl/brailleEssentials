@@ -6,7 +6,7 @@ Note: forked from BrailleExtender in May 2026.
 
 ## Version 26.07
 
-* Updated the add-on code to Braille Extender commit 550d652c (2026-06-16), introducing enhanced braille support for Microsoft Excel and localization updates.
+* Updated the add-on code to Braille Extender commit 38b6fa35 (2026-07-03), introducing enhanced braille support for Microsoft Excel and localization updates.
 * NVDA will honor custom braille routing commands from apps, specifically Punktum (issue 2).
 * Changes from BrailleExtender:
 	* No statement on add-on store based update process in add-on settings/general category (Braille Essentials does not have a self-updating mechanism).
