@@ -10,6 +10,7 @@ Note: forked from BrailleExtender in May 2026.
 * NVDA will honor custom braille routing commands from apps, specifically Punktum (issue 2).
 * Changes from BrailleExtender:
 	* No statement on add-on store based update process in add-on settings/general category (Braille Essentials does not have a self-updating mechanism).
+	* Brailiant B profile: Removed Control+Alt+Tab keystroke emulation (Space with dots 5-6-8/C1+C3+C5) as it conflicts with review copy comand.
 
 ## Version 26.05.4
 
