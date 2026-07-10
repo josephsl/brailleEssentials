@@ -55,12 +55,13 @@ For some braille displays, it extends the braille display commands to provide:
 	addon_version="26.05.4",
 	# Brief changelog for this version
 	# Translators: what's new content for the add-on version to be shown in the add-on store
-	addon_changelog=_("""* Updated the add-on code to Braille Extender commit 550d652c (2026-06-16), introducing enhanced braille support for Microsoft Excel and localization updates.
+	addon_changelog=_("""* Updated the add-on code to Braille Extender commit 38b6fa35 (2026-07-03), introducing enhanced braille support for Microsoft Excel and localization updates.
 * NVDA will honor custom braille routing commands from apps, specifically Punktum (issue 2).
 
 Changes from BrailleExtender:
 
-* No statement on add-on store based update process in add-on settings/general category (Braille Essentials does not have a self-updating mechanism)."""),
+* No statement on add-on store based update process in add-on settings/general category (Braille Essentials does not have a self-updating mechanism).
+* Brailiant B profile: Removed Control+Alt+Tab keystroke emulation (Space with dots 5-6-8/C1+C3+C5) as it conflicts with review copy comand."""),
 	# Author(s)
 	addon_author="Joseph Lee <joseph.lee22590@gmail.com> (originally André-Abush Clause <dev@andreabc.net> and other contributors)",
 	# URL for the add-on documentation support
