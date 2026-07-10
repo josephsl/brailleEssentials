@@ -1,6 +1,6 @@
 # Unterstützung für "Punktum"
 
-import appModuleHandler.
+import appModuleHandler
 import api
 import braille
 import threading
