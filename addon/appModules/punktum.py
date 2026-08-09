@@ -1,4 +1,4 @@
-# Unterstützung für "Punktum"
+# UnterstÃ¼tzung fÃ¼r "Punktum"
 
 import appModuleHandler
 import api
