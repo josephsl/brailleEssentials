@@ -52,7 +52,7 @@ For some braille displays, it extends the braille display commands to provide:
 * Offer several keyboard configurations concerning the possibility to input dots 7 and 8, enter and backspace
 * Add actions and quick navigation through a rotor"""),
 	# version
-	addon_version="26.07.1",
+	addon_version="26.08",
 	# Brief changelog for this version
 	# Translators: what's new content for the add-on version to be shown in the add-on store
 	addon_changelog=_("""* Updated the add-on code to Braille Extender commit 38b6fa35 (2026-07-03), introducing enhanced braille support for Microsoft Excel and localization updates.
