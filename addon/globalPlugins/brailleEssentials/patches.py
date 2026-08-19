@@ -13,7 +13,6 @@ from typing import Any, Optional
 import addonHandler
 import api
 import braille
-import brailleInput
 import colors
 import config
 import controlTypes
@@ -50,6 +49,23 @@ from . import huc
 from . import regionhelper
 from . import speechhistorymode
 from . import undefinedchars
+from .brailleCompat import (
+	BrailleHandler,
+	BrailleInputHandler,
+	INPUT_END_IND,
+	INPUT_START_IND,
+	LOUIS_DOTS_IO_START,
+	NVDAObjectRegion,
+	Region,
+	SELECTION_SHAPE,
+	TEXT_SEPARATOR,
+	TextInfoRegion,
+	brailleInput,
+	getBrailleFunction,
+	patchBrailleFunction,
+	positiveStateLabels,
+	roleLabels,
+)
 from .common import (
 	baseDir,
 	BRLEX_CELL_MASK_BY_METHOD,
@@ -92,7 +108,7 @@ instanceGP = None
 
 
 def _selection_shape_bitmask() -> int:
-	return int(braille.SELECTION_SHAPE)
+	return int(SELECTION_SHAPE)
 
 
 _VARIATION_SELECTOR_SUFFIX_RE = re.compile(r"([^\ufe00-\ufe0f])[\ufe00-\ufe0f]\u20E3?")
@@ -111,30 +127,30 @@ def _stop_nvda_core_autoscroll() -> None:
 
 def _saveOriginals():
 	o = {}
-	o["getControlFieldBraille"] = braille.getControlFieldBraille
-	o["getFormatFieldBraille"] = braille.getFormatFieldBraille
-	o["Region.update"] = braille.Region.update
-	o["TextInfoRegion._addTextWithFields"] = braille.TextInfoRegion._addTextWithFields
-	o["TextInfoRegion.update"] = braille.TextInfoRegion.update
-	o["TextInfoRegion.previousLine"] = braille.TextInfoRegion.previousLine
-	o["TextInfoRegion.nextLine"] = braille.TextInfoRegion.nextLine
+	o["getControlFieldBraille"] = getBrailleFunction("getControlFieldBraille")
+	o["getFormatFieldBraille"] = getBrailleFunction("getFormatFieldBraille")
+	o["Region.update"] = Region.update
+	o["TextInfoRegion._addTextWithFields"] = TextInfoRegion._addTextWithFields
+	o["TextInfoRegion.update"] = TextInfoRegion.update
+	o["TextInfoRegion.previousLine"] = TextInfoRegion.previousLine
+	o["TextInfoRegion.nextLine"] = TextInfoRegion.nextLine
 	o["TextInfoRegion._getTypeformFromFormatField"] = getattr(
-		braille.TextInfoRegion, "_getTypeformFromFormatField", None
+		TextInfoRegion, "_getTypeformFromFormatField", None
 	)
-	o["BrailleInputHandler._translate"] = brailleInput.BrailleInputHandler._translate
-	o["BrailleInputHandler.emulateKey"] = brailleInput.BrailleInputHandler.emulateKey
-	o["BrailleInputHandler.input"] = brailleInput.BrailleInputHandler.input
-	o["BrailleInputHandler.sendChars"] = brailleInput.BrailleInputHandler.sendChars
+	o["BrailleInputHandler._translate"] = BrailleInputHandler._translate
+	o["BrailleInputHandler.emulateKey"] = BrailleInputHandler.emulateKey
+	o["BrailleInputHandler.input"] = BrailleInputHandler.input
+	o["BrailleInputHandler.sendChars"] = BrailleInputHandler.sendChars
 	o["script_braille_routeTo"] = globalCommands.GlobalCommands.script_braille_routeTo
-	o["NVDAObjectRegion.update"] = braille.NVDAObjectRegion.update
-	o["getPropertiesBraille"] = braille.getPropertiesBraille
-	o["BrailleHandler.getTether"] = braille.BrailleHandler.getTether
-	o["BrailleHandler.handleGainFocus"] = braille.BrailleHandler.handleGainFocus
-	if hasattr(braille.BrailleHandler, "handleCaretMove"):
-		o["BrailleHandler.handleCaretMove"] = braille.BrailleHandler.handleCaretMove
-	if hasattr(braille.BrailleHandler, "setTether"):
-		o["BrailleHandler.setTether"] = braille.BrailleHandler.setTether
-	o["BrailleHandler._displayWithCursor"] = getattr(braille.BrailleHandler, "_displayWithCursor", None)
+	o["NVDAObjectRegion.update"] = NVDAObjectRegion.update
+	o["getPropertiesBraille"] = getBrailleFunction("getPropertiesBraille")
+	o["BrailleHandler.getTether"] = BrailleHandler.getTether
+	o["BrailleHandler.handleGainFocus"] = BrailleHandler.handleGainFocus
+	if hasattr(BrailleHandler, "handleCaretMove"):
+		o["BrailleHandler.handleCaretMove"] = BrailleHandler.handleCaretMove
+	if hasattr(BrailleHandler, "setTether"):
+		o["BrailleHandler.setTether"] = BrailleHandler.setTether
+	o["BrailleHandler._displayWithCursor"] = getattr(BrailleHandler, "_displayWithCursor", None)
 	if hasattr(louis, "_createTablesString"):
 		o["_createTablesString"] = louis._createTablesString
 	return o
@@ -424,7 +440,7 @@ def update_TextInfoRegion(self):
 	if text:
 		rawInputIndStart = len(self.rawText)
 		# _addFieldText adds text to self.rawText and updates other state accordingly.
-		self._addFieldText(braille.INPUT_START_IND + text + braille.INPUT_END_IND, None, separate=False)
+		self._addFieldText(INPUT_START_IND + text + INPUT_END_IND, None, separate=False)
 		rawInputIndEnd = len(self.rawText)
 	else:
 		rawInputIndStart = None
@@ -442,7 +458,7 @@ def update_TextInfoRegion(self):
 		self._currentContentPos = self._rawToContentPos[rawTextLen]
 		del self.rawTextTypeforms[rawTextLen:]
 	if rawTextLen == 0 or not self._endsWithField:
-		self.rawText += braille.TEXT_SEPARATOR
+		self.rawText += TEXT_SEPARATOR
 		rawTextLen += 1
 		self.rawTextTypeforms.append(louis.plain_text)
 		self._rawToContentPos.append(self._currentContentPos)
@@ -453,21 +469,21 @@ def update_TextInfoRegion(self):
 	self.hidePreviousRegions = start.compareEndPoints(readingInfo, "startToStart") < 0
 	if not self.focusToHardLeft:
 		self.focusToHardLeft = self._isMultiline()
-	super(braille.TextInfoRegion, self).update()
+	super(TextInfoRegion, self).update()
 
 	if rawInputIndStart is not None:
 		assert rawInputIndEnd is not None, "rawInputIndStart set but rawInputIndEnd isn't"
 		self._brailleInputIndStart = self.rawToBraillePos[rawInputIndStart]
 		self._brailleInputIndEnd = self.rawToBraillePos[rawInputIndEnd]
-		self._brailleInputStart = self._brailleInputIndStart + len(braille.INPUT_START_IND)
-		self._brailleInputEnd = self._brailleInputIndEnd - len(braille.INPUT_END_IND)
+		self._brailleInputStart = self._brailleInputIndStart + len(INPUT_START_IND)
+		self._brailleInputEnd = self._brailleInputIndEnd - len(INPUT_END_IND)
 		self.brailleCursorPos = self._brailleInputStart + brailleInput.handler.untranslatedCursorPos
 	else:
 		self._brailleInputIndStart = None
 
 
 def getControlFieldBraille(info, field, ancestors, reportStart, formatConfig):
-	"""Delegate to NVDA core; ``braille.getPropertiesBraille`` is still replaced by the add-on."""
+	"""Delegate to NVDA core; ``getPropertiesBraille`` is still replaced by the add-on."""
 	return _originals["getControlFieldBraille"](info, field, ancestors, reportStart, formatConfig)
 
 
@@ -687,7 +703,7 @@ def getFormatFieldBraille(field, fieldCache, isAtStart, formatConfig):
 		collapsed = field.get("collapsed")
 		if collapsed:
 			try:
-				textList.append(braille.positiveStateLabels[controlTypes.State.COLLAPSED])
+				textList.append(positiveStateLabels[controlTypes.State.COLLAPSED])
 			except Exception:
 				log.debugWarning("collapsed state label failed", exc_info=True)
 
@@ -743,7 +759,7 @@ def getFormatFieldBraille(field, fieldCache, isAtStart, formatConfig):
 		link = field.get("link")
 		oldLink = fieldCache.get("link") if fieldCache else None
 		if link and link != oldLink:
-			linkCell = braille.roleLabels[get_control_type("ROLE_LINK")]
+			linkCell = roleLabels[get_control_type("ROLE_LINK")]
 			if use_be_format_field_chrome("links"):
 				textList.append(linkCell + " ")
 			else:
@@ -950,7 +966,7 @@ def getFormatFieldBraille(field, fieldCache, isAtStart, formatConfig):
 	fieldCache.update(field)
 	textList.insert(0, "".join(end_tag_list[::-1]))
 	textList.append("".join(start_tag_list))
-	return braille.TEXT_SEPARATOR.join([x for x in textList if x])
+	return TEXT_SEPARATOR.join([x for x in textList if x])
 
 
 def _typeform_and_brlex_mask_from_format_field(region, field, formatConfig):
@@ -981,7 +997,7 @@ def _addTextWithFields(
 			if not command:
 				continue
 			if self._endsWithField:
-				self.rawText += braille.TEXT_SEPARATOR
+				self.rawText += TEXT_SEPARATOR
 				self.rawTextTypeforms.append(louis.plain_text)
 				self._rawToContentPos.append(self._currentContentPos)
 			if isSelection and self.selectionStart is None:
@@ -1032,7 +1048,7 @@ def _addTextWithFields(
 								ctrl_fields, formatConfig
 							)
 							if not pres_cat or pres_cat is field.PRESCAT_LAYOUT:
-								text_list.append(braille.positiveStateLabels[clickable])
+								text_list.append(positiveStateLabels[clickable])
 							in_clickable = True
 					text = info.getControlFieldBraille(field, ctrl_fields, True, formatConfig)
 					if text:
@@ -1381,7 +1397,7 @@ def _translate(self, endWord):
 		self.bufferText = ""
 	oldTextLen = len(self.bufferText)
 	pos = self.untranslatedStart + self.untranslatedCursorPos
-	data = "".join([chr(cell | brailleInput.LOUIS_DOTS_IO_START) for cell in self.bufferBraille[:pos]])
+	data = "".join([chr(cell | LOUIS_DOTS_IO_START) for cell in self.bufferBraille[:pos]])
 	mode = louis.dotsIO | louis.noUndefinedDots
 	if (not self.currentFocusIsTextObj or self.currentModifiers) and self._table.contracted:
 		mode |= louis.partialTrans
@@ -1482,28 +1498,28 @@ def apply_patches() -> None:
 	global _patchesApplied
 
 	def _apply_braille_region():
-		braille.getControlFieldBraille = getControlFieldBraille
-		braille.getFormatFieldBraille = getFormatFieldBraille
-		braille.Region.update = update_region
-		braille.TextInfoRegion._addTextWithFields = _addTextWithFields
-		braille.TextInfoRegion.update = update_TextInfoRegion
-		braille.TextInfoRegion.previousLine = previousLine
-		braille.TextInfoRegion.nextLine = nextLine
-		braille.NVDAObjectRegion.update = update_NVDAObjectRegion
-		braille.getPropertiesBraille = getPropertiesBraille
-		braille.Region.parseUndefinedChars = True
-		braille.Region.brlex_typeforms = {}
-		braille.Region._len_brlex_typeforms = 0
+		patchBrailleFunction("getControlFieldBraille", getControlFieldBraille)
+		patchBrailleFunction("getFormatFieldBraille", getFormatFieldBraille)
+		patchBrailleFunction("getPropertiesBraille", getPropertiesBraille)
+		Region.update = update_region
+		TextInfoRegion._addTextWithFields = _addTextWithFields
+		TextInfoRegion.update = update_TextInfoRegion
+		TextInfoRegion.previousLine = previousLine
+		TextInfoRegion.nextLine = nextLine
+		NVDAObjectRegion.update = update_NVDAObjectRegion
+		Region.parseUndefinedChars = True
+		Region.brlex_typeforms = {}
+		Region._len_brlex_typeforms = 0
 		if _originals.get("TextInfoRegion._getTypeformFromFormatField"):
 			pass  # Restored in unload
 
 	_try_apply("braille_region", _apply_braille_region)
 
 	def _apply_braille_input():
-		brailleInput.BrailleInputHandler._translate = _translate
-		brailleInput.BrailleInputHandler.emulateKey = emulateKey
-		brailleInput.BrailleInputHandler.input = input_
-		brailleInput.BrailleInputHandler.sendChars = sendChars
+		BrailleInputHandler._translate = _translate
+		BrailleInputHandler.emulateKey = emulateKey
+		BrailleInputHandler.input = input_
+		BrailleInputHandler.sendChars = sendChars
 
 	_try_apply("braille_input", _apply_braille_input)
 
@@ -1530,21 +1546,21 @@ def apply_patches() -> None:
 			make_patched_set_tether,
 		)
 
-		braille.BrailleHandler.AutoScroll = autoscroll.AutoScroll
-		braille.BrailleHandler._auto_scroll = None
-		braille.BrailleHandler.get_auto_scroll_delay = autoscroll.get_auto_scroll_delay
-		braille.BrailleHandler.get_dynamic_auto_scroll_delay = autoscroll.get_dynamic_auto_scroll_delay
-		braille.BrailleHandler.decrease_auto_scroll_delay = autoscroll.decrease_auto_scroll_delay
-		braille.BrailleHandler.increase_auto_scroll_delay = autoscroll.increase_auto_scroll_delay
-		braille.BrailleHandler.report_auto_scroll_delay = autoscroll.report_auto_scroll_delay
-		braille.BrailleHandler.toggle_auto_scroll = autoscroll.toggle_auto_scroll
-		braille.BrailleHandler._displayWithCursor = _displayWithCursor
-		braille.BrailleHandler.getTether = getTetherWithRoleTerminal
-		braille.BrailleHandler.handleGainFocus = make_patched_handle_gain_focus(_originals)
+		BrailleHandler.AutoScroll = autoscroll.AutoScroll
+		BrailleHandler._auto_scroll = None
+		BrailleHandler.get_auto_scroll_delay = autoscroll.get_auto_scroll_delay
+		BrailleHandler.get_dynamic_auto_scroll_delay = autoscroll.get_dynamic_auto_scroll_delay
+		BrailleHandler.decrease_auto_scroll_delay = autoscroll.decrease_auto_scroll_delay
+		BrailleHandler.increase_auto_scroll_delay = autoscroll.increase_auto_scroll_delay
+		BrailleHandler.report_auto_scroll_delay = autoscroll.report_auto_scroll_delay
+		BrailleHandler.toggle_auto_scroll = autoscroll.toggle_auto_scroll
+		BrailleHandler._displayWithCursor = _displayWithCursor
+		BrailleHandler.getTether = getTetherWithRoleTerminal
+		BrailleHandler.handleGainFocus = make_patched_handle_gain_focus(_originals)
 		if _originals.get("BrailleHandler.setTether"):
-			braille.BrailleHandler.setTether = make_patched_set_tether(_originals)
+			BrailleHandler.setTether = make_patched_set_tether(_originals)
 		if _originals.get("BrailleHandler.handleCaretMove"):
-			braille.BrailleHandler.handleCaretMove = make_patched_handle_caret_move(_originals)
+			BrailleHandler.handleCaretMove = make_patched_handle_caret_move(_originals)
 
 	_try_apply("braille_handler", _apply_braille_handler)
 
@@ -1623,22 +1639,22 @@ def unload_patches() -> None:
 
 	if "braille_region" in applied:
 		try:
-			braille.getControlFieldBraille = _originals["getControlFieldBraille"]
-			braille.getFormatFieldBraille = _originals["getFormatFieldBraille"]
-			braille.Region.update = _originals["Region.update"]
-			braille.TextInfoRegion._addTextWithFields = _originals["TextInfoRegion._addTextWithFields"]
-			braille.TextInfoRegion.update = _originals["TextInfoRegion.update"]
-			braille.TextInfoRegion.previousLine = _originals["TextInfoRegion.previousLine"]
-			braille.TextInfoRegion.nextLine = _originals["TextInfoRegion.nextLine"]
+			patchBrailleFunction("getControlFieldBraille", _originals["getControlFieldBraille"])
+			patchBrailleFunction("getFormatFieldBraille", _originals["getFormatFieldBraille"])
+			patchBrailleFunction("getPropertiesBraille", _originals["getPropertiesBraille"])
+			Region.update = _originals["Region.update"]
+			TextInfoRegion._addTextWithFields = _originals["TextInfoRegion._addTextWithFields"]
+			TextInfoRegion.update = _originals["TextInfoRegion.update"]
+			TextInfoRegion.previousLine = _originals["TextInfoRegion.previousLine"]
+			TextInfoRegion.nextLine = _originals["TextInfoRegion.nextLine"]
 			if _originals.get("TextInfoRegion._getTypeformFromFormatField"):
-				braille.TextInfoRegion._getTypeformFromFormatField = _originals[
+				TextInfoRegion._getTypeformFromFormatField = _originals[
 					"TextInfoRegion._getTypeformFromFormatField"
 				]
-			braille.NVDAObjectRegion.update = _originals["NVDAObjectRegion.update"]
-			braille.getPropertiesBraille = _originals["getPropertiesBraille"]
+			NVDAObjectRegion.update = _originals["NVDAObjectRegion.update"]
 			for attr in ("parseUndefinedChars", "brlex_typeforms", "_len_brlex_typeforms"):
 				try:
-					delattr(braille.Region, attr)
+					delattr(Region, attr)
 				except AttributeError:
 					pass
 		except Exception as e:
@@ -1646,10 +1662,10 @@ def unload_patches() -> None:
 
 	if "braille_input" in applied:
 		try:
-			brailleInput.BrailleInputHandler._translate = _originals["BrailleInputHandler._translate"]
-			brailleInput.BrailleInputHandler.emulateKey = _originals["BrailleInputHandler.emulateKey"]
-			brailleInput.BrailleInputHandler.input = _originals["BrailleInputHandler.input"]
-			brailleInput.BrailleInputHandler.sendChars = _originals["BrailleInputHandler.sendChars"]
+			BrailleInputHandler._translate = _originals["BrailleInputHandler._translate"]
+			BrailleInputHandler.emulateKey = _originals["BrailleInputHandler.emulateKey"]
+			BrailleInputHandler.input = _originals["BrailleInputHandler.input"]
+			BrailleInputHandler.sendChars = _originals["BrailleInputHandler.sendChars"]
 		except Exception as e:
 			log.warning("Error restoring braille_input patches: %s", e)
 
@@ -1661,15 +1677,15 @@ def unload_patches() -> None:
 
 	if "braille_handler" in applied:
 		try:
-			braille.BrailleHandler.getTether = _originals["BrailleHandler.getTether"]
+			BrailleHandler.getTether = _originals["BrailleHandler.getTether"]
 			if _originals.get("BrailleHandler.handleGainFocus"):
-				braille.BrailleHandler.handleGainFocus = _originals["BrailleHandler.handleGainFocus"]
+				BrailleHandler.handleGainFocus = _originals["BrailleHandler.handleGainFocus"]
 			if _originals.get("BrailleHandler.setTether"):
-				braille.BrailleHandler.setTether = _originals["BrailleHandler.setTether"]
+				BrailleHandler.setTether = _originals["BrailleHandler.setTether"]
 			if _originals.get("BrailleHandler.handleCaretMove"):
-				braille.BrailleHandler.handleCaretMove = _originals["BrailleHandler.handleCaretMove"]
+				BrailleHandler.handleCaretMove = _originals["BrailleHandler.handleCaretMove"]
 			if _originals.get("BrailleHandler._displayWithCursor"):
-				braille.BrailleHandler._displayWithCursor = _originals["BrailleHandler._displayWithCursor"]
+				BrailleHandler._displayWithCursor = _originals["BrailleHandler._displayWithCursor"]
 			for attr in (
 				"AutoScroll",
 				"_auto_scroll",
@@ -1681,7 +1697,7 @@ def unload_patches() -> None:
 				"toggle_auto_scroll",
 			):
 				try:
-					delattr(braille.BrailleHandler, attr)
+					delattr(BrailleHandler, attr)
 				except AttributeError:
 					pass
 		except Exception as e:

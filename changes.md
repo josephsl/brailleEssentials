@@ -4,6 +4,11 @@ This document lists release changelogs for Braille Essentials add-on.
 
 Note: forked from BrailleExtender in May 2026.
 
+## Version 26.08
+
+* Resolved braille property, control field and format field customizations (role labels, document formatting indicators, undefined character representations) silently having no effect on NVDA 2026.1 and later, where NVDA resolves those functions from `braille.regions.properties` rather than from `braille`.
+* The add-on no longer writes around fifty deprecation warnings, each with a full stack trace, to the NVDA log while loading on NVDA 2026.1 and later.
+
 ## Version 26.07
 
 * Updated the add-on code to Braille Extender commit 38b6fa35 (2026-07-03), introducing enhanced braille support for Microsoft Excel and localization updates.
