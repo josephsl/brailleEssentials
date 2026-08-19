@@ -8,6 +8,7 @@ Note: forked from BrailleExtender in May 2026.
 
 * Resolved braille property, control field and format field customizations (role labels, document formatting indicators, undefined character representations) silently having no effect on NVDA 2026.1 and later, where NVDA resolves those functions from `braille.regions.properties` rather than from `braille`.
 * The add-on no longer writes around fifty deprecation warnings, each with a full stack trace, to the NVDA log while loading on NVDA 2026.1 and later.
+* The bundled Punktum app module is now valid UTF-8 with an encoding declaration. It relied on Python 3.13 tolerating non-UTF-8 bytes inside comments, which Python 3.14 no longer does (issue 2).
 
 ## Version 26.07
 
