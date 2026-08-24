@@ -433,9 +433,6 @@ def update_TextInfoRegion(self):
 	chunk.setEndPoint(sel, "endToStart")
 	self._addTextWithFields(chunk, formatConfig)
 	# If the user is entering braille, place any untranslated braille before the selection.
-	# Import late to avoid circular import.
-	import brailleInput
-
 	text = brailleInput.handler.untranslatedBraille
 	if text:
 		rawInputIndStart = len(self.rawText)
