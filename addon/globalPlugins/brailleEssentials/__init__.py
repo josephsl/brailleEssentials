@@ -30,7 +30,6 @@ from collections import OrderedDict
 import appModuleHandler
 import api
 import braille
-import brailleInput
 import config
 import globalCommands
 import globalPluginHandler
@@ -49,6 +48,7 @@ import vision
 from logHandler import log
 
 from . import addoncfg
+from .brailleCompat import TextInfoRegion, TextRegion, brailleInput
 
 config.conf.spec["brailleEssentials"] = addoncfg.getConfspec()
 from . import patches
@@ -86,7 +86,7 @@ def _modifier_keys_script_description(key_combo: str) -> str:
 
 def _brailleMessagePersistent(msg):
 	"""Display a message in the main braille buffer so it stays visible (no timeout)."""
-	region = braille.TextRegion(msg)
+	region = TextRegion(msg)
 	region.obj = None
 	region.update()
 	braille.handler.mainBuffer.clear()
@@ -164,12 +164,12 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		appModuleHandler.registerExecutableWithAppModule("excel", "brailleExtenderExcel")
 		patches.instanceGP = self
 		patches.apply_patches()
-		braille.TextInfoRegion._addTextWithFields = documentformatting.decorator(
-			braille.TextInfoRegion._addTextWithFields, "addTextWithFields"
+		TextInfoRegion._addTextWithFields = documentformatting.decorator(
+			TextInfoRegion._addTextWithFields, "addTextWithFields"
 		)
-		braille.TextInfoRegion.update = documentformatting.decorator(braille.TextInfoRegion.update, "update")
-		braille.TextInfoRegion._getTypeformFromFormatField = documentformatting.decorator(
-			braille.TextInfoRegion._getTypeformFromFormatField, "_getTypeformFromFormatField"
+		TextInfoRegion.update = documentformatting.decorator(TextInfoRegion.update, "update")
+		TextInfoRegion._getTypeformFromFormatField = documentformatting.decorator(
+			TextInfoRegion._getTypeformFromFormatField, "_getTypeformFromFormatField"
 		)
 		settings.instanceGP = self
 		addoncfg.loadConf()

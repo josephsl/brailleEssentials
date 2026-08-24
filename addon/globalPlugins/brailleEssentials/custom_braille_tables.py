@@ -11,12 +11,12 @@ from typing import Any
 
 import addonHandler
 import braille
-import brailleInput
 import brailleTables
 import config
 import globalVars
 from logHandler import log
 
+from .brailleCompat import brailleInput
 from .common import (
 	POST_TABLE_NONE,
 	configDir,
