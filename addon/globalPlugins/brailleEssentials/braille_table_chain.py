@@ -11,6 +11,7 @@ from typing import Optional
 import api
 import appModuleHandler
 import braille
+from . import brailleCompat as bc
 import brailleInput
 import brailleTables
 import config
@@ -154,8 +155,8 @@ class _TableChainCache:
 
 		try:
 			if for_input:
-				if brailleInput.handler:
-					table_file = brailleInput.handler._table.fileName
+				if bc.brailleInput.handler:
+					table_file = bc.brailleInput.handler._table.fileName
 				else:
 					table_file = default_braille_table_file_for_cur_language(is_input=True)
 			else:

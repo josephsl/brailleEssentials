@@ -9,6 +9,7 @@ import wx
 
 import addonHandler
 import braille
+from . import brailleCompat as bc
 import buildVersion
 import config
 import controlTypes
@@ -110,7 +111,7 @@ def update_NVDAObjectRegion(self):
 	elif excelBraille.suppress_name:
 		cellValue = None
 	else:
-		cellValue = obj.value if not braille.NVDAObjectHasUsefulText(obj) else None
+		cellValue = obj.value if not bc.NVDAObjectHasUsefulText(obj) else None
 	text = getPropertiesBraille(
 		name=None if excelBraille.suppress_name else obj.name,
 		role=role,
@@ -163,11 +164,11 @@ def update_NVDAObjectRegion(self):
 		mathPres.ensureInit()
 		if mathPres.brailleProvider:
 			try:
-				text += braille.TEXT_SEPARATOR + mathPres.brailleProvider.getBrailleForMathMl(obj.mathMl)
+				text += bc.TEXT_SEPARATOR + mathPres.brailleProvider.getBrailleForMathMl(obj.mathMl)
 			except (NotImplementedError, LookupError):
 				pass
 	self.rawText = text + self.appendText
-	super(braille.NVDAObjectRegion, self).update()
+	super(bc.NVDAObjectRegion, self).update()
 
 
 def is_current_display_string(current):
@@ -194,10 +195,10 @@ def get_roleLabel(role):
 
 def getPropertiesBraille(**propertyValues) -> str:
 	properties = {}
-	positiveStateLabels = braille.positiveStateLabels
-	negativeStateLabels = braille.negativeStateLabels
-	TEXT_SEPARATOR = braille.TEXT_SEPARATOR
-	roleLabels = braille.roleLabels
+	positiveStateLabels = bc.positiveStateLabels
+	negativeStateLabels = bc.negativeStateLabels
+	TEXT_SEPARATOR = bc.TEXT_SEPARATOR
+	roleLabels = bc.roleLabels
 	suppressName = propertyValues.get("suppressCellName")
 	name = propertyValues.get("name")
 	if suppressName:

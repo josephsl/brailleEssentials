@@ -9,6 +9,7 @@ import re
 import addonHandler
 import api
 import braille
+from . import brailleCompat as bc
 import brailleInput
 import brailleTables
 import characterProcessing
@@ -101,8 +102,8 @@ def make_progress_bar_from_str(percentage, text, method, positive="⢼", negativ
 
 def getEffectiveInputTableFileName() -> str:
 	"""Return the liblouis input table file name (never the config value ``auto``)."""
-	if brailleInput.handler is not None:
-		return brailleInput.handler.table.fileName
+	if bc.brailleInput.handler is not None:
+		return bc.brailleInput.handler.table.fileName
 	return _resolveInputTableFileName(config.conf["braille"]["inputTable"])
 
 
@@ -488,8 +489,8 @@ def apply_braille_input_table(table_id: str) -> None:
 		)
 		table_id = "auto"
 	if table_id == "auto":
-		if brailleInput.handler:
-			brailleInput.handler._table = brailleTables.getTable(default_file)
+		if bc.brailleInput.handler:
+			bc.brailleInput.handler._table = brailleTables.getTable(default_file)
 		persist_input_table_selection("auto")
 		return
 	try:
@@ -497,8 +498,8 @@ def apply_braille_input_table(table_id: str) -> None:
 	except LookupError:
 		table = brailleTables.getTable(default_file)
 		table_id = table.fileName
-	if brailleInput.handler:
-		brailleInput.handler._table = table
+	if bc.brailleInput.handler:
+		bc.brailleInput.handler._table = table
 	persist_input_table_selection(table_id)
 
 

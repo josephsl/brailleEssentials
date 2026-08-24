@@ -10,6 +10,7 @@ import wx
 
 import addonHandler
 import braille
+from . import brailleCompat as bc
 import config
 import controlTypes
 import languageHandler
@@ -45,7 +46,7 @@ class SettingsDlg(gui.settingsDialogs.SettingsPanel):
 
 		choices = []
 		if hasattr(controlTypes, "roleLabels"):
-			choices = [controlTypes.roleLabels[int(k)] for k in braille.roleLabels.keys()]
+			choices = [controlTypes.roleLabels[int(k)] for k in bc.roleLabels.keys()]
 
 		self.labels = sHelper.addLabeledControl(_("&Role:"), wx.Choice, choices=choices)
 		self.labels.Bind(wx.EVT_CHOICE, self.onLabels)
@@ -86,21 +87,21 @@ class SettingsDlg(gui.settingsDialogs.SettingsPanel):
 		oldRoleLabels = hasattr(controlTypes, "roleLabels")
 		if idCategory == 0:
 			if oldRoleLabels:
-				labels = [controlTypes.roleLabels[int(k)] for k in braille.roleLabels.keys()]
+				labels = [controlTypes.roleLabels[int(k)] for k in bc.roleLabels.keys()]
 			else:
-				labels = [role.displayString for role in braille.roleLabels.keys()]
+				labels = [role.displayString for role in bc.roleLabels.keys()]
 		elif idCategory == 1:
-			labels = list(braille.landmarkLabels.keys())
+			labels = list(bc.landmarkLabels.keys())
 		elif idCategory == 2:
 			if oldRoleLabels:
-				labels = [controlTypes.stateLabels[k] for k in braille.positiveStateLabels.keys()]
+				labels = [controlTypes.stateLabels[k] for k in bc.positiveStateLabels.keys()]
 			else:
-				labels = [role.displayString for role in braille.positiveStateLabels.keys()]
+				labels = [role.displayString for role in bc.positiveStateLabels.keys()]
 		elif idCategory == 3:
 			if oldRoleLabels:
-				labels = [controlTypes.stateLabels[k] for k in braille.negativeStateLabels.keys()]
+				labels = [controlTypes.stateLabels[k] for k in bc.negativeStateLabels.keys()]
 			else:
-				labels = [role.displayString for role in braille.negativeStateLabels.keys()]
+				labels = [role.displayString for role in bc.negativeStateLabels.keys()]
 		for iLabel, label in enumerate(labels):
 			idLabel = getIDFromIndexes(idCategory, iLabel)
 			actualLabel = getLabelFromID(idCategory, idLabel)
@@ -197,13 +198,13 @@ def getIDFromIndexes(idCategory, idLabel):
 		raise TypeError(f"Wrong type for idLabel ({idLabel})")
 	idRole = -1
 	if idCategory == 0:
-		idRole = list(braille.roleLabels.keys())[idLabel]
+		idRole = list(bc.roleLabels.keys())[idLabel]
 	elif idCategory == 1:
-		idRole = list(braille.landmarkLabels.keys())[idLabel]
+		idRole = list(bc.landmarkLabels.keys())[idLabel]
 	elif idCategory == 2:
-		idRole = list(braille.positiveStateLabels.keys())[idLabel]
+		idRole = list(bc.positiveStateLabels.keys())[idLabel]
 	elif idCategory == 3:
-		idRole = list(braille.negativeStateLabels.keys())[idLabel]
+		idRole = list(bc.negativeStateLabels.keys())[idLabel]
 	else:
 		raise ValueError(f"Wrong value for category ({idCategory})")
 	if not oldRoleLabels and isinstance(idRole, (controlTypes.Role, controlTypes.State)):
@@ -213,25 +214,25 @@ def getIDFromIndexes(idCategory, idLabel):
 
 def getLabelFromID(idCategory, idLabel):
 	if idCategory == 0:
-		return braille.roleLabels[int(idLabel)]
+		return bc.roleLabels[int(idLabel)]
 	if idCategory == 1:
-		return braille.landmarkLabels[idLabel]
+		return bc.landmarkLabels[idLabel]
 	if idCategory == 2:
-		return braille.positiveStateLabels[int(idLabel)]
+		return bc.positiveStateLabels[int(idLabel)]
 	if idCategory == 3:
-		return braille.negativeStateLabels[int(idLabel)]
+		return bc.negativeStateLabels[int(idLabel)]
 	raise ValueError("Invalid value: %d" % idCategory)
 
 
 def setLabelFromID(idCategory, idLabel, newLabel):
 	if idCategory == 0:
-		braille.roleLabels[int(idLabel)] = newLabel
+		bc.roleLabels[int(idLabel)] = newLabel
 	elif idCategory == 1:
-		braille.landmarkLabels[idLabel] = newLabel
+		bc.landmarkLabels[idLabel] = newLabel
 	elif idCategory == 2:
-		braille.positiveStateLabels[int(idLabel)] = newLabel
+		bc.positiveStateLabels[int(idLabel)] = newLabel
 	elif idCategory == 3:
-		braille.negativeStateLabels[int(idLabel)] = newLabel
+		bc.negativeStateLabels[int(idLabel)] = newLabel
 	else:
 		raise ValueError(f"Unknown category {idCategory}")
 

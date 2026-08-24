@@ -11,6 +11,7 @@ from typing import Any
 
 import addonHandler
 import braille
+from . import brailleCompat as bc
 import brailleInput
 import brailleTables
 import config
@@ -576,7 +577,7 @@ def _remove_from_braille_extender_table_list(config_key: str, file_name: str) ->
 def _input_uses_table(file_name: str) -> bool:
 	if get_effective_input_table_id() == file_name:
 		return True
-	handler = brailleInput.handler
+	handler = bc.brailleInput.handler
 	return bool(handler and handler.table.fileName == file_name)
 
 
