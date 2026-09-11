@@ -8,6 +8,7 @@ from typing import Any
 
 import addonHandler
 import braille
+from braille.display import getDisplayList
 import config
 import configobj
 import globalVars
@@ -116,7 +117,7 @@ def refresh_braille_tables_cache() -> None:
 
 
 def getValidBrailleDisplayPrefered():
-	displays = braille.getDisplayList()
+	displays = getDisplayList()
 	displays.append(("last", _("last known")))
 	return displays
 

@@ -9,6 +9,7 @@ import wx
 
 import addonHandler
 import braille
+from braille.regions.NVDAObject import NVDAObjectRegion
 import buildVersion
 import config
 import controlTypes
@@ -167,7 +168,7 @@ def update_NVDAObjectRegion(self):
 			except (NotImplementedError, LookupError):
 				pass
 	self.rawText = text + self.appendText
-	super(braille.NVDAObjectRegion, self).update()
+	super(NVDAObjectRegion, self).update()
 
 
 def is_current_display_string(current):

@@ -10,6 +10,7 @@ from logHandler import log
 
 import addonHandler
 import brailleInput
+from braille.input import handler as brailleInputHandler
 import brailleTables
 import config
 import gui
@@ -165,7 +166,7 @@ def saveDict(dictToSave, fp=None):
 def getReplacements(abreviations, strict=False):
 	if isinstance(abreviations, str):
 		abreviations = [abreviations]
-	currentInputTable = brailleInput.handler.table.fileName
+	currentInputTable = brailleInputHandler.table.fileName
 	out = []
 	for abreviation in abreviations:
 		if abreviation.endswith("⠀"):

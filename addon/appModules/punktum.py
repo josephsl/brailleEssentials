@@ -1,3 +1,4 @@
+# -*- coding: cp1252 -*-
 # Unterstützung für "Punktum"
 
 import appModuleHandler
