@@ -11,7 +11,6 @@ from typing import Optional
 import api
 import appModuleHandler
 import braille
-import brailleInput
 import brailleTables
 import config
 from logHandler import log
@@ -22,6 +21,7 @@ from .common import (
 	default_braille_table_file_for_cur_language,
 )
 from . import addoncfg
+from .brailleCompat import brailleInput
 
 BRAILLE_PATTERNS = "braille-patterns.cti"
 

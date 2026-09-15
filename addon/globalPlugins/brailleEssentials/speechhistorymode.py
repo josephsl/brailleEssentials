@@ -15,6 +15,8 @@ import ui
 import wx
 from logHandler import log
 
+from .brailleCompat import BrailleBuffer, BrailleHandler, TextRegion
+
 addonHandler.initTranslation()
 
 TETHER_SPEECH = "speech"
@@ -64,7 +66,7 @@ def showSpeech(index: int, allowReadEntry: bool = False) -> None:
 			if config.conf["brailleEssentials"]["speechHistoryMode"]["numberEntries"]:
 				size_limit = len(str(config.conf["brailleEssentials"]["speechHistoryMode"]["limit"]))
 				text = f"#%.{size_limit}d:{text}" % (index + 1)
-			region = braille.TextRegion(text)
+			region = TextRegion(text)
 			region.update()
 			region.obj = None
 			braille.handler._doNewObject([region])
@@ -162,15 +164,15 @@ def install() -> None:
 	if _installed:
 		return
 	_orig_speak = speech.speech.speak
-	_orig_scroll_back = braille.BrailleBuffer.scrollBack
-	_orig_scroll_forward = braille.BrailleBuffer.scrollForward
-	_orig_braille_message = braille.BrailleHandler.message
+	_orig_scroll_back = BrailleBuffer.scrollBack
+	_orig_scroll_forward = BrailleBuffer.scrollForward
+	_orig_braille_message = BrailleHandler.message
 	speech.speech.speak = speak_wrapped
 	if hasattr(speech, "speak"):
 		speech.speak = speak_wrapped
-	braille.BrailleBuffer.scrollBack = scrollBack
-	braille.BrailleBuffer.scrollForward = scrollForward
-	braille.BrailleHandler.message = new_braille_message
+	BrailleBuffer.scrollBack = scrollBack
+	BrailleBuffer.scrollForward = scrollForward
+	BrailleHandler.message = new_braille_message
 	_installed = True
 	log.debug("speech history mode patches installed")
 
@@ -186,11 +188,11 @@ def uninstall() -> None:
 			if hasattr(speech, "speak"):
 				speech.speak = _orig_speak
 		if _orig_scroll_back is not None:
-			braille.BrailleBuffer.scrollBack = _orig_scroll_back
+			BrailleBuffer.scrollBack = _orig_scroll_back
 		if _orig_scroll_forward is not None:
-			braille.BrailleBuffer.scrollForward = _orig_scroll_forward
+			BrailleBuffer.scrollForward = _orig_scroll_forward
 		if _orig_braille_message is not None:
-			braille.BrailleHandler.message = _orig_braille_message
+			BrailleHandler.message = _orig_braille_message
 	except Exception:
 		log.warning("error restoring speech history patches", exc_info=True)
 	_orig_speak = _orig_scroll_back = _orig_scroll_forward = _orig_braille_message = None

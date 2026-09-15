@@ -8,7 +8,6 @@ import gui
 import wx
 
 import addonHandler
-import braille
 import buildVersion
 import config
 import controlTypes
@@ -18,6 +17,7 @@ from logHandler import log
 from NVDAObjects.behaviors import ProgressBar
 
 from . import addoncfg
+from . import brailleCompat
 from .common import N_, CHOICE_liblouis, CHOICE_none, ADDON_ORDER_PROPERTIES, IS_CURRENT_NO
 from .documentformatting import CHOICES_LABELS, get_report, LABELS_STATES
 from appModules.brailleExtenderExcel import EXCEL_CELLINFO, ExcelBrailleResult, getExcelFormulaDescription
@@ -110,7 +110,7 @@ def update_NVDAObjectRegion(self):
 	elif excelBraille.suppress_name:
 		cellValue = None
 	else:
-		cellValue = obj.value if not braille.NVDAObjectHasUsefulText(obj) else None
+		cellValue = obj.value if not brailleCompat.NVDAObjectHasUsefulText(obj) else None
 	text = getPropertiesBraille(
 		name=None if excelBraille.suppress_name else obj.name,
 		role=role,
@@ -163,11 +163,13 @@ def update_NVDAObjectRegion(self):
 		mathPres.ensureInit()
 		if mathPres.brailleProvider:
 			try:
-				text += braille.TEXT_SEPARATOR + mathPres.brailleProvider.getBrailleForMathMl(obj.mathMl)
+				text += brailleCompat.TEXT_SEPARATOR + mathPres.brailleProvider.getBrailleForMathMl(
+					obj.mathMl
+				)
 			except (NotImplementedError, LookupError):
 				pass
 	self.rawText = text + self.appendText
-	super(braille.NVDAObjectRegion, self).update()
+	super(brailleCompat.NVDAObjectRegion, self).update()
 
 
 def is_current_display_string(current):
@@ -194,10 +196,10 @@ def get_roleLabel(role):
 
 def getPropertiesBraille(**propertyValues) -> str:
 	properties = {}
-	positiveStateLabels = braille.positiveStateLabels
-	negativeStateLabels = braille.negativeStateLabels
-	TEXT_SEPARATOR = braille.TEXT_SEPARATOR
-	roleLabels = braille.roleLabels
+	positiveStateLabels = brailleCompat.positiveStateLabels
+	negativeStateLabels = brailleCompat.negativeStateLabels
+	TEXT_SEPARATOR = brailleCompat.TEXT_SEPARATOR
+	roleLabels = brailleCompat.roleLabels
 	suppressName = propertyValues.get("suppressCellName")
 	name = propertyValues.get("name")
 	if suppressName:

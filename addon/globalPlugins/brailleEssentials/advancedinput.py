@@ -9,13 +9,13 @@ from copy import deepcopy
 from logHandler import log
 
 import addonHandler
-import brailleInput
 import brailleTables
 import config
 import gui
 import ui
 import wx
 
+from .brailleCompat import brailleInput
 from .common import configDir, addonName
 from .utils import getTextInBraille
 
