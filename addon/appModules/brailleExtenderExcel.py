@@ -38,6 +38,16 @@ except ImportError:
 
 from nvdaBuiltin.appModules.excel import AppModule as _NVDAExcelAppModule
 
+from globalPlugins.brailleEssentials.brailleCompat import (
+	BrailleBuffer,
+	BrailleHandler,
+	NVDAObjectHasUsefulText,
+	NVDAObjectRegion,
+	Region,
+	TextInfoRegion,
+	getFocusContextRegions,
+	getFocusRegions,
+)
 from globalPlugins.brailleEssentials.common import addonName
 
 from NVDAObjects import NVDAObject
@@ -754,7 +764,7 @@ _excelCellGetBrailleRegionsInstalled = False
 _originalExcelCellGetBrailleRegions: Any = None
 
 
-class ExcelCellBrailleRegion(braille.NVDAObjectRegion):
+class ExcelCellBrailleRegion(NVDAObjectRegion):
 	def __init__(
 		self,
 		obj: NVDAObject,
@@ -784,7 +794,7 @@ class ExcelCellBrailleRegion(braille.NVDAObjectRegion):
 			text += _excelHeaderSuffix(self.obj)
 		self.rawText = text
 		self.focusToHardLeft = self.isCurrentSegment
-		braille.Region.update(self)
+		Region.update(self)
 
 	def routeTo(self, braillePos: int) -> None:
 		if self.isCurrentSegment:
@@ -793,9 +803,9 @@ class ExcelCellBrailleRegion(braille.NVDAObjectRegion):
 		self._routeToNeighborCell()
 
 	def _routeToCurrentCell(self, braillePos: int) -> None:
-		if braille.NVDAObjectHasUsefulText(self.obj):
+		if NVDAObjectHasUsefulText(self.obj):
 			try:
-				textRegion = braille.TextInfoRegion(self.obj)
+				textRegion = TextInfoRegion(self.obj)
 				textRegion.update()
 				rawPos = self.brailleToRawPos[braillePos]
 				textOffset = self._rawPosToCellTextOffset(rawPos)
@@ -930,7 +940,7 @@ def _excel_focus_object_for_braille() -> NVDAObject | None:
 	return None
 
 
-def _excel_cell_from_braille_buffer(handler: braille.BrailleHandler) -> NVDAObject | None:
+def _excel_cell_from_braille_buffer(handler: BrailleHandler) -> NVDAObject | None:
 	for region in reversed(handler.mainBuffer.regions):
 		if isinstance(region, ExcelCellBrailleRegion):
 			cell = region._focusCell or region.obj
@@ -977,9 +987,7 @@ def _excel_primary_focus_region(focusRegions: list) -> Any | None:
 	return focusRegions[0] if focusRegions else None
 
 
-def _focus_excel_current_at_display_left(
-	handler: braille.BrailleHandler, mainBuffer: braille.BrailleBuffer
-) -> bool:
+def _focus_excel_current_at_display_left(handler: BrailleHandler, mainBuffer: BrailleBuffer) -> bool:
 	focusRegion = None
 	for region in mainBuffer.regions:
 		if getattr(region, "_focusAncestorIndex", None) is not None:
@@ -1009,8 +1017,8 @@ def _focus_excel_current_at_display_left(
 
 
 def _apply_braille_buffer_focus_regions(
-	handler: braille.BrailleHandler,
-	mainBuffer: braille.BrailleBuffer,
+	handler: BrailleHandler,
+	mainBuffer: BrailleBuffer,
 	contextRegions: list,
 	focusRegions: list,
 ) -> bool:
@@ -1048,7 +1056,7 @@ def _build_excel_focus_regions(focus: NVDAObject) -> list:
 			for region in regions:
 				region.update()
 			return regions
-	region = braille.NVDAObjectRegion(focus)
+	region = NVDAObjectRegion(focus)
 	region.focusToHardLeft = True
 	region.update()
 	return [region]
@@ -1103,8 +1111,8 @@ def refresh_excel_braille_display() -> None:
 		regionObj = treeInterceptor
 	handler._doNewObject(
 		itertools.chain(
-			braille.getFocusContextRegions(regionObj, oldFocusRegions=oldRegions),
-			braille.getFocusRegions(regionObj),
+			getFocusContextRegions(regionObj, oldFocusRegions=oldRegions),
+			getFocusRegions(regionObj),
 		)
 	)
 	if wantsScopedLine and not _focus_excel_current_at_display_left(handler, mainBuffer):

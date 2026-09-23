@@ -9,7 +9,6 @@ import re
 import addonHandler
 import api
 import braille
-import brailleInput
 import brailleTables
 import characterProcessing
 import config
@@ -22,6 +21,8 @@ import textInfos
 import ui
 from keyboardHandler import KeyboardInputGesture
 from logHandler import log
+
+from .brailleCompat import brailleInput
 
 addonHandler.initTranslation()
 import treeInterceptorHandler
