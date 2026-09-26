@@ -191,11 +191,14 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		log.info(f"{addonName} {addonVersion} loaded ({round(time.time() - startTime, 2)}s)")
 
 	def event_gainFocus(self, obj, nextHandler):
-		isVirtualBuff = obj is not None and isinstance(obj.treeInterceptor, virtualBuffers.VirtualBuffer)
-		rotor.apply_focus_context(isVirtualBuff, self)
-
-		if not addoncfg.is_display_profile_initialized(addoncfg.curBD):
-			self.onReload(None, 1)
+		# Quick-nav support probing can walk a large UIA document on NVDA's
+		# main thread. The rotor has no display output to configure when
+		# NVDA reports that no braille display is connected.
+		if braille.handler is not None and braille.handler.display.name != "noBraille":
+			isVirtualBuff = obj is not None and isinstance(obj.treeInterceptor, virtualBuffers.VirtualBuffer)
+			rotor.apply_focus_context(isVirtualBuff, self)
+			if not addoncfg.is_display_profile_initialized(addoncfg.curBD):
+				self.onReload(None, 1)
 		if self.hourDatePlayed:
 			self.script_hourDate(None)
 		if self.autoTestPlayed:
