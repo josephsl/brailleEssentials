@@ -667,9 +667,13 @@ def getKeyboardLayout():
 	return 0
 
 
-def getTabSize():
-	size = config.conf["brailleEssentials"]["tabSize_%s" % curBD]
-	if size < 0:
+def getTabSize() -> int:
+	key = f"tabSize_{curBD}"
+	try:
+		size = int(config.conf["brailleEssentials"][key])
+	except (KeyError, TypeError, ValueError):
+		size = 2
+	if size < 1:
 		size = 2
 	return size
 
