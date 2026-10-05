@@ -1878,7 +1878,7 @@ msgstr "Automatyczna ({name})"
 #: addon\globalPlugins\brailleEssentials\__init__.py:82
 #, python-format
 msgid "Emulate on the system keyboard: %s"
-msgstr "Emuluj na klawiaturze systemowej: %s"
+msgstr "Emuluje na klawiaturze systemowej: %s"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:111
 msgid "If pressed twice, presents the information in browse mode"
@@ -2030,32 +2030,32 @@ msgstr "Niedostępne tutaj"
 msgid ""
 "Rotor: move forward (next character, link, review line, and so on, depending "
 "on the rotor)"
-msgstr "Rotor: przejdź do przodu (następny znak, link, wiersz przeglądu itd., zależnie od rotora)"
+msgstr "Rotor: przechodzi do przodu (następny znak, link, wiersz przeglądu itd., zależnie od rotora)"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:541
 msgid "Rotor: move backward (previous character, link, review line, and so on)"
-msgstr "Rotor: przejdź do tyłu (poprzedni znak, link, wiersz przeglądu itd.)"
+msgstr "Rotor: przechodzi do tyłu (poprzedni znak, link, wiersz przeglądu itd.)"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:564
 msgid ""
 "Rotor: next step (next line, next object group, larger selection unit, "
 "depending on the rotor)"
 msgstr ""
-"Rotor: następny krok (następny wiersz, grupa obiektów lub większa jednostka "
-"zaznaczenia, zależnie od rotora)"
+"Rotor: przechodzi do następnego kroku (następny wiersz, grupa obiektów lub większa "
+"jednostka zaznaczenia, zależnie od rotora)"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:580
 msgid "Rotor: previous step (previous line, object group, or selection unit)"
-msgstr "Rotor: poprzedni krok (poprzedni wiersz, grupa obiektów lub jednostka zaznaczenia)"
+msgstr "Rotor: przechodzi do poprzedniego kroku (poprzedni wiersz, grupa obiektów lub jednostka zaznaczenia)"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:594
 msgid "Rotor: activate the item (press Enter or the rotor’s default action)"
-msgstr "Rotor: aktywuj element (naciśnij Enter lub wykonaj domyślną akcję rotora)"
+msgstr "Rotor: aktywuje element (naciska Enter lub wykonuje domyślną akcję rotora)"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:600
 msgid ""
 "Lock or unlock the braille keyboard so dots are not translated as you type"
-msgstr "Zablokuj lub odblokuj klawiaturę brajlowską, aby wpisywane punkty nie były tłumaczone"
+msgstr "Blokuje lub odblokowuje klawiaturę brajlowską, aby wpisywane punkty nie były tłumaczone"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:604
 msgid "Braille keyboard locked"
@@ -2067,7 +2067,7 @@ msgstr "Klawiatura brajlowska odblokowana"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:608
 msgid "Turn Braille Essentials one-handed braille input on or off"
-msgstr "Włącz lub wyłącz jednoręczne wprowadzanie brajla w Braille Essentials"
+msgstr "Włącza lub wyłącza jednoręczne wprowadzanie brajla w Braille Essentials"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:614
 msgid "One-handed mode enabled"
@@ -2079,7 +2079,7 @@ msgstr "Tryb jednoręczny wyłączony"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:618
 msgid "Hide or show dots 7 and 8 in contracted braille output"
-msgstr "Ukryj lub pokaż punkty 7 i 8 na wyjściu brajla skrótowego"
+msgstr "Ukrywa lub pokazuje punkty 7 i 8 na wyjściu brajla skrótowego"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:622
 msgid "Dots 7 and 8 disabled"
@@ -2091,7 +2091,7 @@ msgstr "Punkty 7 i 8 włączone"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:628
 msgid "Switch BRF output mode (braille file / literary layout handling)"
-msgstr "Przełącz tryb wyjścia BRF (obsługa plików brajlowskich / układu literackiego)"
+msgstr "Przełącza tryb wyjścia BRF (obsługa plików brajlowskich / układu literackiego)"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:635
 msgid "BRF mode enabled"
@@ -2104,7 +2104,7 @@ msgstr "Tryb BRF wyłączony"
 #: addon\globalPlugins\brailleEssentials\__init__.py:639
 msgid ""
 "Lock or unlock modifier keys when entering text from the braille keyboard"
-msgstr "Zablokuj lub odblokuj klawisze modyfikujące podczas wprowadzania tekstu z klawiatury brajlowskiej"
+msgstr "Blokuje lub odblokowuje klawisze modyfikujące podczas wprowadzania tekstu z klawiatury brajlowskiej"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:643
 msgid "Modifier keys locked"
@@ -2118,18 +2118,18 @@ msgstr "Klawisze modyfikujące odblokowane"
 msgid ""
 "Turn reporting of font attributes in braille (bold, italic, underline, and "
 "so on) on or off"
-msgstr "Włącz lub wyłącz prezentowanie w brajlu atrybutów czcionki (pogrubienia, kursywy, podkreślenia itd.)"
+msgstr "Włącza lub wyłącza prezentowanie w brajlu atrybutów czcionki (pogrubienia, kursywy, podkreślenia itd.)"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:658
 msgid ""
 "Turn alignment indicators in braille (left, center, right, justified) on or "
 "off"
-msgstr "Włącz lub wyłącz wskaźniki wyrównania w brajlu (do lewej, do środka, do prawej, wyjustowane)"
+msgstr "Włącza lub wyłącza wskaźniki wyrównania w brajlu (do lewej, do środka, do prawej, wyjustowane)"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:665
 msgid ""
 "Show only plain text in braille (strip most structure and attribute marks)"
-msgstr "Pokazuj w brajlu tylko zwykły tekst (usuń większość oznaczeń struktury i atrybutów)"
+msgstr "Pokazuje w brajlu tylko zwykły tekst (usuwa większość oznaczeń struktury i atrybutów)"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:671
 msgid "Plain text mode enabled"
@@ -2144,12 +2144,12 @@ msgid ""
 "Cycle how NVDA speaks the current line when you scroll braille (off, focus, "
 "review, or both)"
 msgstr ""
-"Przełączaj sposób odczytywania bieżącego wiersza przez NVDA podczas przewijania "
+"Przełącza sposób odczytywania bieżącego wiersza przez NVDA podczas przewijania "
 "brajla (wyłączone, punkt uwagi, przegląd lub oba)"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:690
 msgid "Turn NVDA speech on or off (same as the built-in speech toggle)"
-msgstr "Włącz lub wyłącz mowę NVDA (tak samo jak wbudowane przełączanie mowy)"
+msgstr "Włącza lub wyłącza mowę NVDA (tak samo jak wbudowane przełączanie mowy)"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:694
 msgid "Speech off"
@@ -2163,7 +2163,7 @@ msgstr "Mowa włączona"
 msgid ""
 "Read extra details for the review cursor (name, description, value; for "
 "example a link URL)"
-msgstr "Odczytaj dodatkowe szczegóły o elemencie pod kursorem przeglądu (nazwę, opis i wartość, np. adres URL linku)"
+msgstr "Odczytuje dodatkowe szczegóły o elemencie pod kursorem przeglądu (nazwę, opis i wartość, np. adres URL linku)"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:715
 msgid "No extra info for this element"
@@ -2172,7 +2172,7 @@ msgstr "Brak dodatkowych informacji o tym elemencie"
 #: addon\globalPlugins\brailleEssentials\__init__.py:721
 msgid ""
 "Open a browseable list of dot patterns for the current Liblouis input table"
-msgstr "Otwórz w trybie czytania listę kombinacji punktów dla bieżącej tablicy wejścia Liblouis"
+msgstr "Otwiera w trybie czytania listę kombinacji punktów dla bieżącej tablicy wejścia Liblouis"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:725
 msgid " Input table"
@@ -2190,7 +2190,7 @@ msgstr "Przegląd tablicy (%s)"
 #: addon\globalPlugins\brailleEssentials\__init__.py:735
 msgid ""
 "Translate the selection to Unicode braille and show it in a browseable window"
-msgstr "Przetłumacz zaznaczenie na brajl Unicode i pokaż je w oknie trybu czytania"
+msgstr "Tłumaczy zaznaczenie na brajl Unicode i pokazuje je w oknie trybu czytania"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:742
 #: addon\globalPlugins\brailleEssentials\__init__.py:758
@@ -2206,7 +2206,7 @@ msgstr "Konwersja do brajla Unicode"
 msgid ""
 "Translate the selection to dot numbers (cell descriptions) and show them in "
 "a browseable window"
-msgstr "Przetłumacz zaznaczenie na numery punktów (opisy komórek) i pokaż je w oknie trybu czytania"
+msgstr "Tłumaczy zaznaczenie na numery punktów (opisy komórek) i pokazuje je w oknie trybu czytania"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:760
 msgid "Braille Unicode to cell descriptions"
@@ -2216,7 +2216,7 @@ msgstr "Brajl Unicode na opisy komórek"
 msgid ""
 "Convert selected dot-number text (for example 125-24-0) to Unicode braille "
 "cells"
-msgstr "Przekształć zaznaczony tekst z numerami punktów (np. 125-24-0) na komórki brajla Unicode"
+msgstr "Przekształca zaznaczony tekst z numerami punktów (np. 125-24-0) na komórki brajla Unicode"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:774
 msgid "Cell descriptions to braille Unicode"
@@ -2227,7 +2227,7 @@ msgid ""
 "Turn advanced braille input mode on or off (HUC or numeric character codes "
 "and abbreviation expansions)"
 msgstr ""
-"Włącz lub wyłącz zaawansowany tryb wprowadzania brajla (HUC, numeryczne kody znaków "
+"Włącza lub wyłącza zaawansowany tryb wprowadzania brajla (HUC, numeryczne kody znaków "
 "i rozwijanie skrótów)"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:791
@@ -2235,7 +2235,7 @@ msgid ""
 "Turn punctuation or symbol names in braille for undefined characters on or "
 "off"
 msgstr ""
-"Włącz lub wyłącz pokazywanie w brajlu nazw znaków przestankowych i symboli dla "
+"Włącza lub wyłącza pokazywanie w brajlu nazw znaków przestankowych i symboli dla "
 "znaków niezdefiniowanych"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:799
@@ -2250,7 +2250,7 @@ msgstr "Nazwy znaków przestankowych i symboli dla znaków niezdefiniowanych wy�
 msgid ""
 "Report how far the caret has moved through the text under the braille cursor "
 "(percentage and character count)"
-msgstr "Podaj położenie kursora systemu w tekście pod kursorem brajlowskim (procent i liczba znaków)"
+msgstr "Podaje położenie kursora systemu w tekście pod kursorem brajlowskim (procent i liczba znaków)"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:815
 msgid "No text"
@@ -2261,12 +2261,12 @@ msgid ""
 "Show the current time and date on the braille display, updating every "
 "second. Press again to return to normal braille."
 msgstr ""
-"Pokazuj bieżącą godzinę i datę na monitorze brajlowskim, aktualizując je co sekundę. "
-"Naciśnij ponownie, aby wrócić do normalnego widoku brajla."
+"Pokazuje bieżącą godzinę i datę na monitorze brajlowskim, aktualizując je co "
+"sekundę. Ponowne użycie przywraca normalny widok brajla."
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:849
 msgid "Turn Braille Essentials automatic braille scrolling on or off"
-msgstr "Włącz lub wyłącz automatyczne przewijanie brajla w Braille Essentials"
+msgstr "Włącza lub wyłącza automatyczne przewijanie brajla w Braille Essentials"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:854
 #: addon\globalPlugins\brailleEssentials\__init__.py:965
@@ -2277,30 +2277,30 @@ msgstr "Funkcja automatycznego przewijania jest niedostępna (poprawka nie zosta
 #: addon\globalPlugins\brailleEssentials\__init__.py:856
 msgid ""
 "Press the system volume up key and report the new level in braille or speech"
-msgstr "Naciśnij systemowy klawisz zwiększania głośności i podaj nowy poziom w brajlu lub mową"
+msgstr "Naciska systemowy klawisz zwiększania głośności i podaje nowy poziom w brajlu lub mową"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:861
 msgid ""
 "Press the system volume down key and report the new level in braille or "
 "speech"
-msgstr "Naciśnij systemowy klawisz zmniejszania głośności i podaj nowy poziom w brajlu lub mową"
+msgstr "Naciska systemowy klawisz zmniejszania głośności i podaje nowy poziom w brajlu lub mową"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:866
 msgid "Press the system mute key and report the new mute or volume state"
-msgstr "Naciśnij systemowy klawisz wyciszenia i podaj nowy stan wyciszenia lub poziom głośności"
+msgstr "Naciska systemowy klawisz wyciszenia i podaje nowy stan wyciszenia lub poziom głośności"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:878
 msgid ""
 "Show a browseable summary of braille profile gestures and add-on keyboard "
 "shortcuts"
-msgstr "Pokaż w trybie czytania podsumowanie gestów profilu brajlowskiego i skrótów klawiaturowych dodatku"
+msgstr "Pokazuje w trybie czytania podsumowanie gestów profilu brajlowskiego i skrótów klawiaturowych dodatku"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:944
 msgid ""
 "Run a quick-launch item (application, file, or URL) configured in Braille "
 "Essentials settings"
 msgstr ""
-"Uruchom element szybkiego uruchamiania (aplikację, plik lub adres URL) "
+"Uruchamia element szybkiego uruchamiania (aplikację, plik lub adres URL) "
 "skonfigurowany w ustawieniach Braille Essentials"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:959
@@ -2310,18 +2310,18 @@ msgstr "Nie ma takiego pliku ani katalogu"
 #: addon\globalPlugins\brailleEssentials\__init__.py:962
 msgid ""
 "Increase the delay before the braille display auto-scrolls to the next chunk"
-msgstr "Zwiększ opóźnienie przed automatycznym przewinięciem monitora brajlowskiego do następnego fragmentu"
+msgstr "Zwiększa opóźnienie przed automatycznym przewinięciem monitora brajlowskiego do następnego fragmentu"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:971
 msgid ""
 "Decrease the delay before the braille display auto-scrolls to the next chunk"
-msgstr "Zmniejsz opóźnienie przed automatycznym przewinięciem monitora brajlowskiego do następnego fragmentu"
+msgstr "Zmniejsza opóźnienie przed automatycznym przewinięciem monitora brajlowskiego do następnego fragmentu"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:982
 msgid ""
 "Switch to the next Liblouis input table from your Braille Essentials list "
 "(including automatic selection)"
-msgstr "Przełącz na następną tablicę wejścia Liblouis z listy Braille Essentials (w tym wybór automatyczny)"
+msgstr "Przełącza na następną tablicę wejścia Liblouis z listy Braille Essentials (w tym wybór automatyczny)"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:991
 #: addon\globalPlugins\brailleEssentials\__init__.py:1019
@@ -2344,7 +2344,7 @@ msgstr "Wejście: %s"
 msgid ""
 "Switch to the next Liblouis output table from your Braille Essentials list "
 "(including automatic selection)"
-msgstr "Przełącz na następną tablicę wyjścia Liblouis z listy Braille Essentials (w tym wybór automatyczny)"
+msgstr "Przełącza na następną tablicę wyjścia Liblouis z listy Braille Essentials (w tym wybór automatyczny)"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:1034
 #, python-format
@@ -2355,7 +2355,7 @@ msgstr "Wyjście: %s"
 msgid ""
 "Announce the active Liblouis input and output table names in speech and "
 "braille"
-msgstr "Podaj mową i w brajlu nazwy aktywnych tablic wejścia i wyjścia Liblouis"
+msgstr "Podaje mową i w brajlu nazwy aktywnych tablic wejścia i wyjścia Liblouis"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:1044
 #, python-brace-format
@@ -2381,15 +2381,15 @@ msgstr "Wejście: {I}; Wyjście: {O}"
 msgid ""
 "Show character information for the review cursor: Unicode name, speech "
 "symbol, braille cells, and numeric bases"
-msgstr "Pokaż informacje o znaku pod kursorem przeglądu: nazwę Unicode, symbol mowy, komórki brajlowskie i wartości w różnych systemach liczbowych"
+msgstr "Pokazuje informacje o znaku pod kursorem przeglądu: nazwę Unicode, symbol mowy, komórki brajlowskie i wartości w różnych systemach liczbowych"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:1060
 msgid "Show the speech symbol string for the current selection in braille"
-msgstr "Pokaż w brajlu tekst symboli mowy dla bieżącego zaznaczenia"
+msgstr "Pokazuje w brajlu tekst symboli mowy dla bieżącego zaznaczenia"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:1070
 msgid "Repeat the last keyboard shortcut you issued from the braille display"
-msgstr "Powtórz ostatni skrót klawiaturowy wywołany z monitora brajlowskiego"
+msgstr "Powtarza ostatni skrót klawiaturowy wywołany z monitora brajlowskiego"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:1073
 msgid "No shortcut performed from a braille display"
@@ -2404,7 +2404,7 @@ msgid ""
 "Reload Braille Essentials settings, gesture maps, and patches without "
 "restarting NVDA"
 msgstr ""
-"Wczytaj ponownie ustawienia, mapy gestów i poprawki Braille Essentials bez ponownego "
+"Wczytuje ponownie ustawienia, mapy gestów i poprawki Braille Essentials bez ponownego "
 "uruchamiania NVDA"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:1105
@@ -2412,14 +2412,14 @@ msgid ""
 "Reload the primary braille display chosen in Braille Essentials or NVDA "
 "(when that slot follows NVDA's active display)"
 msgstr ""
-"Wczytaj ponownie główny monitor brajlowski wybrany w Braille Essentials lub NVDA "
+"Wczytuje ponownie główny monitor brajlowski wybrany w Braille Essentials lub NVDA "
 "(gdy ta pozycja ma używać aktywnego monitora NVDA)"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:1113
 msgid ""
 "Reload the second favorite braille display chosen in Braille Essentials "
 "settings"
-msgstr "Wczytaj ponownie drugi ulubiony monitor brajlowski wybrany w ustawieniach Braille Essentials"
+msgstr "Wczytuje ponownie drugi ulubiony monitor brajlowski wybrany w ustawieniach Braille Essentials"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:1124
 msgid "No braille display specified. No reload to do"
@@ -2446,7 +2446,7 @@ msgid ""
 "Cancel staged modifier keys from the braille keyboard before emulating a PC "
 "shortcut"
 msgstr ""
-"Anuluj oczekujące klawisze modyfikujące z klawiatury brajlowskiej przed emulowaniem "
+"Anuluje oczekujące klawisze modyfikujące z klawiatury brajlowskiej przed emulowaniem "
 "skrótu klawiatury PC"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:1281
@@ -2455,23 +2455,23 @@ msgstr "Anulowano skrót klawiszowy"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:1284
 msgid "Scroll the braille display backward by one full width"
-msgstr "Przewiń monitor brajlowski wstecz o pełną szerokość"
+msgstr "Przewija monitor brajlowski wstecz o pełną szerokość"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:1288
 msgid "Scroll the braille display forward by one full width"
-msgstr "Przewiń monitor brajlowski do przodu o pełną szerokość"
+msgstr "Przewija monitor brajlowski do przodu o pełną szerokość"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:1325
 msgid "Developer: toggle verbose logging of text info at the review cursor"
-msgstr "Deweloper: przełącz szczegółowe rejestrowanie informacji o tekście pod kursorem przeglądu"
+msgstr "Deweloper: przełącza szczegółowe rejestrowanie informacji o tekście pod kursorem przeglądu"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:1334
 msgid ""
 "Save the current braille window as a snapshot; press twice quickly to clear "
 "the saved snapshot"
 msgstr ""
-"Zapisz bieżący widok brajlowski jako migawkę; naciśnij szybko dwukrotnie, aby "
-"wyczyścić zapisaną migawkę"
+"Zapisuje bieżący widok brajlowski jako migawkę; szybkie dwukrotne użycie "
+"czyści zapisaną migawkę"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:1342
 msgid "Current braille view saved"
@@ -2485,7 +2485,7 @@ msgstr "Bufor wyczyszczony"
 msgid ""
 "Show the saved braille snapshot briefly; press twice for a browseable copy"
 msgstr ""
-"Pokaż na krótko zapisaną migawkę brajlowską; naciśnij dwukrotnie, aby wyświetlić "
+"Pokazuje na krótko zapisaną migawkę brajlowską; dwukrotne użycie wyświetla "
 "kopię w trybie czytania"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:1356
@@ -2498,7 +2498,7 @@ msgstr "Bufor jest pusty"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:1388
 msgid "Pause or resume the braille display cell test pattern"
-msgstr "Wstrzymaj lub wznów wzorzec testowy komórek monitora brajlowskiego"
+msgstr "Wstrzymuje lub wznawia wzorzec testowy komórek monitora brajlowskiego"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:1395
 msgid "Pause"
@@ -2511,16 +2511,16 @@ msgstr "Wznów"
 #: addon\globalPlugins\brailleEssentials\__init__.py:1436
 msgid ""
 "Slow down the braille cell test pattern (longer interval between updates)"
-msgstr "Zwolnij wzorzec testowy komórek brajlowskich (dłuższy odstęp między aktualizacjami)"
+msgstr "Spowalnia wzorzec testowy komórek brajlowskich (dłuższy odstęp między aktualizacjami)"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:1443
 msgid ""
 "Speed up the braille cell test pattern (shorter interval between updates)"
-msgstr "Przyspiesz wzorzec testowy komórek brajlowskich (krótszy odstęp między aktualizacjami)"
+msgstr "Przyspiesza wzorzec testowy komórek brajlowskich (krótszy odstęp między aktualizacjami)"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:1452
 msgid "Switch to the previous braille cell test pattern"
-msgstr "Przełącz na poprzedni wzorzec testowy komórek brajlowskich"
+msgstr "Przełącza na poprzedni wzorzec testowy komórek brajlowskich"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:1460
 #: addon\globalPlugins\brailleEssentials\__init__.py:1470
@@ -2530,14 +2530,14 @@ msgstr "Typ testu automatycznego %d"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:1462
 msgid "Switch to the next braille cell test pattern"
-msgstr "Przełącz na następny wzorzec testowy komórek brajlowskich"
+msgstr "Przełącza na następny wzorzec testowy komórek brajlowskich"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:1474
 msgid ""
 "Start or stop the built-in braille cell test pattern (for display alignment "
 "and timing)"
 msgstr ""
-"Uruchom lub zatrzymaj wbudowany wzorzec testowy komórek brajlowskich (do sprawdzania "
+"Uruchamia lub zatrzymuje wbudowany wzorzec testowy komórek brajlowskich (do sprawdzania "
 "wyrównania i synchronizacji monitora)"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:1487
@@ -2558,7 +2558,7 @@ msgstr ""
 msgid ""
 "Open the dialog to add or inspect a Liblouis dictionary entry for the "
 "character under the review cursor"
-msgstr "Otwórz okno umożliwiające dodanie lub sprawdzenie wpisu słownika Liblouis dla znaku pod kursorem przeglądu"
+msgstr "Otwiera okno umożliwiające dodanie lub sprawdzenie wpisu słownika Liblouis dla znaku pod kursorem przeglądu"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:1517
 msgid "Add dictionary entry or see a dictionary"
@@ -2566,7 +2566,7 @@ msgstr "Dodaj wpis do słownika lub wyświetl słownik"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:1522
 msgid "Skip or include blank lines when scrolling long text in braille"
-msgstr "Pomijaj lub uwzględniaj puste wiersze podczas przewijania długiego tekstu w brajlu"
+msgstr "Pomija lub uwzględnia puste wiersze podczas przewijania długiego tekstu w brajlu"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:1528
 msgid "Skip blank lines enabled"
@@ -2581,7 +2581,7 @@ msgid ""
 "Cycle how routing keys behave in edit fields (normal, emulate arrows with "
 "beeps, or emulate arrows silently)"
 msgstr ""
-"Przełączaj zachowanie klawiszy routingu w polach edycji (normalne, emulowanie "
+"Przełącza zachowanie klawiszy routingu w polach edycji (normalne, emulowanie "
 "strzałek z sygnałami dźwiękowymi lub bez nich)"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:1554
@@ -2589,7 +2589,7 @@ msgid ""
 "Turn Braille Essentials speech history mode on or off (captures speech for "
 "later review)"
 msgstr ""
-"Włącz lub wyłącz tryb historii mowy Braille Essentials (zapisuje wypowiedzi do "
+"Włącza lub wyłącza tryb historii mowy Braille Essentials (zapisuje wypowiedzi do "
 "późniejszego przeglądania)"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:1560
@@ -2626,7 +2626,7 @@ msgstr "kol"
 msgid ""
 "Cycle Excel braille view (focused cell, row range, or column range on one "
 "line)"
-msgstr "Przełączaj widok brajlowski programu Excel (aktywna komórka, zakres wiersza lub zakres kolumny w jednej linii)"
+msgstr "Przełącza widok brajlowski programu Excel (aktywna komórka, zakres wiersza lub zakres kolumny w jednej linii)"
 
 #: addon\appModules\brailleExtenderExcel.py:1230
 msgid ""
