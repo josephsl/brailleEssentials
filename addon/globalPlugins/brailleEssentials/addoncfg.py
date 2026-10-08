@@ -13,6 +13,7 @@ import configobj
 import globalVars
 import inputCore
 from logHandler import log
+from .brailleCompat import getDisplayList
 from .common import (
 	configDir,
 	profilesDir,
@@ -116,7 +117,7 @@ def refresh_braille_tables_cache() -> None:
 
 
 def getValidBrailleDisplayPrefered():
-	displays = braille.getDisplayList()
+	displays = getDisplayList()
 	displays.append(("last", _("last known")))
 	return displays
 
