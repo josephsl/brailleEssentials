@@ -726,8 +726,10 @@ class BrailleTablesDlg(gui.settingsDialogs.SettingsPanel):
 			gui.nvdaControls.SelectOnFocusSpinCtrl,
 			min=1,
 			max=42,
-			initial=int(config.conf["brailleEssentials"]["tabSize_%s" % addoncfg.curBD]),
+			initial=addoncfg.getTabSize(),
 		)
+		self.tabSize.Enable(self.tabSpace.IsChecked())
+		self.tabSpace.Bind(wx.EVT_CHECKBOX, lambda evt: self.tabSize.Enable(self.tabSpace.IsChecked()))
 
 		manage_btn = sHelper.addItem(wx.Button(self, label=_("&Manage custom braille tables…")))
 		manage_btn.Bind(wx.EVT_BUTTON, self._on_manage_custom_braille_tables)
@@ -767,7 +769,7 @@ class BrailleTablesDlg(gui.settingsDialogs.SettingsPanel):
 			POST_TABLE_NONE if postTableID == 0 else postOutputFNs[postTableID - 1]
 		)
 		config.conf["brailleEssentials"]["tabSpace"] = self.tabSpace.IsChecked()
-		config.conf["brailleEssentials"]["tabSize_%s" % addoncfg.curBD] = self.tabSize.Value
+		config.conf["brailleEssentials"]["tabSize_%s" % addoncfg.curBD] = int(self.tabSize.Value)
 		instanceGP.reloadBrailleTables()
 
 
