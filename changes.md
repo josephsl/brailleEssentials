@@ -4,11 +4,16 @@ This document lists release changelogs for Braille Essentials add-on.
 
 Note: forked from BrailleExtender in May 2026.
 
-## Version 26.08
+## Version 26.11
 
 * Resolved braille property, control field and format field customizations (role labels, document formatting indicators, undefined character representations) silently having no effect on NVDA 2026.1 and later, where NVDA resolves those functions from `braille.regions.properties` rather than from `braille`.
 * The add-on no longer writes around fifty deprecation warnings, each with a full stack trace, to the NVDA log while loading on NVDA 2026.1 and later.
 * The bundled Punktum app module is now valid UTF-8 with an encoding declaration. It relied on Python 3.13 tolerating non-UTF-8 bytes inside comments, which Python 3.14 no longer does (issue 2).
+
+## Version 26.10
+
+* Updated the add-on code to BrailleExtender commit abc2ef1d2 (2026-10-01):
+	* Fixed an issue with preferred input and output tables setting in Braille Essentials settings interface where unchecking "automatic" value and then closing the dialog is undone the next time the add-on settings dialog opens (BrailleExtender issue 152, contributed by adam magued).
 
 ## Version 26.07
 
@@ -16,7 +21,7 @@ Note: forked from BrailleExtender in May 2026.
 * NVDA will honor custom braille routing commands from apps, specifically Punktum (issue 2).
 * Changes from BrailleExtender:
 	* No statement on add-on store based update process in add-on settings/general category (Braille Essentials does not have a self-updating mechanism).
-	* Brailiant B profile: Removed Control+Alt+Tab keystroke emulation (Space with dots 5-6-8/C1+C3+C5) as it conflicts with review copy comand.
+	* Brailliant B profile: Removed Control+Alt+Tab keystroke emulation (Space with dots 5-6-8/C1+C3+C5) as it conflicts with review copy comand.
 
 ## Version 26.05.4
 
