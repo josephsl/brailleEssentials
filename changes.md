@@ -4,6 +4,10 @@ This document lists release changelogs for Braille Essentials add-on.
 
 Note: forked from BrailleExtender in May 2026.
 
+## Unreleased
+
+* Skip rotor focus-context probing when no braille display is connected, avoiding long UIA scans on large documents.
+
 ## Version 26.10
 
 * Updated the add-on code to BrailleExtender commit abc2ef1d2 (2026-10-01):
