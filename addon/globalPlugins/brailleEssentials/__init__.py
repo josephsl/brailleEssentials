@@ -331,9 +331,6 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		braille_tables.reload_liblouis_chain(apply_handlers=apply_handlers)
 		self.backup__brailleTableDict = config.conf["braille"]["translationTable"]
 		tabledictionaries.notify_invalid_dictionary_tables()
-		if config.conf["brailleEssentials"]["tabSpace"]:
-			liblouisDef = r"always \t " + ("0-" * addoncfg.getTabSize()).strip("-")
-			patches.louis.compileString(utils.getCurrentBrailleTables(), bytes(liblouisDef, "ASCII"))
 		undefinedchars.setUndefinedChar()
 		utils.refresh_braille_for_current_focus()
 
