@@ -262,6 +262,42 @@ def update_region(self) -> None:
 			self.selectionStart -= sum(1 for p in positions_to_remove if p <= self.selectionStart)
 		if isinstance(self.selectionEnd, int):
 			self.selectionEnd -= sum(1 for p in positions_to_remove if p <= self.selectionEnd)
+	if config.conf["brailleEssentials"].get("tabSpace", False) and "\t" in self.rawText:
+		tab_size = addoncfg.getTabSize()
+		spaces = " " * tab_size
+		new_raw_text: list[str] = []
+		new_typeforms: Optional[list[int]] = [] if self.rawTextTypeforms is not None else None
+		new_raw_to_content: Optional[list[int]] = (
+			[] if hasattr(self, "_rawToContentPos") and self._rawToContentPos else None
+		)
+		for i, ch in enumerate(self.rawText):
+			if ch == "\t":
+				new_raw_text.append(spaces)
+				if new_typeforms is not None:
+					tf = self.rawTextTypeforms[i] if i < len(self.rawTextTypeforms) else louis.plain_text
+					new_typeforms.extend([tf] * tab_size)
+				if new_raw_to_content is not None:
+					cp = self._rawToContentPos[i] if i < len(self._rawToContentPos) else 0
+					new_raw_to_content.extend([cp] * tab_size)
+			else:
+				new_raw_text.append(ch)
+				if new_typeforms is not None:
+					tf = self.rawTextTypeforms[i] if i < len(self.rawTextTypeforms) else louis.plain_text
+					new_typeforms.append(tf)
+				if new_raw_to_content is not None:
+					cp = self._rawToContentPos[i] if i < len(self._rawToContentPos) else 0
+					new_raw_to_content.append(cp)
+		if isinstance(self.cursorPos, int):
+			self.cursorPos += self.rawText[:self.cursorPos].count("\t") * (tab_size - 1)
+		if isinstance(self.selectionStart, int):
+			self.selectionStart += self.rawText[:self.selectionStart].count("\t") * (tab_size - 1)
+		if isinstance(self.selectionEnd, int):
+			self.selectionEnd += self.rawText[:self.selectionEnd].count("\t") * (tab_size - 1)
+		self.rawText = "".join(new_raw_text)
+		if new_typeforms is not None:
+			self.rawTextTypeforms = new_typeforms
+		if new_raw_to_content is not None:
+			self._rawToContentPos = new_raw_to_content
 	mode = louis.dotsIO
 	if config.conf["braille"]["expandAtCursor"] and self.cursorPos is not None:
 		mode |= louis.compbrlAtCursor
@@ -989,12 +1025,26 @@ def _addTextWithFields(
 			elif should_move_cursor_to_first_content:
 				self.cursorPos = len(self.rawText)
 				should_move_cursor_to_first_content = False
-			self.rawText += command
-			command_len = len(command)
-			self.rawTextTypeforms.extend((typeform,) * command_len)
-			end_pos = self._currentContentPos + command_len
-			self._rawToContentPos.extend(range(self._currentContentPos, end_pos))
-			self._currentContentPos = end_pos
+			if config.conf["brailleEssentials"].get("tabSpace", False) and "\t" in command:
+				tab_size = addoncfg.getTabSize()
+				spaces = " " * tab_size
+				for ch in command:
+					if ch == "\t":
+						self.rawText += spaces
+						self.rawTextTypeforms.extend((typeform,) * tab_size)
+						self._rawToContentPos.extend([self._currentContentPos] * tab_size)
+					else:
+						self.rawText += ch
+						self.rawTextTypeforms.append(typeform)
+						self._rawToContentPos.append(self._currentContentPos)
+					self._currentContentPos += 1
+			else:
+				self.rawText += command
+				command_len = len(command)
+				self.rawTextTypeforms.extend((typeform,) * command_len)
+				end_pos = self._currentContentPos + command_len
+				self._rawToContentPos.extend(range(self._currentContentPos, end_pos))
+				self._currentContentPos = end_pos
 			if isSelection:
 				self.selectionEnd = len(self.rawText)
 			self._endsWithField = False
