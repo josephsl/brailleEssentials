@@ -17,11 +17,11 @@ import itertools
 from typing import Any, Callable
 
 import api
-import braille
 import config
 import textInfos
 from logHandler import log
 
+from . import brailleapi
 from .utils import get_control_type
 
 
@@ -42,7 +42,8 @@ def _braille_speech_output_blocks_gain_focus(handler: Any) -> bool:
 		from config.configFlags import BrailleMode
 
 		return config.conf["braille"]["mode"] == BrailleMode.SPEECH_OUTPUT.value
-	except Exception:
+	except (ImportError, KeyError):
+		# Braille mode exists from NVDA 2024.2.
 		return False
 
 
@@ -178,8 +179,8 @@ def make_patched_handle_gain_focus(_originals: dict[str, Any]) -> Callable[..., 
 			_sync_review_position_to_object_caret(ti_obj)
 			self._doNewObject(
 				itertools.chain(
-					braille.getFocusContextRegions(ti_obj, oldFocusRegions=self.mainBuffer.regions),
-					braille.getFocusRegions(ti_obj, review=True),
+					brailleapi.getFocusContextRegions(ti_obj, oldFocusRegions=self.mainBuffer.regions),
+					brailleapi.getFocusRegions(ti_obj, review=True),
 				)
 			)
 			self._be_terminal_review_override = True
@@ -190,8 +191,8 @@ def make_patched_handle_gain_focus(_originals: dict[str, Any]) -> Callable[..., 
 
 		self._doNewObject(
 			itertools.chain(
-				braille.getFocusContextRegions(ti_obj, oldFocusRegions=self.mainBuffer.regions),
-				braille.getFocusRegions(ti_obj),
+				brailleapi.getFocusContextRegions(ti_obj, oldFocusRegions=self.mainBuffer.regions),
+				brailleapi.getFocusRegions(ti_obj),
 			)
 		)
 

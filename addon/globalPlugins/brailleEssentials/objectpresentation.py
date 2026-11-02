@@ -8,7 +8,6 @@ import gui
 import wx
 
 import addonHandler
-import braille
 import buildVersion
 import config
 import controlTypes
@@ -17,6 +16,7 @@ import ui
 from logHandler import log
 from NVDAObjects.behaviors import ProgressBar
 
+from . import brailleapi
 from . import addoncfg
 from .common import N_, CHOICE_liblouis, CHOICE_none, ADDON_ORDER_PROPERTIES, IS_CURRENT_NO
 from .documentformatting import CHOICES_LABELS, get_report, LABELS_STATES
@@ -110,7 +110,7 @@ def update_NVDAObjectRegion(self):
 	elif excelBraille.suppress_name:
 		cellValue = None
 	else:
-		cellValue = obj.value if not braille.NVDAObjectHasUsefulText(obj) else None
+		cellValue = obj.value if not brailleapi.NVDAObjectHasUsefulText(obj) else None
 	text = getPropertiesBraille(
 		name=None if excelBraille.suppress_name else obj.name,
 		role=role,
@@ -163,41 +163,34 @@ def update_NVDAObjectRegion(self):
 		mathPres.ensureInit()
 		if mathPres.brailleProvider:
 			try:
-				text += braille.TEXT_SEPARATOR + mathPres.brailleProvider.getBrailleForMathMl(obj.mathMl)
+				text += brailleapi.TEXT_SEPARATOR + mathPres.brailleProvider.getBrailleForMathMl(obj.mathMl)
 			except (NotImplementedError, LookupError):
 				pass
 	self.rawText = text + self.appendText
-	super(braille.NVDAObjectRegion, self).update()
+	super(brailleapi.NVDAObjectRegion, self).update()
 
 
 def is_current_display_string(current):
 	if hasattr(current, "displayString"):
 		return current.displayString
-	if hasattr(controlTypes, "isCurrentLabels"):
-		try:
-			return controlTypes.isCurrentLabels[current]
-		except KeyError:
-			pass
 	log.debugWarning("Aria-current value not handled: %s" % current)
 	return ""
 
 
 def get_roleLabel(role):
-	if hasattr(controlTypes, "Role"):
-		if isinstance(role, controlTypes.Role):
-			return role.displayString
-		if isinstance(role, str):
-			return getattr(controlTypes.Role, role).displayString
-		raise TypeError()
-	return controlTypes.roleLabels[role]
+	if isinstance(role, controlTypes.Role):
+		return role.displayString
+	if isinstance(role, str):
+		return getattr(controlTypes.Role, role).displayString
+	raise TypeError()
 
 
 def getPropertiesBraille(**propertyValues) -> str:
 	properties = {}
-	positiveStateLabels = braille.positiveStateLabels
-	negativeStateLabels = braille.negativeStateLabels
-	TEXT_SEPARATOR = braille.TEXT_SEPARATOR
-	roleLabels = braille.roleLabels
+	positiveStateLabels = brailleapi.positiveStateLabels
+	negativeStateLabels = brailleapi.negativeStateLabels
+	TEXT_SEPARATOR = brailleapi.TEXT_SEPARATOR
+	roleLabels = brailleapi.roleLabels
 	suppressName = propertyValues.get("suppressCellName")
 	name = propertyValues.get("name")
 	if suppressName:
@@ -355,8 +348,8 @@ def validProgressBar(obj):
 	List = [
 		isinstance(obj, ProgressBar),
 		config.conf["brailleEssentials"]["objectPresentation"]["progressBarUpdate"],
-		controlTypes.STATE_INVISIBLE not in obj.states,
-		controlTypes.STATE_OFFSCREEN not in obj.states,
+		controlTypes.State.INVISIBLE not in obj.states,
+		controlTypes.State.OFFSCREEN not in obj.states,
 	]
 	inForeground = obj.isInForeground
 	if not config.conf["brailleEssentials"]["objectPresentation"]["reportBackgroundProgressBars"]:

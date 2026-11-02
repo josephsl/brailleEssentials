@@ -9,7 +9,6 @@ import re
 import addonHandler
 import api
 import braille
-import brailleInput
 import brailleTables
 import characterProcessing
 import config
@@ -26,6 +25,7 @@ from logHandler import log
 addonHandler.initTranslation()
 import treeInterceptorHandler
 import unicodedata
+from . import brailleapi
 from .common import (
 	INSERT_AFTER,
 	INSERT_BEFORE,
@@ -41,6 +41,22 @@ get_volume_level = volumehelper.get_volume_level
 
 # liblouis marks “free” input combinations with back-translated text matching this shape.
 _RE_OVERVIEW_UNUSED_COMBO = re.compile(r"^\\.+/$")
+
+
+_loggedExceptionKeys: set[str] = set()
+
+
+def log_exception_once(key: str, message: str, *args) -> None:
+	"""Log the current exception as an error the first time ``key`` fails, then at debug level.
+
+	For add-on code that must keep braille working when an NVDA helper fails: the failure stays
+	visible in the default log (it usually means an NVDA API changed) without flooding it.
+	"""
+	if key in _loggedExceptionKeys:
+		log.debugWarning(message, *args, exc_info=True)
+		return
+	_loggedExceptionKeys.add(key)
+	log.exception(message, *args)
 
 
 def _resolveInputTableFileName(table_file: str) -> str:
@@ -101,8 +117,8 @@ def make_progress_bar_from_str(percentage, text, method, positive="⢼", negativ
 
 def getEffectiveInputTableFileName() -> str:
 	"""Return the liblouis input table file name (never the config value ``auto``)."""
-	if brailleInput.handler is not None:
-		return brailleInput.handler.table.fileName
+	if brailleapi.get_braille_input_handler() is not None:
+		return brailleapi.get_braille_input_handler().table.fileName
 	return _resolveInputTableFileName(config.conf["braille"]["inputTable"])
 
 
@@ -488,8 +504,8 @@ def apply_braille_input_table(table_id: str) -> None:
 		)
 		table_id = "auto"
 	if table_id == "auto":
-		if brailleInput.handler:
-			brailleInput.handler._table = brailleTables.getTable(default_file)
+		if brailleapi.get_braille_input_handler():
+			brailleapi.get_braille_input_handler()._table = brailleTables.getTable(default_file)
 		persist_input_table_selection("auto")
 		return
 	try:
@@ -497,8 +513,8 @@ def apply_braille_input_table(table_id: str) -> None:
 	except LookupError:
 		table = brailleTables.getTable(default_file)
 		table_id = table.fileName
-	if brailleInput.handler:
-		brailleInput.handler._table = table
+	if brailleapi.get_braille_input_handler():
+		brailleapi.get_braille_input_handler()._table = table
 	persist_input_table_selection(table_id)
 
 
@@ -543,23 +559,6 @@ def get_output_reason(reason_name):
 	raise AttributeError('Reason "%s" unknown' % reason_name)
 
 
-def is_braille_unicode_normalization_enabled() -> bool:
-	"""Whether NVDA's braille Unicode normalization feature is active (2025.2+ / 2026.x).
-
-	When True, Region.update normalizes text before liblouis translation and remaps offsets.
-	"""
-	try:
-		value = config.conf["braille"]["unicodeNormalization"]
-	except (KeyError, LookupError, AttributeError, TypeError):
-		return False
-	if hasattr(value, "calculated"):
-		try:
-			return bool(value.calculated())
-		except Exception:
-			return bool(value)
-	return bool(value)
-
-
 def get_speech_mode():
 	if hasattr(speech, "getState"):
 		return speech.getState().speechMode
@@ -571,6 +570,10 @@ def is_speechMode_talk() -> bool:
 	if hasattr(speech, "SpeechMode"):
 		return speech_mode == speech.SpeechMode.talk
 	return speech_mode == speech.speechMode_talk
+
+
+def is_speechMode_off() -> bool:
+	return get_speech_mode() == speech.SpeechMode.off
 
 
 def set_speech_off():
@@ -588,14 +591,12 @@ def set_speech_talk():
 def get_control_type(control_type):
 	if not isinstance(control_type, str):
 		raise TypeError("control_type must be a string")
-	if hasattr(controlTypes, "Role"):
-		attr = "_".join(control_type.split("_")[1:])
-		if control_type.startswith("ROLE_"):
-			return getattr(controlTypes.Role, attr)
-		if control_type.startswith("STATE_"):
-			return getattr(controlTypes.State, attr)
-		raise ValueError(control_type)
-	return getattr(controlTypes, control_type)
+	attr = "_".join(control_type.split("_")[1:])
+	if control_type.startswith("ROLE_"):
+		return getattr(controlTypes.Role, attr)
+	if control_type.startswith("STATE_"):
+		return getattr(controlTypes.State, attr)
+	raise ValueError(control_type)
 
 
 def get_symbol_level(symbol_level):

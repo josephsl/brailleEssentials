@@ -9,8 +9,6 @@ import config
 import configobj
 import gui
 import tones
-import threading
-import time
 import ui
 import wx
 
@@ -28,34 +26,83 @@ addonHandler.initTranslation()
 conf = config.conf["brailleEssentials"]["autoScroll"]
 
 
-class AutoScroll(threading.Thread):
-	_continue = True
+def is_be_auto_scroll_active(handler=None) -> bool:
+	"""True when Braille Extender's auto scroll is running on ``handler``."""
+	handler = handler or braille.handler
+	return handler is not None and getattr(handler, "_auto_scroll", None) is not None
 
-	def _next_delay(self):
+
+def stop_nvda_core_autoscroll(handler=None) -> None:
+	"""Disable NVDA's built-in braille auto-scroll (NVDA 2026.2+), if available."""
+	handler = handler or braille.handler
+	if handler is None:
+		return
+	auto_scroll = getattr(handler, "autoScroll", None)
+	if not callable(auto_scroll):
+		return
+	try:
+		auto_scroll(enable=False)
+	except Exception:
+		log.debugWarning("could not disable NVDA core auto scroll", exc_info=True)
+
+
+class AutoScroll:
+	"""Scroll the braille display forward periodically, on NVDA's main thread.
+
+	Uses ``wx.CallLater`` timers: NVDA's braille handler is not thread safe, so scrolling must not
+	happen from a background thread.
+	"""
+
+	#: Delay before retrying while a braille message is displayed (ms).
+	BUSY_RETRY_DELAY = 200
+	#: Delay after a scroll before measuring the new window for the next delay (ms).
+	SETTLE_DELAY = 100
+
+	def __init__(self) -> None:
+		self._timer: wx.CallLater | None = None
+		self._running = False
+
+	def _next_delay(self) -> int:
 		if conf["adjustToContent"]:
 			return get_dynamic_auto_scroll_delay()
 		return get_auto_scroll_delay()
 
-	def run(self):
-		while self._continue:
-			if braille.handler.buffer is not braille.handler.mainBuffer:
-				time.sleep(0.2)
-				continue
-			next_delay = self._next_delay() / 1000
-			if next_delay < 0:
-				next_delay = 0
-			time.sleep(next_delay)
-			if self._continue:
-				try:
-					braille.handler.scrollForward()
-				except wx._core.wxAssertionError as err:
-					log.error(err)
-				# HACK: windowStartPos and windowEndPos take a some time to
-				# refresh
-				time.sleep(0.1)
+	def _schedule(self, delay: int, callback) -> None:
+		self._timer = wx.CallLater(max(0, int(delay)), callback)
 
-	def stop(self):
-		self._continue = False
+	def _scheduleNextScroll(self) -> None:
+		self._timer = None
+		if self._running:
+			self._schedule(self._next_delay(), self._scroll)
+
+	def _scroll(self) -> None:
+		self._timer = None
+		if not self._running:
+			return
+		handler = braille.handler
+		if handler is None:
+			return
+		if handler.buffer is not handler.mainBuffer:
+			self._schedule(self.BUSY_RETRY_DELAY, self._scroll)
+			return
+		try:
+			stop_nvda_core_autoscroll(handler)
+			handler.scrollForward()
+		except Exception:
+			log.exception("Braille Extender auto scroll failed")
+		if self._running:
+			# Let pending region updates settle before measuring the window for the next delay.
+			self._schedule(self.SETTLE_DELAY, self._scheduleNextScroll)
+
+	def start(self) -> None:
+		self._running = True
+		self._scheduleNextScroll()
+
+	def stop(self) -> None:
+		self._running = False
+		if self._timer is not None:
+			self._timer.Stop()
+			self._timer = None
 
 
 def get_dynamic_auto_scroll_delay(buffer=None):
@@ -112,8 +159,10 @@ def toggle_auto_scroll(self):
 	if self._auto_scroll:
 		self._auto_scroll.stop()
 		self._auto_scroll = None
+		stop_nvda_core_autoscroll(self)
 		tones.beep(100, 100)
 	else:
+		stop_nvda_core_autoscroll(self)
 		self._auto_scroll = self.AutoScroll()
 		self._auto_scroll.start()
 		tones.beep(300, 100)

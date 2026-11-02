@@ -28,6 +28,7 @@ from .common import (
 from .autoscroll import SettingsDlg as AutoScrollDlg
 from .documentformatting import SettingsDlg as DocumentFormattingDlg
 from .excelSettings import SettingsDlg as ExcelDlg
+from .virtualDocumentSettings import SettingsDlg as VirtualDocumentDlg
 from .objectpresentation import SettingsDlg as ObjectPresentationDlg
 from .onehand import SettingsDlg as OneHandModeDlg
 from .rolelabels import SettingsDlg as RoleLabelsDlg
@@ -92,6 +93,15 @@ class GeneralDlg(gui.settingsDialogs.SettingsPanel):
 			wx.CheckBox(self, label=_("Speech i&nterrupt for unknown gestures"))
 		)
 		self.stopSpeechUnknown.SetValue(config.conf["brailleEssentials"]["stopSpeechUnknown"])
+
+		# Translators: label of a dialog.
+		self.muteSoundsWithSpeech = sHelper.addItem(
+			wx.CheckBox(
+				self,
+				label=_("When speech is off, also &mute NVDA sounds (beeps, error and mode sounds)"),
+			)
+		)
+		self.muteSoundsWithSpeech.SetValue(config.conf["brailleEssentials"]["muteSoundsWithSpeech"])
 
 		# Translators: label of a dialog.
 		label = _("Routing cursors behavior in edit &fields:")
@@ -193,6 +203,7 @@ class GeneralDlg(gui.settingsDialogs.SettingsPanel):
 		config.conf["brailleEssentials"]["skipBlankLinesScroll"] = self.skipBlankLinesScroll.IsChecked()
 		config.conf["brailleEssentials"]["smartCapsLock"] = self.smartCapsLock.IsChecked()
 		config.conf["brailleEssentials"]["stopSpeechUnknown"] = self.stopSpeechUnknown.IsChecked()
+		config.conf["brailleEssentials"]["muteSoundsWithSpeech"] = self.muteSoundsWithSpeech.IsChecked()
 		config.conf["brailleEssentials"]["speakScroll"] = list(addoncfg.focusOrReviewChoices.keys())[
 			self.speakScroll.GetSelection()
 		]
@@ -1152,6 +1163,7 @@ class AddonSettingsDialog(gui.settingsDialogs.MultiCategorySettingsDialog):
 		SpeechHistorymodeDlg,
 		DocumentFormattingDlg,
 		ExcelDlg,
+		VirtualDocumentDlg,
 		ObjectPresentationDlg,
 		BrailleTablesDlg,
 		UndefinedCharsDlg,

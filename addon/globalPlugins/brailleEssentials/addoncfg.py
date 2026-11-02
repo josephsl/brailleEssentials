@@ -13,6 +13,7 @@ import configobj
 import globalVars
 import inputCore
 from logHandler import log
+from . import brailleapi
 from .common import (
 	configDir,
 	profilesDir,
@@ -80,13 +81,11 @@ routingCursorsEditFields_labels = {
 	RC_EMULATE_ARROWS_SILENT: _("alternative, emulate left and right arrow keys silently"),
 }
 curBD = braille.handler.display.name
-backupDisplaySize = braille.handler.displaySize
 
 iniGestures = {}
 iniProfile = {}
 profileFileExists = gesturesFileExists = False
 
-noMessageTimeout = True if "noMessageTimeout" in config.conf["braille"] else False
 outputTables = inputTables = None
 if not os.path.exists(profilesDir):
 	log.error("Profiles' path not found")
@@ -116,7 +115,7 @@ def refresh_braille_tables_cache() -> None:
 
 
 def getValidBrailleDisplayPrefered():
-	displays = braille.getDisplayList()
+	displays = brailleapi.getDisplayList()
 	displays.append(("last", _("last known")))
 	return displays
 
@@ -132,6 +131,15 @@ def _excelConfspec() -> dict[str, str]:
 		"cellFormulaSeparator": "string(default=' | ')",
 		"rowAxisPrefix": "string(default='')",
 		"columnAxisPrefix": "string(default='')",
+	}
+
+
+def _virtualDocumentConfspec() -> dict[str, str]:
+	return {
+		"tableRowBraille": "boolean(default=True)",
+		"cellSeparator": "string(default=' | ')",
+		"lineStart": "string(default='(| ')",
+		"lineEnd": "string(default=' |)')",
 	}
 
 
@@ -181,14 +189,13 @@ def getConfspec():
 		),
 		"smartCapsLock": "boolean(default=True)",
 		"stopSpeechUnknown": "boolean(default=True)",
+		"muteSoundsWithSpeech": "boolean(default=True)",
 		"routingCursorsEditFields": f"option({RC_NORMAL}, {RC_EMULATE_ARROWS_BEEP}, {RC_EMULATE_ARROWS_SILENT}, default={RC_NORMAL})",
 		"speechHistoryMode": {
 			"enabled": "boolean(default=False)",
 			"limit": "integer(min=0, default=50)",
 			"numberEntries": "boolean(default=True)",
 			"speakEntries": "boolean(default=True)",
-			"backup_tetherTo": 'string(default="focus")',
-			"backup_autoTether": "boolean(default=True)",
 		},
 		"inputTableShortcuts": 'string(default="?")',
 		"activeInputTable": 'string(default="")',
@@ -219,7 +226,6 @@ def getConfspec():
 		"reviewModeTerminal": "boolean(default=True)",
 		"features": {
 			"roleLabels": "boolean(default=False)",
-			"attributes": "boolean(default=True)",
 		},
 		"objectPresentation": {
 			"orderProperties": f'string(default="{ADDON_ORDER_PROPERTIES}")',
@@ -255,18 +261,13 @@ def getConfspec():
 			},
 			"reports": {
 				"alignment": REPORT_CHOICES,
-				"borderColor": REPORT_CHOICES,
-				"borderStyle": REPORT_CHOICES,
 				"color": REPORT_CHOICES,
 				"emphasis": REPORT_CHOICES,
 				"fontAttributes": REPORT_CHOICES,
 				"fontName": REPORT_CHOICES,
 				"fontSize": REPORT_CHOICES,
 				"highlight": REPORT_CHOICES,
-				"layoutTables": REPORT_CHOICES,
-				"lineIndentation": REPORT_CHOICES,
 				"lineNumber": REPORT_CHOICES,
-				"lineSpacing": REPORT_CHOICES,
 				"page": REPORT_CHOICES,
 				"paragraphIndentation": REPORT_CHOICES,
 				"spellingErrors": REPORT_CHOICES_E,
@@ -329,6 +330,7 @@ def getConfspec():
 			"refreshForegroundObjNameChange": "boolean(default=False)",
 		},
 		"excel": _excelConfspec(),
+		"virtualDocument": _virtualDocumentConfspec(),
 	}
 
 
@@ -375,8 +377,23 @@ def loadPreferredTables() -> None:
 # Keys formerly stored under documentFormatting before the dedicated excel section existed.
 _EXCEL_KEYS_FROM_DOCUMENT_FORMATTING = ("cellFormula",)
 
-# Top-level brailleExtender keys dropped from the confspec (best-effort removal).
-_DEPRECATED_BRAILLE_EXTENDER_KEYS = ("brailleTables", "useCustomBrailleTables")
+# brailleExtender config keys (as section paths) dropped from the confspec (best-effort removal).
+_DEPRECATED_BRAILLE_EXTENDER_KEYS: tuple[tuple[str, ...], ...] = (
+	("brailleTables",),
+	("useCustomBrailleTables",),
+	# Never read: speech history mode no longer changes NVDA's braille tether.
+	("speechHistoryMode", "backup_tetherTo"),
+	("speechHistoryMode", "backup_autoTether"),
+	("features", "attributes"),
+	# Superseded by NVDA's "Interrupt speech while scrolling" braille setting (NVDA 2022.3+).
+	("stopSpeechScroll",),
+	# Report rows without any braille presentation or settings UI.
+	("documentFormatting", "reports", "borderColor"),
+	("documentFormatting", "reports", "borderStyle"),
+	("documentFormatting", "reports", "layoutTables"),
+	("documentFormatting", "reports", "lineIndentation"),
+	("documentFormatting", "reports", "lineSpacing"),
+)
 
 # Per-display defaults written when a display has no saved profile value yet.
 _DISPLAY_PROFILE_DEFAULTS = {
@@ -476,9 +493,14 @@ def _migrate_legacy_auto_scroll_delay() -> None:
 
 def _migrate_deprecated_braille_extender_keys() -> None:
 	"""Drop keys removed from the confspec (deletion may be ignored by NVDA)."""
-	be = config.conf["brailleEssentials"]
-	for key in _DEPRECATED_BRAILLE_EXTENDER_KEYS:
-		_try_remove_config_key(be, key)
+	for *sections, key in _DEPRECATED_BRAILLE_EXTENDER_KEYS:
+		section = config.conf["brailleEssentials"]
+		try:
+			for name in sections:
+				section = section[name]
+		except KeyError:
+			continue
+		_try_remove_config_key(section, key)
 
 
 def _ensure_display_profile_defaults() -> None:
@@ -538,12 +560,72 @@ def loadConf():
 		else:
 			log.debug("No braille display present")
 
-	limitCellsRight = int(config.conf["brailleEssentials"]["rightMarginCells_%s" % curBD])
-	if backupDisplaySize - limitCellsRight <= backupDisplaySize and limitCellsRight > 0:
-		braille.handler.displaySize = backupDisplaySize - limitCellsRight
+	register_right_margin_filter()
 	if config.conf["brailleEssentials"]["inputTableShortcuts"] not in tablesUFN:
 		config.conf["brailleEssentials"]["inputTableShortcuts"] = "?"
 	return True
+
+
+def keep_braille_messages_displayed():
+	"""Show braille messages until dismissed; return the setting to give back to the restore call.
+
+	NVDA's ``noMessageTimeout`` option became ``showMessages`` long before NVDA 2024.1.
+	"""
+	from config.configFlags import ShowMessages
+
+	previous = config.conf["braille"]["showMessages"]
+	config.conf["braille"]["showMessages"] = ShowMessages.SHOW_INDEFINITELY.value
+	return previous
+
+
+def restore_braille_messages_setting(previous) -> None:
+	if previous is not None:
+		config.conf["braille"]["showMessages"] = previous
+
+
+def _right_margin_cells() -> int:
+	try:
+		return max(0, int(config.conf["brailleEssentials"]["rightMarginCells_%s" % curBD]))
+	except (KeyError, TypeError, ValueError):
+		return 0
+
+
+def _filter_display_dimensions_right_margin(value):
+	"""Hide the configured right margin (NVDA 2025.1+, ``filter_displayDimensions``)."""
+	margin = _right_margin_cells()
+	if margin <= 0 or value.numCols <= margin:
+		return value
+	return value._replace(numCols=value.numCols - margin)
+
+
+def _filter_display_size_right_margin(value: int) -> int:
+	"""Hide the configured right margin (NVDA before 2025.1, ``filter_displaySize``)."""
+	margin = _right_margin_cells()
+	if margin <= 0 or value <= margin:
+		return value
+	return value - margin
+
+
+def _right_margin_filter():
+	"""The NVDA filter point and handler to use; ``displaySize`` itself is read-only."""
+	if brailleapi.filter_displayDimensions is not None:
+		return brailleapi.filter_displayDimensions, _filter_display_dimensions_right_margin
+	return brailleapi.filter_displaySize, _filter_display_size_right_margin
+
+
+def register_right_margin_filter() -> None:
+	"""Apply ``rightMarginCells_<display>``; the handler reads the setting on each call."""
+	filterPoint, handler = _right_margin_filter()
+	if filterPoint is None:
+		return
+	filterPoint.unregister(handler)
+	filterPoint.register(handler)
+
+
+def unregister_right_margin_filter() -> None:
+	filterPoint, handler = _right_margin_filter()
+	if filterPoint is not None:
+		filterPoint.unregister(handler)
 
 
 def loadGestures():
@@ -652,6 +734,15 @@ def getTabSize():
 	if size < 0:
 		size = 2
 	return size
+
+
+# remove old config files
+cfgFile = globalVars.appArgs.configPath + r"\BrailleExtender.conf"
+cfgFileAttribra = globalVars.appArgs.configPath + r"\attribra-BE.ini"
+if os.path.exists(cfgFile):
+	os.remove(cfgFile)
+if os.path.exists(cfgFileAttribra):
+	os.remove(cfgFileAttribra)
 
 if not os.path.exists(configDir):
 	os.mkdir(configDir)

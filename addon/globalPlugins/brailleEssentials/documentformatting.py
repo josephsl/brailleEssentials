@@ -2,6 +2,7 @@
 # documentformatting.py
 # Part of Braille Essentials (forked from BrailleExtender) Addon for NVDA
 # Copyright 2016-2026 Joseph Lee, André-Abush CLAUSE, released under GPL.
+import functools
 from collections import namedtuple
 from typing import Any
 
@@ -15,7 +16,7 @@ import ui
 import wx
 from logHandler import log
 
-from . import regionhelper
+from . import brailleapi, regionhelper
 from .common import (
 	N_,
 	BRLEX_CELL_MASK_BY_METHOD,
@@ -147,8 +148,6 @@ LABELS_REPORTS = {
 	"tables": N_("&Tables"),
 	"tableHeaders": N_("Row/column h&eaders"),
 	"tableCellCoords": N_("Cell c&oordinates"),
-	"borderStyle": N_("Border St&yle"),
-	"borderColor": N_("Border &color"),
 	"headings": N_("&Headings"),
 	"links": N_("Lin&ks"),
 	"graphics": N_("&Graphics"),
@@ -277,6 +276,16 @@ def use_be_format_field_chrome(key: str) -> bool:
 	return not report_row_follows_nvda(key)
 
 
+def alignment_braille_enabled() -> bool:
+	"""True when the Alignment report row asks Braille Essentials to show text alignment in braille.
+
+	Line padding and dots 7/8 obey the same rule as the alignment tags (see
+	``patches.getFormatFieldBraille``): shown only when the row is "enabled" and plain text mode
+	is off. NVDA itself does not present alignment in braille, so "follow NVDA" shows nothing.
+	"""
+	return bool(get_report("alignment")) and use_be_format_field_chrome("alignment")
+
+
 def toggle_report(report):
 	cur = get_report(report, 0)
 	if not cur:
@@ -296,6 +305,76 @@ def report_formatting(report):
 	ui.message(_("{}: {}").format(label_report, label_state))
 
 
+@functools.cache
+def _braille_output_flags() -> dict[str, int]:
+	"""NVDA ``documentFormatting`` keys stored as output-channel bitmasks, with their braille bit.
+
+	``fontAttributeReporting`` exists from NVDA 2025.1 (``reportFontAttributes`` boolean before) and
+	``reportSpellingErrors2`` from NVDA 2026.1 (``reportSpellingErrors`` boolean before). NVDA tests
+	the braille bit, so writing ``True`` (1, the speech bit) does not enable braille output.
+	"""
+	flags: dict[str, int] = {}
+	try:
+		from config.configFlags import OutputMode
+
+		flags["fontAttributeReporting"] = int(OutputMode.BRAILLE)
+	except (ImportError, AttributeError):
+		pass
+	try:
+		from config.configFlags import ReportSpellingErrors
+
+		braille_flag = getattr(ReportSpellingErrors, "BRAILLE", None)
+		if braille_flag is not None:
+			flags["reportSpellingErrors2"] = int(braille_flag)
+	except ImportError:
+		pass
+	return flags
+
+
+#: NVDA ``documentFormatting`` keys holding an integer choice where 0 means off; when the add-on
+#: row is enabled, NVDA's own non-zero choice is kept, else the given value is used.
+_ENABLED_CHOICE_DEFAULTS: dict[str, int] = {
+	"reportTableHeaders": 1,  # ReportTableHeaders.ROWS_AND_COLUMNS
+}
+
+
+def _format_config_value(normalized_key: str, addon_row: str | None, nvda_value: Any, report: Any) -> Any:
+	"""Value of an NVDA format-config key for the add-on report row (enabled / disabled / follow NVDA)."""
+	if conf["plainText"] or addon_row not in (CHOICE_enabled, CHOICE_disabled):
+		return report
+	braille_flag = _braille_output_flags().get(normalized_key)
+	if braille_flag is not None:
+		previous = nvda_value if isinstance(nvda_value, int) and not isinstance(nvda_value, bool) else 0
+		if addon_row == CHOICE_enabled:
+			return previous | braille_flag
+		return previous & ~braille_flag
+	if normalized_key in _ENABLED_CHOICE_DEFAULTS:
+		if addon_row == CHOICE_disabled:
+			return 0
+		if isinstance(nvda_value, int) and not isinstance(nvda_value, bool) and nvda_value:
+			return nvda_value
+		return _ENABLED_CHOICE_DEFAULTS[normalized_key]
+	return report
+
+
+def build_text_with_fields_format_config(*, suppress_table_cell_coords: bool = False) -> dict[str, Any]:
+	"""Build the formatConfig dict used by TextInfoRegion._addTextWithFields."""
+	formatConfig_ = config.conf["documentFormatting"].copy()
+	for e in LABELS_REPORTS.keys():
+		normalized_key = normalize_report_key(e)
+		if not normalized_key:
+			continue
+		formatConfig_[normalized_key] = _format_config_value(
+			normalized_key,
+			conf["reports"].get(e),
+			formatConfig_.get(normalized_key),
+			get_report(e),
+		)
+	if suppress_table_cell_coords:
+		formatConfig_["reportTableCellCoords"] = False
+	return formatConfig_
+
+
 def get_method(k):
 	candidates = [k]
 	if ":" in k:
@@ -313,8 +392,9 @@ def get_liblouis_typeform(attr_name: str) -> int:
 def _or_braille_mask_on_cell_span(region: Any, start_b: int, end_b: int, mask: int) -> None:
 	if not mask:
 		return
-	for bp in range(start_b, end_b + 1):
-		region.brailleCells[bp] |= mask
+	cells = region.brailleCells
+	for bp in range(max(0, start_b), min(end_b + 1, len(cells))):
+		cells[bp] |= mask
 
 
 def _or_braille_mask_across_raw_positions(region: Any, mask: int) -> None:
@@ -323,6 +403,56 @@ def _or_braille_mask_across_raw_positions(region: Any, mask: int) -> None:
 	for raw_pos in range(len(region.rawText)):
 		sb, eb = regionhelper.getBraillePosFromRawPos(region, raw_pos)
 		_or_braille_mask_on_cell_span(region, sb, eb, mask)
+
+
+def apply_braille_region_post_translation_extras(region: Any) -> None:
+	"""Apply list, alignment, and Braille Essentials format overlays after ``Region.update``."""
+	postReplacements: list[regionhelper.BrailleCellReplacement] = []
+	noAlign = False
+	list_host = getattr(region, "_cellNvdaObject", None)
+	if list_host is None and hasattr(region, "obj") and hasattr(region.obj, "currentNVDAObject"):
+		list_host = region.obj.currentNVDAObject
+	if conf["lists"]["showLevelItem"] and list_host and hasattr(list_host, "IA2Attributes"):
+		IA2Attributes = list_host.IA2Attributes
+		tag = IA2Attributes.get("tag")
+		if tag == "li":
+			s = (int(IA2Attributes["level"]) - 1) * 2 if IA2Attributes.get("level") else 0
+			noAlign = True
+			postReplacements.append(regionhelper.BrailleCellReplacement(start=0, insertBefore=("⠀" * s)))
+	formatField = getattr(region, "formatField", None) or textInfos.FormatField()
+	show_alignment = not noAlign and alignment_braille_enabled()
+	if show_alignment:
+		textAlign = formatField.get("text-align")
+		if textAlign and alignment_uses_display_line_pad(textAlign) and textAlign not in ("start", "left"):
+			textAlign_norm = normalizeTextAlign(textAlign) or textAlign
+			displaySize = braille.handler.displaySize
+			content_cells = len(region.brailleCells) - 1
+			pad_len = alignment_display_line_pad_len(textAlign_norm, displaySize, content_cells)
+			if pad_len > 0:
+				postReplacements.append(
+					regionhelper.BrailleCellReplacement(start=0, insertBefore=("⠀" * pad_len))
+				)
+	if postReplacements:
+		regionhelper.replaceBrailleCells(region, postReplacements)
+	if region.brlex_typeforms:
+		cell_masks_by_raw_pos = region.brlex_typeforms
+		active_cell_mask = 0
+		for raw_pos in range(len(region.rawText)):
+			if raw_pos in cell_masks_by_raw_pos:
+				active_cell_mask = cell_masks_by_raw_pos[raw_pos]
+			if active_cell_mask:
+				sb, eb = regionhelper.getBraillePosFromRawPos(region, raw_pos)
+				_or_braille_mask_on_cell_span(region, sb, eb, active_cell_mask)
+	if show_alignment:
+		align_dots = alignment_dots_cell_mask(formatField.get("text-align"))
+		if align_dots:
+			_or_braille_mask_across_raw_positions(region, align_dots)
+
+
+def _region_format_config(region: Any) -> dict[str, Any]:
+	return build_text_with_fields_format_config(
+		suppress_table_cell_coords=getattr(region, "suppressTableCellCoords", False),
+	)
 
 
 def decorator(fn, s):
@@ -341,7 +471,7 @@ def decorator(fn, s):
 		semantic_highlight_delegated_to_nvda = report_row_follows_nvda("highlight") and bool(
 			formatConfig.get("reportHighlight", False)
 		)
-		nvda_format_markers = getattr(braille, "fontAttributeFormattingMarkers", None) or {}
+		nvda_format_markers = brailleapi.fontAttributeFormattingMarkers or {}
 		louis_typeform_flags = louis.plain_text
 		extra_dots_cell_mask = 0
 		for attr_name in _FORMAT_CHANGE_TYPEFORM_ATTRS:
@@ -376,26 +506,9 @@ def decorator(fn, s):
 		return louis_typeform_flags, extra_dots_cell_mask
 
 	def addTextWithFields_edit(self, info, formatConfig, isSelection=False):
-		formatConfig_ = formatConfig.copy()
-		for e in LABELS_REPORTS.keys():
-			normalized_key = normalize_report_key(e)
-			if not normalized_key:
-				continue
-			addon_row = conf["reports"].get(e)
-			if addon_row == CHOICE_enabled and normalized_key == "fontAttributeReporting":
-				try:
-					from config.configFlags import OutputMode
-
-					prev = formatConfig_.get(normalized_key)
-					mask = int(OutputMode.SPEECH) | int(OutputMode.BRAILLE)
-					if isinstance(prev, int):
-						formatConfig_[normalized_key] = prev | mask
-					else:
-						formatConfig_[normalized_key] = mask
-				except Exception:
-					formatConfig_[normalized_key] = True
-			else:
-				formatConfig_[normalized_key] = get_report(e)
+		# Built once per region update (see ``update`` below); a region updated another way
+		# builds it for this call.
+		formatConfig_ = getattr(self, "_beFormatConfig", None) or _region_format_config(self)
 		textInfo_ = info.getTextWithFields(formatConfig_)
 		formatField = textInfos.FormatField()
 		for field in textInfo_:
@@ -407,50 +520,12 @@ def decorator(fn, s):
 		fn(self, info, formatConfig_, isSelection)
 
 	def update(self):
-		fn(self)
-		postReplacements = []
-		noAlign = False
-		if conf["lists"]["showLevelItem"] and self and hasattr(self.obj, "currentNVDAObject"):
-			curObj = self.obj.currentNVDAObject
-			if curObj and hasattr(curObj, "IA2Attributes"):
-				IA2Attributes = curObj.IA2Attributes
-				tag = IA2Attributes.get("tag")
-				if tag == "li":
-					s = (int(IA2Attributes["level"]) - 1) * 2 if IA2Attributes.get("level") else 0
-					noAlign = True
-					postReplacements.append(
-						regionhelper.BrailleCellReplacement(start=0, insertBefore=("⠀" * s))
-					)
-		formatField = self.formatField
-		if not noAlign and get_report("alignments"):
-			textAlign = formatField.get("text-align")
-			if (
-				textAlign
-				and alignment_uses_display_line_pad(textAlign)
-				and textAlign not in ("start", "left")
-			):
-				textAlign_norm = normalizeTextAlign(textAlign) or textAlign
-				displaySize = braille.handler.displaySize
-				content_cells = len(self.brailleCells) - 1
-				pad_len = alignment_display_line_pad_len(textAlign_norm, displaySize, content_cells)
-				if pad_len > 0:
-					postReplacements.append(
-						regionhelper.BrailleCellReplacement(start=0, insertBefore=("⠀" * pad_len))
-					)
-		if postReplacements:
-			regionhelper.replaceBrailleCells(self, postReplacements)
-		if self.brlex_typeforms:
-			cell_masks_by_raw_pos = self.brlex_typeforms
-			active_cell_mask = 0
-			for raw_pos in range(len(self.rawText)):
-				if raw_pos in cell_masks_by_raw_pos:
-					active_cell_mask = cell_masks_by_raw_pos[raw_pos]
-				if active_cell_mask:
-					sb, eb = regionhelper.getBraillePosFromRawPos(self, raw_pos)
-					_or_braille_mask_on_cell_span(self, sb, eb, active_cell_mask)
-		align_dots = alignment_dots_cell_mask(formatField.get("text-align"))
-		if align_dots and not noAlign and get_report("alignments"):
-			_or_braille_mask_across_raw_positions(self, align_dots)
+		self._beFormatConfig = _region_format_config(self)
+		try:
+			fn(self)
+		finally:
+			self._beFormatConfig = None
+		apply_braille_region_post_translation_extras(self)
 
 	if s == "addTextWithFields":
 		return addTextWithFields_edit
@@ -819,3 +894,6 @@ class SettingsDlg(gui.settingsDialogs.SettingsPanel):
 		for i, key in enumerate(LABELS_REPORTS.keys()):
 			val = list(LABELS_STATES.keys())[self.dynamic_options[i].GetSelection()]
 			set_report(key, val)
+		from .virtualBufferTableBraille import schedule_document_formatting_braille_refresh
+
+		schedule_document_formatting_braille_refresh()

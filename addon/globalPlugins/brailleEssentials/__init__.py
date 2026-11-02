@@ -30,7 +30,6 @@ from collections import OrderedDict
 import appModuleHandler
 import api
 import braille
-import brailleInput
 import config
 import globalCommands
 import globalPluginHandler
@@ -48,11 +47,13 @@ import virtualBuffers
 import vision
 from logHandler import log
 
+from . import brailleapi
 from . import addoncfg
 
 config.conf.spec["brailleEssentials"] = addoncfg.getConfspec()
 from . import patches
 from . import rotor
+from . import soundmute
 from . import advancedinput
 from . import huc
 from . import documentformatting
@@ -86,7 +87,7 @@ def _modifier_keys_script_description(key_combo: str) -> str:
 
 def _brailleMessagePersistent(msg):
 	"""Display a message in the main braille buffer so it stays visible (no timeout)."""
-	region = braille.TextRegion(msg)
+	region = brailleapi.TextRegion(msg)
 	region.obj = None
 	region.update()
 	braille.handler.mainBuffer.clear()
@@ -155,8 +156,8 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	rotorGES = {}
 	noKC = None
 	if not addoncfg.noUnicodeTable:
-		backupInputTable = brailleInput.handler.table
-	backupMessageTimeout = None
+		backupInputTable = brailleapi.get_braille_input_handler().table
+	backupShowMessages = None
 
 	def __init__(self):
 		startTime = time.time()
@@ -164,12 +165,15 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		appModuleHandler.registerExecutableWithAppModule("excel", "brailleExtenderExcel")
 		patches.instanceGP = self
 		patches.apply_patches()
-		braille.TextInfoRegion._addTextWithFields = documentformatting.decorator(
-			braille.TextInfoRegion._addTextWithFields, "addTextWithFields"
+		soundmute.install()
+		brailleapi.TextInfoRegion._addTextWithFields = documentformatting.decorator(
+			brailleapi.TextInfoRegion._addTextWithFields, "addTextWithFields"
 		)
-		braille.TextInfoRegion.update = documentformatting.decorator(braille.TextInfoRegion.update, "update")
-		braille.TextInfoRegion._getTypeformFromFormatField = documentformatting.decorator(
-			braille.TextInfoRegion._getTypeformFromFormatField, "_getTypeformFromFormatField"
+		brailleapi.TextInfoRegion.update = documentformatting.decorator(
+			brailleapi.TextInfoRegion.update, "update"
+		)
+		brailleapi.TextInfoRegion._getTypeformFromFormatField = documentformatting.decorator(
+			brailleapi.TextInfoRegion._getTypeformFromFormatField, "_getTypeformFromFormatField"
 		)
 		settings.instanceGP = self
 		addoncfg.loadConf()
@@ -720,15 +724,17 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	@script(description=_("Open a browseable list of dot patterns for the current Liblouis input table"))
 	def script_getTableOverview(self, gesture):
-		inTable = brailleInput.handler.table.displayName
+		inTable = brailleapi.get_braille_input_handler().table.displayName
 		ouTable = addoncfg.tablesTR[addoncfg.tablesFN.index(utils.getTranslationTable())]
 		t = (_(" Input table") + ": %s\n" + _("Output table") + ": %s\n\n") % (
-			inTable + " (%s)" % (brailleInput.handler.table.fileName),
+			inTable + " (%s)" % (brailleapi.get_braille_input_handler().table.fileName),
 			ouTable + " (%s)" % (utils.getTranslationTable()),
 		)
 		t += utils.getTableOverview()
 		ui.browseableMessage(
-			"<pre>%s</pre>" % t, _("Table overview (%s)") % brailleInput.handler.table.displayName, True
+			"<pre>%s</pre>" % t,
+			_("Table overview (%s)") % brailleapi.get_braille_input_handler().table.displayName,
+			True,
 		)
 
 	@script(
@@ -826,20 +832,23 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		if self.hourDatePlayed:
 			self.hourDateTimer.Stop()
 			self.clearMessageFlash()
-			if addoncfg.noMessageTimeout:
-				config.conf["braille"]["noMessageTimeout"] = self.backupMessageTimeout
 			_restoreMainBuffer()
 		else:
-			if addoncfg.noMessageTimeout:
-				self.backupMessageTimeout = config.conf["braille"]["noMessageTimeout"]
-				config.conf["braille"]["noMessageTimeout"] = True
 			self.showHourDate()
-			self.hourDateTimer = wx.PyTimer(self.showHourDate)
-			time.sleep(1.02 - round(time.time() - int(time.time()), 3))
-			self.showHourDate()
-			self.hourDateTimer.Start(1000)
+			self._scheduleHourDateTick()
 		self.hourDatePlayed = not self.hourDatePlayed
 		return
+
+	def _scheduleHourDateTick(self):
+		"""Refresh the hour/date just after the next second boundary, without blocking NVDA."""
+		delay = int((1.02 - (time.time() % 1)) * 1000)
+		self.hourDateTimer = wx.CallLater(delay, self._hourDateTick)
+
+	def _hourDateTick(self):
+		if not self.hourDatePlayed:
+			return
+		self.showHourDate()
+		self._scheduleHourDateTick()
 
 	@staticmethod
 	def showHourDate():
@@ -1134,13 +1143,13 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	def clearModifiers(self, forced=False):
 		if self.modifiersLocked and not forced:
 			return
-		brailleInput.handler.currentModifiers.clear()
+		brailleapi.get_braille_input_handler().currentModifiers.clear()
 
 	def sendComb(self, sht, gesture=None):
 		inputCore.manager.emulateGesture(keyboardHandler.KeyboardInputGesture.fromName(sht))
 
 	def getActualModifiers(self, short=True):
-		modifiers = brailleInput.handler.currentModifiers
+		modifiers = brailleapi.get_braille_input_handler().currentModifiers
 		if len(modifiers) == 0:
 			return self.script_cancelShortcut(None)
 		s = ""
@@ -1163,7 +1172,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	def toggleModifier(self, modifier, beep=True):
 		if modifier.lower() not in ["alt", "control", "nvda", "shift", "windows"]:
 			return
-		modifiers = brailleInput.handler.currentModifiers
+		modifiers = brailleapi.get_braille_input_handler().currentModifiers
 		if modifier not in modifiers:
 			modifiers.add(modifier)
 			if beep and config.conf["brailleEssentials"]["beepsModifiers"]:
@@ -1485,12 +1494,10 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			self.autoTest_charPtr = self.autoTest_cellPtr = 0
 			self.clearMessageFlash()
 			speech.speakMessage(_("Auto test stopped"))
-			if addoncfg.noMessageTimeout:
-				config.conf["braille"]["noMessageTimeout"] = self.backupMessageTimeout
+			addoncfg.restore_braille_messages_setting(self.backupShowMessages)
+			self.backupShowMessages = None
 		else:
-			if addoncfg.noMessageTimeout:
-				self.backupMessageTimeout = config.conf["braille"]["noMessageTimeout"]
-				config.conf["braille"]["noMessageTimeout"] = True
+			self.backupShowMessages = addoncfg.keep_braille_messages_displayed()
 			self.showAutoTest()
 			self.autoTestTimer = wx.PyTimer(self.showAutoTest)
 			self.bindGestures(self.autoTest_gestures)
@@ -1574,11 +1581,9 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		self.removeMenu()
 		rolelabels.discardRoleLabels()
 		if addoncfg.noUnicodeTable:
-			brailleInput.handler.table = self.backupInputTable
+			brailleapi.get_braille_input_handler().table = self.backupInputTable
 		if self.hourDatePlayed:
 			self.hourDateTimer.Stop()
-			if addoncfg.noMessageTimeout:
-				config.conf["braille"]["noMessageTimeout"] = self.backupMessageTimeout
 			_restoreMainBuffer()
 		if patches.is_patch_applied("braille_handler") and patches.get_auto_scroll():
 			try:
@@ -1587,8 +1592,11 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 				pass
 		if self.autoTestPlayed:
 			self.autoTestTimer.Stop()
+			addoncfg.restore_braille_messages_setting(self.backupShowMessages)
 		tabledictionaries.remove_temporary_dictionary()
+		addoncfg.unregister_right_margin_filter()
 		advancedinput.terminate()
+		soundmute.uninstall()
 		patches.unload_patches()
 		super().terminate()
 
