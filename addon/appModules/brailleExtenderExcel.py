@@ -98,7 +98,7 @@ class ExcelBrailleResult(NamedTuple):
 	suppress_coords: bool
 
 	@staticmethod
-	def empty() -> ExcelBrailleResult:
+	def empty():
 		return ExcelBrailleResult(None, False, False)
 
 
