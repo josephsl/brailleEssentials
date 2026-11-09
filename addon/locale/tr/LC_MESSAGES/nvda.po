@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nvdaaddons\n"
 "Report-Msgid-Bugs-To: 'nvda-translations@groups.io'\n"
-"POT-Creation-Date: 2026-11-04 08:04+0000\n"
-"PO-Revision-Date: 2026-11-04 08:06\n"
+"POT-Creation-Date: 2026-11-09 04:07+0000\n"
+"PO-Revision-Date: 2026-11-09 04:21\n"
 "Last-Translator: \n"
 "Language-Team: Turkish\n"
 "Language: tr_TR\n"
@@ -1057,7 +1057,7 @@ msgstr "Tablo dolaşımı"
 
 #: addon\globalPlugins\brailleEssentials\rotor.py:118
 msgid "Output braille tables"
-msgstr "Çıktı Braille tabloları"
+msgstr "Braille Çıktı tabloları"
 
 #: addon\globalPlugins\brailleEssentials\rotor.py:119
 msgid "Input braille tables"
@@ -1103,7 +1103,7 @@ msgstr "Bilinmeyen &hareketler için konuşma kesintisi"
 
 #: addon\globalPlugins\brailleEssentials\settings.py:101
 msgid "When speech is off, also &mute NVDA sounds (beeps, error and mode sounds)"
-msgstr ""
+msgstr "Konuşma kapalıyken, NVDA seslerini (bip sesleri, hata ve mod sesleri) de sessize al."
 
 #. Translators: label of a dialog.
 #: addon\globalPlugins\brailleEssentials\settings.py:107
@@ -1789,56 +1789,56 @@ msgstr "Otomatik ({name})"
 #: addon\globalPlugins\brailleEssentials\virtualBufferTableBraille.py:303
 #, python-brace-format
 msgid "{main} ({detail})"
-msgstr ""
+msgstr "{main} ({detail})"
 
 #. Translators: Merged table columns in a braille routing flash (e.g. columns 1-3).
 #: addon\globalPlugins\brailleEssentials\virtualBufferTableBraille.py:349
 #, python-brace-format
 msgid "columns {start}-{end}"
-msgstr ""
+msgstr "sütuns {start}-{end}"
 
 #. Translators: A single table column in a braille routing flash (e.g. column 2).
 #: addon\globalPlugins\brailleEssentials\virtualBufferTableBraille.py:351
 #, python-brace-format
 msgid "column {column}"
-msgstr ""
+msgstr "sütun {column}"
 
 #. Translators: Merged table rows in a braille routing flash (e.g. rows 2-4).
 #: addon\globalPlugins\brailleEssentials\virtualBufferTableBraille.py:357
 #, python-brace-format
 msgid "rows {start}-{end}"
-msgstr ""
+msgstr "satırs {start}-{end}"
 
 #. Translators: A single table row in a braille routing flash (e.g. row 2).
 #: addon\globalPlugins\brailleEssentials\virtualBufferTableBraille.py:359
 #, python-brace-format
 msgid "row {row}"
-msgstr ""
+msgstr "satır {row}"
 
 #. Translators: title of the Virtual documents category in Braille Extender settings.
 #: addon\globalPlugins\brailleEssentials\virtualDocumentSettings.py:18
 msgid "Virtual documents"
-msgstr ""
+msgstr "Sanal belgeler"
 
 #: addon\globalPlugins\brailleEssentials\virtualDocumentSettings.py:20
 msgid "Choose how tables in browse mode (web pages and other virtual documents) appear on the braille display."
-msgstr ""
+msgstr "Tarama Kipindeki tabloların (web sayfaları ve diğer sanal belgeler) Braille ekranında nasıl görüneceğini seçin."
 
 #: addon\globalPlugins\brailleEssentials\virtualDocumentSettings.py:29
 msgid "Display full table &row on one braille line"
-msgstr ""
+msgstr "Tablonun tüm satı&rını tek bir Braille satırında görüntüle"
 
 #: addon\globalPlugins\brailleEssentials\virtualDocumentSettings.py:36
 msgid "&Separator between cells:"
-msgstr ""
+msgstr "&Hücreler arasındaki ayırıcı:"
 
 #: addon\globalPlugins\brailleEssentials\virtualDocumentSettings.py:42
 msgid "Start of &row line:"
-msgstr ""
+msgstr "Satı&r başlangıcı çizgisi:"
 
 #: addon\globalPlugins\brailleEssentials\virtualDocumentSettings.py:48
 msgid "End of row &line:"
-msgstr ""
+msgstr "Satır sonu &çizgisi:"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:83
 #, python-format
@@ -2013,7 +2013,7 @@ msgstr "Braille klavye kilitli değil"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:612
 msgid "Turn Braille Essentials one-handed braille input on or off"
-msgstr "Braille Essentials tek elle Braille girişini aç veya kapat"
+msgstr "Braille Essentials tek elle Braille girdi kipini aç veya kapat"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:618
 msgid "One-handed mode enabled"
@@ -2152,7 +2152,7 @@ msgstr "Unicode'da braille için hücre açıklamaları"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:785
 msgid "Turn advanced braille input mode on or off (HUC or numeric character codes and abbreviation expansions)"
-msgstr "Gelişmiş Braille giriş modunu aç veya kapat (HUC veya sayısal karakter kodları ve kısaltma genişletmeleri)"
+msgstr "Gelişmiş Braille girdi modunu aç veya kapat (HUC veya sayısal karakter kodları ve kısaltma genişletmeleri)"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:797
 msgid "Turn punctuation or symbol names in braille for undefined characters on or off"
@@ -2452,33 +2452,33 @@ msgstr "Konuşma Geçmişi Modu etkin"
 
 #: addon\appModules\brailleExtenderExcel.py:77
 msgid "Row range on one line"
-msgstr ""
+msgstr "Tek satırda satır aralığı"
 
 #: addon\appModules\brailleExtenderExcel.py:78
 msgid "Column range on one line"
-msgstr ""
+msgstr "Tek satırda sütun aralığı"
 
 #. Translators: Default short label at the start of an Excel row-range braille line, before the cell address.
 #. English example on the display: "row A2: sale |  | 99". Keep brief. Do not add spaces at the end.
 #: addon\appModules\brailleExtenderExcel.py:83
 msgctxt "excelBrailleAxis"
 msgid "row"
-msgstr ""
+msgstr "satır"
 
 #. Translators: Default short label at the start of an Excel column-range braille line, before the cell address.
 #. English example on the display: "col A2: sale |  | 99". Keep brief. Do not add spaces at the end.
 #: addon\appModules\brailleExtenderExcel.py:86
 msgctxt "excelBrailleAxis"
 msgid "col"
-msgstr ""
+msgstr "sütun"
 
 #: addon\appModules\brailleExtenderExcel.py:1225
 msgid "Cycle Excel braille view (focused cell, row range, or column range on one line)"
-msgstr ""
+msgstr "Excel Braille görünümünü döngüsel olarak değiştir (odaklanmış hücre, satır aralığı veya sütun aralığı tek satırda)."
 
 #: addon\appModules\brailleExtenderExcel.py:1231
 msgid "Report cell formulas in braille is disabled. Enable it in Braille Essentials settings, Excel."
-msgstr ""
+msgstr "Hücre formüllerini Braille ile gösterme özelliği devre dışıdır. Bu özelliği Excel’deki Braille Essentials ayarlarından etkinleştirin."
 
 #. Add-on description
 #. Translators: Long description to be shown for this add-on on add-on information from add-on store
@@ -2513,7 +2513,7 @@ msgstr "Bu eklenti, Braille desteğine güvenen NVDA kullanıcıları için teme
 "* İki favori Braille ekranını kısayollarla yeniden yükleme.\n"
 "* PuTTY, Powershell, bash, cmd gibi uçbirim (terminal) rollerinde inceleme imlecinin otomatik olarak kilitlenmesi/bağlanması.\n"
 "* Otomatik kaydırma.\n"
-"* Birkaç giriş/çıkış Braille tablosu arasında geçiş yapma.\n"
+"* Birkaç girdi/çıktı Braille tablosu arasında geçiş yapma.\n"
 "* Metni, nokta 7, nokta 8 veya her ikisi aracılığıyla özel niteliklerle işaretleme.\n"
 "* Aynı anda iki çıktı Braille tablosunu kullanma.\n"
 "* Sekme (tab) işaretlerini boşluk olarak gösterme.\n"
@@ -2543,5 +2543,8 @@ msgid "* Updated the add-on code to BrailleExtender commit 0434fa63 (2026-10-23)
 "\t* Made the code compatible with reorganized braille support subsystem implemented in NVDA 2026.3.\n"
 "\t* Dropped border color and style settings from document presentation settings.\n"
 "\t* Added a setting to mute NVDA sounds when spech is muted."
-msgstr ""
+msgstr "* Eklenti kodu BrailleExtender commit 0434fa63'e (2026-10-23) güncellendi:\n"
+"\t* Kod, NVDA 2026.3'te uygulanan yeniden organize edilmiş Braille destek alt sistemiyle uyumlu hale getirildi.\n"
+"\t* Belge sunum ayarlarından kenarlık rengi ve stil ayarları kaldırıldı.\n"
+"\t* Konuşma sesi kapatıldığında NVDA seslerini de kapatma ayarı eklendi."
 

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nvdaaddons\n"
 "Report-Msgid-Bugs-To: 'nvda-translations@groups.io'\n"
-"POT-Creation-Date: 2026-11-04 08:04+0000\n"
-"PO-Revision-Date: 2026-11-04 08:06\n"
+"POT-Creation-Date: 2026-11-09 04:07+0000\n"
+"PO-Revision-Date: 2026-11-09 04:21\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
@@ -1103,7 +1103,7 @@ msgstr "Прервать речь для &незнакомых жестов"
 
 #: addon\globalPlugins\brailleEssentials\settings.py:101
 msgid "When speech is off, also &mute NVDA sounds (beeps, error and mode sounds)"
-msgstr ""
+msgstr "При отключении речи также &отключать звуки NVDA (звуковые сигналы, звуки ошибок и режимные звуки)"
 
 #. Translators: label of a dialog.
 #: addon\globalPlugins\brailleEssentials\settings.py:107
@@ -1789,56 +1789,56 @@ msgstr "Автоматически ({name})"
 #: addon\globalPlugins\brailleEssentials\virtualBufferTableBraille.py:303
 #, python-brace-format
 msgid "{main} ({detail})"
-msgstr ""
+msgstr "{main} ({detail})"
 
 #. Translators: Merged table columns in a braille routing flash (e.g. columns 1-3).
 #: addon\globalPlugins\brailleEssentials\virtualBufferTableBraille.py:349
 #, python-brace-format
 msgid "columns {start}-{end}"
-msgstr ""
+msgstr "столбцы {start}-{end}"
 
 #. Translators: A single table column in a braille routing flash (e.g. column 2).
 #: addon\globalPlugins\brailleEssentials\virtualBufferTableBraille.py:351
 #, python-brace-format
 msgid "column {column}"
-msgstr ""
+msgstr "столбец {column}"
 
 #. Translators: Merged table rows in a braille routing flash (e.g. rows 2-4).
 #: addon\globalPlugins\brailleEssentials\virtualBufferTableBraille.py:357
 #, python-brace-format
 msgid "rows {start}-{end}"
-msgstr ""
+msgstr "строки {start}-{end}"
 
 #. Translators: A single table row in a braille routing flash (e.g. row 2).
 #: addon\globalPlugins\brailleEssentials\virtualBufferTableBraille.py:359
 #, python-brace-format
 msgid "row {row}"
-msgstr ""
+msgstr "строка {row}"
 
 #. Translators: title of the Virtual documents category in Braille Extender settings.
 #: addon\globalPlugins\brailleEssentials\virtualDocumentSettings.py:18
 msgid "Virtual documents"
-msgstr ""
+msgstr "Виртуальные документы"
 
 #: addon\globalPlugins\brailleEssentials\virtualDocumentSettings.py:20
 msgid "Choose how tables in browse mode (web pages and other virtual documents) appear on the braille display."
-msgstr ""
+msgstr "Выберите способ отображения таблиц в режиме обзора (веб-страниц и других виртуальных документов) на брайлевском дисплее."
 
 #: addon\globalPlugins\brailleEssentials\virtualDocumentSettings.py:29
 msgid "Display full table &row on one braille line"
-msgstr ""
+msgstr "Отображать всю &строку таблицы на одной брайлевской строке"
 
 #: addon\globalPlugins\brailleEssentials\virtualDocumentSettings.py:36
 msgid "&Separator between cells:"
-msgstr ""
+msgstr "&Разделитель между ячейками:"
 
 #: addon\globalPlugins\brailleEssentials\virtualDocumentSettings.py:42
 msgid "Start of &row line:"
-msgstr ""
+msgstr "Начало ряд&а:"
 
 #: addon\globalPlugins\brailleEssentials\virtualDocumentSettings.py:48
 msgid "End of row &line:"
-msgstr ""
+msgstr "Конец &ряда:"
 
 #: addon\globalPlugins\brailleEssentials\__init__.py:83
 #, python-format
@@ -2452,33 +2452,33 @@ msgstr "Режим истории речи включен"
 
 #: addon\appModules\brailleExtenderExcel.py:77
 msgid "Row range on one line"
-msgstr ""
+msgstr "Диапазон строк в одной строке"
 
 #: addon\appModules\brailleExtenderExcel.py:78
 msgid "Column range on one line"
-msgstr ""
+msgstr "Диапазон столбцов в одной строке"
 
 #. Translators: Default short label at the start of an Excel row-range braille line, before the cell address.
 #. English example on the display: "row A2: sale |  | 99". Keep brief. Do not add spaces at the end.
 #: addon\appModules\brailleExtenderExcel.py:83
 msgctxt "excelBrailleAxis"
 msgid "row"
-msgstr ""
+msgstr "стр"
 
 #. Translators: Default short label at the start of an Excel column-range braille line, before the cell address.
 #. English example on the display: "col A2: sale |  | 99". Keep brief. Do not add spaces at the end.
 #: addon\appModules\brailleExtenderExcel.py:86
 msgctxt "excelBrailleAxis"
 msgid "col"
-msgstr ""
+msgstr "стлб"
 
 #: addon\appModules\brailleExtenderExcel.py:1225
 msgid "Cycle Excel braille view (focused cell, row range, or column range on one line)"
-msgstr ""
+msgstr "Циклическое отображение текста в Excel (выделенная ячейка, диапазон строк или диапазон столбцов на одной строке)"
 
 #: addon\appModules\brailleExtenderExcel.py:1231
 msgid "Report cell formulas in braille is disabled. Enable it in Braille Essentials settings, Excel."
-msgstr ""
+msgstr "Объявление формул ячеек по брайлю отключено. Включите его в настройках основ брайля в Excel."
 
 #. Add-on description
 #. Translators: Long description to be shown for this add-on on add-on information from add-on store
@@ -2543,5 +2543,8 @@ msgid "* Updated the add-on code to BrailleExtender commit 0434fa63 (2026-10-23)
 "\t* Made the code compatible with reorganized braille support subsystem implemented in NVDA 2026.3.\n"
 "\t* Dropped border color and style settings from document presentation settings.\n"
 "\t* Added a setting to mute NVDA sounds when spech is muted."
-msgstr ""
+msgstr "* Обновлен код дополнения до BrailleExtender commit 0434fa63 (2026-10-23):\n"
+"\t* Код совместим с реорганизованной подсистемой поддержки брайля, реализованной в NVDA 2026.3.\n"
+"\t* Удалены настройки цвета и стиля границы из параметров отображения документа.\n"
+"\t* Добавлена настройка для отключения звуков NVDA, когда звуковое сопровождение отключено."
 
