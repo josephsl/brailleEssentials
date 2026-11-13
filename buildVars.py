@@ -52,11 +52,13 @@ For some braille displays, it extends the braille display commands to provide:
 * Offer several keyboard configurations concerning the possibility to input dots 7 and 8, enter and backspace
 * Add actions and quick navigation through a rotor"""),
 	# version
-	addon_version="26.10.1",
+	addon_version="26.11.2",
 	# Brief changelog for this version
 	# Translators: what's new content for the add-on version to be shown in the add-on store
-	addon_changelog=_("""* Updated the add-on code to BrailleExtender commit abc2ef1d2 (2026-10-01).
-* Fixed an issue with preferred input and output tables setting in Braille Essentials settings interface where unchecking "automatic" value and then closing the dialog is undone the next time the add-on settings dialog opens (BrailleExtender issue 152, contributed by adam magued)."""),
+	addon_changelog=_("""* Updated the add-on code to BrailleExtender commit 0434fa63 (2026-10-23):
+	* Made the code compatible with reorganized braille support subsystem implemented in NVDA 2026.3.
+	* Dropped border color and style settings from document presentation settings.
+	* Added a setting to mute NVDA sounds when spech is muted."""),
 	# Author(s)
 	addon_author="Joseph Lee <joseph.lee22590@gmail.com> (originally André-Abush Clause <dev@andreabc.net> and other contributors)",
 	# URL for the add-on documentation support
@@ -68,7 +70,7 @@ For some braille displays, it extends the braille display commands to provide:
 	# Minimum NVDA version supported (e.g. "2019.3.0", minor version is optional)
 	addon_minimumNVDAVersion="2025.3.3",
 	# Last NVDA version supported/tested (e.g. "2024.4.0", ideally more recent than minimum version)
-	addon_lastTestedNVDAVersion="2026.3",
+	addon_lastTestedNVDAVersion="2026.3.1",
 	# Add-on update channel (default is None, denoting stable releases,
 	# and for development releases, use "dev".)
 	# Do not change unless you know what you are doing!

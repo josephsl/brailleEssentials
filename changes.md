@@ -8,6 +8,14 @@ Note: forked from BrailleExtender in May 2026.
 
 * Skip rotor focus-context probing when no braille display is connected, avoiding long UIA scans on large documents.
 
+## Version 26.11
+
+* Updated the add-on code to BrailleExtender commit 0434fa63 (2026-10-23):
+	* Made the code compatible with reorganized braille support subsystem implemented in NVDA 2026.3.
+	* Dropped border color and style settings from document presentation settings.
+	* Added a setting to mute NVDA sounds when spech is muted.
+>>>>>>> upstream/main
+
 ## Version 26.10
 
 * Updated the add-on code to BrailleExtender commit abc2ef1d2 (2026-10-01):

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nvdaaddons\n"
 "Report-Msgid-Bugs-To: 'nvda-translations@groups.io'\n"
-"POT-Creation-Date: 2026-07-03 05:52+0000\n"
-"PO-Revision-Date: 2026-10-18 08:13\n"
+"POT-Creation-Date: 2026-11-09 04:07+0000\n"
+"PO-Revision-Date: 2026-11-09 04:21\n"
 "Last-Translator: \n"
 "Language-Team: Ukrainian\n"
 "Language: uk_UA\n"
@@ -17,45 +17,45 @@ msgstr ""
 "X-Crowdin-File: brailleEssentials.pot\n"
 "X-Crowdin-File-ID: 627\n"
 
-#: addon\globalPlugins\brailleEssentials\addoncfg.py:61
-#: addon\globalPlugins\brailleEssentials\addoncfg.py:70
+#: addon\globalPlugins\brailleEssentials\addoncfg.py:62
+#: addon\globalPlugins\brailleEssentials\addoncfg.py:71
 msgid "none"
 msgstr "немає"
 
-#: addon\globalPlugins\brailleEssentials\addoncfg.py:62
+#: addon\globalPlugins\brailleEssentials\addoncfg.py:63
 msgid "braille only"
 msgstr "лише брайль"
 
-#: addon\globalPlugins\brailleEssentials\addoncfg.py:63
+#: addon\globalPlugins\brailleEssentials\addoncfg.py:64
 msgid "speech only"
 msgstr "лише мовлення"
 
-#: addon\globalPlugins\brailleEssentials\addoncfg.py:64
-#: addon\globalPlugins\brailleEssentials\addoncfg.py:73
+#: addon\globalPlugins\brailleEssentials\addoncfg.py:65
+#: addon\globalPlugins\brailleEssentials\addoncfg.py:74
 msgid "both"
 msgstr "одночасно"
 
-#: addon\globalPlugins\brailleEssentials\addoncfg.py:71
+#: addon\globalPlugins\brailleEssentials\addoncfg.py:72
 msgid "focus mode"
 msgstr "режим фокуса"
 
-#: addon\globalPlugins\brailleEssentials\addoncfg.py:72
+#: addon\globalPlugins\brailleEssentials\addoncfg.py:73
 msgid "review mode"
 msgstr "режим перегляду"
 
-#: addon\globalPlugins\brailleEssentials\addoncfg.py:78
+#: addon\globalPlugins\brailleEssentials\addoncfg.py:79
 msgid "normal (recommended outside Windows consoles, IntelliJ, PyCharm...)"
 msgstr "звичайна (рекомендовано за межами консолей Windows, IntelliJ, PyCharm...)"
 
-#: addon\globalPlugins\brailleEssentials\addoncfg.py:79
+#: addon\globalPlugins\brailleEssentials\addoncfg.py:80
 msgid "alternative, emulate left and right arrow keys with beeps"
 msgstr "альтернативно, емулювати стрілки вліво і вправо з сигналами"
 
-#: addon\globalPlugins\brailleEssentials\addoncfg.py:80
+#: addon\globalPlugins\brailleEssentials\addoncfg.py:81
 msgid "alternative, emulate left and right arrow keys silently"
 msgstr "альтернативно, емулювати стрілки вліво і вправо без звуку"
 
-#: addon\globalPlugins\brailleEssentials\addoncfg.py:120
+#: addon\globalPlugins\brailleEssentials\addoncfg.py:119
 msgid "last known"
 msgstr "останній відомий"
 
@@ -177,7 +177,7 @@ msgid "Replacement"
 msgstr "Заміна"
 
 #: addon\globalPlugins\brailleEssentials\advancedinput.py:221
-#: addon\globalPlugins\brailleEssentials\settings.py:399
+#: addon\globalPlugins\brailleEssentials\settings.py:410
 msgid "Input"
 msgstr "Введення"
 
@@ -294,310 +294,311 @@ msgstr "Ви&йти з режиму розширеного введення пі
 msgid "&Escape character for Unicode values input"
 msgstr "Символ &Escape для значення введення Unicode"
 
-#: addon\globalPlugins\brailleEssentials\autoscroll.py:108
+#: addon\globalPlugins\brailleEssentials\autoscroll.py:155
 #, python-brace-format
 msgid "{delay} ms"
 msgstr "{delay} мс"
 
 #. Translators: title of a dialog.
-#: addon\globalPlugins\brailleEssentials\autoscroll.py:124
+#: addon\globalPlugins\brailleEssentials\autoscroll.py:173
 msgid "Auto scroll"
 msgstr "Автопрокрутка"
 
 #. Translators: label of a dialog.
-#: addon\globalPlugins\brailleEssentials\autoscroll.py:130
+#: addon\globalPlugins\brailleEssentials\autoscroll.py:179
 msgid "Autoscroll &delay for the active braille display (ms):"
 msgstr "Затримка &автопрокрутки для активного брайлівського дисплея (мс):"
 
 #. Translators: label of a dialog.
-#: addon\globalPlugins\brailleEssentials\autoscroll.py:139
+#: addon\globalPlugins\brailleEssentials\autoscroll.py:188
 msgid "&Step for delay change (ms):"
 msgstr "&Крок затримки зміни (мс):"
 
 #. Translators: label of a dialog.
-#: addon\globalPlugins\brailleEssentials\autoscroll.py:148
+#: addon\globalPlugins\brailleEssentials\autoscroll.py:197
 msgid "&Adjust the delay to content"
 msgstr "&Налаштувати затримку для вмісту"
 
 #. Translators: label of a dialog.
-#: addon\globalPlugins\brailleEssentials\autoscroll.py:152
+#: addon\globalPlugins\brailleEssentials\autoscroll.py:201
 msgid "Always ignore &blank line"
 msgstr "Завжди ігнорувати &порожні рядки"
 
 #. Translators: no custom braille table selected for input or output.
 #: addon\globalPlugins\brailleEssentials\custom_braille_tables.py:112
-#: addon\globalPlugins\brailleEssentials\settings.py:710
+#: addon\globalPlugins\brailleEssentials\settings.py:715
 msgid "None"
 msgstr "Немає"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:73
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:74
 msgid "nothing"
 msgstr "нічого"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:74
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:75
 msgid "hand over to Liblouis (defined in tables)"
 msgstr "передати Liblouis (визначено в таблицях)"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:75
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:76
 msgid "dots 7 and 8"
 msgstr "крапки 7 і 8"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:76
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:77
 msgid "dot 7"
 msgstr "крапка 7"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:77
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:78
 msgid "dot 8"
 msgstr "крапка 8"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:78
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:79
 msgid "tags"
 msgstr "теги"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:92
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:93
 msgid "Pad display line (blanks)"
 msgstr "Доповнити рядок дисплея (пробілами)"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:102
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:103
 msgid "bold"
 msgstr "жирний"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:103
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:104
 msgid "italic"
 msgstr "курсив"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:104
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:105
 msgid "underline"
 msgstr "підкреслений"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:105
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:106
 msgid "strikethrough"
 msgstr "закреслений"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:106
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:107
 msgid "strong emphasis"
 msgstr "особливе виділення"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:107
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:108
 msgid "emphasised text"
 msgstr "підкреслений текст"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:108
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:109
 msgid "marked (highlighted)"
 msgstr "позначений (виділений)"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:109
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:110
 msgid "subscript"
 msgstr "підрядкові"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:110
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:111
 msgid "superscript"
 msgstr "надрядкові"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:111
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:112
 msgid "spelling errors"
 msgstr "орфографічні помилки"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:112
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:113
 msgid "grammar errors"
 msgstr "граматичні помилки"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:113
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:114
 msgid "centered alignment"
 msgstr "вирівнювання за центром"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:114
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:115
 msgid "distributed alignment"
 msgstr "рівномірне вирівнювання"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:115
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:116
 msgid "justified alignment"
 msgstr "вирівнювання за шириною"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:116
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:117
 msgid "left alignment"
 msgstr "вирівнювання за лівим краєм"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:117
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:118
 msgid "right alignment"
 msgstr "вирівнювання за правим краєм"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:118
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:119
 msgid "default alignment"
 msgstr "стандартне вирівнювання"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:119
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:120
 msgid "inserted revision"
 msgstr "вставлена версія"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:120
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:121
 msgid "deleted revision"
 msgstr "видалена версія"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:121
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:122
 msgid "notes and comments"
 msgstr "примітки та коментарі"
 
 #. Translators: First option in each document-formatting report row. This follows NVDA’s “Document formatting” category (what NVDA reports, including braille-related bits), and NVDA’s own braille markers when NVDA defines them. It is not the same as “output like speech only”. If your language needs a shorter string, consider: “Use NVDA defaults (document formatting & core braille)”.
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:126
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:127
 msgid "Follow NVDA document formatting"
 msgstr "Дотримуватись вимог NVDA щодо форматування документів"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:127
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:128
 msgid "enabled"
 msgstr "увімкнено"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:128
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:129
 msgid "disabled"
 msgstr "вимкнено"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:142
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:143
 msgid "Spelling and grammar e&rrors"
 msgstr ""
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:296
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:305
 #, python-brace-format
 msgid "{}: {}"
 msgstr "{}: {}"
 
 #. Translators: title of a dialog.
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:589
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:664
 msgid "Formatting Method"
 msgstr "Метод форматування"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:600
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:675
 msgid "For each item, choose how it is shown in braille (nothing, Liblouis, dots 7–8, tags, …). For alignment, you can use nothing, pad the line with blanks, dots 7 / 8 / 7+8 on the line, or tags."
 msgstr "Для кожного елемента виберіть спосіб його показу шрифтом Брайля (не показувати, Liblouis, крапки 7–8, теги тощо). Щодо вирівнювання, ви можете вибрати варіант «не показувати», заповнити рядок пробілами, розмістити в рядку крапки 7 / 8 / 7+8 або використовувати теги."
 
 #. --- Spelling and grammar ---
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:616
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:691
 #: addon\globalPlugins\brailleEssentials\rotor.py:103
 msgid "Spelling and grammar"
 msgstr "Орфографічні та граматичні помилки"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:617
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:692
 msgid "&Spelling errors:"
 msgstr "&Орфографічні помилки:"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:619
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:694
 msgid "&Grammar errors:"
 msgstr "&Граматичні помилки:"
 
 #. --- Classic font attributes ---
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:623
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:698
 msgid "Font styling (bold, italic, …)"
 msgstr "Стиль шрифту (жирний, курсив, …)"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:624
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:699
 msgid "B&old:"
 msgstr "&Жирний:"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:626
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:701
 msgid "&Italic:"
 msgstr "&Курсив:"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:628
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:703
 msgid "&Underline:"
 msgstr "&Підкреслений:"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:630
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:705
 msgid "Strike&through:"
 msgstr "&Закреслений:"
 
 #. --- Semantic emphasis / highlight ---
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:634
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:709
 msgid "Emphasis and highlighting"
 msgstr "Підкреслення та виділення"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:635
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:710
 msgid "Strong e&mphasis:"
 msgstr "Особливе &виділення:"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:637
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:712
 msgid "E&mphasised text:"
 msgstr "&Підкреслений текст:"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:639
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:714
 msgid "Mar&ked (highlighted):"
 msgstr "&Позначено (виділено):"
 
 #. --- Subscript / superscript ---
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:643
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:718
 msgid "Subscripts and superscripts"
 msgstr "Підрядкові й наддрядкові"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:644
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:719
 msgid "Su&bscripts:"
 msgstr "&Підрядкові:"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:646
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:721
 msgid "Su&perscripts:"
 msgstr "&Надрядкові:"
 
 #. --- Alignment (subset of methods) ---
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:650
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:725
 msgid "Text alignment (braille)"
 msgstr "Вирівнювання тексту (шрифт Брайля)"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:654
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:729
 msgid "&Left / start:"
 msgstr "&Ліворуч / початок:"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:655
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:730
 msgid "C&entered:"
 msgstr "&Вирівнювання по центру:"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:656
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:731
 msgid "&Right:"
 msgstr "&Праворуч:"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:657
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:732
 msgid "&Justified:"
 msgstr "&Вирівнювання:"
 
 #. Translators: title of a dialog.
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:713
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:788
 msgid "Customize formatting tags"
 msgstr "Налаштування тегів форматування"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:720
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:795
 msgid "&Formatting"
 msgstr "&Форматування"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:723
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:798
 msgid "&Start tag"
 msgstr "&Початковий тег"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:726
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:801
 msgid "&End tag"
 msgstr "&Кінцевий тег"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:766
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:841
 msgid "Each row: follow NVDA’s Document formatting settings, always show this information in braille (see Methods and Tags), or turn it off. “Follow NVDA” is not limited to speech; it uses the same report toggles as NVDA’s Document formatting dialog."
 msgstr "У кожному рядку: дотримуватись налаштувань форматування документів NVDA, завжди показувати цю інформацію шрифтом Брайля (див. розділи «Методи» та «Теги») або вимкніть цю функцію. Параметр «Дотримуватися налаштувань NVDA» не обмежується лише озвученням; він використовує ті самі перемикачі, що й діалог «Форматування документів» у NVDA."
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:773
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:848
 msgid "Plain text mode (disable all text formatting)"
 msgstr "Режим звичайного тексту (вимкнути все форматування тексту)"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:777
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:852
 msgid "Process formatting line per line"
 msgstr "Обробка форматування рядок за рядком"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:786
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:861
 #, python-brace-format
 msgid "{label}:"
 msgstr "{label}:"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:790
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:865
 msgid "Le&vel of items in a nested list"
 msgstr "&Рівень елементів у вкладеному списку"
 
-#: addon\globalPlugins\brailleEssentials\documentformatting.py:795
+#: addon\globalPlugins\brailleEssentials\documentformatting.py:870
 msgid "Met&hods..."
 msgstr "&Методи..."
 
 #: addon\globalPlugins\brailleEssentials\excelSettings.py:19
+#: addon\appModules\brailleExtenderExcel.py:76
 msgid "Focused cell only"
 msgstr ""
 
@@ -697,64 +698,64 @@ msgid "cell coordinates text"
 msgstr "текст координат комірки"
 
 #. Translators: Displayed in braille for a multi select list.
-#: addon\globalPlugins\brailleEssentials\objectpresentation.py:248
+#: addon\globalPlugins\brailleEssentials\objectpresentation.py:241
 msgid "mslst"
 msgstr ""
 
 #. Translators: title of a dialog.
-#: addon\globalPlugins\brailleEssentials\objectpresentation.py:388
+#: addon\globalPlugins\brailleEssentials\objectpresentation.py:381
 msgid "Order Properties"
 msgstr "Порядок атрибутів"
 
-#: addon\globalPlugins\brailleEssentials\objectpresentation.py:394
+#: addon\globalPlugins\brailleEssentials\objectpresentation.py:387
 msgid "Properties"
 msgstr "Атрибути"
 
-#: addon\globalPlugins\brailleEssentials\objectpresentation.py:399
+#: addon\globalPlugins\brailleEssentials\objectpresentation.py:392
 msgid "Move &up"
 msgstr "Перемістити &вгору"
 
-#: addon\globalPlugins\brailleEssentials\objectpresentation.py:401
+#: addon\globalPlugins\brailleEssentials\objectpresentation.py:394
 msgid "Move &down"
 msgstr "Перемістити &вниз"
 
-#: addon\globalPlugins\brailleEssentials\objectpresentation.py:406
+#: addon\globalPlugins\brailleEssentials\objectpresentation.py:399
 msgid "Reset to the default &NVDA order"
 msgstr "Відновити початковий порядок &NVDA"
 
-#: addon\globalPlugins\brailleEssentials\objectpresentation.py:408
+#: addon\globalPlugins\brailleEssentials\objectpresentation.py:401
 msgid "Reset to the &default add-on order"
 msgstr "Відновити &початковий порядок атрибутів"
 
-#: addon\globalPlugins\brailleEssentials\objectpresentation.py:451
+#: addon\globalPlugins\brailleEssentials\objectpresentation.py:444
 msgid "after"
 msgstr "після"
 
-#: addon\globalPlugins\brailleEssentials\objectpresentation.py:451
+#: addon\globalPlugins\brailleEssentials\objectpresentation.py:444
 msgid "before"
 msgstr "перед"
 
-#: addon\globalPlugins\brailleEssentials\objectpresentation.py:492
+#: addon\globalPlugins\brailleEssentials\objectpresentation.py:485
 msgid "Selected &elements:"
 msgstr "Виділені &елементи:"
 
-#: addon\globalPlugins\brailleEssentials\objectpresentation.py:498
+#: addon\globalPlugins\brailleEssentials\objectpresentation.py:491
 msgid "Progress bar output using braille messages:"
 msgstr "Перебіг виконання з використанням повідомлень шрифтом Брайля:"
 
-#: addon\globalPlugins\brailleEssentials\objectpresentation.py:501
+#: addon\globalPlugins\brailleEssentials\objectpresentation.py:494
 msgid "disabled (original behavior)"
 msgstr "вимкнено (оригінальна поведінка)"
 
-#: addon\globalPlugins\brailleEssentials\objectpresentation.py:502
+#: addon\globalPlugins\brailleEssentials\objectpresentation.py:495
 msgid "enabled, show raw value"
 msgstr "увімкнено, показувати необроблене значення"
 
-#: addon\globalPlugins\brailleEssentials\objectpresentation.py:503
+#: addon\globalPlugins\brailleEssentials\objectpresentation.py:496
 msgid "enabled, show a progress bar using ⣿"
 msgstr "увімкнено, показувати перебіг виконання за допомогою ⣿"
 
-#: addon\globalPlugins\brailleEssentials\objectpresentation.py:510
+#: addon\globalPlugins\brailleEssentials\objectpresentation.py:503
 msgid "Report background progress bars:"
 msgstr "Повідомляти фоновий перебіг виконання:"
 
@@ -788,22 +789,22 @@ msgid "Input &method"
 msgstr "&Метод введення"
 
 #. Translators: Brailled when text contains a draft comment.
-#: addon\globalPlugins\brailleEssentials\patches.py:846
+#: addon\globalPlugins\brailleEssentials\patches.py:762
 msgid "drft cmnt"
 msgstr "чер кмнт"
 
 #. Translators: Brailled when text contains a resolved comment.
-#: addon\globalPlugins\brailleEssentials\patches.py:849
+#: addon\globalPlugins\brailleEssentials\patches.py:765
 msgid "rslvd cmnt"
 msgstr "вир кмнт"
 
 #. Translators: Brailled when text contains a generic comment.
-#: addon\globalPlugins\brailleEssentials\patches.py:852
+#: addon\globalPlugins\brailleEssentials\patches.py:768
 msgid "cmnt"
 msgstr "кмнт"
 
 #. Translators: Reported when translation didn't succeed due to unsupported input.
-#: addon\globalPlugins\brailleEssentials\patches.py:1347
+#: addon\globalPlugins\brailleEssentials\patches.py:1272
 msgid "Unsupported input"
 msgstr "Непідтримуване введення"
 
@@ -822,7 +823,7 @@ msgstr "Категорія &ролі:"
 
 #. Translators: title of a dialog.
 #: addon\globalPlugins\brailleEssentials\rolelabels.py:41
-#: addon\globalPlugins\brailleEssentials\settings.py:52
+#: addon\globalPlugins\brailleEssentials\settings.py:53
 msgid "General"
 msgstr "Загальні"
 
@@ -839,37 +840,37 @@ msgstr "Позитивні стани"
 msgid "Negative states"
 msgstr "Негативні стани"
 
-#: addon\globalPlugins\brailleEssentials\rolelabels.py:50
+#: addon\globalPlugins\brailleEssentials\rolelabels.py:46
 msgid "&Role:"
 msgstr "&Роль:"
 
-#: addon\globalPlugins\brailleEssentials\rolelabels.py:53
+#: addon\globalPlugins\brailleEssentials\rolelabels.py:49
 msgid "Braille &label"
 msgstr "Брайлівське &скорочення"
 
-#: addon\globalPlugins\brailleEssentials\rolelabels.py:58
+#: addon\globalPlugins\brailleEssentials\rolelabels.py:54
 msgid "&Reset this role label"
 msgstr "&Скинути скорочення цієї ролі"
 
-#: addon\globalPlugins\brailleEssentials\rolelabels.py:62
+#: addon\globalPlugins\brailleEssentials\rolelabels.py:58
 msgid "Reset a&ll role labels"
 msgstr "Скинути всі скорочення брайлівських &ролей"
 
-#: addon\globalPlugins\brailleEssentials\rolelabels.py:108
+#: addon\globalPlugins\brailleEssentials\rolelabels.py:94
 #, python-format
 msgid ": %s"
 msgstr ": %s"
 
-#: addon\globalPlugins\brailleEssentials\rolelabels.py:157
+#: addon\globalPlugins\brailleEssentials\rolelabels.py:143
 msgid "You have no customized role labels."
 msgstr "Ви не маєте персоналізованих міток ролей."
 
-#: addon\globalPlugins\brailleEssentials\rolelabels.py:158
-#: addon\globalPlugins\brailleEssentials\rolelabels.py:165
+#: addon\globalPlugins\brailleEssentials\rolelabels.py:144
+#: addon\globalPlugins\brailleEssentials\rolelabels.py:151
 msgid "Reset role labels"
 msgstr "Скинути всі скорочення брайлівських ролей"
 
-#: addon\globalPlugins\brailleEssentials\rolelabels.py:161
+#: addon\globalPlugins\brailleEssentials\rolelabels.py:147
 #, python-format
 msgid "You have %d customized role labels defined. Do you want to reset all labels?"
 msgstr "Ви маєте  %d персоналізованих міток ролей. Хочете скинути всі мітки?"
@@ -1062,385 +1063,389 @@ msgstr "Таблиця виведення"
 msgid "Input braille tables"
 msgstr "Таблиця введення"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:46
+#: addon\globalPlugins\brailleEssentials\settings.py:47
 msgid "Feature implementation is in progress. Thanks for your patience."
 msgstr "Реалізація цієї функції триває. Дякуємо за ваше терпіння."
 
 #. Add-on summary/title, usually the user visible name of the add-on
 #. Translators: Summary/title for this add-on
 #. to be shown on installation and add-on information found in add-on store
-#: addon\globalPlugins\brailleEssentials\settings.py:47
+#: addon\globalPlugins\brailleEssentials\settings.py:48
 #: addon\globalPlugins\brailleEssentials\tabledictionaries.py:154
 #: addon\globalPlugins\brailleEssentials\tabledictionaries.py:464
 #: addon\globalPlugins\brailleEssentials\tabledictionaries.py:476
 #: addon\globalPlugins\brailleEssentials\tabledictionaries.py:485
 #: addon\globalPlugins\brailleEssentials\tabledictionaries.py:494
-#: addon\globalPlugins\brailleEssentials\__init__.py:1600 buildVars.py:21
+#: addon\globalPlugins\brailleEssentials\__init__.py:1608 buildVars.py:21
 msgid "Braille Essentials"
 msgstr ""
 
-#: addon\globalPlugins\brailleEssentials\settings.py:62
+#: addon\globalPlugins\brailleEssentials\settings.py:63
 msgid "Say current line while &scrolling in:"
 msgstr "Промовляти поточний &рядок під час прокрутки у:"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:74
+#: addon\globalPlugins\brailleEssentials\settings.py:75
 msgid "NVDA 2025.1+ also has a global braille option, “Speak when navigating by line or paragraph”. Disable that NVDA option if you hear duplicate line announcements."
 msgstr "У NVDA 2025.1+ також є загальний параметр для шрифту Брайля «Промовляти під час навігації по рядках або абзацах». Вимкніть цей параметр NVDA, якщо чуєте повторювані оголошення про рядки."
 
-#: addon\globalPlugins\brailleEssentials\settings.py:82
+#: addon\globalPlugins\brailleEssentials\settings.py:83
 msgid "S&kip blank lines during text scrolling"
 msgstr "П&ропускати порожні рядки під час прокрутки тексту"
 
 #. Translators: label of a dialog.
-#: addon\globalPlugins\brailleEssentials\settings.py:87
+#: addon\globalPlugins\brailleEssentials\settings.py:88
 msgid "Smart Caps Loc&k"
 msgstr "Розумний Caps Loc&k"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:92
+#: addon\globalPlugins\brailleEssentials\settings.py:93
 msgid "Speech i&nterrupt for unknown gestures"
 msgstr "Пере&ривати мовлення невідомими жестами"
 
+#: addon\globalPlugins\brailleEssentials\settings.py:101
+msgid "When speech is off, also &mute NVDA sounds (beeps, error and mode sounds)"
+msgstr ""
+
 #. Translators: label of a dialog.
-#: addon\globalPlugins\brailleEssentials\settings.py:97
+#: addon\globalPlugins\brailleEssentials\settings.py:107
 msgid "Routing cursors behavior in edit &fields:"
 msgstr "Поведінка курсорів маршрутизації у полях &редагування:"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:116
+#: addon\globalPlugins\brailleEssentials\settings.py:126
 msgid "Automatically Switch to review mode in &terminal windows (cmd, bash, PuTTY, PowerShell Maxima…)"
 msgstr "Автоматичний перехід в режим перегляду у &вікнах терміналів (cmd, bash, PuTTY, PowerShell Maxima…)"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:124
+#: addon\globalPlugins\brailleEssentials\settings.py:134
 msgid "Announce &volume changes:"
 msgstr "Оголошувати &зміну  гучності:"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:136
+#: addon\globalPlugins\brailleEssentials\settings.py:146
 msgid "Announce m&odifier key presses:"
 msgstr "Оголошувати натискання &клавіш-модифікаторів:"
 
 #. Translators: label of a dialog.
-#: addon\globalPlugins\brailleEssentials\settings.py:145
+#: addon\globalPlugins\brailleEssentials\settings.py:155
 msgid "Play &beeps for modifier keys"
 msgstr "Відтворювати &сигнали для клавіш-модифікаторів"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:151
+#: addon\globalPlugins\brailleEssentials\settings.py:161
 msgid "&Right margin on cells for the active braille display"
 msgstr "&Праве поле на комірках активного брайлівського дисплея"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:161
+#: addon\globalPlugins\brailleEssentials\settings.py:171
 msgid "Braille &keyboard configuration:"
 msgstr "Конфігурація брайлівської &клавіатури:"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:167
+#: addon\globalPlugins\brailleEssentials\settings.py:177
 msgid "&Reverse forward and back scroll buttons"
 msgstr "&Поміняти місцями кнопки прокрутки вперед і назад"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:172
+#: addon\globalPlugins\brailleEssentials\settings.py:182
 msgid "&Primary favorite display (reload with NVDA+J):"
 msgstr "&Основний обраний дисплей (оновити за допомогою NVDA+J):"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:179
+#: addon\globalPlugins\brailleEssentials\settings.py:189
 msgid "&Second favorite display (reload with NVDA+Shift+J):"
 msgstr "&Додатковий обраний дисплей (оновити за допомогою NVDA+Shift+J):"
 
 #. Translators: title of the dialog when adding a custom braille table.
-#: addon\globalPlugins\brailleEssentials\settings.py:227
-#: addon\globalPlugins\brailleEssentials\settings.py:547
+#: addon\globalPlugins\brailleEssentials\settings.py:238
+#: addon\globalPlugins\brailleEssentials\settings.py:558
 msgid "Add custom braille table"
 msgstr "Додати користувацьку таблицю Брайля"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:237
+#: addon\globalPlugins\brailleEssentials\settings.py:248
 msgid "Copy from an existing table"
 msgstr "Копіювати з існуючої таблиці"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:238
+#: addon\globalPlugins\brailleEssentials\settings.py:249
 msgid "Create an empty table"
 msgstr "Створити порожню таблицю"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:241
+#: addon\globalPlugins\brailleEssentials\settings.py:252
 msgid "&How do you want to create the table?"
 msgstr "&Як ви хочете створити таблицю?"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:247
+#: addon\globalPlugins\brailleEssentials\settings.py:258
 msgid "&Table to copy:"
 msgstr "&Таблиця для копіювання:"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:262
+#: addon\globalPlugins\brailleEssentials\settings.py:273
 msgid "NVDA registers braille tables as .utb, .ctb, or occasionally .tbl. Copying keeps the source extension. The list includes built-in tables, tables from other add-ons, and your Braille Extender custom tables—use Copy to clone a table you already manage. An empty table is created as .utb, or as .ctb if you mark it contracted."
 msgstr "NVDA зберігає таблиці Брайля у форматі .utb, .ctb або, інколи, .tbl. Під час копіювання розширення файлу залишається незмінним. До списку входять вбудовані таблиці, таблиці з інших додатків, а також ваші власні таблиці з Розширювача Брайля — скористайтеся функцією «Копіювати», щоб створити копію таблиці, якою ви вже керуєте. Порожня таблиця створюється у форматі .utb або .ctb, якщо ви позначите її як скорочену."
 
-#: addon\globalPlugins\brailleEssentials\settings.py:314
+#: addon\globalPlugins\brailleEssentials\settings.py:325
 msgid "&Display name:"
 msgstr "&Назва для показу:"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:316
+#: addon\globalPlugins\brailleEssentials\settings.py:327
 msgid "Con&tracted braille"
 msgstr "Скорочений шрифт &Брайля"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:318
+#: addon\globalPlugins\brailleEssentials\settings.py:329
 msgid "&Input table"
 msgstr "&Таблиця введення"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:320
+#: addon\globalPlugins\brailleEssentials\settings.py:331
 msgid "&Output table"
 msgstr "&Таблиця виведення"
 
 #. Translators: title of a dialog opened from the Braille Extender submenu or Braille tables settings.
-#: addon\globalPlugins\brailleEssentials\settings.py:342
+#: addon\globalPlugins\brailleEssentials\settings.py:353
 msgid "Custom braille tables"
 msgstr "Користувацькі брайлівські таблиці"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:371
+#: addon\globalPlugins\brailleEssentials\settings.py:382
 msgid "Choose which custom table to use here. They do not appear in NVDA Braille settings. Select None to use your usual NVDA tables instead."
 msgstr "Виберіть тут, яку користувацьку таблицю використовувати. Вони не показуються в налаштуваннях шрифту Брайля NVDA. Виберіть «Немає», щоб замість цього використовувати звичні таблиці NVDA."
 
-#: addon\globalPlugins\brailleEssentials\settings.py:379
+#: addon\globalPlugins\brailleEssentials\settings.py:390
 msgid "Active custom &input table:"
 msgstr "Активна &користувацька таблиця введення:"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:384
+#: addon\globalPlugins\brailleEssentials\settings.py:395
 msgid "Active custom &output table:"
 msgstr "Активна &користувацька таблиця виведення:"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:392
+#: addon\globalPlugins\brailleEssentials\settings.py:403
 msgid "Registered &custom tables:"
 msgstr "Зареєстровані &користувацькі таблиці:"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:397
+#: addon\globalPlugins\brailleEssentials\settings.py:408
 msgid "Name"
 msgstr "Назва"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:398
+#: addon\globalPlugins\brailleEssentials\settings.py:409
 msgid "File"
 msgstr "Файл"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:400
+#: addon\globalPlugins\brailleEssentials\settings.py:411
 msgid "Output"
 msgstr "Виведення"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:405
+#: addon\globalPlugins\brailleEssentials\settings.py:416
 msgid "&Add…"
 msgstr "&Додати…"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:406
+#: addon\globalPlugins\brailleEssentials\settings.py:417
 msgid "&Remove"
 msgstr "&Видалити"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:407
+#: addon\globalPlugins\brailleEssentials\settings.py:418
 msgid "&Edit…"
 msgstr "&Редагувати…"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:408
+#: addon\globalPlugins\brailleEssentials\settings.py:419
 msgid "P&roperties…"
 msgstr "&Властивості…"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:489
-#: addon\globalPlugins\brailleEssentials\settings.py:490
+#: addon\globalPlugins\brailleEssentials\settings.py:500
+#: addon\globalPlugins\brailleEssentials\settings.py:501
 msgid "Yes"
 msgstr "Так"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:489
-#: addon\globalPlugins\brailleEssentials\settings.py:490
+#: addon\globalPlugins\brailleEssentials\settings.py:500
+#: addon\globalPlugins\brailleEssentials\settings.py:501
 msgid "No"
 msgstr "Немає"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:543
+#: addon\globalPlugins\brailleEssentials\settings.py:554
 msgid "New custom table"
 msgstr "Нова користувацька таблиця"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:558
-#: addon\globalPlugins\brailleEssentials\settings.py:631
+#: addon\globalPlugins\brailleEssentials\settings.py:569
+#: addon\globalPlugins\brailleEssentials\settings.py:642
 msgid "A table must be enabled for input and/or output."
 msgstr "Таблиця має бути ввімкнена для введення та/або виведення."
 
-#: addon\globalPlugins\brailleEssentials\settings.py:559
-#: addon\globalPlugins\brailleEssentials\settings.py:580
-#: addon\globalPlugins\brailleEssentials\settings.py:595
-#: addon\globalPlugins\brailleEssentials\settings.py:611
-#: addon\globalPlugins\brailleEssentials\settings.py:632
-#: addon\globalPlugins\brailleEssentials\settings.py:645
+#: addon\globalPlugins\brailleEssentials\settings.py:570
+#: addon\globalPlugins\brailleEssentials\settings.py:591
+#: addon\globalPlugins\brailleEssentials\settings.py:606
+#: addon\globalPlugins\brailleEssentials\settings.py:622
+#: addon\globalPlugins\brailleEssentials\settings.py:643
+#: addon\globalPlugins\brailleEssentials\settings.py:656
 msgid "Braille Extender"
 msgstr "Розширювач брайля"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:594
+#: addon\globalPlugins\brailleEssentials\settings.py:605
 #, python-format
 msgid "Remove custom table %(name)s? The Liblouis file will be deleted."
 msgstr "Видалити користувацьку таблицю %(name)s? Файл Liblouis буде видалено."
 
-#: addon\globalPlugins\brailleEssentials\settings.py:620
+#: addon\globalPlugins\brailleEssentials\settings.py:631
 msgid "Custom braille table properties"
 msgstr "Властивості Користувацької брайлівської таблиці"
 
 #. Translators: title of a dialog.
-#: addon\globalPlugins\brailleEssentials\settings.py:652
+#: addon\globalPlugins\brailleEssentials\settings.py:663
 msgid "Braille tables"
 msgstr "Брайлівські таблиці"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:683
+#: addon\globalPlugins\brailleEssentials\settings.py:688
 msgid "Preferred &output braille tables:"
 msgstr "Бажані таблиці для &виведення:"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:691
+#: addon\globalPlugins\brailleEssentials\settings.py:696
 msgid "Preferred &input braille tables:"
 msgstr "Бажані таблиці для &введення:"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:695
+#: addon\globalPlugins\brailleEssentials\settings.py:700
 msgid "Use the current input table"
 msgstr "Використовувати поточну таблицю введення"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:705
+#: addon\globalPlugins\brailleEssentials\settings.py:710
 msgid "Input braille table for &keyboard shortcut keys:"
 msgstr "Брайлівська таблиця введення для &комбінацій клавіш:"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:714
+#: addon\globalPlugins\brailleEssentials\settings.py:719
 msgid "&Additional Liblouis output pass:"
 msgstr "&Додатковий вивід обробки Liblouis:"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:721
+#: addon\globalPlugins\brailleEssentials\settings.py:726
 msgid "After the main output table, the selected table is applied again to the braille. Use None to show only the main table result."
 msgstr "Після основної таблиці виводу вибрана таблиця знову застосовується до шрифту Брайля. Виберіть «Немає», щоб відобразити лише результати основної таблиці."
 
-#: addon\globalPlugins\brailleEssentials\settings.py:727
+#: addon\globalPlugins\brailleEssentials\settings.py:732
 msgid "Display &tabs as spaces"
 msgstr "&Показувати табуляцію як пробіли"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:731
+#: addon\globalPlugins\brailleEssentials\settings.py:736
 msgid "&Spaces per tab for the active braille display:"
 msgstr "&Пробілів на табуляцію на брайлівському дисплеї:"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:738
+#: addon\globalPlugins\brailleEssentials\settings.py:743
 msgid "&Manage custom braille tables…"
 msgstr "&Керувати користувацькими таблицями Брайля…"
 
 #. Translators: title of a dialog.
-#: addon\globalPlugins\brailleEssentials\settings.py:782
+#: addon\globalPlugins\brailleEssentials\settings.py:787
 msgid "Rotor"
 msgstr "Ротор"
 
 #. Translators: Shown as the short description for this category in Braille Essentials settings.
-#: addon\globalPlugins\brailleEssentials\settings.py:784
+#: addon\globalPlugins\brailleEssentials\settings.py:789
 msgid "Configure which items appear in the rotor and in what order."
 msgstr "Налаштування переліку і порядку елементів у роторі."
 
-#: addon\globalPlugins\brailleEssentials\settings.py:795
+#: addon\globalPlugins\brailleEssentials\settings.py:800
 msgid "Rotor &items (checked entries are included when you cycle the rotor):"
 msgstr "Елементи &ротора (позначені записи враховуються під час прокручування ротора)"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:805
+#: addon\globalPlugins\brailleEssentials\settings.py:810
 msgid "Move &before"
 msgstr "Перемістити &вперед"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:807
+#: addon\globalPlugins\brailleEssentials\settings.py:812
 msgid "Move &after"
 msgstr "Перемістити &назад"
 
 #. Translators: title of a dialog.
-#: addon\globalPlugins\brailleEssentials\settings.py:918
+#: addon\globalPlugins\brailleEssentials\settings.py:923
 msgid "Braille Essentials - Quick launches"
 msgstr ""
 
-#: addon\globalPlugins\brailleEssentials\settings.py:930
+#: addon\globalPlugins\brailleEssentials\settings.py:935
 msgid "&Gestures:"
 msgstr "&Жести:"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:935
+#: addon\globalPlugins\brailleEssentials\settings.py:940
 msgid "&Location (file path, URL or command)"
 msgstr "&Розташування (шлях до файлу, URL чи команда)"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:940
+#: addon\globalPlugins\brailleEssentials\settings.py:945
 msgid "&Browse..."
 msgstr "&Огляд..."
 
-#: addon\globalPlugins\brailleEssentials\settings.py:942
+#: addon\globalPlugins\brailleEssentials\settings.py:947
 msgid "&Remove this gesture"
 msgstr "&Видалити цей жест"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:944
+#: addon\globalPlugins\brailleEssentials\settings.py:949
 msgid "&Add a quick launch"
 msgstr "&Додати команду швидкого запуску"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:977
+#: addon\globalPlugins\brailleEssentials\settings.py:982
 msgid "Unable to associate this gesture. Please enter another gesture"
 msgstr "Неможливо асоціювати цей жест. Будь ласка, введіть інший жест"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:995
+#: addon\globalPlugins\brailleEssentials\settings.py:1000
 msgid "Out of capture"
 msgstr "Поза захопленням"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:1005
+#: addon\globalPlugins\brailleEssentials\settings.py:1010
 #, python-format
 msgid "The gesture captured is %s"
 msgstr "Захоплений жест %s"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:1031
+#: addon\globalPlugins\brailleEssentials\settings.py:1036
 msgid "Are you sure you wish to delete this shortcut?"
 msgstr "Ви впевнені, що бажаєте видалити цю комбінацію?"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:1032
+#: addon\globalPlugins\brailleEssentials\settings.py:1037
 msgid "Remove shortcut"
 msgstr "Видалити комбінацію"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:1061
+#: addon\globalPlugins\brailleEssentials\settings.py:1066
 msgid "Please enter the desired gesture for the new quick launch. Press \"space bar\" to cancel"
 msgstr "Будь ласка, введіть бажаний жест для нового швидкого запуску. Натисніть пробіл для скасування"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:1065
+#: addon\globalPlugins\brailleEssentials\settings.py:1070
 msgid "Don't add a quick launch"
 msgstr "Не додавати до швидкого запуску"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:1094
+#: addon\globalPlugins\brailleEssentials\settings.py:1099
 #, python-brace-format
 msgid "Choose a file for {0}"
 msgstr "Оберіть файл для {0}"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:1115
+#: addon\globalPlugins\brailleEssentials\settings.py:1120
 msgid "Please create or select a quick launch first"
 msgstr "Будь ласка, спершу створіть або виберіть щось для швидкого запуску"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:1116
+#: addon\globalPlugins\brailleEssentials\settings.py:1121
 msgid "Error"
 msgstr "Помилка"
 
 #. Translators: title of a dialog.
-#: addon\globalPlugins\brailleEssentials\settings.py:1123
+#: addon\globalPlugins\brailleEssentials\settings.py:1128
 msgid "Advanced"
 msgstr "Розширені"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:1130
+#: addon\globalPlugins\brailleEssentials\settings.py:1135
 msgid "Avoid &cursor positions issues with some characters such as variation selectors"
 msgstr "Уникати &проблем із розташуванням курсору з деякими символами, наприклад селекторами варіантів"
 
-#: addon\globalPlugins\brailleEssentials\settings.py:1139
+#: addon\globalPlugins\brailleEssentials\settings.py:1144
 msgid "force the refresh of braille region related to &foreground object"
 msgstr "примусово оновити брайлівську область для активного &об’єкта"
 
 #. Translators: title of add-on settings dialog.
-#: addon\globalPlugins\brailleEssentials\settings.py:1172
+#: addon\globalPlugins\brailleEssentials\settings.py:1178
 msgid "Braille Essentials settings"
 msgstr ""
 
 #. Translators: The profile name for normal configuration
-#: addon\globalPlugins\brailleEssentials\settings.py:1187
+#: addon\globalPlugins\brailleEssentials\settings.py:1193
 msgid "normal configuration"
 msgstr "нормальна конфігурація"
 
 #. Translators: title of a dialog.
-#: addon\globalPlugins\brailleEssentials\speechhistorymode.py:31
+#: addon\globalPlugins\brailleEssentials\speechhistorymode.py:33
 msgid "Speech History Mode"
 msgstr "Режим історії мовлення"
 
-#: addon\globalPlugins\brailleEssentials\speechhistorymode.py:35
+#: addon\globalPlugins\brailleEssentials\speechhistorymode.py:37
 msgid "&Number of last announcements to retain:"
 msgstr "&Кількість останніх оголошень для збереження:"
 
-#: addon\globalPlugins\brailleEssentials\speechhistorymode.py:43
+#: addon\globalPlugins\brailleEssentials\speechhistorymode.py:45
 msgid "&Prefix entries with their position in the history"
 msgstr "&Префікс записів із вказуванням їхньої позиції в історії"
 
-#: addon\globalPlugins\brailleEssentials\speechhistorymode.py:46
+#: addon\globalPlugins\brailleEssentials\speechhistorymode.py:48
 msgid "&Read entries while browsing history"
 msgstr "&Читати записи під час перегляду історії"
 
-#: addon\globalPlugins\brailleEssentials\speechhistorymode.py:146
+#: addon\globalPlugins\brailleEssentials\speechhistorymode.py:148
 msgid "Announcement copied to clipboard"
 msgstr "Оголошувати «скопійовано в буфер обміну»"
 
@@ -1554,18 +1559,18 @@ msgid "&Direction"
 msgstr "&Напрямок"
 
 #: addon\globalPlugins\brailleEssentials\tabledictionaries.py:434
-#: addon\globalPlugins\brailleEssentials\__init__.py:342
+#: addon\globalPlugins\brailleEssentials\__init__.py:346
 msgid "Global dictionary"
 msgstr "Глобальний словник"
 
 #: addon\globalPlugins\brailleEssentials\tabledictionaries.py:435
-#: addon\globalPlugins\brailleEssentials\__init__.py:348
+#: addon\globalPlugins\brailleEssentials\__init__.py:352
 #, python-brace-format
 msgid "Table dictionary ({})"
 msgstr "Словник таблиці ({})"
 
 #: addon\globalPlugins\brailleEssentials\tabledictionaries.py:436
-#: addon\globalPlugins\brailleEssentials\__init__.py:353
+#: addon\globalPlugins\brailleEssentials\__init__.py:357
 msgid "Temporary dictionary"
 msgstr "Тимчасовий словник"
 
@@ -1709,686 +1714,771 @@ msgstr "Брайлівська &таблиця:"
 msgid "Character limit at which descriptions are disabled (to avoid freezes, >):"
 msgstr "Обмеження символів, за якого описи вимикаються (для уникнення зависань, >):"
 
-#: addon\globalPlugins\brailleEssentials\utils.py:66
+#: addon\globalPlugins\brailleEssentials\utils.py:82
 msgid "Muted sound"
 msgstr "Звук вимкнено"
 
-#: addon\globalPlugins\brailleEssentials\utils.py:112
+#: addon\globalPlugins\brailleEssentials\utils.py:128
 msgid "Reload successful"
 msgstr "Успішне перезавантаження"
 
-#: addon\globalPlugins\brailleEssentials\utils.py:116
+#: addon\globalPlugins\brailleEssentials\utils.py:132
 msgid "Reload failed"
 msgstr "Помилка перезавантаження"
 
-#: addon\globalPlugins\brailleEssentials\utils.py:124
-#: addon\globalPlugins\brailleEssentials\utils.py:127
+#: addon\globalPlugins\brailleEssentials\utils.py:140
+#: addon\globalPlugins\brailleEssentials\utils.py:143
 msgid "Not a character"
 msgstr "Не символ"
 
-#: addon\globalPlugins\brailleEssentials\utils.py:132
+#: addon\globalPlugins\brailleEssentials\utils.py:148
 msgid "unknown"
 msgstr "невідомо"
 
-#: addon\globalPlugins\brailleEssentials\utils.py:155
+#: addon\globalPlugins\brailleEssentials\utils.py:171
 msgid "Char info"
 msgstr "Інформація про символ"
 
-#: addon\globalPlugins\brailleEssentials\utils.py:281
+#: addon\globalPlugins\brailleEssentials\utils.py:297
 msgid "Available combinations"
 msgstr "Доступні комбінації"
 
-#: addon\globalPlugins\brailleEssentials\utils.py:289
+#: addon\globalPlugins\brailleEssentials\utils.py:305
 msgid "One combination available"
 msgstr "Доступна одна комбінація"
 
-#: addon\globalPlugins\brailleEssentials\utils.py:301
+#: addon\globalPlugins\brailleEssentials\utils.py:317
 msgid "space"
 msgstr "пробіл"
 
-#: addon\globalPlugins\brailleEssentials\utils.py:302
+#: addon\globalPlugins\brailleEssentials\utils.py:318
 msgid "left SHIFT"
 msgstr "лівий SHIFT"
 
-#: addon\globalPlugins\brailleEssentials\utils.py:303
+#: addon\globalPlugins\brailleEssentials\utils.py:319
 msgid "right SHIFT"
 msgstr "правий шіфт"
 
-#: addon\globalPlugins\brailleEssentials\utils.py:304
+#: addon\globalPlugins\brailleEssentials\utils.py:320
 msgid "left selector"
 msgstr "лівий селектор"
 
-#: addon\globalPlugins\brailleEssentials\utils.py:305
+#: addon\globalPlugins\brailleEssentials\utils.py:321
 msgid "right selector"
 msgstr "правий селектор"
 
-#: addon\globalPlugins\brailleEssentials\utils.py:306
+#: addon\globalPlugins\brailleEssentials\utils.py:322
 msgid "dot"
 msgstr "крапка"
 
-#: addon\globalPlugins\brailleEssentials\utils.py:327
+#: addon\globalPlugins\brailleEssentials\utils.py:343
 #, python-brace-format
 msgid "{gesture} on {brailleDisplay}"
 msgstr "{gesture} на {brailleDisplay}"
 
-#: addon\globalPlugins\brailleEssentials\utils.py:404
+#: addon\globalPlugins\brailleEssentials\utils.py:420
 msgid "No text selected"
 msgstr "Немає виділеного тексту"
 
-#: addon\globalPlugins\brailleEssentials\utils.py:444
+#: addon\globalPlugins\brailleEssentials\utils.py:460
 #, python-brace-format
 msgid "Automatic ({name})"
 msgstr "Автоматично ({name})"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:82
+#. Translators: Extra detail appended to a table coordinate flash (e.g. row 2 (column 3)).
+#: addon\globalPlugins\brailleEssentials\virtualBufferTableBraille.py:303
+#, python-brace-format
+msgid "{main} ({detail})"
+msgstr ""
+
+#. Translators: Merged table columns in a braille routing flash (e.g. columns 1-3).
+#: addon\globalPlugins\brailleEssentials\virtualBufferTableBraille.py:349
+#, python-brace-format
+msgid "columns {start}-{end}"
+msgstr ""
+
+#. Translators: A single table column in a braille routing flash (e.g. column 2).
+#: addon\globalPlugins\brailleEssentials\virtualBufferTableBraille.py:351
+#, python-brace-format
+msgid "column {column}"
+msgstr ""
+
+#. Translators: Merged table rows in a braille routing flash (e.g. rows 2-4).
+#: addon\globalPlugins\brailleEssentials\virtualBufferTableBraille.py:357
+#, python-brace-format
+msgid "rows {start}-{end}"
+msgstr ""
+
+#. Translators: A single table row in a braille routing flash (e.g. row 2).
+#: addon\globalPlugins\brailleEssentials\virtualBufferTableBraille.py:359
+#, python-brace-format
+msgid "row {row}"
+msgstr ""
+
+#. Translators: title of the Virtual documents category in Braille Extender settings.
+#: addon\globalPlugins\brailleEssentials\virtualDocumentSettings.py:18
+msgid "Virtual documents"
+msgstr ""
+
+#: addon\globalPlugins\brailleEssentials\virtualDocumentSettings.py:20
+msgid "Choose how tables in browse mode (web pages and other virtual documents) appear on the braille display."
+msgstr ""
+
+#: addon\globalPlugins\brailleEssentials\virtualDocumentSettings.py:29
+msgid "Display full table &row on one braille line"
+msgstr ""
+
+#: addon\globalPlugins\brailleEssentials\virtualDocumentSettings.py:36
+msgid "&Separator between cells:"
+msgstr ""
+
+#: addon\globalPlugins\brailleEssentials\virtualDocumentSettings.py:42
+msgid "Start of &row line:"
+msgstr ""
+
+#: addon\globalPlugins\brailleEssentials\virtualDocumentSettings.py:48
+msgid "End of row &line:"
+msgstr ""
+
+#: addon\globalPlugins\brailleEssentials\__init__.py:83
 #, python-format
 msgid "Emulate on the system keyboard: %s"
 msgstr "Емулювати на системній клавіатурі: %s"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:111
+#: addon\globalPlugins\brailleEssentials\__init__.py:112
 msgid "If pressed twice, presents the information in browse mode"
 msgstr "Якщо натиснуто двічі, надає інформацію в режимі огляду"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:260
+#: addon\globalPlugins\brailleEssentials\__init__.py:264
 msgid "&Gestures for this display…"
 msgstr "&Жести для цього дисплея…"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:261
+#: addon\globalPlugins\brailleEssentials\__init__.py:265
 msgid "Shows a browseable summary of braille profile bindings and add-on keyboard shortcuts."
 msgstr "Показує короткий список прив’язок профілю Брайля та додаткових комбінацій клавіш."
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:266
+#: addon\globalPlugins\brailleEssentials\__init__.py:270
 msgid "&Settings..."
 msgstr "&Налаштування..."
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:266
+#: addon\globalPlugins\brailleEssentials\__init__.py:270
 msgid "Opens the addons' settings."
 msgstr "Відкриває налаштування додатка."
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:272
+#: addon\globalPlugins\brailleEssentials\__init__.py:276
 msgid "Table &dictionaries"
 msgstr "Словники &таблиць"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:272
+#: addon\globalPlugins\brailleEssentials\__init__.py:276
 msgid "'Braille dictionaries' menu"
 msgstr "Меню брайлівських словників"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:276
+#: addon\globalPlugins\brailleEssentials\__init__.py:280
 msgid "&Global dictionary"
 msgstr "&Глобальний словник"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:277
+#: addon\globalPlugins\brailleEssentials\__init__.py:281
 msgid "A dialog where you can set global dictionary by adding dictionary entries to the list."
 msgstr "Діалог, у якому ви можете налаштувати глобальний словник, додаючи до списку словникові статті."
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:282
+#: addon\globalPlugins\brailleEssentials\__init__.py:286
 msgid "&Table dictionary"
 msgstr "&Словник таблиці"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:284
+#: addon\globalPlugins\brailleEssentials\__init__.py:288
 msgid "A dialog where you can set table-specific dictionary by adding dictionary entries to the list."
 msgstr "Діалог, у якому ви можете налаштувати словник для конкретної таблиці, додаючи до списку словникові статті."
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:290
+#: addon\globalPlugins\brailleEssentials\__init__.py:294
 msgid "Te&mporary dictionary"
 msgstr "Т&имчасовий словник"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:291
+#: addon\globalPlugins\brailleEssentials\__init__.py:295
 msgid "A dialog where you can set temporary dictionary by adding dictionary entries to the list."
 msgstr "Діалог, у якому ви можете налаштувати тимчасовий словник, додаючи до списку словникові статті."
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:297
+#: addon\globalPlugins\brailleEssentials\__init__.py:301
 msgid "&Custom braille tables..."
 msgstr "&Користувацькі таблиці Брайля..."
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:298
+#: addon\globalPlugins\brailleEssentials\__init__.py:302
 msgid "Add, remove, and edit your own Liblouis braille tables (NVDA 2024.3+)."
 msgstr "Додавайте, видаляйте та редагуйте власні таблиці Брайля Liblouis (NVDA 2024.3+)."
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:307
+#: addon\globalPlugins\brailleEssentials\__init__.py:311
 msgid "Advanced &input mode dictionary..."
 msgstr "&Словник розширеного режиму введення..."
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:307
+#: addon\globalPlugins\brailleEssentials\__init__.py:311
 msgid "Advanced input mode configuration"
 msgstr "Налаштування режиму розширеного введення"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:313
+#: addon\globalPlugins\brailleEssentials\__init__.py:317
 msgid "&Quick launches"
 msgstr "&Швидкий запуск"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:313
+#: addon\globalPlugins\brailleEssentials\__init__.py:317
 msgid "Quick launches configuration"
 msgstr "Налаштування швидкого запуску"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:319
+#: addon\globalPlugins\brailleEssentials\__init__.py:323
 msgid "Braille input table &overview"
 msgstr "&Огляд брайлівської таблиці введення"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:319
+#: addon\globalPlugins\brailleEssentials\__init__.py:323
 msgid "Overview of the current input braille table"
 msgstr "Огляд поточної брайлівської таблиці введення"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:322
+#: addon\globalPlugins\brailleEssentials\__init__.py:326
 msgid "&Reload add-on"
 msgstr "&Перезавантажити додаток"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:322
+#: addon\globalPlugins\brailleEssentials\__init__.py:326
 msgid "Reload this add-on."
 msgstr "Перезавантажити цей додаток."
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:325
+#: addon\globalPlugins\brailleEssentials\__init__.py:329
 msgid "&Braille Essentials"
 msgstr ""
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:461
+#: addon\globalPlugins\brailleEssentials\__init__.py:465
 msgid "Select the previous rotor category (links, headings, review, and so on)"
 msgstr "Виберіть попередню категорію ротора (посилання, заголовки, огляд тощо)"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:467
+#: addon\globalPlugins\brailleEssentials\__init__.py:471
 msgid "Select the next rotor category"
 msgstr "Виберіть наступну категорію ротора"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:476
+#: addon\globalPlugins\brailleEssentials\__init__.py:480
 msgid "Character"
 msgstr "Символ"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:476
+#: addon\globalPlugins\brailleEssentials\__init__.py:480
 msgid "Word"
 msgstr "Слово"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:476
+#: addon\globalPlugins\brailleEssentials\__init__.py:480
 msgid "Line"
 msgstr "Рядок"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:476
+#: addon\globalPlugins\brailleEssentials\__init__.py:480
 msgid "Paragraph"
 msgstr "Абзац"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:476
+#: addon\globalPlugins\brailleEssentials\__init__.py:480
 msgid "Page"
 msgstr "Сторінка"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:476
+#: addon\globalPlugins\brailleEssentials\__init__.py:480
 msgid "Document"
 msgstr "Документ"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:502
-#: addon\globalPlugins\brailleEssentials\__init__.py:505
-#: addon\globalPlugins\brailleEssentials\__init__.py:513
+#: addon\globalPlugins\brailleEssentials\__init__.py:506
+#: addon\globalPlugins\brailleEssentials\__init__.py:509
+#: addon\globalPlugins\brailleEssentials\__init__.py:517
 msgid "Not available here"
 msgstr "Тут недоступно"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:517
+#: addon\globalPlugins\brailleEssentials\__init__.py:521
 msgid "Rotor: move forward (next character, link, review line, and so on, depending on the rotor)"
 msgstr "Ротор: перехід вперед (наступний символ, посилання, рядок огляду тощо, залежно від ротора)"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:541
+#: addon\globalPlugins\brailleEssentials\__init__.py:545
 msgid "Rotor: move backward (previous character, link, review line, and so on)"
 msgstr "Ротор: перехід назад (попередній символ, посилання, рядок огляду тощо)"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:564
+#: addon\globalPlugins\brailleEssentials\__init__.py:568
 msgid "Rotor: next step (next line, next object group, larger selection unit, depending on the rotor)"
 msgstr "Ротор: наступний крок (наступний рядок, наступна група об’єктів, більший блок вибору, залежно від ротора)"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:580
+#: addon\globalPlugins\brailleEssentials\__init__.py:584
 msgid "Rotor: previous step (previous line, object group, or selection unit)"
 msgstr "Ротор: попередній крок (попередній рядок, попередня група об’єктів, блок вибору, залежно від ротора)"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:594
+#: addon\globalPlugins\brailleEssentials\__init__.py:598
 msgid "Rotor: activate the item (press Enter or the rotor’s default action)"
 msgstr "Ротор: активувати елемент (натисніть Enter або основну дію ротора)"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:600
+#: addon\globalPlugins\brailleEssentials\__init__.py:604
 msgid "Lock or unlock the braille keyboard so dots are not translated as you type"
 msgstr "Увімкнути або вимкнути блокування клавіатури Брайля, щоб крапки не перетворювалися під час набору тексту"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:604
+#: addon\globalPlugins\brailleEssentials\__init__.py:608
 msgid "Braille keyboard locked"
 msgstr "Брайлівську клавіатуру заблоковано"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:606
+#: addon\globalPlugins\brailleEssentials\__init__.py:610
 msgid "Braille keyboard unlocked"
 msgstr "Брайлівську клавіатуру розблоковано"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:608
+#: addon\globalPlugins\brailleEssentials\__init__.py:612
 msgid "Turn Braille Essentials one-handed braille input on or off"
 msgstr ""
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:614
+#: addon\globalPlugins\brailleEssentials\__init__.py:618
 msgid "One-handed mode enabled"
 msgstr "Режим однієї руки увімкнено"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:616
+#: addon\globalPlugins\brailleEssentials\__init__.py:620
 msgid "One handed mode disabled"
 msgstr "Режим однієї руки вимкнено"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:618
+#: addon\globalPlugins\brailleEssentials\__init__.py:622
 msgid "Hide or show dots 7 and 8 in contracted braille output"
 msgstr "Приховати або показати крапки 7 і 8 у скороченому шрифті Брайля"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:622
+#: addon\globalPlugins\brailleEssentials\__init__.py:626
 msgid "Dots 7 and 8 disabled"
 msgstr "Крапки 7 і 8 вимкнено"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:624
+#: addon\globalPlugins\brailleEssentials\__init__.py:628
 msgid "Dots 7 and 8 enabled"
 msgstr "Крапки 7 і 8 увімкнено"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:628
+#: addon\globalPlugins\brailleEssentials\__init__.py:632
 msgid "Switch BRF output mode (braille file / literary layout handling)"
 msgstr "Перемкнути режим виводу BRF (файл Брайля / літературна розмітка)"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:635
+#: addon\globalPlugins\brailleEssentials\__init__.py:639
 msgid "BRF mode enabled"
 msgstr "Режим BRF увімкнено"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:637
+#: addon\globalPlugins\brailleEssentials\__init__.py:641
 msgid "BRF mode disabled"
 msgstr "Режим BRF вимкнено"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:639
+#: addon\globalPlugins\brailleEssentials\__init__.py:643
 msgid "Lock or unlock modifier keys when entering text from the braille keyboard"
 msgstr "Перемикає блокування клавіш-модифікаторів при використанні брайлівського введення"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:643
+#: addon\globalPlugins\brailleEssentials\__init__.py:647
 msgid "Modifier keys locked"
 msgstr "Клавіші-модифікатори заблоковано"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:645
+#: addon\globalPlugins\brailleEssentials\__init__.py:649
 msgid "Modifier keys unlocked"
 msgstr "Клавіші-модифікатори розблоковано"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:649
+#: addon\globalPlugins\brailleEssentials\__init__.py:653
 msgid "Turn reporting of font attributes in braille (bold, italic, underline, and so on) on or off"
 msgstr "Увімкнути або вимкнути показ атрибутів шрифту шрифтом Брайля (жирний, курсив, підкреслення тощо)"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:658
+#: addon\globalPlugins\brailleEssentials\__init__.py:662
 msgid "Turn alignment indicators in braille (left, center, right, justified) on or off"
 msgstr "Увімкнути або вимкнути брайлівські індикатори вирівнювання (ліворуч, за центром, праворуч, за шириною)"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:665
+#: addon\globalPlugins\brailleEssentials\__init__.py:669
 msgid "Show only plain text in braille (strip most structure and attribute marks)"
 msgstr "Показувати лише звичайний текст шрифтом Брайля (прибрати більшість позначок структури та атрибутів)"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:671
+#: addon\globalPlugins\brailleEssentials\__init__.py:675
 msgid "Plain text mode enabled"
 msgstr "Режим звичайного тексту увімкнено"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:673
+#: addon\globalPlugins\brailleEssentials\__init__.py:677
 msgid "Plain text mode disabled"
 msgstr "Режим звичайного тексту вимкнено"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:678
+#: addon\globalPlugins\brailleEssentials\__init__.py:682
 msgid "Cycle how NVDA speaks the current line when you scroll braille (off, focus, review, or both)"
 msgstr "Перемкнути параметр промовляння поточного рядка під час прокрутки між \"немає\", \"режимом фокуса\", \"режимом перегляду\" чи одночасно"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:690
+#: addon\globalPlugins\brailleEssentials\__init__.py:694
 msgid "Turn NVDA speech on or off (same as the built-in speech toggle)"
 msgstr "Увімкнути або вимкнути мовлення NVDA (так само, як вбудований перемикач мовлення)"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:694
+#: addon\globalPlugins\brailleEssentials\__init__.py:698
 msgid "Speech off"
 msgstr "Мовлення вимкнено"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:697
+#: addon\globalPlugins\brailleEssentials\__init__.py:701
 msgid "Speech on"
 msgstr "Мовлення увімкнено"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:701
+#: addon\globalPlugins\brailleEssentials\__init__.py:705
 msgid "Read extra details for the review cursor (name, description, value; for example a link URL)"
 msgstr "Прочитати додаткові відомості про переглядовий курсор (ім’я, опис, значення; наприклад, URL-адреса посилання)"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:715
+#: addon\globalPlugins\brailleEssentials\__init__.py:719
 msgid "No extra info for this element"
 msgstr "Для цього елемента немає додаткової інформації"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:721
+#: addon\globalPlugins\brailleEssentials\__init__.py:725
 msgid "Open a browseable list of dot patterns for the current Liblouis input table"
 msgstr "Відкрити доступний для огляду  список крапкових шаблонів для поточної таблиці введення Liblouis"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:725
+#: addon\globalPlugins\brailleEssentials\__init__.py:729
 msgid " Input table"
 msgstr " Таблиця введення"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:725
+#: addon\globalPlugins\brailleEssentials\__init__.py:729
 msgid "Output table"
 msgstr "Таблиця виведення"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:731
+#: addon\globalPlugins\brailleEssentials\__init__.py:736
 #, python-format
 msgid "Table overview (%s)"
 msgstr "Огляд таблиці (%s)"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:735
+#: addon\globalPlugins\brailleEssentials\__init__.py:741
 msgid "Translate the selection to Unicode braille and show it in a browseable window"
 msgstr "Перетворити виділений текст в unicode braille і показати його в повідомленні, доступному для перегляду"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:742
-#: addon\globalPlugins\brailleEssentials\__init__.py:758
-#: addon\globalPlugins\brailleEssentials\__init__.py:771
+#: addon\globalPlugins\brailleEssentials\__init__.py:748
+#: addon\globalPlugins\brailleEssentials\__init__.py:764
+#: addon\globalPlugins\brailleEssentials\__init__.py:777
 msgid "No text selection"
 msgstr "Немає виділення тексту"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:744
+#: addon\globalPlugins\brailleEssentials\__init__.py:750
 msgid "Unicode Braille conversion"
 msgstr "Перетворення в Unicode Braille"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:749
+#: addon\globalPlugins\brailleEssentials\__init__.py:755
 msgid "Translate the selection to dot numbers (cell descriptions) and show them in a browseable window"
 msgstr "Перетворити виділений текст в описі брайлівських комірок і показати його в повідомленні, доступному для перегляду"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:760
+#: addon\globalPlugins\brailleEssentials\__init__.py:766
 msgid "Braille Unicode to cell descriptions"
 msgstr "Braille Unicode для опису комірок"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:764
+#: addon\globalPlugins\brailleEssentials\__init__.py:770
 msgid "Convert selected dot-number text (for example 125-24-0) to Unicode braille cells"
 msgstr "Перетворити вибраний текст з цифрами-крапками (наприклад, 125-24-0) на клітинки Брайля Unicode"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:774
+#: addon\globalPlugins\brailleEssentials\__init__.py:780
 msgid "Cell descriptions to braille Unicode"
 msgstr "Опис брайлівських комірок у braille Unicode"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:779
+#: addon\globalPlugins\brailleEssentials\__init__.py:785
 msgid "Turn advanced braille input mode on or off (HUC or numeric character codes and abbreviation expansions)"
 msgstr "Увімкнути або вимкнути розширений режим введення шрифтом Брайля (HUC або цифрові коди символів і розширення абревіатур)"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:791
+#: addon\globalPlugins\brailleEssentials\__init__.py:797
 msgid "Turn punctuation or symbol names in braille for undefined characters on or off"
 msgstr "Увімкнути або вимкнути перетворення назв розділових знаків або символів у шрифт Брайля для невідомих символів"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:799
+#: addon\globalPlugins\brailleEssentials\__init__.py:805
 msgid "Punctuation or symbol names for undefined characters in braille on"
 msgstr "Розділові знаки або назви символів для невизначених символів шрифтом Брайля увімкнено"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:801
+#: addon\globalPlugins\brailleEssentials\__init__.py:807
 msgid "Punctuation or symbol names for undefined characters in braille off"
 msgstr "Розділові знаки або назви символів для невизначених символів шрифтом Брайля вимкнено"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:806
+#: addon\globalPlugins\brailleEssentials\__init__.py:812
 msgid "Report how far the caret has moved through the text under the braille cursor (percentage and character count)"
 msgstr "Повідомляє, на скільки курсор перемістився по тексту під брайлівським курсором (у відсотках та за кількістю символів)"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:815
+#: addon\globalPlugins\brailleEssentials\__init__.py:821
 msgid "No text"
 msgstr "Немає тексту"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:819
+#: addon\globalPlugins\brailleEssentials\__init__.py:825
 msgid "Show the current time and date on the braille display, updating every second. Press again to return to normal braille."
 msgstr "Показувати поточний час і дату на дисплеї Брайля, оновлюючи кожну секунду. Натисніть знову, щоб повернутися до звичайного шрифту Брайля."
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:849
+#: addon\globalPlugins\brailleEssentials\__init__.py:858
 msgid "Turn Braille Essentials automatic braille scrolling on or off"
 msgstr ""
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:854
-#: addon\globalPlugins\brailleEssentials\__init__.py:965
+#: addon\globalPlugins\brailleEssentials\__init__.py:863
 #: addon\globalPlugins\brailleEssentials\__init__.py:974
+#: addon\globalPlugins\brailleEssentials\__init__.py:983
 msgid "Autoscroll feature unavailable (patch not applied)"
 msgstr "Функція автопрокручування недоступна (патч не застосовано)"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:856
+#: addon\globalPlugins\brailleEssentials\__init__.py:865
 msgid "Press the system volume up key and report the new level in braille or speech"
 msgstr "Натиснути системну клавішу збільшення гучності та повідомити про новий рівень шрифтом Брайля або мовленням"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:861
+#: addon\globalPlugins\brailleEssentials\__init__.py:870
 msgid "Press the system volume down key and report the new level in braille or speech"
 msgstr "Натиснути системну клавішу зменшення гучності та повідомити про новий рівень шрифтом Брайля або мовленням"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:866
+#: addon\globalPlugins\brailleEssentials\__init__.py:875
 msgid "Press the system mute key and report the new mute or volume state"
 msgstr "Натиснути клавішу вимкнення звуку системи та повідомити про новий стан вимкнення звуку або гучності"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:878
+#: addon\globalPlugins\brailleEssentials\__init__.py:887
 msgid "Show a browseable summary of braille profile gestures and add-on keyboard shortcuts"
 msgstr "Показати доступний для перегляду список жестів Брайля профілю та додаткових комбінацій клавіш"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:944
+#: addon\globalPlugins\brailleEssentials\__init__.py:953
 msgid "Run a quick-launch item (application, file, or URL) configured in Braille Essentials settings"
 msgstr ""
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:959
+#: addon\globalPlugins\brailleEssentials\__init__.py:968
 msgid "No such file or directory"
 msgstr "Немає такого файлу або каталогу"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:962
+#: addon\globalPlugins\brailleEssentials\__init__.py:971
 msgid "Increase the delay before the braille display auto-scrolls to the next chunk"
 msgstr "Збільшити затримку перед автоматичним прокручуванням брайлівського дисплея до наступного блоку"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:971
+#: addon\globalPlugins\brailleEssentials\__init__.py:980
 msgid "Decrease the delay before the braille display auto-scrolls to the next chunk"
 msgstr "Зменшити затримку перед автоматичним прокручуванням брайлівського дисплея до наступного блоку"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:982
+#: addon\globalPlugins\brailleEssentials\__init__.py:991
 msgid "Switch to the next Liblouis input table from your Braille Essentials list (including automatic selection)"
 msgstr ""
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:991
-#: addon\globalPlugins\brailleEssentials\__init__.py:1019
+#: addon\globalPlugins\brailleEssentials\__init__.py:1000
+#: addon\globalPlugins\brailleEssentials\__init__.py:1028
 msgid "NVDA 2017.3 or later is required to use this feature"
 msgstr "Для використання цієї функції потрібна NVDA 2017.3 або пізніша"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:995
-#: addon\globalPlugins\brailleEssentials\__init__.py:1023
+#: addon\globalPlugins\brailleEssentials\__init__.py:1004
+#: addon\globalPlugins\brailleEssentials\__init__.py:1032
 msgid "You must choose at least two tables for this feature. Please fill in the settings"
 msgstr "Для цієї функції ви повинні обрати щонайменше дві таблиці. Будь ласка, зробіть це в налаштуваннях"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1006
+#: addon\globalPlugins\brailleEssentials\__init__.py:1015
 #, python-format
 msgid "Input: %s"
 msgstr "Введення: %s"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1010
+#: addon\globalPlugins\brailleEssentials\__init__.py:1019
 msgid "Switch to the next Liblouis output table from your Braille Essentials list (including automatic selection)"
 msgstr ""
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1034
+#: addon\globalPlugins\brailleEssentials\__init__.py:1043
 #, python-format
 msgid "Output: %s"
 msgstr "Виведення: %s"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1037
+#: addon\globalPlugins\brailleEssentials\__init__.py:1046
 msgid "Announce the active Liblouis input and output table names in speech and braille"
 msgstr "Оголошувати назви активних таблиць виведення та введення Liblouis мовленням та шрифтом Брайля"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1044
+#: addon\globalPlugins\brailleEssentials\__init__.py:1053
 #, python-brace-format
 msgid "I⣿O:{I}"
 msgstr "I⣿O:{I}"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1045
+#: addon\globalPlugins\brailleEssentials\__init__.py:1054
 #, python-brace-format
 msgid "Input and output: {I}."
 msgstr "Введення і виведення: {I}"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1047
+#: addon\globalPlugins\brailleEssentials\__init__.py:1056
 #, python-brace-format
 msgid "I:{I} ⣿ O: {O}"
 msgstr "I:{I} ⣿ O: {O}"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1048
+#: addon\globalPlugins\brailleEssentials\__init__.py:1057
 #, python-brace-format
 msgid "Input: {I}; Output: {O}"
 msgstr "Введення: {I}; виведення: {O}"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1053
+#: addon\globalPlugins\brailleEssentials\__init__.py:1062
 msgid "Show character information for the review cursor: Unicode name, speech symbol, braille cells, and numeric bases"
 msgstr "Показувати інформацію про символи для переглядового курсору: ім’я Unicode, мовний символ, клітинки Брайля та бази чисел"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1060
+#: addon\globalPlugins\brailleEssentials\__init__.py:1069
 msgid "Show the speech symbol string for the current selection in braille"
 msgstr "Показати рядок символів мовлення для поточної області вибору шрифтом Брайля"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1070
+#: addon\globalPlugins\brailleEssentials\__init__.py:1079
 msgid "Repeat the last keyboard shortcut you issued from the braille display"
 msgstr "Повторює останню комбінацію, виконану на брайлівському дисплеї"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1073
+#: addon\globalPlugins\brailleEssentials\__init__.py:1082
 msgid "No shortcut performed from a braille display"
 msgstr "Немає комбінацій для виконання на брайлівському дисплеї"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1094
+#: addon\globalPlugins\brailleEssentials\__init__.py:1103
 msgid "Braille Essentials reloaded"
 msgstr ""
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1098
+#: addon\globalPlugins\brailleEssentials\__init__.py:1107
 msgid "Reload Braille Essentials settings, gesture maps, and patches without restarting NVDA"
 msgstr ""
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1105
+#: addon\globalPlugins\brailleEssentials\__init__.py:1114
 msgid "Reload the primary braille display chosen in Braille Essentials or NVDA (when that slot follows NVDA's active display)"
 msgstr ""
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1113
+#: addon\globalPlugins\brailleEssentials\__init__.py:1122
 msgid "Reload the second favorite braille display chosen in Braille Essentials settings"
 msgstr ""
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1124
+#: addon\globalPlugins\brailleEssentials\__init__.py:1133
 msgid "No braille display specified. No reload to do"
 msgstr "Брайлівський дисплей не вказано. Перезавантажувати не потрібно"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1147
+#: addon\globalPlugins\brailleEssentials\__init__.py:1156
 msgid "WIN"
 msgstr "WIN"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1147
+#: addon\globalPlugins\brailleEssentials\__init__.py:1156
 msgid "CTRL"
 msgstr "CTRL"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1147
+#: addon\globalPlugins\brailleEssentials\__init__.py:1156
 msgid "SHIFT"
 msgstr "shift"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1147
+#: addon\globalPlugins\brailleEssentials\__init__.py:1156
 msgid "ALT"
 msgstr "ALT"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1274
+#: addon\globalPlugins\brailleEssentials\__init__.py:1283
 msgid "Cancel staged modifier keys from the braille keyboard before emulating a PC shortcut"
 msgstr "Скасувати натискання клавіш-модифікаторів на брайлівській клавіатурі перед імітацією комбінації клавіш ПК"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1281
+#: addon\globalPlugins\brailleEssentials\__init__.py:1290
 msgid "Keyboard shortcut cancelled"
 msgstr "Комбінацію клавіш скасовано"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1284
+#: addon\globalPlugins\brailleEssentials\__init__.py:1293
 msgid "Scroll the braille display backward by one full width"
 msgstr "Прокрутити дисплей Брайля назад на всю ширину"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1288
+#: addon\globalPlugins\brailleEssentials\__init__.py:1297
 msgid "Scroll the braille display forward by one full width"
 msgstr "Прокрутити дисплей Брайля вперед на всю ширину"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1325
+#: addon\globalPlugins\brailleEssentials\__init__.py:1334
 msgid "Developer: toggle verbose logging of text info at the review cursor"
 msgstr "Розробницьке: увімкнути детальне журналювання текстової інформації під курсором огляду"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1334
+#: addon\globalPlugins\brailleEssentials\__init__.py:1343
 msgid "Save the current braille window as a snapshot; press twice quickly to clear the saved snapshot"
 msgstr "Зберегти поточне вікно шрифту Брайля як знімок; двічі швидко натисніть, щоб видалити збережений знімок"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1342
+#: addon\globalPlugins\brailleEssentials\__init__.py:1351
 msgid "Current braille view saved"
 msgstr "Поточний брайлівський перегляд збережено"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1345
+#: addon\globalPlugins\brailleEssentials\__init__.py:1354
 msgid "Buffer cleaned"
 msgstr "Буфер очищено"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1348
+#: addon\globalPlugins\brailleEssentials\__init__.py:1357
 msgid "Show the saved braille snapshot briefly; press twice for a browseable copy"
 msgstr "Показати збережений знімок Брайля коротко; натисніть двічі, щоб отримати копію для перегляду"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1356
+#: addon\globalPlugins\brailleEssentials\__init__.py:1365
 msgid "View saved"
 msgstr "Переглянути збережене"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1358
+#: addon\globalPlugins\brailleEssentials\__init__.py:1367
 msgid "Buffer empty"
 msgstr "Буфер порожній"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1388
+#: addon\globalPlugins\brailleEssentials\__init__.py:1397
 msgid "Pause or resume the braille display cell test pattern"
 msgstr "Призупинити або відновити тестовий шаблон комірки брайлівського дисплея"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1395
+#: addon\globalPlugins\brailleEssentials\__init__.py:1404
 msgid "Pause"
 msgstr "Пауза"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1395
+#: addon\globalPlugins\brailleEssentials\__init__.py:1404
 msgid "Resume"
 msgstr "Відновити"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1436
+#: addon\globalPlugins\brailleEssentials\__init__.py:1445
 msgid "Slow down the braille cell test pattern (longer interval between updates)"
 msgstr "Зменшити швидкість тестового шаблону брайлівської комірки (збільшити інтервал між оновленнями)"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1443
+#: addon\globalPlugins\brailleEssentials\__init__.py:1452
 msgid "Speed up the braille cell test pattern (shorter interval between updates)"
 msgstr "Збільшити швидкість тестового шаблону брайлівської комірки (зменшити інтервал між оновленнями)"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1452
+#: addon\globalPlugins\brailleEssentials\__init__.py:1461
 msgid "Switch to the previous braille cell test pattern"
 msgstr "Перейти до попереднього тестового шаблону комірки Брайля"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1460
-#: addon\globalPlugins\brailleEssentials\__init__.py:1470
+#: addon\globalPlugins\brailleEssentials\__init__.py:1469
+#: addon\globalPlugins\brailleEssentials\__init__.py:1479
 #, python-format
 msgid "Auto test type %d"
 msgstr "Тип тестування автопрокрутки %d"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1462
+#: addon\globalPlugins\brailleEssentials\__init__.py:1471
 msgid "Switch to the next braille cell test pattern"
 msgstr "Перейти до наступного тестового шаблону комірки Брайля"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1474
+#: addon\globalPlugins\brailleEssentials\__init__.py:1483
 msgid "Start or stop the built-in braille cell test pattern (for display alignment and timing)"
 msgstr "Запустити або зупинити тестовий шаблон вбудованої брайлівської комірки (для вирівнювання та синхронізації дисплея)"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1487
+#: addon\globalPlugins\brailleEssentials\__init__.py:1496
 msgid "Auto test stopped"
 msgstr "Тестування автопрокрутки зупинено"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1500
+#: addon\globalPlugins\brailleEssentials\__init__.py:1507
 msgid "Auto test started. Use the up and down arrow keys to change speed. Use the left and right arrow keys to change test type. Use space key to pause or resume the test. Use escape key to quit"
 msgstr "Тестування автопрокрутки розпочато. Використовуйте стрілки вгору і вниз  для зміни швидкості. Використовуйте стрілки вліво і вправо для зміни типу тестування. Використовуйте пробіл для паузи чи відновлення тестування. Використовуйте escape для виходу"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1509
+#: addon\globalPlugins\brailleEssentials\__init__.py:1516
 msgid "Open the dialog to add or inspect a Liblouis dictionary entry for the character under the review cursor"
 msgstr "Відкрити діалог, щоб додати або переглянути запис у словнику Liblouis для символу, на якому знаходиться курсор"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1517
+#: addon\globalPlugins\brailleEssentials\__init__.py:1524
 msgid "Add dictionary entry or see a dictionary"
 msgstr "Додати словникову статтю або переглянути словник"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1522
+#: addon\globalPlugins\brailleEssentials\__init__.py:1529
 msgid "Skip or include blank lines when scrolling long text in braille"
 msgstr "Пропускати чи враховувати порожні рядки під час прокручування довгого тексту шрифтом Брайля"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1528
+#: addon\globalPlugins\brailleEssentials\__init__.py:1535
 msgid "Skip blank lines enabled"
 msgstr "Пропуск порожніх рядків увімкнено"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1530
+#: addon\globalPlugins\brailleEssentials\__init__.py:1537
 msgid "Skip blank lines disabled"
 msgstr "Пропуск порожніх рядків вимкнено"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1534
+#: addon\globalPlugins\brailleEssentials\__init__.py:1541
 msgid "Cycle how routing keys behave in edit fields (normal, emulate arrows with beeps, or emulate arrows silently)"
 msgstr "Виберіть режим роботи клавіш навігації в полях редагування (звичайний, імітація стрілок із звуковим сигналом або імітація стрілок без звуку)"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1554
+#: addon\globalPlugins\brailleEssentials\__init__.py:1561
 msgid "Turn Braille Essentials speech history mode on or off (captures speech for later review)"
 msgstr ""
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1560
+#: addon\globalPlugins\brailleEssentials\__init__.py:1567
 msgid "Speech History Mode disabled"
 msgstr "Режим історії мовлення вимкнено"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1562
+#: addon\globalPlugins\brailleEssentials\__init__.py:1569
 msgid "Speech History Mode enabled"
 msgstr "Режим історії мовлення увімкнено"
+
+#: addon\appModules\brailleExtenderExcel.py:77
+msgid "Row range on one line"
+msgstr ""
+
+#: addon\appModules\brailleExtenderExcel.py:78
+msgid "Column range on one line"
+msgstr ""
+
+#. Translators: Default short label at the start of an Excel row-range braille line, before the cell address.
+#. English example on the display: "row A2: sale |  | 99". Keep brief. Do not add spaces at the end.
+#: addon\appModules\brailleExtenderExcel.py:83
+msgctxt "excelBrailleAxis"
+msgid "row"
+msgstr ""
+
+#. Translators: Default short label at the start of an Excel column-range braille line, before the cell address.
+#. English example on the display: "col A2: sale |  | 99". Keep brief. Do not add spaces at the end.
+#: addon\appModules\brailleExtenderExcel.py:86
+msgctxt "excelBrailleAxis"
+msgid "col"
+msgstr ""
+
+#: addon\appModules\brailleExtenderExcel.py:1225
+msgid "Cycle Excel braille view (focused cell, row range, or column range on one line)"
+msgstr ""
+
+#: addon\appModules\brailleExtenderExcel.py:1231
+msgid "Report cell formulas in braille is disabled. Enable it in Braille Essentials settings, Excel."
+msgstr ""
 
 #. Add-on description
 #. Translators: Long description to be shown for this add-on on add-on information from add-on store
@@ -2424,9 +2514,9 @@ msgstr ""
 #. Brief changelog for this version
 #. Translators: what's new content for the add-on version to be shown in the add-on store
 #: buildVars.py:58
-msgid "* Updated the add-on code to Braille Extender commit 550d652c (2026-06-16), introducing enhanced braille support for Microsoft Excel and localization updates.\n"
-"* NVDA will honor custom braille routing commands from apps, specifically Punktum (issue 2).\n\n"
-"Changes from BrailleExtender:\n\n"
-"* No statement on add-on store based update process in add-on settings/general category (Braille Essentials does not have a self-updating mechanism)."
+msgid "* Updated the add-on code to BrailleExtender commit 0434fa63 (2026-10-23):\n"
+"\t* Made the code compatible with reorganized braille support subsystem implemented in NVDA 2026.3.\n"
+"\t* Dropped border color and style settings from document presentation settings.\n"
+"\t* Added a setting to mute NVDA sounds when spech is muted."
 msgstr ""
 
