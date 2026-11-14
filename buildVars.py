@@ -55,10 +55,9 @@ For some braille displays, it extends the braille display commands to provide:
 	addon_version="26.11.2",
 	# Brief changelog for this version
 	# Translators: what's new content for the add-on version to be shown in the add-on store
-	addon_changelog=_("""* Updated the add-on code to BrailleExtender commit 0434fa63 (2026-10-23):
-	* Made the code compatible with reorganized braille support subsystem implemented in NVDA 2026.3.
-	* Dropped border color and style settings from document presentation settings.
-	* Added a setting to mute NVDA sounds when spech is muted."""),
+	addon_changelog=_("""* Updated the add-on code to BrailleExtender commit 2feb287d (2026-11-08):
+	* NVDA will no longer enter browse mode in Microsoft Word automaticlaly if using braille rotor feature.
+* Skip rotor focus-context probing when no braille display is connected, avoiding long UIA scans on large documents (contributed by serrebidev)."""),
 	# Author(s)
 	addon_author="Joseph Lee <joseph.lee22590@gmail.com> (originally André-Abush Clause <dev@andreabc.net> and other contributors)",
 	# URL for the add-on documentation support

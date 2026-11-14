@@ -4,7 +4,7 @@ This document lists release changelogs for Braille Essentials add-on.
 
 Note: forked from BrailleExtender in May 2026.
 
-## Unreleased
+## Version 26.11.3
 
 * Updated the add-on code to BrailleExtender commit 2feb287d (2026-11-08):
 	* NVDA will no longer enter browse mode in Microsoft Word automaticlaly if using braille rotor feature.
@@ -15,7 +15,7 @@ Note: forked from BrailleExtender in May 2026.
 * Updated the add-on code to BrailleExtender commit 0434fa63 (2026-10-23):
 	* Made the code compatible with reorganized braille support subsystem implemented in NVDA 2026.3.
 	* Dropped border color and style settings from document presentation settings.
-	* Added a setting to mute NVDA sounds when spech is muted.
+	* Added a setting to mute NVDA sounds when speech is muted.
 
 ## Version 26.10
 
