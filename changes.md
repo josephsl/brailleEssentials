@@ -6,6 +6,8 @@ Note: forked from BrailleExtender in May 2026.
 
 ## Unreleased
 
+* Updated the add-on code to BrailleExtender commit 2feb287d (2026-11-08):
+	* NVDA will no longer enter browse mode in Microsoft Word automaticlaly if using braille rotor feature.
 * Skip rotor focus-context probing when no braille display is connected, avoiding long UIA scans on large documents (contributed by serrebidev).
 
 ## Version 26.11
