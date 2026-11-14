@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nvdaaddons\n"
 "Report-Msgid-Bugs-To: 'nvda-translations@groups.io'\n"
-"POT-Creation-Date: 2026-11-09 04:07+0000\n"
-"PO-Revision-Date: 2026-11-09 04:20\n"
+"POT-Creation-Date: 2026-11-14 07:09+0000\n"
+"PO-Revision-Date: 2026-11-14 07:10\n"
 "Last-Translator: \n"
 "Language-Team: Kurmanji (Kurdish)\n"
 "Language: kmr_TR\n"
@@ -1076,7 +1076,7 @@ msgstr "Bicîhanîna taybetmendiyê di pêşveçûnê de ye. Spas ji bo sebira w
 #: addon\globalPlugins\brailleEssentials\tabledictionaries.py:476
 #: addon\globalPlugins\brailleEssentials\tabledictionaries.py:485
 #: addon\globalPlugins\brailleEssentials\tabledictionaries.py:494
-#: addon\globalPlugins\brailleEssentials\__init__.py:1608 buildVars.py:21
+#: addon\globalPlugins\brailleEssentials\__init__.py:1611 buildVars.py:21
 msgid "Braille Essentials"
 msgstr "Pêdiviyên Braille"
 
@@ -1559,18 +1559,18 @@ msgid "&Direction"
 msgstr "&Ber"
 
 #: addon\globalPlugins\brailleEssentials\tabledictionaries.py:434
-#: addon\globalPlugins\brailleEssentials\__init__.py:346
+#: addon\globalPlugins\brailleEssentials\__init__.py:349
 msgid "Global dictionary"
 msgstr "Ferhenga gerdûnî"
 
 #: addon\globalPlugins\brailleEssentials\tabledictionaries.py:435
-#: addon\globalPlugins\brailleEssentials\__init__.py:352
+#: addon\globalPlugins\brailleEssentials\__init__.py:355
 #, python-brace-format
 msgid "Table dictionary ({})"
 msgstr "Ferhenga tabloyan ({})"
 
 #: addon\globalPlugins\brailleEssentials\tabledictionaries.py:436
-#: addon\globalPlugins\brailleEssentials\__init__.py:357
+#: addon\globalPlugins\brailleEssentials\__init__.py:360
 msgid "Temporary dictionary"
 msgstr "Ferhenga demekî"
 
@@ -1849,604 +1849,604 @@ msgstr "Li ser klavyeya sîstemê emulasyon bike: %s"
 msgid "If pressed twice, presents the information in browse mode"
 msgstr "Ger du caran were pêlkirin, agahî di moda gerokê de nîşan dide"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:264
+#: addon\globalPlugins\brailleEssentials\__init__.py:267
 msgid "&Gestures for this display…"
 msgstr "&Jestên ji bo vê dîmenderê…"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:265
+#: addon\globalPlugins\brailleEssentials\__init__.py:268
 msgid "Shows a browseable summary of braille profile bindings and add-on keyboard shortcuts."
 msgstr "Kurteya girêdanên profîla braille û kurtebirên klavyeyê yên lêzêdekirî nîşan dide ku dikare were gerandin."
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:270
+#: addon\globalPlugins\brailleEssentials\__init__.py:273
 msgid "&Settings..."
 msgstr "&Mîheng..."
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:270
+#: addon\globalPlugins\brailleEssentials\__init__.py:273
 msgid "Opens the addons' settings."
 msgstr "Mîhengên pêvekan vedike."
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:276
+#: addon\globalPlugins\brailleEssentials\__init__.py:279
 msgid "Table &dictionaries"
 msgstr "Tablo û Ferheng"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:276
+#: addon\globalPlugins\brailleEssentials\__init__.py:279
 msgid "'Braille dictionaries' menu"
 msgstr "Menûya 'Ferhengên Braille'"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:280
+#: addon\globalPlugins\brailleEssentials\__init__.py:283
 msgid "&Global dictionary"
 msgstr "Ferhenga &General"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:281
+#: addon\globalPlugins\brailleEssentials\__init__.py:284
 msgid "A dialog where you can set global dictionary by adding dictionary entries to the list."
 msgstr "Paceyek diyalogê ku hûn dikarin ferhengek gerdûnî bi zêdekirina tomarên ferhengê li navnîşê saz bikin."
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:286
+#: addon\globalPlugins\brailleEssentials\__init__.py:289
 msgid "&Table dictionary"
 msgstr "Ferhenga &Tabloyê"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:288
+#: addon\globalPlugins\brailleEssentials\__init__.py:291
 msgid "A dialog where you can set table-specific dictionary by adding dictionary entries to the list."
 msgstr "Diyalogek ku hûn dikarin ferhenga taybetî ya tabloyê bi zêdekirina tomarên ferhengê li navnîşê saz bikin."
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:294
+#: addon\globalPlugins\brailleEssentials\__init__.py:297
 msgid "Te&mporary dictionary"
 msgstr "Ferhenga Demkî"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:295
+#: addon\globalPlugins\brailleEssentials\__init__.py:298
 msgid "A dialog where you can set temporary dictionary by adding dictionary entries to the list."
 msgstr "Paceyek diyalogê ku hûn dikarin bi zêdekirina tomarên ferhengê li navnîşê ferhengek demkî saz bikin."
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:301
+#: addon\globalPlugins\brailleEssentials\__init__.py:304
 msgid "&Custom braille tables..."
 msgstr "&Tabloyên Braille yên xwerû..."
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:302
+#: addon\globalPlugins\brailleEssentials\__init__.py:305
 msgid "Add, remove, and edit your own Liblouis braille tables (NVDA 2024.3+)."
 msgstr "Tabloyên braille yên Liblouis ên xwe zêde bikin, jê bibin û biguherînin (NVDA 2024.3+)."
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:311
+#: addon\globalPlugins\brailleEssentials\__init__.py:314
 msgid "Advanced &input mode dictionary..."
 msgstr "Ferhenga moda &ketinê ya pêşketî..."
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:311
+#: addon\globalPlugins\brailleEssentials\__init__.py:314
 msgid "Advanced input mode configuration"
 msgstr "Mîhengkirina moda têketina pêşketî"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:317
+#: addon\globalPlugins\brailleEssentials\__init__.py:320
 msgid "&Quick launches"
 msgstr "&Destpêkirinên Bilez"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:317
+#: addon\globalPlugins\brailleEssentials\__init__.py:320
 msgid "Quick launches configuration"
 msgstr "Mîhengkirina destpêkirina bilez"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:323
+#: addon\globalPlugins\brailleEssentials\__init__.py:326
 msgid "Braille input table &overview"
 msgstr "Tabloya têketina Braille û pêşdîtin"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:323
+#: addon\globalPlugins\brailleEssentials\__init__.py:326
 msgid "Overview of the current input braille table"
 msgstr "Pêşdîtinek li ser tabloya braille ya têketina heyî"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:326
+#: addon\globalPlugins\brailleEssentials\__init__.py:329
 msgid "&Reload add-on"
 msgstr "&Pêveka ji nû ve bar bike"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:326
+#: addon\globalPlugins\brailleEssentials\__init__.py:329
 msgid "Reload this add-on."
 msgstr "Vê pêvekê ji nû ve bar bike."
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:329
+#: addon\globalPlugins\brailleEssentials\__init__.py:332
 msgid "&Braille Essentials"
 msgstr "Pêdiviyên bingehîn ên Braille"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:465
+#: addon\globalPlugins\brailleEssentials\__init__.py:468
 msgid "Select the previous rotor category (links, headings, review, and so on)"
 msgstr "Kategoriya rotorê ya berê hilbijêre (lînk, sernav, nirxandin, û hwd.)"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:471
+#: addon\globalPlugins\brailleEssentials\__init__.py:474
 msgid "Select the next rotor category"
 msgstr "Kategoriya rotorê ya din hilbijêre"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:480
+#: addon\globalPlugins\brailleEssentials\__init__.py:483
 msgid "Character"
 msgstr "Karakter"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:480
+#: addon\globalPlugins\brailleEssentials\__init__.py:483
 msgid "Word"
 msgstr "Bêje"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:480
+#: addon\globalPlugins\brailleEssentials\__init__.py:483
 msgid "Line"
 msgstr "Rêz"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:480
+#: addon\globalPlugins\brailleEssentials\__init__.py:483
 msgid "Paragraph"
 msgstr "Madde"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:480
+#: addon\globalPlugins\brailleEssentials\__init__.py:483
 msgid "Page"
 msgstr "Rûpel"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:480
+#: addon\globalPlugins\brailleEssentials\__init__.py:483
 msgid "Document"
 msgstr "Pelge"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:506
 #: addon\globalPlugins\brailleEssentials\__init__.py:509
-#: addon\globalPlugins\brailleEssentials\__init__.py:517
+#: addon\globalPlugins\brailleEssentials\__init__.py:512
+#: addon\globalPlugins\brailleEssentials\__init__.py:520
 msgid "Not available here"
 msgstr "Li vir peyda nabe"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:521
+#: addon\globalPlugins\brailleEssentials\__init__.py:524
 msgid "Rotor: move forward (next character, link, review line, and so on, depending on the rotor)"
 msgstr "Rotor: ber bi pêş ve biçe (karaktera din, girêdan, xeta nirxandinê, û hwd., li gorî rotorê ve girêdayî ye)"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:545
+#: addon\globalPlugins\brailleEssentials\__init__.py:548
 msgid "Rotor: move backward (previous character, link, review line, and so on)"
 msgstr "Rotor: paşve bizivire (karakterê berê, girêdan, xeta nirxandinê, û hwd.)"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:568
+#: addon\globalPlugins\brailleEssentials\__init__.py:571
 msgid "Rotor: next step (next line, next object group, larger selection unit, depending on the rotor)"
 msgstr "Rotor: gava din (rêza din, koma tiştên din, yekîneya hilbijartinê ya mezintir, li gorî rotorê)"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:584
+#: addon\globalPlugins\brailleEssentials\__init__.py:587
 msgid "Rotor: previous step (previous line, object group, or selection unit)"
 msgstr "Rotor: gava berê (xeta berê, koma tiştan, an yekîneya hilbijartinê)"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:598
+#: addon\globalPlugins\brailleEssentials\__init__.py:601
 msgid "Rotor: activate the item (press Enter or the rotor’s default action)"
 msgstr "Rotor: tiştê çalak bike (Enter an çalakiya xwerû ya rotorê bikirtîne)"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:604
+#: addon\globalPlugins\brailleEssentials\__init__.py:607
 msgid "Lock or unlock the braille keyboard so dots are not translated as you type"
 msgstr "Klavyeya braille kilît bike an veke da ku xal dema nivîsandinê neyên wergerandin"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:608
+#: addon\globalPlugins\brailleEssentials\__init__.py:611
 msgid "Braille keyboard locked"
 msgstr "Klavyeya Braille kilîtkirî ye"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:610
+#: addon\globalPlugins\brailleEssentials\__init__.py:613
 msgid "Braille keyboard unlocked"
 msgstr "Klavyeya Braille vekirî bû"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:612
+#: addon\globalPlugins\brailleEssentials\__init__.py:615
 msgid "Turn Braille Essentials one-handed braille input on or off"
 msgstr "Têketina braille ya yek-destî ya Braille Essentials vekin an jî vemirînin"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:618
+#: addon\globalPlugins\brailleEssentials\__init__.py:621
 msgid "One-handed mode enabled"
 msgstr "Moda yek-destî çalak bû"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:620
+#: addon\globalPlugins\brailleEssentials\__init__.py:623
 msgid "One handed mode disabled"
 msgstr "Moda yek destî neçalak e"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:622
+#: addon\globalPlugins\brailleEssentials\__init__.py:625
 msgid "Hide or show dots 7 and 8 in contracted braille output"
 msgstr "Xalên 7 û 8 di derana braille ya kurtkirî de veşêre an nîşan bide"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:626
+#: addon\globalPlugins\brailleEssentials\__init__.py:629
 msgid "Dots 7 and 8 disabled"
 msgstr "Xalên 7 û 8 neçalak in"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:628
+#: addon\globalPlugins\brailleEssentials\__init__.py:631
 msgid "Dots 7 and 8 enabled"
 msgstr "Xalên 7 û 8 çalak in"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:632
+#: addon\globalPlugins\brailleEssentials\__init__.py:635
 msgid "Switch BRF output mode (braille file / literary layout handling)"
 msgstr "Moda derana BRF biguherîne (pelê braille / birêvebirina nexşeya edebî)"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:639
+#: addon\globalPlugins\brailleEssentials\__init__.py:642
 msgid "BRF mode enabled"
 msgstr "Moda BRF çalak bû"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:641
+#: addon\globalPlugins\brailleEssentials\__init__.py:644
 msgid "BRF mode disabled"
 msgstr "Moda BRF neçalak e"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:643
+#: addon\globalPlugins\brailleEssentials\__init__.py:646
 msgid "Lock or unlock modifier keys when entering text from the braille keyboard"
 msgstr "Dema ku hûn nivîsê ji klavyeya braille dinivîsin, bişkokên guherker kilît bikin an vekin"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:647
+#: addon\globalPlugins\brailleEssentials\__init__.py:650
 msgid "Modifier keys locked"
 msgstr "Bişkojkên Guherker kilîtkirî ne"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:649
+#: addon\globalPlugins\brailleEssentials\__init__.py:652
 msgid "Modifier keys unlocked"
 msgstr "Bişkojkên guherker vekirî ne"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:653
+#: addon\globalPlugins\brailleEssentials\__init__.py:656
 msgid "Turn reporting of font attributes in braille (bold, italic, underline, and so on) on or off"
 msgstr "Raporkirina taybetmendiyên tîpan di braille de (stûr, îtalîk, xêzkirî, û hwd.) vekin an jî vemirînin"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:662
+#: addon\globalPlugins\brailleEssentials\__init__.py:665
 msgid "Turn alignment indicators in braille (left, center, right, justified) on or off"
 msgstr "Nîşaneyên hevrêzkirinê di braille de (çep, navend, rast, rastkirî) vekin an jî vemirînin"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:669
+#: addon\globalPlugins\brailleEssentials\__init__.py:672
 msgid "Show only plain text in braille (strip most structure and attribute marks)"
 msgstr "Tenê nivîsa sade bi zimanê Braille nîşan bide (piraniya nîşanên avahî û taybetmendiyê jê bike)"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:675
+#: addon\globalPlugins\brailleEssentials\__init__.py:678
 msgid "Plain text mode enabled"
 msgstr "Moda nivîsa sade çalak bû"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:677
+#: addon\globalPlugins\brailleEssentials\__init__.py:680
 msgid "Plain text mode disabled"
 msgstr "Moda nivîsa sade neçalak e"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:682
+#: addon\globalPlugins\brailleEssentials\__init__.py:685
 msgid "Cycle how NVDA speaks the current line when you scroll braille (off, focus, review, or both)"
 msgstr "Dema ku hûn braille digerînin, NVDA çawa rêza heyî diaxive (vemirandin, fokuskirin, nirxandin, an herdu jî) bizivirîne"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:694
+#: addon\globalPlugins\brailleEssentials\__init__.py:697
 msgid "Turn NVDA speech on or off (same as the built-in speech toggle)"
 msgstr "Axaftina NVDA-yê veke an jî vemirîne (wek guhêrbarê axaftina çêkirî)"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:698
+#: addon\globalPlugins\brailleEssentials\__init__.py:701
 msgid "Speech off"
 msgstr "Axaftin qut bû"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:701
+#: addon\globalPlugins\brailleEssentials\__init__.py:704
 msgid "Speech on"
 msgstr "Axaftin li ser"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:705
+#: addon\globalPlugins\brailleEssentials\__init__.py:708
 msgid "Read extra details for the review cursor (name, description, value; for example a link URL)"
 msgstr "Agahiyên zêde ji bo nîşankera nirxandinê bixwînin (nav, ravekirin, nirx; mînak URL-ya girêdanê)"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:719
+#: addon\globalPlugins\brailleEssentials\__init__.py:722
 msgid "No extra info for this element"
 msgstr "Agahiyên zêde ji bo vê hêmanê tune ne"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:725
+#: addon\globalPlugins\brailleEssentials\__init__.py:728
 msgid "Open a browseable list of dot patterns for the current Liblouis input table"
 msgstr "Lîsteyek gerok a şablonên xalan ji bo tabloya têketina Liblouis a heyî veke"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:729
+#: addon\globalPlugins\brailleEssentials\__init__.py:732
 msgid " Input table"
 msgstr " Tabloya têketinê"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:729
+#: addon\globalPlugins\brailleEssentials\__init__.py:732
 msgid "Output table"
 msgstr "Tabloya derketinê"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:736
+#: addon\globalPlugins\brailleEssentials\__init__.py:739
 #, python-format
 msgid "Table overview (%s)"
 msgstr "Pêşdîtina tabloyê (%s)"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:741
+#: addon\globalPlugins\brailleEssentials\__init__.py:744
 msgid "Translate the selection to Unicode braille and show it in a browseable window"
 msgstr "Hilbijartinê wergerîne bo braille ya Unicode û wê di pencereyek gerok de nîşan bide"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:748
-#: addon\globalPlugins\brailleEssentials\__init__.py:764
-#: addon\globalPlugins\brailleEssentials\__init__.py:777
+#: addon\globalPlugins\brailleEssentials\__init__.py:751
+#: addon\globalPlugins\brailleEssentials\__init__.py:767
+#: addon\globalPlugins\brailleEssentials\__init__.py:780
 msgid "No text selection"
 msgstr "Hilbijartina nivîsê tune ye"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:750
+#: addon\globalPlugins\brailleEssentials\__init__.py:753
 msgid "Unicode Braille conversion"
 msgstr "Veguherîna Braille ya Unicode"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:755
+#: addon\globalPlugins\brailleEssentials\__init__.py:758
 msgid "Translate the selection to dot numbers (cell descriptions) and show them in a browseable window"
 msgstr "Hilbijartinê wergerîne hejmarên xalan (danasînên şaneyan) û wan di pencereyek gerok de nîşan bide"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:766
+#: addon\globalPlugins\brailleEssentials\__init__.py:769
 msgid "Braille Unicode to cell descriptions"
 msgstr "Danasînên Braille Unicode bo şaneyan"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:770
+#: addon\globalPlugins\brailleEssentials\__init__.py:773
 msgid "Convert selected dot-number text (for example 125-24-0) to Unicode braille cells"
 msgstr "Nivîsara xal-hejmar a bijartî (mînak 125-24-0) veguherîne şaneyên braille yên Unicode"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:780
+#: addon\globalPlugins\brailleEssentials\__init__.py:783
 msgid "Cell descriptions to braille Unicode"
 msgstr "Danasînên şaneyan bo Braille Unicode"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:785
+#: addon\globalPlugins\brailleEssentials\__init__.py:788
 msgid "Turn advanced braille input mode on or off (HUC or numeric character codes and abbreviation expansions)"
 msgstr "Moda têketina Braille ya pêşketî vekin an jî vemirînin (HUC an kodên tîpên hejmarî û berfirehkirinên kurtenivîsan)"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:797
+#: addon\globalPlugins\brailleEssentials\__init__.py:800
 msgid "Turn punctuation or symbol names in braille for undefined characters on or off"
 msgstr "Navên nîşanan an sembolan di Braille de ji bo tîpên nediyar vekin an jî vemirînin"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:805
+#: addon\globalPlugins\brailleEssentials\__init__.py:808
 msgid "Punctuation or symbol names for undefined characters in braille on"
 msgstr "Navên xalbendî an sembolan ji bo tîpên nediyar ên di Braille de li ser"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:807
+#: addon\globalPlugins\brailleEssentials\__init__.py:810
 msgid "Punctuation or symbol names for undefined characters in braille off"
 msgstr "Navên xalbendî an sembolan ji bo tîpên nediyar ên di Braille de girtî ne"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:812
+#: addon\globalPlugins\brailleEssentials\__init__.py:815
 msgid "Report how far the caret has moved through the text under the braille cursor (percentage and character count)"
 msgstr "Rapor bike ka nîşanker çiqas di nav nivîsa di bin nîşankera braille de çûye (rêje û jimara karakteran)"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:821
+#: addon\globalPlugins\brailleEssentials\__init__.py:824
 msgid "No text"
 msgstr "Nivîs tune ye"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:825
+#: addon\globalPlugins\brailleEssentials\__init__.py:828
 msgid "Show the current time and date on the braille display, updating every second. Press again to return to normal braille."
 msgstr "Dem û dîroka niha li ser ekrana braille nîşan bide, her saniyeyê nûve bibe. Ji bo vegera braille ya normal dîsa bikirtîne."
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:858
+#: addon\globalPlugins\brailleEssentials\__init__.py:861
 msgid "Turn Braille Essentials automatic braille scrolling on or off"
 msgstr "Vekirina an jî neçalakkirina geroka otomatîk a Braille Essentials"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:863
-#: addon\globalPlugins\brailleEssentials\__init__.py:974
-#: addon\globalPlugins\brailleEssentials\__init__.py:983
+#: addon\globalPlugins\brailleEssentials\__init__.py:866
+#: addon\globalPlugins\brailleEssentials\__init__.py:977
+#: addon\globalPlugins\brailleEssentials\__init__.py:986
 msgid "Autoscroll feature unavailable (patch not applied)"
 msgstr "Taybetiya geroka otomatîkî ne berdest e (patch nehatiye sepandin)"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:865
+#: addon\globalPlugins\brailleEssentials\__init__.py:868
 msgid "Press the system volume up key and report the new level in braille or speech"
 msgstr "Bişkoja bilindkirina deng a sîstemê bikirtînin û asta nû bi braille an axaftinê ragihînin"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:870
+#: addon\globalPlugins\brailleEssentials\__init__.py:873
 msgid "Press the system volume down key and report the new level in braille or speech"
 msgstr "Bişkoja kêmkirina deng a sîstemê bikirtînin û asta nû bi braille an axaftinê ragihînin"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:875
+#: addon\globalPlugins\brailleEssentials\__init__.py:878
 msgid "Press the system mute key and report the new mute or volume state"
 msgstr "Bişkoja bêdengkirina pergalê bikirtînin û rewşa bêdeng an jî ya deng a nû ragihînin"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:887
+#: addon\globalPlugins\brailleEssentials\__init__.py:890
 msgid "Show a browseable summary of braille profile gestures and add-on keyboard shortcuts"
 msgstr "Kurteya gerok a jestên profîla braille û kurtebirên klavyeyê yên lêzêdekirî nîşan bide"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:953
+#: addon\globalPlugins\brailleEssentials\__init__.py:956
 msgid "Run a quick-launch item (application, file, or URL) configured in Braille Essentials settings"
 msgstr "Tiştekî destpêkirina bilez (serlêdan, pel, an URL) ku di mîhengên Braille Essentials de hatî mîheng kirin bixebitîne"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:968
+#: addon\globalPlugins\brailleEssentials\__init__.py:971
 msgid "No such file or directory"
 msgstr "Pel an peldankek wisa tune ye"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:971
+#: addon\globalPlugins\brailleEssentials\__init__.py:974
 msgid "Increase the delay before the braille display auto-scrolls to the next chunk"
 msgstr "Derengiya berî ku dîmendera braille bixweber ber bi perçeya din ve biçe zêde bike"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:980
+#: addon\globalPlugins\brailleEssentials\__init__.py:983
 msgid "Decrease the delay before the braille display auto-scrolls to the next chunk"
 msgstr "Derengiya berî ku dîmendera braille bixweber ber bi beşa din ve biçe kêm bike"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:991
+#: addon\globalPlugins\brailleEssentials\__init__.py:994
 msgid "Switch to the next Liblouis input table from your Braille Essentials list (including automatic selection)"
 msgstr "Ji lîsteya Braille Essentials ya xwe (bi hilbijartina otomatîkî ve) derbasî tabloya têketina Liblouis ya din bibe"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1000
-#: addon\globalPlugins\brailleEssentials\__init__.py:1028
+#: addon\globalPlugins\brailleEssentials\__init__.py:1003
+#: addon\globalPlugins\brailleEssentials\__init__.py:1031
 msgid "NVDA 2017.3 or later is required to use this feature"
 msgstr "Ji bo bikaranîna vê taybetmendiyê NVDA 2017.3 an jî guhertoyên nûtir pêwîst e"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1004
-#: addon\globalPlugins\brailleEssentials\__init__.py:1032
+#: addon\globalPlugins\brailleEssentials\__init__.py:1007
+#: addon\globalPlugins\brailleEssentials\__init__.py:1035
 msgid "You must choose at least two tables for this feature. Please fill in the settings"
 msgstr "Divê hûn ji bo vê taybetmendiyê herî kêm du tabloyan hilbijêrin. Ji kerema xwe mîhengan tijî bikin"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1015
+#: addon\globalPlugins\brailleEssentials\__init__.py:1018
 #, python-format
 msgid "Input: %s"
 msgstr "Têketin: %s"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1019
+#: addon\globalPlugins\brailleEssentials\__init__.py:1022
 msgid "Switch to the next Liblouis output table from your Braille Essentials list (including automatic selection)"
 msgstr "Ji lîsteya Braille Essentials ya xwe (bi hilbijartina otomatîkî ve) derbasî tabloya derana Liblouis a din bibe"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1043
+#: addon\globalPlugins\brailleEssentials\__init__.py:1046
 #, python-format
 msgid "Output: %s"
 msgstr "Derketin: %s"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1046
+#: addon\globalPlugins\brailleEssentials\__init__.py:1049
 msgid "Announce the active Liblouis input and output table names in speech and braille"
 msgstr "Navên tabloyên têketin û derketinê yên Liblouis ên çalak bi axaftin û braille ragihînin"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1053
+#: addon\globalPlugins\brailleEssentials\__init__.py:1056
 #, python-brace-format
 msgid "I⣿O:{I}"
 msgstr "Ez⣿O:{I}"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1054
+#: addon\globalPlugins\brailleEssentials\__init__.py:1057
 #, python-brace-format
 msgid "Input and output: {I}."
 msgstr "Têketin û derketin: {I}."
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1056
+#: addon\globalPlugins\brailleEssentials\__init__.py:1059
 #, python-brace-format
 msgid "I:{I} ⣿ O: {O}"
 msgstr ""
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1057
+#: addon\globalPlugins\brailleEssentials\__init__.py:1060
 #, python-brace-format
 msgid "Input: {I}; Output: {O}"
 msgstr "Têketin: {I}; Derketin: {O}"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1062
+#: addon\globalPlugins\brailleEssentials\__init__.py:1065
 msgid "Show character information for the review cursor: Unicode name, speech symbol, braille cells, and numeric bases"
 msgstr "Agahiyên karakteran ji bo nîşankera nirxandinê nîşan bide: Navê Unicode, sembola axaftinê, şaneyên Braille, û bingehên hejmarî"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1069
+#: addon\globalPlugins\brailleEssentials\__init__.py:1072
 msgid "Show the speech symbol string for the current selection in braille"
 msgstr "Rêza sembola axaftinê ji bo hilbijartina heyî bi braille nîşan bide"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1079
+#: addon\globalPlugins\brailleEssentials\__init__.py:1082
 msgid "Repeat the last keyboard shortcut you issued from the braille display"
 msgstr "Kurterêya klavyeyê ya dawî ya ku te ji dîmendera braille derxistiye dubare bike"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1082
+#: addon\globalPlugins\brailleEssentials\__init__.py:1085
 msgid "No shortcut performed from a braille display"
 msgstr "Kurterê ji dîmendera braille nehatiye kirin"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1103
+#: addon\globalPlugins\brailleEssentials\__init__.py:1106
 msgid "Braille Essentials reloaded"
 msgstr "Pêdiviyên Braille ji nû ve hatin barkirin"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1107
+#: addon\globalPlugins\brailleEssentials\__init__.py:1110
 msgid "Reload Braille Essentials settings, gesture maps, and patches without restarting NVDA"
 msgstr "Mîhengên Braille Essentials, nexşeyên jestan, û patchan bêyî ji nû ve destpêkirina NVDA ji nû ve bar bike"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1114
+#: addon\globalPlugins\brailleEssentials\__init__.py:1117
 msgid "Reload the primary braille display chosen in Braille Essentials or NVDA (when that slot follows NVDA's active display)"
 msgstr "Dîmendera braille ya sereke ya ku di Braille Essentials an NVDA de hatî hilbijartin ji nû ve bar bike (dema ku ew hêl li dû dîmendera çalak a NVDA tê)"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1122
+#: addon\globalPlugins\brailleEssentials\__init__.py:1125
 msgid "Reload the second favorite braille display chosen in Braille Essentials settings"
 msgstr "Duyemîn dîmendera braille ya bijare ya ku di mîhengên Braille Essentials de hatî hilbijartin ji nû ve bar bike"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1133
+#: addon\globalPlugins\brailleEssentials\__init__.py:1136
 msgid "No braille display specified. No reload to do"
 msgstr "Nîşandana Braille nehatiye destnîşankirin. Ji bo ji nû ve barkirinê tune ye"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1156
+#: addon\globalPlugins\brailleEssentials\__init__.py:1159
 msgid "WIN"
 msgstr "SERKEFTIN"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1156
+#: addon\globalPlugins\brailleEssentials\__init__.py:1159
 msgid "CTRL"
 msgstr ""
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1156
+#: addon\globalPlugins\brailleEssentials\__init__.py:1159
 msgid "SHIFT"
 msgstr "PAŞVEAVÊTIN"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1156
+#: addon\globalPlugins\brailleEssentials\__init__.py:1159
 msgid "ALT"
 msgstr ""
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1283
+#: addon\globalPlugins\brailleEssentials\__init__.py:1286
 msgid "Cancel staged modifier keys from the braille keyboard before emulating a PC shortcut"
 msgstr "Berî ku kurtebirrek PC-yê teqlîd bikin, bişkokên guherker ên qonaxkirî ji klavyeya braille betal bikin"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1290
+#: addon\globalPlugins\brailleEssentials\__init__.py:1293
 msgid "Keyboard shortcut cancelled"
 msgstr "Kurterêya klavyeyê hat betalkirin"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1293
+#: addon\globalPlugins\brailleEssentials\__init__.py:1296
 msgid "Scroll the braille display backward by one full width"
 msgstr "Dîmendera braille bi yek firehiya tevahî paşve bizivirîne"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1297
+#: addon\globalPlugins\brailleEssentials\__init__.py:1300
 msgid "Scroll the braille display forward by one full width"
 msgstr "Dîmendera braille bi yek firehiya tevahî ber bi pêş ve bizivirîne"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1334
+#: addon\globalPlugins\brailleEssentials\__init__.py:1337
 msgid "Developer: toggle verbose logging of text info at the review cursor"
 msgstr "Pêşdebir: tomarkirina berfireh a agahdariya nivîsê li ser nîşankera nirxandinê çalak bike"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1343
+#: addon\globalPlugins\brailleEssentials\__init__.py:1346
 msgid "Save the current braille window as a snapshot; press twice quickly to clear the saved snapshot"
 msgstr "Paceya Braille ya heyî wekî wêneyekî tomar bike; ji bo paqijkirina wêneyê tomarkirî du caran bi lez bitikîne"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1351
+#: addon\globalPlugins\brailleEssentials\__init__.py:1354
 msgid "Current braille view saved"
 msgstr "Dîtina Braille ya niha hatî tomarkirin"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1354
+#: addon\globalPlugins\brailleEssentials\__init__.py:1357
 msgid "Buffer cleaned"
 msgstr "Tampon hate paqijkirin"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1357
+#: addon\globalPlugins\brailleEssentials\__init__.py:1360
 msgid "Show the saved braille snapshot briefly; press twice for a browseable copy"
 msgstr "Wêneya Braille ya tomarkirî bi kurtasî nîşan bide; ji bo kopiyek gerok du caran bikirtîne"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1365
+#: addon\globalPlugins\brailleEssentials\__init__.py:1368
 msgid "View saved"
 msgstr "Binêre tomarkirî"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1367
+#: addon\globalPlugins\brailleEssentials\__init__.py:1370
 msgid "Buffer empty"
 msgstr "Tampon vala ye"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1397
+#: addon\globalPlugins\brailleEssentials\__init__.py:1400
 msgid "Pause or resume the braille display cell test pattern"
 msgstr "Şêweya ceribandina şaneya nîşandana Braille rawestîne an jî ji nû ve bide destpêkirin"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1404
+#: addon\globalPlugins\brailleEssentials\__init__.py:1407
 msgid "Pause"
 msgstr "Mizdan"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1404
+#: addon\globalPlugins\brailleEssentials\__init__.py:1407
 msgid "Resume"
 msgstr "Dîsa vekirin"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1445
+#: addon\globalPlugins\brailleEssentials\__init__.py:1448
 msgid "Slow down the braille cell test pattern (longer interval between updates)"
 msgstr "Qaliba ceribandina şaneya braille hêdî bike (navbera dirêjtir di navbera nûvekirinan de)"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1452
+#: addon\globalPlugins\brailleEssentials\__init__.py:1455
 msgid "Speed up the braille cell test pattern (shorter interval between updates)"
 msgstr "Şêweya ceribandina şaneya braille bileztir bike (navbera kurttir di navbera nûvekirinan de)"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1461
+#: addon\globalPlugins\brailleEssentials\__init__.py:1464
 msgid "Switch to the previous braille cell test pattern"
 msgstr "Biguhere bo qaliba ceribandina şaneya braille ya berê"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1469
-#: addon\globalPlugins\brailleEssentials\__init__.py:1479
+#: addon\globalPlugins\brailleEssentials\__init__.py:1472
+#: addon\globalPlugins\brailleEssentials\__init__.py:1482
 #, python-format
 msgid "Auto test type %d"
 msgstr "Cureyê testa otomatîk %d"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1471
+#: addon\globalPlugins\brailleEssentials\__init__.py:1474
 msgid "Switch to the next braille cell test pattern"
 msgstr "Biguhere bo qaliba ceribandina şaneya braille ya din"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1483
+#: addon\globalPlugins\brailleEssentials\__init__.py:1486
 msgid "Start or stop the built-in braille cell test pattern (for display alignment and timing)"
 msgstr "Şêwaza ceribandina şaneya braille ya çêkirî dest pê bike an rawestîne (ji bo hevrêzkirina dîmenderê û demjimêrkirinê)"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1496
+#: addon\globalPlugins\brailleEssentials\__init__.py:1499
 msgid "Auto test stopped"
 msgstr "Testa otomatîkî rawestiya"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1507
+#: addon\globalPlugins\brailleEssentials\__init__.py:1510
 msgid "Auto test started. Use the up and down arrow keys to change speed. Use the left and right arrow keys to change test type. Use space key to pause or resume the test. Use escape key to quit"
 msgstr "Testa otomatîk dest pê kir. Ji bo guhertina lezê bişkokên tîrên jor û jêr bikar bînin. Ji bo guhertina cûreya testê bişkokên tîrên çep û rast bikar bînin. Ji bo rawestandin an jî berdewamkirina testê bişkoka space bikar bînin. Ji bo derketinê bişkoka escape bikar bînin"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1516
+#: addon\globalPlugins\brailleEssentials\__init__.py:1519
 msgid "Open the dialog to add or inspect a Liblouis dictionary entry for the character under the review cursor"
 msgstr "Ji bo zêdekirin an vekolîna têketinek ferhenga Liblouis ji bo karakterê di bin nîşankera nirxandinê de, diyalogê veke"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1524
+#: addon\globalPlugins\brailleEssentials\__init__.py:1527
 msgid "Add dictionary entry or see a dictionary"
 msgstr "Têketina ferhengê lê zêde bike an ferhengekê bibîne"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1529
+#: addon\globalPlugins\brailleEssentials\__init__.py:1532
 msgid "Skip or include blank lines when scrolling long text in braille"
 msgstr "Dema ku hûn nivîsa dirêj bi zimanê Braille digerînin, xetên vala derbas bikin an jî tê de binivîsin"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1535
+#: addon\globalPlugins\brailleEssentials\__init__.py:1538
 msgid "Skip blank lines enabled"
 msgstr "Derbaskirina xetên vala çalak bû"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1537
+#: addon\globalPlugins\brailleEssentials\__init__.py:1540
 msgid "Skip blank lines disabled"
 msgstr "Derbaskirina xetên vala neçalak e"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1541
+#: addon\globalPlugins\brailleEssentials\__init__.py:1544
 msgid "Cycle how routing keys behave in edit fields (normal, emulate arrows with beeps, or emulate arrows silently)"
 msgstr "Bizivirîne ka çawa bişkokên rêwerzê di qadên guherandinê de tevdigerin (asayî, tîran bi bîp teqlîd bike, an jî tîran bêdeng teqlîd bike)"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1561
+#: addon\globalPlugins\brailleEssentials\__init__.py:1564
 msgid "Turn Braille Essentials speech history mode on or off (captures speech for later review)"
 msgstr "Moda dîroka axaftina Braille Essentials vekin an jî vemirînin (axaftinê ji bo nirxandina paşê tomar dike)"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1567
+#: addon\globalPlugins\brailleEssentials\__init__.py:1570
 msgid "Speech History Mode disabled"
 msgstr "Moda Dîroka Axaftinê neçalak e"
 
-#: addon\globalPlugins\brailleEssentials\__init__.py:1569
+#: addon\globalPlugins\brailleEssentials\__init__.py:1572
 msgid "Speech History Mode enabled"
 msgstr "Moda Dîroka Axaftinê çalak bû"
 
@@ -2539,9 +2539,8 @@ msgstr "Ev pêvek ji bo bikarhênerên NVDA yên ku xwe dispêrin piştgiriya br
 #. Brief changelog for this version
 #. Translators: what's new content for the add-on version to be shown in the add-on store
 #: buildVars.py:58
-msgid "* Updated the add-on code to BrailleExtender commit 0434fa63 (2026-10-23):\n"
-"\t* Made the code compatible with reorganized braille support subsystem implemented in NVDA 2026.3.\n"
-"\t* Dropped border color and style settings from document presentation settings.\n"
-"\t* Added a setting to mute NVDA sounds when spech is muted."
+msgid "* Updated the add-on code to BrailleExtender commit 2feb287d (2026-11-08):\n"
+"\t* NVDA will no longer enter browse mode in Microsoft Word automaticlaly if using braille rotor feature.\n"
+"* Skip rotor focus-context probing when no braille display is connected, avoiding long UIA scans on large documents (contributed by serrebidev)."
 msgstr ""
 
