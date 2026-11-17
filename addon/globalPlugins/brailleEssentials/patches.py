@@ -333,6 +333,77 @@ def _mark_selected_element(region) -> None:
 	]
 
 
+def _expand_region_tabs(region: Any) -> None:
+	"""Expand tab characters into spaces across any Region subclass.
+
+	Batch-replaces tabs with configured space widths and updates
+	rawTextTypeforms, _rawToContentPos, cursorPos, selection, and
+	brlex_typeforms formatting markers without assuming TextInfoRegion internals.
+	"""
+	if not config.conf["brailleEssentials"].get("tabSpace", False):
+		return
+	raw_text = getattr(region, "rawText", None)
+	if not raw_text or "\t" not in raw_text:
+		return
+
+	tab_size = addoncfg.getTabSize()
+	spaces = " " * tab_size
+	space_diff = tab_size - 1
+
+	parts = raw_text.split("\t")
+	region.rawText = raw_text.replace("\t", spaces)
+
+	typeforms = getattr(region, "rawTextTypeforms", None)
+	if isinstance(typeforms, list) and typeforms:
+		new_typeforms: list[int] = []
+		idx = 0
+		for part in parts[:-1]:
+			part_len = len(part)
+			if part_len:
+				new_typeforms.extend(typeforms[idx : idx + part_len])
+				idx += part_len
+			tf = typeforms[idx] if idx < len(typeforms) else louis.plain_text
+			new_typeforms.extend([tf] * tab_size)
+			idx += 1
+		last_part = parts[-1]
+		if last_part:
+			new_typeforms.extend(typeforms[idx : idx + len(last_part)])
+		region.rawTextTypeforms = new_typeforms
+
+	raw_to_content = getattr(region, "_rawToContentPos", None)
+	if isinstance(raw_to_content, list) and raw_to_content:
+		new_raw_to_content: list[int] = []
+		idx = 0
+		for part in parts[:-1]:
+			part_len = len(part)
+			if part_len:
+				new_raw_to_content.extend(raw_to_content[idx : idx + part_len])
+				idx += part_len
+			cp = raw_to_content[idx] if idx < len(raw_to_content) else 0
+			new_raw_to_content.extend([cp] * tab_size)
+			idx += 1
+		last_part = parts[-1]
+		if last_part:
+			new_raw_to_content.extend(raw_to_content[idx : idx + len(last_part)])
+		region._rawToContentPos = new_raw_to_content
+
+	if isinstance(region.cursorPos, int) and region.cursorPos >= 0:
+		region.cursorPos += raw_text[: region.cursorPos].count("\t") * space_diff
+	if isinstance(region.selectionStart, int) and region.selectionStart >= 0:
+		region.selectionStart += raw_text[: region.selectionStart].count("\t") * space_diff
+	if isinstance(region.selectionEnd, int) and region.selectionEnd >= 0:
+		region.selectionEnd += raw_text[: region.selectionEnd].count("\t") * space_diff
+
+	masks = getattr(region, "brlex_typeforms", None)
+	if isinstance(masks, dict) and masks:
+		region.brlex_typeforms = {
+			pos + raw_text[:pos].count("\t") * space_diff: mask
+			for pos, mask in masks.items()
+		}
+	if hasattr(region, "_len_brlex_typeforms") and isinstance(region._len_brlex_typeforms, int):
+		region._len_brlex_typeforms += raw_text[: region._len_brlex_typeforms].count("\t") * space_diff
+
+
 def update_region(self) -> None:
 	"""NVDA's ``Region.update`` plus the add-on's pre- and post-processing.
 
@@ -343,42 +414,7 @@ def update_region(self) -> None:
 	"""
 	if config.conf["brailleEssentials"]["advanced"]["fixCursorPositions"]:
 		_strip_variation_selectors(self)
-	if config.conf["brailleEssentials"].get("tabSpace", False) and "\t" in self.rawText:
-		tab_size = addoncfg.getTabSize()
-		spaces = " " * tab_size
-		new_raw_text: list[str] = []
-		new_typeforms: Optional[list[int]] = [] if self.rawTextTypeforms is not None else None
-		new_raw_to_content: Optional[list[int]] = (
-			[] if hasattr(self, "_rawToContentPos") and self._rawToContentPos else None
-		)
-		for i, ch in enumerate(self.rawText):
-			if ch == "\t":
-				new_raw_text.append(spaces)
-				if new_typeforms is not None:
-					tf = self.rawTextTypeforms[i] if i < len(self.rawTextTypeforms) else louis.plain_text
-					new_typeforms.extend([tf] * tab_size)
-				if new_raw_to_content is not None:
-					cp = self._rawToContentPos[i] if i < len(self._rawToContentPos) else 0
-					new_raw_to_content.extend([cp] * tab_size)
-			else:
-				new_raw_text.append(ch)
-				if new_typeforms is not None:
-					tf = self.rawTextTypeforms[i] if i < len(self.rawTextTypeforms) else louis.plain_text
-					new_typeforms.append(tf)
-				if new_raw_to_content is not None:
-					cp = self._rawToContentPos[i] if i < len(self._rawToContentPos) else 0
-					new_raw_to_content.append(cp)
-		if isinstance(self.cursorPos, int):
-			self.cursorPos += self.rawText[:self.cursorPos].count("\t") * (tab_size - 1)
-		if isinstance(self.selectionStart, int):
-			self.selectionStart += self.rawText[:self.selectionStart].count("\t") * (tab_size - 1)
-		if isinstance(self.selectionEnd, int):
-			self.selectionEnd += self.rawText[:self.selectionEnd].count("\t") * (tab_size - 1)
-		self.rawText = "".join(new_raw_text)
-		if new_typeforms is not None:
-			self.rawTextTypeforms = new_typeforms
-		if new_raw_to_content is not None:
-			self._rawToContentPos = new_raw_to_content
+	_expand_region_tabs(self)
 	selection = (self.selectionStart, self.selectionEnd)
 	self.selectionStart = self.selectionEnd = None
 	try:
@@ -944,16 +980,26 @@ def _addTextWithFields(
 			if config.conf["brailleEssentials"].get("tabSpace", False) and "\t" in command:
 				tab_size = addoncfg.getTabSize()
 				spaces = " " * tab_size
-				for ch in command:
-					if ch == "\t":
-						self.rawText += spaces
-						self.rawTextTypeforms.extend((typeform,) * tab_size)
-						self._rawToContentPos.extend([self._currentContentPos] * tab_size)
-					else:
-						self.rawText += ch
-						self.rawTextTypeforms.append(typeform)
-						self._rawToContentPos.append(self._currentContentPos)
+				expanded = command.replace("\t", spaces)
+				self.rawText += expanded
+				self.rawTextTypeforms.extend((typeform,) * len(expanded))
+				parts = command.split("\t")
+				for part in parts[:-1]:
+					part_len = len(part)
+					if part_len:
+						self._rawToContentPos.extend(
+							range(self._currentContentPos, self._currentContentPos + part_len)
+						)
+						self._currentContentPos += part_len
+					self._rawToContentPos.extend([self._currentContentPos] * tab_size)
 					self._currentContentPos += 1
+				last_part = parts[-1]
+				if last_part:
+					last_len = len(last_part)
+					self._rawToContentPos.extend(
+						range(self._currentContentPos, self._currentContentPos + last_len)
+					)
+					self._currentContentPos += last_len
 			else:
 				self.rawText += command
 				command_len = len(command)
@@ -978,8 +1024,11 @@ def _addTextWithFields(
 				)
 				if text:
 					self._addFieldText(text, self._currentContentPos, False)
-				self._len_brlex_typeforms += self._rawToContentPos.count(self._currentContentPos)
-				self.brlex_typeforms[self._len_brlex_typeforms + self._currentContentPos] = brlex_typeform
+				raw_pos = len(self.rawText)
+				if getattr(self, "brlex_typeforms", None) is None:
+					self.brlex_typeforms = {}
+				self.brlex_typeforms[raw_pos] = brlex_typeform
+				self._len_brlex_typeforms = raw_pos
 				if not text:
 					continue
 				# Avoid TEXT_SEPARATOR before the next text run (no braille space after opening tags).

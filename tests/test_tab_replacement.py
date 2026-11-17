@@ -140,6 +140,15 @@ from brailleEssentials import addoncfg, patches
 import louis
 
 
+class MockFieldCommand:
+	def __init__(self, command, field):
+		self.command = command
+		self.field = field
+
+
+sys.modules["textInfos"].FieldCommand = MockFieldCommand
+
+
 class DummyRegion:
 	"""Mock braille region for testing _addTextWithFields and update_region."""
 
@@ -158,6 +167,20 @@ class DummyRegion:
 		self.brailleToRawPos = []
 		self.rawToBraillePos = []
 		self.brailleCursorPos = None
+		self.brlex_typeforms = {}
+		self._len_brlex_typeforms = 0
+
+	def _getTypeformFromFormatField(self, field, formatConfig=None):
+		if isinstance(field, dict) and field.get("bold"):
+			return louis.bold, 192
+		if isinstance(field, dict) and field.get("italic"):
+			return louis.italic, 64
+		return louis.plain_text, 0
+
+	def _addFieldText(self, text, contentPos, separate=True):
+		self.rawText += text
+		self.rawTextTypeforms.extend([louis.plain_text] * len(text))
+		self._rawToContentPos.extend([contentPos] * len(text))
 
 
 class DummyTextInfo:
@@ -478,3 +501,353 @@ class TestIssue4ReproductionSteps:
 		r_inactive = DummyRegion()
 		patches._addTextWithFields(r_inactive, DummyTextInfo(["\tCallable"]), {})
 		assert r_inactive.rawText == "\tCallable"
+
+
+class TestFormattingMarkersTabSynchronization:
+	"""Tests verifying style formatting markers and typeforms stay synchronized across tabs."""
+
+	def test_format_field_after_tab_aligns_marker_position(self):
+		test_conf["brailleEssentials"]["tabSpace"] = True
+		addoncfg.curBD = "test_display"
+		test_conf["brailleEssentials"][f"tabSize_{addoncfg.curBD}"] = 4
+
+		region = DummyRegion()
+		commands = [
+			"\t",
+			MockFieldCommand("formatChange", {"bold": True}),
+			"StyledText",
+			MockFieldCommand("formatChange", {"bold": False}),
+			"After",
+		]
+		patches._addTextWithFields(region, DummyTextInfo(commands), defaultdict(bool))
+
+		# 4 spaces replacing tab, followed by 'StyledText', then 'After'
+		assert region.rawText == "    StyledTextAfter"
+		# Format marker for bold must be placed at raw index 4 (after 4 spaces), NOT at content pos 1
+		assert 4 in region.brlex_typeforms
+		assert region.brlex_typeforms[4] == 192  # Bold dots
+		# Format marker turning off bold must be at raw index 4 + len('StyledText') = 14
+		assert 14 in region.brlex_typeforms
+		assert region.brlex_typeforms[14] == 0
+		# rawTextTypeforms must have plain text for the 4 spaces and bold for StyledText
+		assert region.rawTextTypeforms[:4] == [louis.plain_text] * 4
+		assert region.rawTextTypeforms[4:14] == [louis.bold] * 10
+		assert region.rawTextTypeforms[14:] == [louis.plain_text] * 5
+
+	def test_format_field_spanning_tabs_maintains_typeforms_and_spans(self):
+		test_conf["brailleEssentials"]["tabSpace"] = True
+		addoncfg.curBD = "test_display"
+		test_conf["brailleEssentials"][f"tabSize_{addoncfg.curBD}"] = 4
+
+		region = DummyRegion()
+		commands = [
+			MockFieldCommand("formatChange", {"italic": True}),
+			"def\tfoo():",
+			MockFieldCommand("formatChange", {}),
+		]
+		patches._addTextWithFields(region, DummyTextInfo(commands), defaultdict(bool))
+
+		expected_text = "def    foo():"
+		assert region.rawText == expected_text
+		# Italic typeform applied across all characters including the 4 tab spaces
+		assert region.rawTextTypeforms == [louis.italic] * len(expected_text)
+		assert region.brlex_typeforms[0] == 64
+		assert region.brlex_typeforms[len(expected_text)] == 0
+
+	def test_multiple_format_transitions_with_tabs(self):
+		test_conf["brailleEssentials"]["tabSpace"] = True
+		addoncfg.curBD = "test_display"
+		test_conf["brailleEssentials"][f"tabSize_{addoncfg.curBD}"] = 2
+
+		region = DummyRegion()
+		commands = [
+			"\t",
+			MockFieldCommand("formatChange", {"bold": True}),
+			"one\t",
+			MockFieldCommand("formatChange", {"italic": True}),
+			"two",
+		]
+		patches._addTextWithFields(region, DummyTextInfo(commands), defaultdict(bool))
+
+		assert region.rawText == "  one  two"
+		# First formatChange (bold) at offset 2 (after 2 leading spaces)
+		assert 2 in region.brlex_typeforms
+		assert region.brlex_typeforms[2] == 192
+		# Second formatChange (italic) after 'one  ' (length 5) -> offset 7
+		assert 7 in region.brlex_typeforms
+		assert region.brlex_typeforms[7] == 64
+
+	def test_update_region_shifts_brlex_typeforms_markers(self):
+		test_conf["brailleEssentials"]["tabSpace"] = True
+		addoncfg.curBD = "test_display"
+		test_conf["brailleEssentials"][f"tabSize_{addoncfg.curBD}"] = 4
+
+		region = DummyRegion()
+		region.rawText = "\tHello\tWorld"
+		region.rawTextTypeforms = [0] * len(region.rawText)
+		region._rawToContentPos = list(range(len(region.rawText)))
+		# In unexpanded text: 0='\t', 1='H', 6='\t', 7='W'
+		region.brlex_typeforms = {0: 0, 1: 192, 6: 0, 7: 64}
+		region._len_brlex_typeforms = 7
+
+		mock_translate_result = ([0] * 18, list(range(18)), list(range(18)), 0)
+		sys.modules["louisHelper"].translate = MagicMock(return_value=mock_translate_result)
+
+		patches.update_region(region)
+
+		assert region.rawText == "    Hello    World"
+		# Tab at pos 0 expands by 3 -> pos 1 shifts to 1+3=4
+		# Tab at pos 6 (in old text) -> pos 6 shifts to 6+3=9
+		# Pos 7 (in old text) has 2 preceding tabs -> shifts to 7+6=13
+		assert region.brlex_typeforms[0] == 0
+		assert region.brlex_typeforms[4] == 192
+		assert region.brlex_typeforms[9] == 0
+		assert region.brlex_typeforms[13] == 64
+		assert region._len_brlex_typeforms == 13
+
+	def test_update_region_expands_raw_text_typeforms_across_tabs(self):
+		test_conf["brailleEssentials"]["tabSpace"] = True
+		addoncfg.curBD = "test_display"
+		test_conf["brailleEssentials"][f"tabSize_{addoncfg.curBD}"] = 4
+
+		region = DummyRegion()
+		region.rawText = "A\tB"
+		region.rawTextTypeforms = [louis.plain_text, louis.bold, louis.italic]
+
+		mock_translate_result = ([0] * 6, list(range(6)), list(range(6)), 0)
+		sys.modules["louisHelper"].translate = MagicMock(return_value=mock_translate_result)
+
+		patches.update_region(region)
+
+		assert region.rawText == "A    B"
+		# Tab at pos 1 was bold; all 4 spaces must be bold
+		assert region.rawTextTypeforms == [
+			louis.plain_text,
+			louis.bold,
+			louis.bold,
+			louis.bold,
+			louis.bold,
+			louis.italic,
+		]
+
+	def test_multiple_tabs_inside_format_run(self):
+		test_conf["brailleEssentials"]["tabSpace"] = True
+		addoncfg.curBD = "test_display"
+		test_conf["brailleEssentials"][f"tabSize_{addoncfg.curBD}"] = 3
+
+		region = DummyRegion()
+		commands = [
+			"\t",
+			MockFieldCommand("formatChange", {"bold": True}),
+			"\tbold\ttext\t",
+			MockFieldCommand("formatChange", {}),
+			"\tafter",
+		]
+		patches._addTextWithFields(region, DummyTextInfo(commands), defaultdict(bool))
+
+		# Leading tab: 3 spaces (plain)
+		# Bold run: 3 spaces + "bold" + 3 spaces + "text" + 3 spaces = 17 chars
+		# Bold ends at 3 + 17 = 20
+		# After run: 3 spaces + "after" = 8 chars
+		assert region.rawText == "   " + "   bold   text   " + "   after"
+		assert region.brlex_typeforms[3] == 192
+		assert region.brlex_typeforms[20] == 0
+		assert region.rawTextTypeforms[:3] == [louis.plain_text] * 3
+		assert region.rawTextTypeforms[3:20] == [louis.bold] * 17
+		assert region.rawTextTypeforms[20:] == [louis.plain_text] * 8
+
+	def test_tab_size_one_formatting_markers(self):
+		test_conf["brailleEssentials"]["tabSpace"] = True
+		addoncfg.curBD = "test_display"
+		test_conf["brailleEssentials"][f"tabSize_{addoncfg.curBD}"] = 1
+
+		region = DummyRegion()
+		commands = [
+			"\t",
+			MockFieldCommand("formatChange", {"bold": True}),
+			"\tword",
+		]
+		patches._addTextWithFields(region, DummyTextInfo(commands), defaultdict(bool))
+
+		assert region.rawText == "  word"
+		assert region.brlex_typeforms[1] == 192
+		assert region.rawTextTypeforms[:1] == [louis.plain_text]
+		assert region.rawTextTypeforms[1:] == [louis.bold] * 5
+
+	def test_update_region_marker_on_tab_character(self):
+		test_conf["brailleEssentials"]["tabSpace"] = True
+		addoncfg.curBD = "test_display"
+		test_conf["brailleEssentials"][f"tabSize_{addoncfg.curBD}"] = 4
+
+		region = DummyRegion()
+		region.rawText = "\t"
+		region.rawTextTypeforms = [louis.bold]
+		region.brlex_typeforms = {0: 192}
+
+		mock_translate_result = ([0] * 4, list(range(4)), list(range(4)), 0)
+		sys.modules["louisHelper"].translate = MagicMock(return_value=mock_translate_result)
+
+		patches.update_region(region)
+
+		assert region.rawText == "    "
+		assert region.rawTextTypeforms == [louis.bold] * 4
+		assert region.brlex_typeforms == {0: 192}
+
+
+class TestTabReplacementPerformanceAndBatching:
+	"""Tests verifying batch slice extensions and high-performance tab replacement."""
+
+	def test_consecutive_tabs_batch_expansion(self):
+		test_conf["brailleEssentials"]["tabSpace"] = True
+		addoncfg.curBD = "test_display"
+		test_conf["brailleEssentials"][f"tabSize_{addoncfg.curBD}"] = 4
+
+		region = DummyRegion()
+		patches._addTextWithFields(region, DummyTextInfo(["\t\t\t"]), {})
+
+		assert region.rawText == " " * 12
+		assert len(region.rawTextTypeforms) == 12
+		assert region._rawToContentPos == [0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2]
+		assert region._currentContentPos == 3
+
+	def test_mixed_tabs_and_words_content_pos_mapping(self):
+		test_conf["brailleEssentials"]["tabSpace"] = True
+		addoncfg.curBD = "test_display"
+		test_conf["brailleEssentials"][f"tabSize_{addoncfg.curBD}"] = 2
+
+		region = DummyRegion()
+		patches._addTextWithFields(region, DummyTextInfo(["func(\targ1,\targ2\t)"]), {})
+
+		expected_text = "func(  arg1,  arg2  )"
+		assert region.rawText == expected_text
+		assert len(region._rawToContentPos) == len(expected_text)
+		assert region._currentContentPos == len("func(\targ1,\targ2\t)")
+
+	def test_large_line_with_many_tabs_performance(self):
+		test_conf["brailleEssentials"]["tabSpace"] = True
+		addoncfg.curBD = "test_display"
+		test_conf["brailleEssentials"][f"tabSize_{addoncfg.curBD}"] = 4
+
+		num_tabs = 100
+		command = "\tcode" * num_tabs
+		region = DummyRegion()
+		patches._addTextWithFields(region, DummyTextInfo([command]), {})
+
+		assert region.rawText == "    code" * num_tabs
+		assert len(region.rawText) == 8 * num_tabs
+		assert len(region.rawTextTypeforms) == len(region.rawText)
+		assert len(region._rawToContentPos) == len(region.rawText)
+		assert region._currentContentPos == len(command)
+
+
+class TestRegionSubclassesScope:
+	"""Tests verifying monkey patch cleanly supports any Region subclass without assuming TextInfoRegion internals."""
+
+	def test_base_region_without_textinfo_internals(self):
+		"""A plain Region subclass without _rawToContentPos or TextInfo methods."""
+		test_conf["brailleEssentials"]["tabSpace"] = True
+		addoncfg.curBD = "test_display"
+		test_conf["brailleEssentials"][f"tabSize_{addoncfg.curBD}"] = 4
+
+		class BaseRegionMock:
+			def __init__(self):
+				self.rawText = "\tSimple\tRegion"
+				self.cursorPos = None
+				self.selectionStart = None
+				self.selectionEnd = None
+				self.brailleCells = []
+				self.rawToBraillePos = []
+				self.brailleToRawPos = []
+				self.brailleCursorPos = None
+
+		region = BaseRegionMock()
+		mock_translate_result = ([0] * 19, list(range(19)), list(range(19)), 0)
+		sys.modules["louisHelper"].translate = MagicMock(return_value=mock_translate_result)
+
+		patches.update_region(region)
+
+		assert region.rawText == "    Simple    Region"
+		# Region has no _rawToContentPos or rawTextTypeforms; no AttributeError raised
+		assert not hasattr(region, "_rawToContentPos")
+
+	def test_region_with_typeforms_only(self):
+		test_conf["brailleEssentials"]["tabSpace"] = True
+		addoncfg.curBD = "test_display"
+		test_conf["brailleEssentials"][f"tabSize_{addoncfg.curBD}"] = 2
+
+		class TypeformsOnlyRegion:
+			def __init__(self):
+				self.rawText = "\tHi"
+				self.rawTextTypeforms = [louis.bold, louis.italic, louis.plain_text]
+				self.cursorPos = None
+				self.selectionStart = None
+				self.selectionEnd = None
+				self.brailleCells = []
+				self.rawToBraillePos = []
+				self.brailleToRawPos = []
+				self.brailleCursorPos = None
+
+		region = TypeformsOnlyRegion()
+		mock_translate_result = ([0] * 4, list(range(4)), list(range(4)), 0)
+		sys.modules["louisHelper"].translate = MagicMock(return_value=mock_translate_result)
+
+		patches.update_region(region)
+
+		assert region.rawText == "  Hi"
+		assert region.rawTextTypeforms == [louis.bold, louis.bold, louis.italic, louis.plain_text]
+
+	def test_region_with_cursor_and_selection_offsets(self):
+		test_conf["brailleEssentials"]["tabSpace"] = True
+		addoncfg.curBD = "test_display"
+		test_conf["brailleEssentials"][f"tabSize_{addoncfg.curBD}"] = 4
+
+		class GenericRegion:
+			def __init__(self):
+				self.rawText = "\tA\tB"
+				self.cursorPos = 1  # on 'A'
+				self.selectionStart = 0
+				self.selectionEnd = 3  # on 'B'
+				self.brailleCells = []
+				self.rawToBraillePos = []
+				self.brailleToRawPos = []
+				self.brailleCursorPos = None
+
+		region = GenericRegion()
+		mock_translate_result = ([0] * 8, list(range(8)), list(range(8)), 0)
+		sys.modules["louisHelper"].translate = MagicMock(return_value=mock_translate_result)
+
+		patches.update_region(region)
+
+		assert region.rawText == "    A    B"
+		# Cursor was at 1 (after 1 tab) -> 1 + 3 = 4 (at 'A')
+		assert region.cursorPos == 4
+		assert region.selectionStart == 0
+		# SelectionEnd was at 3 (after 2 tabs) -> 3 + 2*3 = 9 (after 'B')
+		assert region.selectionEnd == 9
+
+	def test_region_with_no_cursor_or_selection(self):
+		test_conf["brailleEssentials"]["tabSpace"] = True
+		addoncfg.curBD = "test_display"
+		test_conf["brailleEssentials"][f"tabSize_{addoncfg.curBD}"] = 4
+
+		class NoCursorRegion:
+			def __init__(self):
+				self.rawText = "\tNoCursor"
+				self.cursorPos = None
+				self.selectionStart = None
+				self.selectionEnd = None
+				self.brailleCells = []
+				self.rawToBraillePos = []
+				self.brailleToRawPos = []
+				self.brailleCursorPos = None
+
+		region = NoCursorRegion()
+		mock_translate_result = ([0] * 12, list(range(12)), list(range(12)), 0)
+		sys.modules["louisHelper"].translate = MagicMock(return_value=mock_translate_result)
+
+		patches.update_region(region)
+
+		assert region.rawText == "    NoCursor"
+		assert region.cursorPos is None
+		assert region.selectionStart is None
+		assert region.selectionEnd is None
