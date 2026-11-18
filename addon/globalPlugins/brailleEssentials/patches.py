@@ -184,9 +184,11 @@ def _queue_braille_scroll_line_speech() -> None:
 	queueHandler.queueFunction(queueHandler.eventQueue, sayCurrentLine)
 
 
-def _get_region_content_pos(region: Any, raw_pos: int) -> int:
+def _get_region_content_pos(region: Any, raw_pos: int, fallback_buffer: Optional[Any] = None) -> int:
 	"""Return the content position corresponding to a raw text index in region."""
 	raw_to_content = getattr(region, "_rawToContentPos", None)
+	if not (isinstance(raw_to_content, list) and raw_to_content) and fallback_buffer is not None:
+		raw_to_content = getattr(fallback_buffer, "_rawToContentPos", None)
 	if isinstance(raw_to_content, list) and raw_to_content:
 		if raw_pos < 0:
 			return 0
@@ -196,14 +198,20 @@ def _get_region_content_pos(region: Any, raw_pos: int) -> int:
 	return max(0, raw_pos)
 
 
-def _get_region_content_size(region: Any) -> int:
+def _get_region_content_size(region: Any, fallback_buffer: Optional[Any] = None) -> int:
 	"""Return the content length (end of line position) for a region."""
 	current_content = getattr(region, "_currentContentPos", None)
+	if (not isinstance(current_content, int) or current_content <= 0) and fallback_buffer is not None:
+		current_content = getattr(fallback_buffer, "_currentContentPos", None)
 	if isinstance(current_content, int) and current_content > 0:
 		return current_content
 	raw_to_content = getattr(region, "_rawToContentPos", None)
+	if not (isinstance(raw_to_content, list) and raw_to_content) and fallback_buffer is not None:
+		raw_to_content = getattr(fallback_buffer, "_rawToContentPos", None)
 	if isinstance(raw_to_content, list) and raw_to_content:
 		raw_text = getattr(region, "rawText", "")
+		if not raw_text and fallback_buffer is not None:
+			raw_text = getattr(fallback_buffer, "rawText", "")
 		if (
 			isinstance(raw_text, str)
 			and raw_text
@@ -215,12 +223,111 @@ def _get_region_content_size(region: Any) -> int:
 			return raw_to_content[-1]
 		return raw_to_content[-1] + 1
 	raw_text = getattr(region, "rawText", None)
+	if not isinstance(raw_text, str) and fallback_buffer is not None:
+		raw_text = getattr(fallback_buffer, "rawText", None)
 	if isinstance(raw_text, str):
 		return len(raw_text)
 	braille_to_raw = getattr(region, "brailleToRawPos", None)
+	if not (isinstance(braille_to_raw, list) and braille_to_raw) and fallback_buffer is not None:
+		braille_to_raw = getattr(fallback_buffer, "brailleToRawPos", None)
 	if isinstance(braille_to_raw, list) and braille_to_raw:
 		return braille_to_raw[-1] + 1
 	return 0
+
+
+def _resolve_buffer_region_and_pos(buffer: Any, cell_index: int) -> tuple[Any, int]:
+	"""Return the (region, cell_offset) corresponding to cell_index in buffer."""
+	if hasattr(buffer, "bufferPosToRegionPos"):
+		try:
+			return buffer.bufferPosToRegionPos(cell_index)
+		except LookupError:
+			pass
+	regions = getattr(buffer, "regions", None)
+	if isinstance(regions, list) and regions:
+		regions_with_positions = getattr(buffer, "regionsWithPositions", None)
+		if regions_with_positions:
+			for reg, start, end in regions_with_positions:
+				if end > cell_index:
+					return reg, max(0, cell_index - start)
+		reg_start = 0
+		for reg in regions:
+			reg_cells = getattr(reg, "brailleCells", None)
+			cell_len = len(reg_cells) if isinstance(reg_cells, list) else 0
+			end = reg_start + cell_len
+			if end > cell_index:
+				return reg, max(0, cell_index - reg_start)
+			reg_start = end
+		last_reg = regions[-1]
+		last_cells = getattr(last_reg, "brailleCells", None)
+		last_len = len(last_cells) if isinstance(last_cells, list) else 0
+		return last_reg, last_len
+	return buffer, cell_index
+
+
+def _should_speak_on_routing() -> bool:
+	"""Check if NVDA's 'Speak character when routing cursor in text' setting is enabled."""
+	try:
+		return bool(config.conf["braille"]["speakOnRouting"])
+	except (KeyError, AttributeError):
+		return False
+
+
+def _speak_character_on_routing(info: Any) -> None:
+	"""Speaks the character at the given TextInfo after routing if speakOnRouting is enabled."""
+	if not _should_speak_on_routing() or info is None:
+		return
+	try:
+		info_to_speak = info.copy() if hasattr(info, "copy") else info
+		if hasattr(info_to_speak, "expand"):
+			info_to_speak.expand(textInfos.UNIT_CHARACTER)
+		spell_func = getattr(speech, "spellTextInfo", None)
+		if spell_func is None:
+			try:
+				from speech.speech import spellTextInfo as spell_func
+			except ImportError:
+				pass
+		if callable(spell_func):
+			spell_func(info_to_speak)
+		elif hasattr(speech, "speakTextInfo"):
+			speech.speakTextInfo(info_to_speak, unit=textInfos.UNIT_CHARACTER)
+	except Exception:
+		pass
+
+
+def _speak_routed_character(
+	target_region: Any,
+	target_reg_cell: int,
+	gesture: Any,
+	obj: Any,
+) -> None:
+	"""Obtain the TextInfo for the routed cell and speak it if speakOnRouting is enabled."""
+	if not _should_speak_on_routing():
+		return
+	info = None
+	# 1. Try target_region.getTextInfoForBraillePos(target_reg_cell)
+	if target_region is not None:
+		get_text_info_reg = getattr(target_region, "getTextInfoForBraillePos", None)
+		if callable(get_text_info_reg):
+			try:
+				info = get_text_info_reg(target_reg_cell)
+			except Exception:
+				info = None
+	# 2. Try braille.handler.getTextInfoForWindowPos(gesture.routingIndex)
+	if info is None:
+		get_text_info_win = getattr(braille.handler, "getTextInfoForWindowPos", None)
+		if callable(get_text_info_win) and hasattr(gesture, "routingIndex"):
+			try:
+				info = get_text_info_win(gesture.routingIndex)
+			except Exception:
+				info = None
+	# 3. Fallback to obj.makeTextInfo
+	if info is None and obj is not None and hasattr(obj, "makeTextInfo"):
+		try:
+			info = obj.makeTextInfo(textInfos.POSITION_CARET)
+		except Exception:
+			info = None
+	if info is not None:
+		_speak_character_on_routing(info)
 
 
 def script_braille_routeTo(self, gesture):
@@ -244,8 +351,15 @@ def script_braille_routeTo(self, gesture):
 		and obj.role in [get_control_type("ROLE_TERMINAL"), get_control_type("ROLE_EDITABLETEXT")]
 	):
 		play_beeps = config.conf["brailleEssentials"]["routingCursorsEditFields"] == RC_EMULATE_ARROWS_BEEP
-		region = braille.handler.mainBuffer
-		braille_to_raw = getattr(region, "brailleToRawPos", None)
+		buffer = braille.handler.mainBuffer
+		win_start = getattr(buffer, "windowStartPos", 0) or 0
+		routing_cell = win_start + gesture.routingIndex
+
+		target_region, target_reg_cell = _resolve_buffer_region_and_pos(buffer, routing_cell)
+
+		braille_to_raw = getattr(target_region, "brailleToRawPos", None)
+		if not isinstance(braille_to_raw, list) or not braille_to_raw:
+			braille_to_raw = getattr(buffer, "brailleToRawPos", None)
 		if not isinstance(braille_to_raw, list) or not braille_to_raw:
 			try:
 				braille.handler.routeTo(gesture.routingIndex)
@@ -253,48 +367,76 @@ def script_braille_routeTo(self, gesture):
 				pass
 			return
 
-		# Resolve current cursor position in content coordinates.
-		if isinstance(region.cursorPos, int):
-			raw_cur = region.cursorPos
+		# Resolve current cursor region and position.
+		if hasattr(buffer, "bufferPosToRegionPos"):
+			try:
+				cur_region, cur_reg_cell = buffer.bufferPosToRegionPos(buffer.cursorPos)
+			except LookupError:
+				cur_region, cur_reg_cell = target_region, 0
+		elif hasattr(buffer, "regions") and buffer.regions:
+			cur_region, cur_reg_cell = _resolve_buffer_region_and_pos(buffer, buffer.cursorPos)
+		else:
+			cur_region, cur_reg_cell = buffer, buffer.cursorPos
+
+		# Resolve raw cursor offset within cur_region.
+		if isinstance(cur_region.cursorPos, int) and not hasattr(cur_region, "bufferPosToRegionPos"):
+			raw_cur = cur_region.cursorPos
 		elif (
-			getattr(region, "brailleCursorPos", None) is not None
-			and 0 <= region.brailleCursorPos < len(braille_to_raw)
+			getattr(cur_region, "brailleCursorPos", None) is not None
+			and hasattr(cur_region, "brailleToRawPos")
+			and isinstance(cur_region.brailleToRawPos, list)
+			and 0 <= cur_region.brailleCursorPos < len(cur_region.brailleToRawPos)
 		):
-			raw_cur = braille_to_raw[region.brailleCursorPos]
+			raw_cur = cur_region.brailleToRawPos[cur_region.brailleCursorPos]
+		elif (
+			cur_reg_cell is not None
+			and hasattr(cur_region, "brailleToRawPos")
+			and isinstance(cur_region.brailleToRawPos, list)
+			and 0 <= cur_reg_cell < len(cur_region.brailleToRawPos)
+		):
+			raw_cur = cur_region.brailleToRawPos[cur_reg_cell]
+		elif (
+			hasattr(buffer, "brailleToRawPos")
+			and isinstance(buffer.brailleToRawPos, list)
+			and isinstance(buffer.cursorPos, int)
+			and 0 <= buffer.cursorPos < len(buffer.brailleToRawPos)
+		):
+			raw_cur = buffer.brailleToRawPos[buffer.cursorPos]
 		else:
 			raw_cur = 0
-		cur_pos = _get_region_content_pos(region, raw_cur)
 
-		size = _get_region_content_size(region)
+		cur_pos = _get_region_content_pos(cur_region, raw_cur, fallback_buffer=buffer)
+		size = _get_region_content_size(target_region, fallback_buffer=buffer)
 
 		# Resolve target position from routing index.
-		routing_cell = braille.handler.buffer.windowStartPos + gesture.routingIndex
-		if routing_cell < len(braille_to_raw):
-			raw_new = braille_to_raw[routing_cell]
-			new_pos = _get_region_content_pos(region, raw_new)
+		if target_reg_cell < len(braille_to_raw):
+			raw_new = braille_to_raw[target_reg_cell]
+			new_pos = _get_region_content_pos(target_region, raw_new, fallback_buffer=buffer)
 		else:
 			new_pos = size
 
 		log.debug(f"Moving from position {cur_pos} to position {new_pos} (size {size})")
 		if play_beeps:
 			tones.beep(100, 100)
-		if new_pos == 0:
-			keyboardHandler.KeyboardInputGesture.fromName("home").send()
-		elif new_pos >= size:
-			keyboardHandler.KeyboardInputGesture.fromName("end").send()
-		else:
-			if cur_pos > new_pos:
-				key = "leftarrow"
-				nb = cur_pos - new_pos
+		if cur_pos != new_pos:
+			if new_pos == 0:
+				keyboardHandler.KeyboardInputGesture.fromName("home").send()
+			elif new_pos >= size:
+				keyboardHandler.KeyboardInputGesture.fromName("end").send()
 			else:
-				key = "rightarrow"
-				nb = new_pos - cur_pos
-			if nb > 0:
-				gestureKB = keyboardHandler.KeyboardInputGesture.fromName(key)
-				for _ in range(nb):
-					gestureKB.send()
+				if cur_pos > new_pos:
+					key = "leftarrow"
+					nb = cur_pos - new_pos
+				else:
+					key = "rightarrow"
+					nb = new_pos - cur_pos
+				if nb > 0:
+					gestureKB = keyboardHandler.KeyboardInputGesture.fromName(key)
+					for _ in range(nb):
+						gestureKB.send()
 		if play_beeps:
 			tones.beep(150, 100)
+		_speak_routed_character(target_region, target_reg_cell, gesture, obj)
 		return
 	try:
 		braille.handler.routeTo(gesture.routingIndex)
