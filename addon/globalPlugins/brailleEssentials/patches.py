@@ -184,6 +184,45 @@ def _queue_braille_scroll_line_speech() -> None:
 	queueHandler.queueFunction(queueHandler.eventQueue, sayCurrentLine)
 
 
+def _get_region_content_pos(region: Any, raw_pos: int) -> int:
+	"""Return the content position corresponding to a raw text index in region."""
+	raw_to_content = getattr(region, "_rawToContentPos", None)
+	if isinstance(raw_to_content, list) and raw_to_content:
+		if raw_pos < 0:
+			return 0
+		if raw_pos < len(raw_to_content):
+			return raw_to_content[raw_pos]
+		return raw_to_content[-1] + (raw_pos - len(raw_to_content) + 1)
+	return max(0, raw_pos)
+
+
+def _get_region_content_size(region: Any) -> int:
+	"""Return the content length (end of line position) for a region."""
+	current_content = getattr(region, "_currentContentPos", None)
+	if isinstance(current_content, int) and current_content > 0:
+		return current_content
+	raw_to_content = getattr(region, "_rawToContentPos", None)
+	if isinstance(raw_to_content, list) and raw_to_content:
+		raw_text = getattr(region, "rawText", "")
+		if (
+			isinstance(raw_text, str)
+			and raw_text
+			and raw_text[-1] in ("\n", "\r", " ")
+			and len(raw_to_content) == len(raw_text)
+			and len(raw_to_content) > 1
+			and raw_to_content[-1] > raw_to_content[-2]
+		):
+			return raw_to_content[-1]
+		return raw_to_content[-1] + 1
+	raw_text = getattr(region, "rawText", None)
+	if isinstance(raw_text, str):
+		return len(raw_text)
+	braille_to_raw = getattr(region, "brailleToRawPos", None)
+	if isinstance(braille_to_raw, list) and braille_to_raw:
+		return braille_to_raw[-1] + 1
+	return 0
+
+
 def script_braille_routeTo(self, gesture):
 	# Let app modules customize braille routing behavior.
 	obj = api.getNavigatorObject()
@@ -205,16 +244,38 @@ def script_braille_routeTo(self, gesture):
 		and obj.role in [get_control_type("ROLE_TERMINAL"), get_control_type("ROLE_EDITABLETEXT")]
 	):
 		play_beeps = config.conf["brailleEssentials"]["routingCursorsEditFields"] == RC_EMULATE_ARROWS_BEEP
-		nb = 0
-		key = "rightarrow"
 		region = braille.handler.mainBuffer
-		cur_pos = region.brailleToRawPos[region.cursorPos]
-		size = region.brailleToRawPos[-1]
-		try:
-			new_pos = region.brailleToRawPos[braille.handler.buffer.windowStartPos + gesture.routingIndex]
-		except IndexError:
+		braille_to_raw = getattr(region, "brailleToRawPos", None)
+		if not isinstance(braille_to_raw, list) or not braille_to_raw:
+			try:
+				braille.handler.routeTo(gesture.routingIndex)
+			except LookupError:
+				pass
+			return
+
+		# Resolve current cursor position in content coordinates.
+		if isinstance(region.cursorPos, int):
+			raw_cur = region.cursorPos
+		elif (
+			getattr(region, "brailleCursorPos", None) is not None
+			and 0 <= region.brailleCursorPos < len(braille_to_raw)
+		):
+			raw_cur = braille_to_raw[region.brailleCursorPos]
+		else:
+			raw_cur = 0
+		cur_pos = _get_region_content_pos(region, raw_cur)
+
+		size = _get_region_content_size(region)
+
+		# Resolve target position from routing index.
+		routing_cell = braille.handler.buffer.windowStartPos + gesture.routingIndex
+		if routing_cell < len(braille_to_raw):
+			raw_new = braille_to_raw[routing_cell]
+			new_pos = _get_region_content_pos(region, raw_new)
+		else:
 			new_pos = size
-		log.debug(f"Moving from position {cur_pos} to position {new_pos}")
+
+		log.debug(f"Moving from position {cur_pos} to position {new_pos} (size {size})")
 		if play_beeps:
 			tones.beep(100, 100)
 		if new_pos == 0:
@@ -226,12 +287,12 @@ def script_braille_routeTo(self, gesture):
 				key = "leftarrow"
 				nb = cur_pos - new_pos
 			else:
+				key = "rightarrow"
 				nb = new_pos - cur_pos
-			i = 0
-			gestureKB = keyboardHandler.KeyboardInputGesture.fromName(key)
-			while i < nb:
-				gestureKB.send()
-				i += 1
+			if nb > 0:
+				gestureKB = keyboardHandler.KeyboardInputGesture.fromName(key)
+				for _ in range(nb):
+					gestureKB.send()
 		if play_beeps:
 			tones.beep(150, 100)
 		return
@@ -336,7 +397,7 @@ def _mark_selected_element(region) -> None:
 def _expand_region_tabs(region: Any) -> None:
 	"""Expand tab characters into spaces across any Region subclass.
 
-	Batch-replaces tabs with configured space widths and updates
+	Replaces tabs with configured space widths and updates
 	rawTextTypeforms, _rawToContentPos, cursorPos, selection, and
 	brlex_typeforms formatting markers without assuming TextInfoRegion internals.
 	"""
@@ -350,45 +411,51 @@ def _expand_region_tabs(region: Any) -> None:
 	spaces = " " * tab_size
 	space_diff = tab_size - 1
 
-	parts = raw_text.split("\t")
 	region.rawText = raw_text.replace("\t", spaces)
 
 	typeforms = getattr(region, "rawTextTypeforms", None)
 	if isinstance(typeforms, list) and typeforms:
 		new_typeforms: list[int] = []
-		idx = 0
-		for part in parts[:-1]:
-			part_len = len(part)
-			if part_len:
-				new_typeforms.extend(typeforms[idx : idx + part_len])
-				idx += part_len
-			tf = typeforms[idx] if idx < len(typeforms) else louis.plain_text
-			new_typeforms.extend([tf] * tab_size)
-			idx += 1
-		last_part = parts[-1]
-		if last_part:
-			new_typeforms.extend(typeforms[idx : idx + len(last_part)])
+		for orig_idx, ch in enumerate(raw_text):
+			tf = typeforms[orig_idx] if orig_idx < len(typeforms) else louis.plain_text
+			if ch == "\t":
+				new_typeforms.extend([tf] * tab_size)
+			else:
+				new_typeforms.append(tf)
 		region.rawTextTypeforms = new_typeforms
 
-	raw_to_content = getattr(region, "_rawToContentPos", None)
-	if isinstance(raw_to_content, list) and raw_to_content:
+	if hasattr(region, "_rawToContentPos"):
+		raw_to_content = getattr(region, "_rawToContentPos", None)
 		new_raw_to_content: list[int] = []
-		idx = 0
-		for part in parts[:-1]:
-			part_len = len(part)
-			if part_len:
-				new_raw_to_content.extend(raw_to_content[idx : idx + part_len])
-				idx += part_len
-			cp = raw_to_content[idx] if idx < len(raw_to_content) else 0
-			new_raw_to_content.extend([cp] * tab_size)
-			idx += 1
-		last_part = parts[-1]
-		if last_part:
-			new_raw_to_content.extend(raw_to_content[idx : idx + len(last_part)])
+		has_existing_map = isinstance(raw_to_content, list) and len(raw_to_content) > 0
+		orig_idx = 0
+		for ch in raw_text:
+			if has_existing_map:
+				if orig_idx < len(raw_to_content):
+					cp = raw_to_content[orig_idx]
+				else:
+					cp = raw_to_content[-1] + (orig_idx - len(raw_to_content) + 1)
+			else:
+				cp = orig_idx
+			if ch == "\t":
+				new_raw_to_content.extend([cp] * tab_size)
+			else:
+				new_raw_to_content.append(cp)
+			orig_idx += 1
 		region._rawToContentPos = new_raw_to_content
 
 	if isinstance(region.cursorPos, int) and region.cursorPos >= 0:
 		region.cursorPos += raw_text[: region.cursorPos].count("\t") * space_diff
+		raw_to_content = getattr(region, "_rawToContentPos", None)
+		if (
+			isinstance(raw_to_content, list)
+			and 0 <= region.cursorPos < len(raw_to_content)
+		):
+			target_content = raw_to_content[region.cursorPos]
+			initial_raw = raw_to_content.index(target_content)
+			if initial_raw < region.cursorPos:
+				region.cursorPos = initial_raw
+
 	if isinstance(region.selectionStart, int) and region.selectionStart >= 0:
 		region.selectionStart += raw_text[: region.selectionStart].count("\t") * space_diff
 	if isinstance(region.selectionEnd, int) and region.selectionEnd >= 0:
@@ -983,23 +1050,13 @@ def _addTextWithFields(
 				expanded = command.replace("\t", spaces)
 				self.rawText += expanded
 				self.rawTextTypeforms.extend((typeform,) * len(expanded))
-				parts = command.split("\t")
-				for part in parts[:-1]:
-					part_len = len(part)
-					if part_len:
-						self._rawToContentPos.extend(
-							range(self._currentContentPos, self._currentContentPos + part_len)
-						)
-						self._currentContentPos += part_len
-					self._rawToContentPos.extend([self._currentContentPos] * tab_size)
-					self._currentContentPos += 1
-				last_part = parts[-1]
-				if last_part:
-					last_len = len(last_part)
-					self._rawToContentPos.extend(
-						range(self._currentContentPos, self._currentContentPos + last_len)
-					)
-					self._currentContentPos += last_len
+				for ch in command:
+					if ch == "\t":
+						self._rawToContentPos.extend([self._currentContentPos] * tab_size)
+						self._currentContentPos += 1
+					else:
+						self._rawToContentPos.append(self._currentContentPos)
+						self._currentContentPos += 1
 			else:
 				self.rawText += command
 				command_len = len(command)
@@ -1085,6 +1142,16 @@ def _addTextWithFields(
 			self._endsWithField = True
 	if isSelection and self.selectionStart is None:
 		self.cursorPos = len(self.rawText)
+	if (
+		isinstance(self.cursorPos, int)
+		and hasattr(self, "_rawToContentPos")
+		and isinstance(self._rawToContentPos, list)
+		and 0 <= self.cursorPos < len(self._rawToContentPos)
+	):
+		target_content = self._rawToContentPos[self.cursorPos]
+		initial_raw = self._rawToContentPos.index(target_content)
+		if initial_raw < self.cursorPos:
+			self.cursorPos = initial_raw
 	if not self._skipFieldsNotAtStartOfNode:
 		self._skipFieldsNotAtStartOfNode = True
 	info.obj._brailleFormatFieldAttributesCache = format_field_attributes_cache

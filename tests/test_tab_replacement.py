@@ -175,6 +175,8 @@ class DummyRegion:
 			return louis.bold, 192
 		if isinstance(field, dict) and field.get("italic"):
 			return louis.italic, 64
+		if isinstance(field, dict) and field.get("invalid-spelling"):
+			return louis.plain_text, 192
 		return louis.plain_text, 0
 
 	def _addFieldText(self, text, contentPos, separate=True):
@@ -851,3 +853,394 @@ class TestRegionSubclassesScope:
 		assert region.cursorPos is None
 		assert region.selectionStart is None
 		assert region.selectionEnd is None
+
+
+class TestCursorRoutingOnTabSpaces:
+	"""Tests for cursor routing on intermediate spaces of tabs and initial position alignment."""
+
+	def _setup_routing_env(self, region, mode=patches.RC_EMULATE_ARROWS_SILENT):
+		test_conf["brailleEssentials"]["tabSpace"] = True
+		test_conf["brailleEssentials"]["routingCursorsEditFields"] = mode
+
+		obj = sys.modules["api"].getNavigatorObject()
+		obj.appModule = MagicMock(spec=[])
+		obj.hasFocus = True
+		obj.role = patches.get_control_type("ROLE_EDITABLETEXT")
+
+		sys.modules["braille"].handler.getTether.return_value = 0
+		sys.modules["braille"].handler.buffer = sys.modules["braille"].handler.mainBuffer = region
+		sys.modules["braille"].handler.buffer.windowStartPos = 0
+
+		sent_keys = []
+
+		def mock_from_name(key):
+			m = MagicMock()
+			m.send = lambda: sent_keys.append(key)
+			return m
+
+		sys.modules["keyboardHandler"].KeyboardInputGesture.fromName = mock_from_name
+		return sent_keys
+
+	def test_routing_on_intermediate_spaces_maps_to_tab_content_position(self):
+		test_conf["brailleEssentials"]["tabSpace"] = True
+		addoncfg.curBD = "test_display"
+		test_conf["brailleEssentials"][f"tabSize_{addoncfg.curBD}"] = 4
+
+		region = DummyRegion()
+		patches._addTextWithFields(region, DummyTextInfo(["j\tp"]), {})
+
+		# "j" followed by 4 spaces and "p" -> len 6
+		assert region.rawText == "j    p"
+		assert region._rawToContentPos == [0, 1, 1, 1, 1, 2]
+
+		# Any space of the tab (indices 1, 2, 3, 4) must map to content offset 1 (the tab)
+		for raw_idx in (1, 2, 3, 4):
+			assert patches._get_region_content_pos(region, raw_idx) == 1
+
+	def test_cursor_on_tab_snaps_to_initial_tab_cell(self):
+		test_conf["brailleEssentials"]["tabSpace"] = True
+		addoncfg.curBD = "test_display"
+		test_conf["brailleEssentials"][f"tabSize_{addoncfg.curBD}"] = 4
+
+		# Region with cursor positioned at intermediate space cell 3 of tab
+		region = DummyRegion()
+		region.rawText = "j    p"
+		region._rawToContentPos = [0, 1, 1, 1, 1, 2]
+		region.cursorPos = 3  # third space of tab
+
+		# Call _expand_region_tabs (or simulate update snapping)
+		# Directly verify snapping logic when cursorPos is in intermediate tab spacing
+		target_content = region._rawToContentPos[region.cursorPos]
+		initial_raw = region._rawToContentPos.index(target_content)
+		assert initial_raw == 1
+
+		# Verify update_region with tab expansion snaps cursorPos to initial cell 1
+		region_update = DummyRegion()
+		region_update.rawText = "j\tp"
+		region_update.cursorPos = 1  # on tab
+		region_update._rawToContentPos = [0, 1, 2]
+
+		mock_translate_result = ([0] * 6, list(range(6)), list(range(6)), 1)
+		sys.modules["louisHelper"].translate = MagicMock(return_value=mock_translate_result)
+
+		patches.update_region(region_update)
+		assert region_update.rawText == "j    p"
+		assert region_update.cursorPos == 1  # Initial cell of the tab
+
+	def test_arrow_emulation_routing_on_intermediate_space_sends_single_step(self):
+		region = DummyRegion()
+		region.rawText = "j    p"
+		region._rawToContentPos = [0, 1, 1, 1, 1, 2]
+		region._currentContentPos = 3
+		region.cursorPos = 0  # At 'j'
+		region.brailleToRawPos = [0, 1, 2, 3, 4, 5]
+
+		sent_keys = self._setup_routing_env(region)
+
+		# Route to cell 1 (beginning of tab)
+		g1 = MagicMock()
+		g1.routingIndex = 1
+		patches.script_braille_routeTo(None, g1)
+		assert sent_keys == ["rightarrow"]
+
+		# Route to cell 2 (second space of tab)
+		sent_keys.clear()
+		g2 = MagicMock()
+		g2.routingIndex = 2
+		patches.script_braille_routeTo(None, g2)
+		assert sent_keys == ["rightarrow"]
+
+		# Route to cell 4 (fourth space of tab)
+		sent_keys.clear()
+		g4 = MagicMock()
+		g4.routingIndex = 4
+		patches.script_braille_routeTo(None, g4)
+		assert sent_keys == ["rightarrow"]
+
+		# Route to cell 5 ('p')
+		sent_keys.clear()
+		g5 = MagicMock()
+		g5.routingIndex = 5
+		patches.script_braille_routeTo(None, g5)
+		assert sent_keys == ["rightarrow", "rightarrow"]
+
+	def test_arrow_emulation_routing_on_same_tab_sends_zero_steps(self):
+		region = DummyRegion()
+		region.rawText = "j    p"
+		region._rawToContentPos = [0, 1, 1, 1, 1, 2]
+		region._currentContentPos = 3
+		region.cursorPos = 1  # Already on tab
+		region.brailleToRawPos = [0, 1, 2, 3, 4, 5]
+
+		sent_keys = self._setup_routing_env(region)
+
+		# Route to cell 3 (third space of same tab)
+		g = MagicMock()
+		g.routingIndex = 3
+		patches.script_braille_routeTo(None, g)
+		assert sent_keys == []
+
+	def test_arrow_emulation_beep_mode_triggers_beeps(self):
+		region = DummyRegion()
+		region.rawText = "j    p"
+		region._rawToContentPos = [0, 1, 1, 1, 1, 2]
+		region._currentContentPos = 3
+		region.cursorPos = 0
+		region.brailleToRawPos = [0, 1, 2, 3, 4, 5]
+
+		self._setup_routing_env(region, mode=patches.RC_EMULATE_ARROWS_BEEP)
+		sys.modules["tones"].beep.reset_mock()
+
+		g = MagicMock()
+		g.routingIndex = 1
+		patches.script_braille_routeTo(None, g)
+		assert sys.modules["tones"].beep.call_count == 2
+
+
+class TestTrailingTabsRoutingAndBoundaries:
+	"""Tests specifically covering trailing tabs such as 'j\\tp\\t' and boundary triggers."""
+
+	def _setup_routing_env(self, region):
+		test_conf["brailleEssentials"]["tabSpace"] = True
+		test_conf["brailleEssentials"]["routingCursorsEditFields"] = patches.RC_EMULATE_ARROWS_SILENT
+
+		obj = sys.modules["api"].getNavigatorObject()
+		obj.appModule = MagicMock(spec=[])
+		obj.hasFocus = True
+		obj.role = patches.get_control_type("ROLE_EDITABLETEXT")
+
+		sys.modules["braille"].handler.getTether.return_value = 0
+		sys.modules["braille"].handler.buffer = sys.modules["braille"].handler.mainBuffer = region
+		sys.modules["braille"].handler.buffer.windowStartPos = 0
+
+		sent_keys = []
+
+		def mock_from_name(key):
+			m = MagicMock()
+			m.send = lambda: sent_keys.append(key)
+			return m
+
+		sys.modules["keyboardHandler"].KeyboardInputGesture.fromName = mock_from_name
+		return sent_keys
+
+	def test_trailing_tab_string_content_mapping(self):
+		test_conf["brailleEssentials"]["tabSpace"] = True
+		addoncfg.curBD = "test_display"
+		test_conf["brailleEssentials"][f"tabSize_{addoncfg.curBD}"] = 2
+
+		region = DummyRegion()
+		patches._addTextWithFields(region, DummyTextInfo(["j\tp\t"]), {})
+
+		assert region.rawText == "j  p  "
+		assert region._rawToContentPos == [0, 1, 1, 2, 3, 3]
+		assert region._currentContentPos == 4
+
+		# Neither trailing tab space should map to 0 (which would jump to start of line)
+		assert patches._get_region_content_pos(region, 4) == 3
+		assert patches._get_region_content_pos(region, 5) == 3
+
+	def test_trailing_tab_size_calculation(self):
+		region = DummyRegion()
+		region.rawText = "j  p  "
+		region._rawToContentPos = [0, 1, 1, 2, 3, 3]
+		region._currentContentPos = 4
+
+		# Content size must be 4 (end of line position), not 3 (trailing tab)
+		assert patches._get_region_content_size(region) == 4
+
+	def test_routing_to_trailing_tab_spaces_from_p(self):
+		region = DummyRegion()
+		region.rawText = "j  p  "
+		region._rawToContentPos = [0, 1, 1, 2, 3, 3]
+		region._currentContentPos = 4
+		region.cursorPos = 3  # at 'p' (content pos 2)
+		region.brailleToRawPos = [0, 1, 2, 3, 4, 5]
+
+		sent_keys = self._setup_routing_env(region)
+
+		# Route to cell 4 (space 1 of trailing tab) -> must send 1 rightarrow, NOT 'end'
+		g4 = MagicMock()
+		g4.routingIndex = 4
+		patches.script_braille_routeTo(None, g4)
+		assert sent_keys == ["rightarrow"]
+
+		# Route to cell 5 (space 2 of trailing tab) -> must send 1 rightarrow, NOT 'end'
+		sent_keys.clear()
+		g5 = MagicMock()
+		g5.routingIndex = 5
+		patches.script_braille_routeTo(None, g5)
+		assert sent_keys == ["rightarrow"]
+
+	def test_routing_beyond_trailing_tab_sends_end(self):
+		region = DummyRegion()
+		region.rawText = "j  p  "
+		region._rawToContentPos = [0, 1, 1, 2, 3, 3]
+		region._currentContentPos = 4
+		region.cursorPos = 0
+		region.brailleToRawPos = [0, 1, 2, 3, 4, 5]
+
+		sent_keys = self._setup_routing_env(region)
+
+		# Route to cell 6 (beyond display cells of text) -> sends 'end'
+		g = MagicMock()
+		g.routingIndex = 6
+		patches.script_braille_routeTo(None, g)
+		assert sent_keys == ["end"]
+
+	def test_routing_from_trailing_tab_backward(self):
+		region = DummyRegion()
+		region.rawText = "j  p  "
+		region._rawToContentPos = [0, 1, 1, 2, 3, 3]
+		region._currentContentPos = 4
+		region.cursorPos = 4  # on trailing tab (content pos 3)
+		region.brailleToRawPos = [0, 1, 2, 3, 4, 5]
+
+		sent_keys = self._setup_routing_env(region)
+
+		# Route to cell 3 ('p')
+		g3 = MagicMock()
+		g3.routingIndex = 3
+		patches.script_braille_routeTo(None, g3)
+		assert sent_keys == ["leftarrow"]
+
+		# Route to cell 1 (tab 1)
+		sent_keys.clear()
+		g1 = MagicMock()
+		g1.routingIndex = 1
+		patches.script_braille_routeTo(None, g1)
+		assert sent_keys == ["leftarrow", "leftarrow"]
+
+		# Route to cell 0 ('j') -> sends 'home'
+		sent_keys.clear()
+		g0 = MagicMock()
+		g0.routingIndex = 0
+		patches.script_braille_routeTo(None, g0)
+		assert sent_keys == ["home"]
+
+	def test_multiple_trailing_tabs(self):
+		test_conf["brailleEssentials"]["tabSpace"] = True
+		addoncfg.curBD = "test_display"
+		test_conf["brailleEssentials"][f"tabSize_{addoncfg.curBD}"] = 2
+
+		region = DummyRegion()
+		patches._addTextWithFields(region, DummyTextInfo(["j\tp\t\t"]), {})
+
+		assert region.rawText == "j  p    "
+		assert region._rawToContentPos == [0, 1, 1, 2, 3, 3, 4, 4]
+		assert region._currentContentPos == 5
+		assert patches._get_region_content_pos(region, 6) == 4
+		assert patches._get_region_content_pos(region, 7) == 4
+
+	def test_trailing_tab_in_expand_region_tabs_does_not_fall_back_to_zero(self):
+		test_conf["brailleEssentials"]["tabSpace"] = True
+		addoncfg.curBD = "test_display"
+		test_conf["brailleEssentials"][f"tabSize_{addoncfg.curBD}"] = 2
+
+		class RegionWithContentPos:
+			def __init__(self):
+				self.rawText = "j\tp\t"
+				self._rawToContentPos = [0, 1, 2, 3]
+				self.cursorPos = 3
+				self.selectionStart = None
+				self.selectionEnd = None
+				self.brailleCells = []
+				self.rawToBraillePos = []
+				self.brailleToRawPos = []
+				self.brailleCursorPos = None
+
+		region = RegionWithContentPos()
+		mock_translate_result = ([0] * 6, list(range(6)), list(range(6)), 4)
+		sys.modules["louisHelper"].translate = MagicMock(return_value=mock_translate_result)
+
+		patches.update_region(region)
+
+		assert region.rawText == "j  p  "
+		assert region._rawToContentPos == [0, 1, 1, 2, 3, 3]
+		# Trailing tab cursorPos was 3 -> 3 + 1 = 4 (initial cell of trailing tab)
+		assert region.cursorPos == 4
+
+
+class TestDynamicFormattingMarkersAndSpellingErrors:
+	"""Tests verifying dynamic formatting markers (such as spelling errors) are preserved without distortion."""
+
+	def test_dynamic_spelling_error_appearance_and_removal(self):
+		test_conf["brailleEssentials"]["tabSpace"] = True
+		addoncfg.curBD = "test_display"
+		test_conf["brailleEssentials"][f"tabSize_{addoncfg.curBD}"] = 4
+
+		# 1. Spelling error dynamically present
+		region_err = DummyRegion()
+		commands_err = [
+			"\t",
+			MockFieldCommand("formatChange", {"invalid-spelling": True}),
+			"mispelled",
+			MockFieldCommand("formatChange", {"invalid-spelling": False}),
+			" normal",
+		]
+		patches._addTextWithFields(region_err, DummyTextInfo(commands_err), defaultdict(bool))
+
+		assert region_err.rawText == "    mispelled normal"
+		assert 4 in region_err.brlex_typeforms
+		# Error mask is active starting at raw offset 4 (after 4 tab spaces)
+		assert region_err.brlex_typeforms[4] != 0
+		# Error mask turns off at 4 + len("mispelled") = 13
+		assert 13 in region_err.brlex_typeforms
+		assert region_err.brlex_typeforms[13] == 0
+
+		# 2. Spelling error fixed dynamically
+		region_fixed = DummyRegion()
+		commands_fixed = [
+			"\t",
+			MockFieldCommand("formatChange", {"invalid-spelling": False}),
+			"corrected",
+			" normal",
+		]
+		patches._addTextWithFields(region_fixed, DummyTextInfo(commands_fixed), defaultdict(bool))
+		assert region_fixed.rawText == "    corrected normal"
+		# No active error masks
+		for mask in region_fixed.brlex_typeforms.values():
+			assert mask == 0
+
+	def test_spelling_error_spanning_tab(self):
+		test_conf["brailleEssentials"]["tabSpace"] = True
+		addoncfg.curBD = "test_display"
+		test_conf["brailleEssentials"][f"tabSize_{addoncfg.curBD}"] = 2
+
+		region = DummyRegion()
+		commands = [
+			MockFieldCommand("formatChange", {"invalid-spelling": True}),
+			"bad\tword",
+			MockFieldCommand("formatChange", {"invalid-spelling": False}),
+		]
+		patches._addTextWithFields(region, DummyTextInfo(commands), defaultdict(bool))
+
+		assert region.rawText == "bad  word"
+		assert 0 in region.brlex_typeforms
+		assert region.brlex_typeforms[0] != 0
+		assert 9 in region.brlex_typeforms
+		assert region.brlex_typeforms[9] == 0
+
+	def test_spelling_error_on_trailing_tab(self):
+		test_conf["brailleEssentials"]["tabSpace"] = True
+		addoncfg.curBD = "test_display"
+		test_conf["brailleEssentials"][f"tabSize_{addoncfg.curBD}"] = 2
+
+		region = DummyRegion()
+		commands = [
+			"prefix ",
+			MockFieldCommand("formatChange", {"invalid-spelling": True}),
+			"err\t",
+			MockFieldCommand("formatChange", {"invalid-spelling": False}),
+		]
+		patches._addTextWithFields(region, DummyTextInfo(commands), defaultdict(bool))
+
+		assert region.rawText == "prefix err  "
+		assert 7 in region.brlex_typeforms
+		assert region.brlex_typeforms[7] != 0
+		assert 12 in region.brlex_typeforms
+		assert region.brlex_typeforms[12] == 0
+
+	def test_ia2_dynamic_spelling_format_field_normalization(self):
+		field = {"invalid": "spelling"}
+		patches._prepare_format_field_for_braille(field)
+		assert field.get("invalid-spelling") is True
