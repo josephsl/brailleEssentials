@@ -203,6 +203,7 @@ class DummyTextInfo:
 		self._commands = commands
 		self.isCollapsed = is_collapsed
 		self.obj = MagicMock()
+		self.obj._brailleFormatFieldAttributesCache = {}
 
 	def getTextWithFields(self, formatConfig=None):
 		return self._commands
@@ -926,11 +927,9 @@ class TestCursorRoutingOnTabSpaces:
 		region._rawToContentPos = [0, 1, 1, 1, 1, 2]
 		region.cursorPos = 3  # third space of tab
 
-		# Call _expand_region_tabs (or simulate update snapping)
-		# Directly verify snapping logic when cursorPos is in intermediate tab spacing
-		target_content = region._rawToContentPos[region.cursorPos]
-		initial_raw = region._rawToContentPos.index(target_content)
-		assert initial_raw == 1
+		# Verify snapping helper directly snaps intermediate space to initial space of tab
+		patches._snap_cursor_to_initial_tab_cell(region)
+		assert region.cursorPos == 1
 
 		# Verify update_region with tab expansion snaps cursorPos to initial cell 1
 		region_update = DummyRegion()
@@ -1652,3 +1651,336 @@ class TestRoutingSpeechAnnouncements:
 		g.routingIndex = 1
 		patches.script_braille_routeTo(None, g)
 		assert sys.modules["speech"].spellTextInfo.call_count == 0
+
+
+class TestFormatAndFieldMarkersCursorPlacement:
+	"""Tests verifying cursor lands on actual text characters, never on format or field markers."""
+
+	@pytest.mark.parametrize("tab_enabled", [True, False])
+	def test_heading_marker_cursor_on_first_letter(self, tab_enabled):
+		test_conf["brailleEssentials"]["tabSpace"] = tab_enabled
+		fc = defaultdict(bool)
+		fc["reportHeadings"] = True
+
+		region = DummyRegion()
+		# Caret at start of line
+		region.cursorPos = 0
+		commands = [
+			MockFieldCommand("formatChange", {"heading-level": 1}),
+			"Title",
+		]
+		patches._addTextWithFields(region, DummyTextInfo(commands), fc)
+
+		assert region.rawText == "h1 Title"
+		# Caret must be on 'T' (offset 3), not on 'h' or '1'
+		assert region.cursorPos == 3
+		assert region.rawText[region.cursorPos] == "T"
+
+	@pytest.mark.parametrize("tab_enabled", [True, False])
+	def test_link_marker_cursor_on_first_letter(self, tab_enabled):
+		test_conf["brailleEssentials"]["tabSpace"] = tab_enabled
+		patches.brailleapi.roleLabels.__getitem__.return_value = "lnk"
+		fc = defaultdict(bool)
+		fc["reportLinks"] = True
+
+		region = DummyRegion()
+		region.cursorPos = 0
+		commands = [
+			MockFieldCommand("formatChange", {"link": "https://example.com"}),
+			"LinkText",
+		]
+		patches._addTextWithFields(region, DummyTextInfo(commands), fc)
+
+		assert region.rawText == "lnk LinkText"
+		# Caret must be on 'L' (offset 4), not on marker
+		assert region.cursorPos == 4
+		assert region.rawText[region.cursorPos] == "L"
+
+	@pytest.mark.parametrize("tab_enabled", [True, False])
+	def test_bold_marker_cursor_on_first_letter(self, tab_enabled):
+		test_conf["brailleEssentials"]["tabSpace"] = tab_enabled
+		from brailleEssentials.documentformatting import TAG_FORMATTING, _tags, conf as doc_conf
+		_tags["bold"] = TAG_FORMATTING(start="<b>", end="</b>")
+		doc_conf["methods"]["bold"] = patches.CHOICE_tags
+		fc = defaultdict(bool)
+		fc["reportFontAttributes"] = True
+
+		region = DummyRegion()
+		region.cursorPos = 0
+		commands = [
+			MockFieldCommand("formatChange", {"bold": True}),
+			"BoldText",
+		]
+		patches._addTextWithFields(region, DummyTextInfo(commands), fc)
+
+		assert region.rawText == "<b>BoldText"
+		# Caret must be on 'B' (offset 3), not on opening tag '<'
+		assert region.cursorPos == 3
+		assert region.rawText[region.cursorPos] == "B"
+
+	@pytest.mark.parametrize("tab_enabled", [True, False])
+	def test_spelling_marker_cursor_on_first_letter(self, tab_enabled):
+		test_conf["brailleEssentials"]["tabSpace"] = tab_enabled
+		from brailleEssentials.documentformatting import TAG_FORMATTING, _tags, conf as doc_conf
+		_tags["invalid-spelling"] = TAG_FORMATTING(start="<sp>", end="</sp>")
+		doc_conf["methods"]["invalid-spelling"] = patches.CHOICE_tags
+		fc = defaultdict(bool)
+		fc["reportSpellingErrors"] = True
+
+		region = DummyRegion()
+		region.cursorPos = 0
+		commands = [
+			MockFieldCommand("formatChange", {"invalid-spelling": True}),
+			"mispelled",
+		]
+		patches._addTextWithFields(region, DummyTextInfo(commands), fc)
+
+		assert region.rawText == "<sp>mispelled"
+		# Caret must be on 'm' (offset 4), not on opening tag '<'
+		assert region.cursorPos == 4
+		assert region.rawText[region.cursorPos] == "m"
+
+	@pytest.mark.parametrize("tab_enabled", [True, False])
+	def test_enclosing_spelling_marker_before_punctuation(self, tab_enabled):
+		"""When misspelled word ends and is followed by punctuation (e.g. comma),
+
+		caret on comma must land on the comma, not on the closing marker.
+		"""
+		test_conf["brailleEssentials"]["tabSpace"] = tab_enabled
+		from brailleEssentials.documentformatting import TAG_FORMATTING, _tags, conf as doc_conf
+		_tags["invalid-spelling"] = TAG_FORMATTING(start="<sp>", end="</sp>")
+		doc_conf["methods"]["invalid-spelling"] = patches.CHOICE_tags
+		fc = defaultdict(bool)
+		fc["reportSpellingErrors"] = True
+
+		# Emulate NVDA three-chunk sequence for line with caret on comma after misspelled word
+		region = DummyRegion()
+		# Chunk 1: text before caret ("aple" with invalid-spelling True)
+		info1 = DummyTextInfo([
+			MockFieldCommand("formatChange", {"invalid-spelling": True}),
+			"aple",
+		])
+		patches._addTextWithFields(region, info1, fc, isSelection=False)
+
+		# Chunk 2: caret at comma (collapsed)
+		info2 = DummyTextInfo([], is_collapsed=True)
+		patches._addTextWithFields(region, info2, fc, isSelection=True)
+		assert region.cursorPos == len(region.rawText)
+
+		# Chunk 3: text after caret (closing spelling tag, then comma)
+		info3 = DummyTextInfo([
+			MockFieldCommand("formatChange", {"invalid-spelling": False}),
+			",",
+		])
+		info3.obj._brailleFormatFieldAttributesCache = dict(info1.obj._brailleFormatFieldAttributesCache)
+		patches._addTextWithFields(region, info3, fc, isSelection=False)
+
+		assert region.rawText == "<sp>aple</sp>,"
+		# Caret must be on ',' (offset 13), not on the closing marker '</sp>' (offset 8)
+		assert region.cursorPos == 13
+		assert region.rawText[region.cursorPos] == ","
+
+	def test_tab_preceded_by_format_marker_intermediate_space_snaps_to_tab(self):
+		test_conf["brailleEssentials"]["tabSpace"] = True
+		addoncfg.curBD = "test_display"
+		test_conf["brailleEssentials"][f"tabSize_{addoncfg.curBD}"] = 4
+		fc = defaultdict(bool)
+		fc["reportHeadings"] = True
+
+		region = DummyRegion()
+		# Caret is at intermediate space cell 5 (heading is 0..2, tab spaces are 3, 4, 5, 6)
+		region.cursorPos = 5
+		commands = [
+			MockFieldCommand("formatChange", {"heading-level": 1}),
+			"\tCallable",
+		]
+		patches._addTextWithFields(region, DummyTextInfo(commands), fc)
+
+		assert region.rawText == "h1     Callable"
+		# Intermediate space 5 must snap to initial tab space (offset 3), NEVER to heading marker (offset 0)
+		assert region.cursorPos == 3
+		assert region.rawText[region.cursorPos] == " "
+
+	def test_tab_preceded_by_format_marker_letter_cursor_stays_on_letter(self):
+		test_conf["brailleEssentials"]["tabSpace"] = True
+		addoncfg.curBD = "test_display"
+		test_conf["brailleEssentials"][f"tabSize_{addoncfg.curBD}"] = 4
+		fc = defaultdict(bool)
+		fc["reportHeadings"] = True
+
+		# Emulate caret on 'C' (after tab)
+		region = DummyRegion()
+		# Chunk 1: heading + tab
+		info1 = DummyTextInfo([
+			MockFieldCommand("formatChange", {"heading-level": 1}),
+			"\t",
+		])
+		patches._addTextWithFields(region, info1, fc, isSelection=False)
+
+		# Chunk 2: caret at 'C'
+		info2 = DummyTextInfo([], is_collapsed=True)
+		patches._addTextWithFields(region, info2, fc, isSelection=True)
+		assert region.cursorPos == len(region.rawText)
+
+		# Chunk 3: text after caret ("Callable")
+		info3 = DummyTextInfo(["Callable"])
+		patches._addTextWithFields(region, info3, fc, isSelection=False)
+
+		assert region.rawText == "h1     Callable"
+		# Heading is "h1 " (0..2), tab is "    " (3..6), "Callable" starts at offset 7
+		assert region.cursorPos == 7
+		assert region.rawText[region.cursorPos] == "C"
+
+
+class TestCrossRegionRoutingGuard:
+	"""Tests verifying routing between different regions falls back to standard routeTo directly."""
+
+	def _setup_multi_region_env(self):
+		test_conf["brailleEssentials"]["routingCursorsEditFields"] = patches.RC_EMULATE_ARROWS_SILENT
+
+		navigator_obj = MagicMock()
+		navigator_obj.hasFocus = True
+		navigator_obj.role = patches.get_control_type("ROLE_EDITABLETEXT")
+		navigator_obj.appModule = MagicMock()
+		del navigator_obj.appModule.script_braille_routeTo
+		sys.modules["api"].getNavigatorObject.return_value = navigator_obj
+
+		label_region = DummyRegion()
+		label_region.rawText = "Name: "
+		label_region.brailleCells = [0] * len(label_region.rawText)
+		label_region.brailleToRawPos = list(range(len(label_region.rawText)))
+		label_region.rawToBraillePos = list(range(len(label_region.rawText)))
+
+		edit_region = DummyRegion()
+		edit_region.rawText = "admin"
+		edit_region.cursorPos = 2
+		edit_region.brailleCells = [0] * len(edit_region.rawText)
+		edit_region.brailleToRawPos = list(range(len(edit_region.rawText)))
+		edit_region.rawToBraillePos = list(range(len(edit_region.rawText)))
+
+		main_buffer = MagicMock()
+		main_buffer.cursorPos = 8  # Points inside edit_region (6 label cells + 2 in edit)
+		main_buffer.windowStartPos = 0
+		main_buffer.regions = [label_region, edit_region]
+		main_buffer.regionsWithPositions = [
+			(label_region, 0, len(label_region.brailleCells)),
+			(edit_region, len(label_region.brailleCells), len(label_region.brailleCells) + len(edit_region.brailleCells)),
+		]
+
+		def buffer_pos_to_reg_pos(cell_idx):
+			if cell_idx < len(label_region.brailleCells):
+				return label_region, cell_idx
+			return edit_region, cell_idx - len(label_region.brailleCells)
+
+		main_buffer.bufferPosToRegionPos = MagicMock(side_effect=buffer_pos_to_reg_pos)
+
+		sys.modules["braille"].handler.buffer = main_buffer
+		sys.modules["braille"].handler.mainBuffer = main_buffer
+		sys.modules["braille"].handler.routeTo = MagicMock()
+
+		sent_keys = []
+
+		def mock_from_name(key):
+			inst = MagicMock()
+			inst.name = key
+			inst.send = lambda: sent_keys.append(key)
+			return inst
+
+		sys.modules["keyboardHandler"].KeyboardInputGesture.fromName = mock_from_name
+		return label_region, edit_region, main_buffer, sent_keys
+
+	def test_routing_to_different_region_delegates_to_regular_route_to(self):
+		label_region, edit_region, main_buffer, sent_keys = self._setup_multi_region_env()
+
+		# Route to cell 2 (which is in label_region, while cursor is in edit_region)
+		g = MagicMock()
+		g.routingIndex = 2
+		patches.script_braille_routeTo(None, g)
+
+		# Must delegate directly to standard routeTo without calculating difference or sending arrow keys
+		sys.modules["braille"].handler.routeTo.assert_called_once_with(2)
+		assert len(sent_keys) == 0
+
+	def test_routing_within_same_region_emulates_arrows(self):
+		label_region, edit_region, main_buffer, sent_keys = self._setup_multi_region_env()
+
+		# Route to cell 9 (which is offset 3 in edit_region, cursor is at offset 2)
+		g = MagicMock()
+		g.routingIndex = 9
+
+		patches.script_braille_routeTo(None, g)
+
+		# Since target is within same region, arrows are emulated (1 right arrow)
+		assert sent_keys == ["rightarrow"]
+		sys.modules["braille"].handler.routeTo.assert_not_called()
+
+
+class TestNvda2025CompatibilityGuards:
+	"""Tests verifying all accessed NVDA core APIs are guarded for NVDA 2025.3.3 compatibility."""
+
+	def test_should_speak_on_routing_compatibility_with_missing_keys_or_subdicts(self):
+		# braille key completely absent
+		test_conf.pop("braille", None)
+		assert patches._should_speak_on_routing() is False
+
+		# braille is non-dict
+		test_conf["braille"] = "invalid"
+		assert patches._should_speak_on_routing() is False
+
+		# braille is dict with speakOnRouting=True
+		test_conf["braille"] = {"speakOnRouting": True}
+		assert patches._should_speak_on_routing() is True
+
+	def test_speak_character_on_routing_fallback_to_speak_text_info_when_spell_missing(self):
+		test_conf["braille"] = {"speakOnRouting": True}
+		info = MagicMock()
+		info.copy.return_value = info
+
+		# speech has no spellTextInfo
+		saved_spell = getattr(sys.modules["speech"], "spellTextInfo", None)
+		if hasattr(sys.modules["speech"], "spellTextInfo"):
+			del sys.modules["speech"].spellTextInfo
+		sys.modules["speech"].speakTextInfo = MagicMock()
+
+		try:
+			patches._speak_character_on_routing(info)
+			sys.modules["speech"].speakTextInfo.assert_called_once_with(
+				info, unit=sys.modules["textInfos"].UNIT_CHARACTER
+			)
+		finally:
+			if saved_spell is not None:
+				sys.modules["speech"].spellTextInfo = saved_spell
+
+	def test_speak_routed_character_safe_when_get_text_info_for_window_pos_missing(self):
+		test_conf["braille"] = {"speakOnRouting": True}
+		handler = sys.modules["braille"].handler
+		if hasattr(handler, "getTextInfoForWindowPos"):
+			del handler.getTextInfoForWindowPos
+
+		target_region = DummyRegion()
+		# Region has no getTextInfoForBraillePos
+		target_region.getTextInfoForBraillePos = None
+
+		obj = MagicMock()
+		caret_info = MagicMock()
+		obj.makeTextInfo.return_value = caret_info
+
+		gesture = MagicMock()
+		gesture.routingIndex = 0
+
+		sys.modules["speech"].spellTextInfo = MagicMock()
+		patches._speak_routed_character(target_region, 0, gesture, obj)
+
+		# Falls back to obj.makeTextInfo(POSITION_CARET)
+		obj.makeTextInfo.assert_called_once_with(sys.modules["textInfos"].POSITION_CARET)
+		sys.modules["speech"].spellTextInfo.assert_called_once()
+
+	def test_route_to_safe_when_handler_missing_or_raises_lookup_error(self):
+		handler = sys.modules["braille"].handler
+		handler.routeTo.side_effect = LookupError("Cell not routable")
+
+		gesture = MagicMock()
+		gesture.routingIndex = 0
+
+		# Ensure no exception is raised
+		patches.script_braille_routeTo(None, gesture)
