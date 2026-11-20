@@ -2,13 +2,14 @@
 # patches.py - Part of Braille Essentials (forked from BrailleExtender) Addon for NVDA
 # Copyright 2016-2026 Joseph Lee, André-Abush CLAUSE, released under GPL.
 
+import bisect
 import ctypes
 import os
 import re
 import struct
 import sys
 import time
-from typing import Any
+from typing import Any, Optional
 
 import addonHandler
 import api
@@ -184,6 +185,158 @@ def _queue_braille_scroll_line_speech() -> None:
 	queueHandler.queueFunction(queueHandler.eventQueue, sayCurrentLine)
 
 
+def _get_region_content_pos(region: Any, raw_pos: int, fallback_buffer: Optional[Any] = None) -> int:
+	"""Return the content position corresponding to a raw text index in region."""
+	raw_to_content = getattr(region, "_rawToContentPos", None)
+	if not (isinstance(raw_to_content, list) and raw_to_content) and fallback_buffer is not None:
+		raw_to_content = getattr(fallback_buffer, "_rawToContentPos", None)
+	if isinstance(raw_to_content, list) and raw_to_content:
+		if raw_pos < 0:
+			return 0
+		if raw_pos < len(raw_to_content):
+			return raw_to_content[raw_pos]
+		return raw_to_content[-1] + (raw_pos - len(raw_to_content) + 1)
+	return max(0, raw_pos)
+
+
+def _get_region_content_size(region: Any, fallback_buffer: Optional[Any] = None) -> int:
+	"""Return the content length (end of line position) for a region."""
+	current_content = getattr(region, "_currentContentPos", None)
+	if (not isinstance(current_content, int) or current_content <= 0) and fallback_buffer is not None:
+		current_content = getattr(fallback_buffer, "_currentContentPos", None)
+	if isinstance(current_content, int) and current_content > 0:
+		return current_content
+	raw_to_content = getattr(region, "_rawToContentPos", None)
+	if not (isinstance(raw_to_content, list) and raw_to_content) and fallback_buffer is not None:
+		raw_to_content = getattr(fallback_buffer, "_rawToContentPos", None)
+	if isinstance(raw_to_content, list) and raw_to_content:
+		raw_text = getattr(region, "rawText", "")
+		if not raw_text and fallback_buffer is not None:
+			raw_text = getattr(fallback_buffer, "rawText", "")
+		if (
+			isinstance(raw_text, str)
+			and raw_text
+			and raw_text[-1] in ("\n", "\r", " ")
+			and len(raw_to_content) == len(raw_text)
+			and len(raw_to_content) > 1
+			and raw_to_content[-1] > raw_to_content[-2]
+		):
+			return raw_to_content[-1]
+		return raw_to_content[-1] + 1
+	raw_text = getattr(region, "rawText", None)
+	if not isinstance(raw_text, str) and fallback_buffer is not None:
+		raw_text = getattr(fallback_buffer, "rawText", None)
+	if isinstance(raw_text, str):
+		return len(raw_text)
+	braille_to_raw = getattr(region, "brailleToRawPos", None)
+	if not (isinstance(braille_to_raw, list) and braille_to_raw) and fallback_buffer is not None:
+		braille_to_raw = getattr(fallback_buffer, "brailleToRawPos", None)
+	if isinstance(braille_to_raw, list) and braille_to_raw:
+		return braille_to_raw[-1] + 1
+	return 0
+
+
+def _resolve_buffer_region_and_pos(buffer: Any, cell_index: int) -> tuple[Any, int]:
+	"""Return the (region, cell_offset) corresponding to cell_index in buffer."""
+	if hasattr(buffer, "bufferPosToRegionPos"):
+		try:
+			return buffer.bufferPosToRegionPos(cell_index)
+		except LookupError:
+			pass
+	regions = getattr(buffer, "regions", None)
+	if isinstance(regions, list) and regions:
+		regions_with_positions = getattr(buffer, "regionsWithPositions", None)
+		if regions_with_positions:
+			for reg, start, end in regions_with_positions:
+				if end > cell_index:
+					return reg, max(0, cell_index - start)
+		reg_start = 0
+		for reg in regions:
+			reg_cells = getattr(reg, "brailleCells", None)
+			cell_len = len(reg_cells) if isinstance(reg_cells, list) else 0
+			end = reg_start + cell_len
+			if end > cell_index:
+				return reg, max(0, cell_index - reg_start)
+			reg_start = end
+		last_reg = regions[-1]
+		last_cells = getattr(last_reg, "brailleCells", None)
+		last_len = len(last_cells) if isinstance(last_cells, list) else 0
+		return last_reg, last_len
+	return buffer, cell_index
+
+
+def _should_speak_on_routing() -> bool:
+	"""Check if NVDA's 'Speak character when routing cursor in text' setting is enabled."""
+	try:
+		braille_conf = config.conf.get("braille")
+		if isinstance(braille_conf, dict):
+			return bool(braille_conf.get("speakOnRouting", False))
+		if hasattr(config.conf, "__getitem__"):
+			return bool(config.conf["braille"].get("speakOnRouting", False))
+		return False
+	except (KeyError, AttributeError, TypeError):
+		return False
+
+
+def _speak_character_on_routing(info: Any) -> None:
+	"""Speaks the character at the given TextInfo after routing if speakOnRouting is enabled."""
+	if not _should_speak_on_routing() or info is None:
+		return
+	try:
+		info_to_speak = info.copy() if hasattr(info, "copy") else info
+		if hasattr(info_to_speak, "expand"):
+			info_to_speak.expand(textInfos.UNIT_CHARACTER)
+		spell_func = getattr(speech, "spellTextInfo", None)
+		if spell_func is None:
+			try:
+				from speech.speech import spellTextInfo as spell_func
+			except ImportError:
+				pass
+		if callable(spell_func):
+			spell_func(info_to_speak)
+		elif hasattr(speech, "speakTextInfo"):
+			speech.speakTextInfo(info_to_speak, unit=textInfos.UNIT_CHARACTER)
+	except Exception:
+		pass
+
+
+def _speak_routed_character(
+	target_region: Any,
+	target_reg_cell: int,
+	gesture: Any,
+	obj: Any,
+) -> None:
+	"""Obtain the TextInfo for the routed cell and speak it if speakOnRouting is enabled."""
+	if not _should_speak_on_routing():
+		return
+	info = None
+	# 1. Try target_region.getTextInfoForBraillePos(target_reg_cell)
+	if target_region is not None:
+		get_text_info_reg = getattr(target_region, "getTextInfoForBraillePos", None)
+		if callable(get_text_info_reg):
+			try:
+				info = get_text_info_reg(target_reg_cell)
+			except Exception:
+				info = None
+	# 2. Try braille.handler.getTextInfoForWindowPos(gesture.routingIndex)
+	if info is None:
+		handler = getattr(braille, "handler", None)
+		get_text_info_win = getattr(handler, "getTextInfoForWindowPos", None) if handler else None
+		if callable(get_text_info_win) and hasattr(gesture, "routingIndex"):
+			try:
+				info = get_text_info_win(gesture.routingIndex)
+			except Exception:
+				info = None
+	# 3. Fallback to obj.makeTextInfo
+	if info is None and obj is not None and hasattr(obj, "makeTextInfo"):
+		try:
+			info = obj.makeTextInfo(textInfos.POSITION_CARET)
+		except Exception:
+			info = None
+	if info is not None:
+		_speak_character_on_routing(info)
+
+
 def script_braille_routeTo(self, gesture):
 	# Let app modules customize braille routing behavior.
 	obj = api.getNavigatorObject()
@@ -205,40 +358,112 @@ def script_braille_routeTo(self, gesture):
 		and obj.role in [get_control_type("ROLE_TERMINAL"), get_control_type("ROLE_EDITABLETEXT")]
 	):
 		play_beeps = config.conf["brailleEssentials"]["routingCursorsEditFields"] == RC_EMULATE_ARROWS_BEEP
-		nb = 0
-		key = "rightarrow"
-		region = braille.handler.mainBuffer
-		cur_pos = region.brailleToRawPos[region.cursorPos]
-		size = region.brailleToRawPos[-1]
-		try:
-			new_pos = region.brailleToRawPos[braille.handler.buffer.windowStartPos + gesture.routingIndex]
-		except IndexError:
+		buffer = braille.handler.mainBuffer
+		win_start = getattr(buffer, "windowStartPos", 0) or 0
+		routing_cell = win_start + gesture.routingIndex
+
+		target_region, target_reg_cell = _resolve_buffer_region_and_pos(buffer, routing_cell)
+
+		braille_to_raw = getattr(target_region, "brailleToRawPos", None)
+		if not isinstance(braille_to_raw, list) or not braille_to_raw:
+			braille_to_raw = getattr(buffer, "brailleToRawPos", None)
+		if not isinstance(braille_to_raw, list) or not braille_to_raw:
+			handler = getattr(braille, "handler", None)
+			if handler is not None and hasattr(handler, "routeTo"):
+				try:
+					handler.routeTo(gesture.routingIndex)
+				except LookupError:
+					pass
+			return
+
+		# Resolve current cursor region and position.
+		if hasattr(buffer, "bufferPosToRegionPos"):
+			try:
+				cur_region, cur_reg_cell = buffer.bufferPosToRegionPos(buffer.cursorPos)
+			except LookupError:
+				cur_region, cur_reg_cell = target_region, 0
+		elif hasattr(buffer, "regions") and buffer.regions:
+			cur_region, cur_reg_cell = _resolve_buffer_region_and_pos(buffer, buffer.cursorPos)
+		else:
+			cur_region, cur_reg_cell = buffer, buffer.cursorPos
+
+		# Cross-region guard: if routed cell is in a different region than the cursor
+		# (e.g. text field label or parent object text on the same line), delegate directly to routeTo.
+		if cur_region != target_region:
+			handler = getattr(braille, "handler", None)
+			if handler is not None and hasattr(handler, "routeTo"):
+				try:
+					handler.routeTo(gesture.routingIndex)
+				except LookupError:
+					pass
+			return
+
+		# Resolve raw cursor offset within cur_region.
+		if isinstance(cur_region.cursorPos, int) and not hasattr(cur_region, "bufferPosToRegionPos"):
+			raw_cur = cur_region.cursorPos
+		elif (
+			getattr(cur_region, "brailleCursorPos", None) is not None
+			and hasattr(cur_region, "brailleToRawPos")
+			and isinstance(cur_region.brailleToRawPos, list)
+			and 0 <= cur_region.brailleCursorPos < len(cur_region.brailleToRawPos)
+		):
+			raw_cur = cur_region.brailleToRawPos[cur_region.brailleCursorPos]
+		elif (
+			cur_reg_cell is not None
+			and hasattr(cur_region, "brailleToRawPos")
+			and isinstance(cur_region.brailleToRawPos, list)
+			and 0 <= cur_reg_cell < len(cur_region.brailleToRawPos)
+		):
+			raw_cur = cur_region.brailleToRawPos[cur_reg_cell]
+		elif (
+			hasattr(buffer, "brailleToRawPos")
+			and isinstance(buffer.brailleToRawPos, list)
+			and isinstance(buffer.cursorPos, int)
+			and 0 <= buffer.cursorPos < len(buffer.brailleToRawPos)
+		):
+			raw_cur = buffer.brailleToRawPos[buffer.cursorPos]
+		else:
+			raw_cur = 0
+
+		cur_pos = _get_region_content_pos(cur_region, raw_cur, fallback_buffer=buffer)
+		size = _get_region_content_size(target_region, fallback_buffer=buffer)
+
+		# Resolve target position from routing index.
+		if target_reg_cell < len(braille_to_raw):
+			raw_new = braille_to_raw[target_reg_cell]
+			new_pos = _get_region_content_pos(target_region, raw_new, fallback_buffer=buffer)
+		else:
 			new_pos = size
-		log.debug(f"Moving from position {cur_pos} to position {new_pos}")
+
+		log.debug(f"Moving from position {cur_pos} to position {new_pos} (size {size})")
 		if play_beeps:
 			tones.beep(100, 100)
-		if new_pos == 0:
-			keyboardHandler.KeyboardInputGesture.fromName("home").send()
-		elif new_pos >= size:
-			keyboardHandler.KeyboardInputGesture.fromName("end").send()
-		else:
-			if cur_pos > new_pos:
-				key = "leftarrow"
-				nb = cur_pos - new_pos
+		if cur_pos != new_pos:
+			if new_pos == 0:
+				keyboardHandler.KeyboardInputGesture.fromName("home").send()
+			elif new_pos >= size:
+				keyboardHandler.KeyboardInputGesture.fromName("end").send()
 			else:
-				nb = new_pos - cur_pos
-			i = 0
-			gestureKB = keyboardHandler.KeyboardInputGesture.fromName(key)
-			while i < nb:
-				gestureKB.send()
-				i += 1
+				if cur_pos > new_pos:
+					key = "leftarrow"
+					nb = cur_pos - new_pos
+				else:
+					key = "rightarrow"
+					nb = new_pos - cur_pos
+				if nb > 0:
+					gestureKB = keyboardHandler.KeyboardInputGesture.fromName(key)
+					for _ in range(nb):
+						gestureKB.send()
 		if play_beeps:
 			tones.beep(150, 100)
+		_speak_routed_character(target_region, target_reg_cell, gesture, obj)
 		return
-	try:
-		braille.handler.routeTo(gesture.routingIndex)
-	except LookupError:
-		pass
+	handler = getattr(braille, "handler", None)
+	if handler is not None and hasattr(handler, "routeTo"):
+		try:
+			handler.routeTo(gesture.routingIndex)
+		except LookupError:
+			pass
 
 
 def _strip_variation_selectors(region) -> None:
@@ -333,6 +558,145 @@ def _mark_selected_element(region) -> None:
 	]
 
 
+def _snap_cursor_to_initial_tab_cell(
+	region: Any, tab_spans: Optional[list[tuple[int, int]]] = None
+) -> None:
+	"""Snap region.cursorPos to the initial cell of an expanded tab if positioned on an intermediate space.
+
+	Must NEVER shift cursorPos onto preceding format/field markers, separator spaces,
+	or normal text.
+	"""
+	if not config.conf["brailleEssentials"].get("tabSpace", False):
+		return
+	cursor_pos = getattr(region, "cursorPos", None)
+	if not isinstance(cursor_pos, int) or cursor_pos < 0:
+		return
+
+	if tab_spans is not None:
+		for tab_start, tab_end in tab_spans:
+			if tab_start < cursor_pos < tab_end:
+				region.cursorPos = tab_start
+				return
+		return
+
+	raw_text = getattr(region, "rawText", None)
+	raw_to_content = getattr(region, "_rawToContentPos", None)
+	if not isinstance(raw_text, str) or not (0 <= cursor_pos < len(raw_text)):
+		return
+	if raw_text[cursor_pos] != " ":
+		return
+	if not (isinstance(raw_to_content, list) and cursor_pos < len(raw_to_content)):
+		return
+
+	target_cp = raw_to_content[cursor_pos]
+	start = cursor_pos
+	while start > 0 and raw_text[start - 1] == " " and raw_to_content[start - 1] == target_cp:
+		start -= 1
+	end = cursor_pos + 1
+	while end < len(raw_text) and raw_text[end] == " " and raw_to_content[end] == target_cp:
+		end += 1
+
+	tab_size = addoncfg.getTabSize()
+	if (end - start) >= tab_size and start < cursor_pos < end:
+		region.cursorPos = start
+
+
+def _expand_region_tabs(region: Any) -> None:
+	"""Expand tab characters into spaces across any Region subclass.
+
+	Batch-replaces tabs with configured space widths and updates
+	rawTextTypeforms, _rawToContentPos, cursorPos, selection, and
+	brlex_typeforms formatting markers without assuming TextInfoRegion internals.
+	"""
+	if not config.conf["brailleEssentials"].get("tabSpace", False):
+		return
+	raw_text = getattr(region, "rawText", None)
+	if not raw_text or "\t" not in raw_text:
+		return
+
+	tab_size = addoncfg.getTabSize()
+	spaces = " " * tab_size
+	space_diff = tab_size - 1
+
+	parts = raw_text.split("\t")
+	region.rawText = spaces.join(parts)
+
+	tab_indices: list[int] = []
+	tab_spans: list[tuple[int, int]] = []
+	t_pos = 0
+	for part in parts[:-1]:
+		t_pos += len(part)
+		tab_indices.append(t_pos)
+		expanded_start = t_pos + len(tab_spans) * space_diff
+		tab_spans.append((expanded_start, expanded_start + tab_size))
+		t_pos += 1
+
+	typeforms = getattr(region, "rawTextTypeforms", None)
+	if isinstance(typeforms, list) and typeforms:
+		new_typeforms: list[int] = []
+		idx = 0
+		for part in parts[:-1]:
+			part_len = len(part)
+			if part_len:
+				new_typeforms.extend(typeforms[idx : idx + part_len])
+				idx += part_len
+			tf = typeforms[idx] if idx < len(typeforms) else louis.plain_text
+			new_typeforms.extend([tf] * tab_size)
+			idx += 1
+		last_part = parts[-1]
+		if last_part:
+			new_typeforms.extend(typeforms[idx : idx + len(last_part)])
+		region.rawTextTypeforms = new_typeforms
+
+	if hasattr(region, "_rawToContentPos"):
+		raw_to_content = getattr(region, "_rawToContentPos", None)
+		has_existing_map = isinstance(raw_to_content, list) and len(raw_to_content) > 0
+		new_raw_to_content: list[int] = []
+		idx = 0
+		for part in parts[:-1]:
+			part_len = len(part)
+			if part_len:
+				if has_existing_map:
+					new_raw_to_content.extend(raw_to_content[idx : idx + part_len])
+				else:
+					new_raw_to_content.extend(range(idx, idx + part_len))
+				idx += part_len
+			if has_existing_map:
+				if idx < len(raw_to_content):
+					cp = raw_to_content[idx]
+				else:
+					cp = raw_to_content[-1] + (idx - len(raw_to_content) + 1)
+			else:
+				cp = idx
+			new_raw_to_content.extend([cp] * tab_size)
+			idx += 1
+		last_part = parts[-1]
+		if last_part:
+			if has_existing_map:
+				new_raw_to_content.extend(raw_to_content[idx : idx + len(last_part)])
+			else:
+				new_raw_to_content.extend(range(idx, idx + len(last_part)))
+		region._rawToContentPos = new_raw_to_content
+
+	if isinstance(region.cursorPos, int) and region.cursorPos >= 0:
+		region.cursorPos += bisect.bisect_left(tab_indices, region.cursorPos) * space_diff
+		_snap_cursor_to_initial_tab_cell(region, tab_spans=tab_spans)
+
+	if isinstance(region.selectionStart, int) and region.selectionStart >= 0:
+		region.selectionStart += bisect.bisect_left(tab_indices, region.selectionStart) * space_diff
+	if isinstance(region.selectionEnd, int) and region.selectionEnd >= 0:
+		region.selectionEnd += bisect.bisect_left(tab_indices, region.selectionEnd) * space_diff
+
+	masks = getattr(region, "brlex_typeforms", None)
+	if isinstance(masks, dict) and masks:
+		region.brlex_typeforms = {
+			pos + bisect.bisect_left(tab_indices, pos) * space_diff: mask
+			for pos, mask in masks.items()
+		}
+	if hasattr(region, "_len_brlex_typeforms") and isinstance(region._len_brlex_typeforms, int):
+		region._len_brlex_typeforms += bisect.bisect_left(tab_indices, region._len_brlex_typeforms) * space_diff
+
+
 def update_region(self) -> None:
 	"""NVDA's ``Region.update`` plus the add-on's pre- and post-processing.
 
@@ -343,6 +707,7 @@ def update_region(self) -> None:
 	"""
 	if config.conf["brailleEssentials"]["advanced"]["fixCursorPositions"]:
 		_strip_variation_selectors(self)
+	_expand_region_tabs(self)
 	selection = (self.selectionStart, self.selectionEnd)
 	self.selectionStart = self.selectionEnd = None
 	try:
@@ -884,12 +1249,15 @@ def _addTextWithFields(
 	should_move_cursor_to_first_content = (not isSelection) and self.cursorPos is not None
 	ctrl_fields: list[Any] = []
 	typeform = louis.plain_text
-	format_field_attributes_cache = getattr(info.obj, "_brailleFormatFieldAttributesCache", {})
+	format_field_attributes_cache = getattr(info.obj, "_brailleFormatFieldAttributesCache", None)
+	if not isinstance(format_field_attributes_cache, dict):
+		format_field_attributes_cache = {}
 	in_clickable = False
 	if not info.isCollapsed:
 		commands = info.getTextWithFields(formatConfig=formatConfig)
 	else:
 		commands = []
+	tab_spans: list[tuple[int, int]] = []
 	for command in commands:
 		if isinstance(command, str):
 			in_clickable = False
@@ -905,12 +1273,38 @@ def _addTextWithFields(
 			elif should_move_cursor_to_first_content:
 				self.cursorPos = len(self.rawText)
 				should_move_cursor_to_first_content = False
-			self.rawText += command
-			command_len = len(command)
-			self.rawTextTypeforms.extend((typeform,) * command_len)
-			end_pos = self._currentContentPos + command_len
-			self._rawToContentPos.extend(range(self._currentContentPos, end_pos))
-			self._currentContentPos = end_pos
+			if config.conf["brailleEssentials"].get("tabSpace", False) and "\t" in command:
+				tab_size = addoncfg.getTabSize()
+				spaces = " " * tab_size
+				parts = command.split("\t")
+				expanded = spaces.join(parts)
+				cmd_start = len(self.rawText)
+				self.rawText += expanded
+				self.rawTextTypeforms.extend((typeform,) * len(expanded))
+				cur_raw = cmd_start
+				for part in parts[:-1]:
+					part_len = len(part)
+					if part_len:
+						end_pos = self._currentContentPos + part_len
+						self._rawToContentPos.extend(range(self._currentContentPos, end_pos))
+						self._currentContentPos = end_pos
+						cur_raw += part_len
+					tab_spans.append((cur_raw, cur_raw + tab_size))
+					self._rawToContentPos.extend([self._currentContentPos] * tab_size)
+					self._currentContentPos += 1
+					cur_raw += tab_size
+				last_part = parts[-1]
+				if last_part:
+					end_pos = self._currentContentPos + len(last_part)
+					self._rawToContentPos.extend(range(self._currentContentPos, end_pos))
+					self._currentContentPos = end_pos
+			else:
+				self.rawText += command
+				command_len = len(command)
+				self.rawTextTypeforms.extend((typeform,) * command_len)
+				end_pos = self._currentContentPos + command_len
+				self._rawToContentPos.extend(range(self._currentContentPos, end_pos))
+				self._currentContentPos = end_pos
 			if isSelection:
 				self.selectionEnd = len(self.rawText)
 			self._endsWithField = False
@@ -928,8 +1322,11 @@ def _addTextWithFields(
 				)
 				if text:
 					self._addFieldText(text, self._currentContentPos, False)
-				self._len_brlex_typeforms += self._rawToContentPos.count(self._currentContentPos)
-				self.brlex_typeforms[self._len_brlex_typeforms + self._currentContentPos] = brlex_typeform
+				raw_pos = len(self.rawText)
+				if getattr(self, "brlex_typeforms", None) is None:
+					self.brlex_typeforms = {}
+				self.brlex_typeforms[raw_pos] = brlex_typeform
+				self._len_brlex_typeforms = raw_pos
 				if not text:
 					continue
 				# Avoid TEXT_SEPARATOR before the next text run (no braille space after opening tags).
@@ -986,6 +1383,7 @@ def _addTextWithFields(
 			self._endsWithField = True
 	if isSelection and self.selectionStart is None:
 		self.cursorPos = len(self.rawText)
+	_snap_cursor_to_initial_tab_cell(self, tab_spans=tab_spans)
 	if not self._skipFieldsNotAtStartOfNode:
 		self._skipFieldsNotAtStartOfNode = True
 	info.obj._brailleFormatFieldAttributesCache = format_field_attributes_cache
