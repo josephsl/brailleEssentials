@@ -4,11 +4,12 @@ This document lists release changelogs for Braille Essentials add-on.
 
 Note: forked from BrailleExtender in May 2026.
 
-## Version 26.11.3
+## Version 26.12
 
 * Updated the add-on code to BrailleExtender commit 2feb287d (2026-11-08):
 	* NVDA will no longer enter browse mode in Microsoft Word automatically if using braille rotor feature.
 * In Microsoft Word, skip rotor focus-context probing when no braille display is connected, avoiding long UI Automation element scans on large documents (contributed by serrebidev).
+* NVDA will replace tab characters with appropriate number of space characters (contributed by AdamMagued).
 
 ## Version 26.11
 

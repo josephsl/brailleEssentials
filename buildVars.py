@@ -57,7 +57,8 @@ For some braille displays, it extends the braille display commands to provide:
 	# Translators: what's new content for the add-on version to be shown in the add-on store
 	addon_changelog=_("""* Updated the add-on code to BrailleExtender commit 2feb287d (2026-11-08):
 	* NVDA will no longer enter browse mode in Microsoft Word automatically if using braille rotor feature.
-* In Microsoft Word, skip rotor focus-context probing when no braille display is connected, avoiding long UI Automation element scans on large documents (contributed by serrebidev)."""),
+* In Microsoft Word, skip rotor focus-context probing when no braille display is connected, avoiding long UI Automation element scans on large documents (contributed by serrebidev).
+* NVDA will replace tab characters with appropriate number of space characters (contributed by AdamMagued)."""),
 	# Author(s)
 	addon_author="Joseph Lee <joseph.lee22590@gmail.com> (originally André-Abush Clause <dev@andreabc.net> and other contributors)",
 	# URL for the add-on documentation support
