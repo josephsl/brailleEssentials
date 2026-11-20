@@ -6,9 +6,14 @@ manifest.ini
 *.mo
 *.pot
 *.py[co]
+__pycache__/
 *.nvda-addon
 /[0-9]*.[0-9]*.[0-9]*.json
 
 addon/manifest.ini
 addon/locale/*/manifest.ini
 addon/doc/*/*.html
+
+.DS_Store
+thumbs.db
+*.save
