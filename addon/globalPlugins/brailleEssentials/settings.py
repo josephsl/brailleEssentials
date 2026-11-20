@@ -123,7 +123,7 @@ class GeneralDlg(gui.settingsDialogs.SettingsPanel):
 			wx.CheckBox(
 				self,
 				label=_(
-					"Automatically Switch to review mode in &terminal windows (cmd, bash, PuTTY, PowerShell Maxima…)"
+					"Automatically switch to review mode in &terminal windows (cmd, bash, PuTTY, PowerShell Maxima…)"
 				),
 			)
 		)
