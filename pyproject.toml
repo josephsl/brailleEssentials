@@ -30,10 +30,7 @@ Repository = "https://github.com/nvaccess/addonTemplate"
 # pulls in every tool needed to build, translate, and lint the add-on.
 [dependency-groups]
 # Build add-on
-build = [
-	"scons==4.11.1",
-	"Markdown==3.11.2",
-]
+build = ["nvda-addon-kit"]
 # Translations management
 l10n = [
 	"nh3==0.3.2",
@@ -70,10 +67,7 @@ builtins = [
 	"npgettext",
 ]
 
-include = [
-	"*.py",
-	"sconstruct",
-]
+include = ["*.py"]
 
 exclude = [
 	".git",
@@ -91,11 +85,6 @@ ignore = [
 	# indentation contains tabs
 	"W191",
 ]
-
-[tool.ruff.lint.per-file-ignores]
-# sconstruct contains many inbuilt functions not recognised by the lint,
-# so ignore F821.
-"sconstruct" = ["F821"]
 
 [tool.pyright]
 pythonPlatform = "Windows"

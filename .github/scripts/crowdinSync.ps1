@@ -37,8 +37,8 @@ if (Test-Path $mdFile) {
     }
 }
 
-# Update POT file (addon interface)
-uv run scons pot
+# Update POT file (add-on interface)
+nvaddon pot
 $potFile = "$addonId.pot"
 
 # --- STEP 2: UPLOAD SOURCES TO CROWDIN ---
@@ -113,7 +113,7 @@ foreach ($dir in Get-ChildItem -Path "_addonL10n/$addonId" -Directory) {
 
         Write-Host "DEBUG: Evaluating Remote PO score..."
 
-        $res = uv run python .github/scripts/checkTranslation.py "$addonId.po" $crowdinLang
+        $res = python .github/scripts/checkTranslation.py "$addonId.po" $crowdinLang
 
         $scorePo = [double](
             ($res | Select-String "poScore=").ToString().Split("=")[1]
@@ -152,7 +152,7 @@ foreach ($dir in Get-ChildItem -Path "_addonL10n/$addonId" -Directory) {
 
         Write-Host "DEBUG: Evaluating Remote XLIFF score..."
 
-        $res = uv run python .github/scripts/checkTranslation.py "$addonId.xliff" $crowdinLang
+        $res = python .github/scripts/checkTranslation.py "$addonId.xliff" $crowdinLang
 
         $scoreXliff = [double](
             ($res | Select-String "xliffScore=").ToString().Split("=")[1]

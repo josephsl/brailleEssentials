@@ -1,0 +1,93 @@
+# Configuration for this NVDA add-on, migrated from buildVars.py.
+#
+# The comment directly above a translatable string is that string's note to
+# translators, and is carried into the generated .pot file.
+
+[addon]
+# add-on Name/identifier, internal for NVDA
+name = "brailleEssentials"
+# Add-on summary/title, usually the user visible name of the add-on
+# Translators: Summary/title for this add-on
+# to be shown on installation and add-on information found in add-on store
+summary = "Braille Essentials"
+
+# Add-on description
+# Translators: Long description to be shown for this add-on on add-on information from add-on store
+description = """This add-on provides essential features for NVDA users relying on braille support. The following features, deriving from Braille Extender, are available:
+
+* Reload two favorite braille display with shortcuts.
+* Automatic review cursor tethering in terminal role like in PuTTY, Powershell, bash, cmd.
+* Auto scroll.
+* Switch between several input/output braille tables.
+* Mark the text with special attributes through dot 7, dot 8 or both.
+* Use two output braille tables simultaneously.
+* Display tab signs as spaces.
+* Reverse forward scroll and back scroll buttons.
+* Say the current line during text scrolling either in review mode, or in focus mode or both.
+* Translate text easily in Unicode braille and vice versa. E.g.: z <--> ⠵.
+* Convert cell description to Unicode braille and vice versa. E.g.: 123 <--> ⠇.
+* Lock braille keyboard.
+* Launch an application/URL with gesture.
+* Braille dictionaries.
+* Type with one-hand from braille keyboard.
+* Display undefined characters from braille tables (including emojis) using altenative representations.
+* Enter any character from braille keyboard (including emojis).
+* Skip blank lines during text scrolling.
+* Speech History Mode.
+
+And much more.
+
+For some braille displays, it extends the braille display commands to provide:
+
+* Offer complete gesture maps including function keys, multimedia keys, quick navigation, etc.
+* Emulate modifier keys, and thus any keyboard shortcut
+* Offer several keyboard configurations concerning the possibility to input dots 7 and 8, enter and backspace
+* Add actions and quick navigation through a rotor"""
+
+# version
+version = "26.11.2"
+# Brief changelog for this version
+# Translators: what's new content for the add-on version to be shown in the add-on store
+changelog = """* Updated the add-on code to BrailleExtender commit 2feb287d (2026-11-08):
+	* NVDA will no longer enter browse mode in Microsoft Word automatically if using braille rotor feature.
+* In Microsoft Word, skip rotor focus-context probing when no braille display is connected, avoiding long UI Automation element scans on large documents (contributed by serrebidev).
+* NVDA will replace tab characters with appropriate number of space characters (contributed by AdamMagued)."""
+
+# Author(s)
+author = "Joseph Lee <joseph.lee22590@gmail.com> (originally André-Abush Clause <dev@andreabc.net> and other contributors)"
+# URL for the add-on documentation support
+url = "https://github.com/josephsl/brailleEssentials"
+# URL for the add-on repository where the source code can be found
+sourceURL = "https://github.com/josephsl/brailleEssentials"
+# Documentation file name
+docFileName = "readme.html"
+# Minimum NVDA version supported (e.g. "2019.3.0", minor version is optional)
+minimumNVDAVersion = "2025.3.3"
+# Last NVDA version supported/tested (e.g. "2024.4.0", ideally more recent than minimum version)
+lastTestedNVDAVersion = "2026.3.1"
+# Add-on update channel (default is None, denoting stable releases,
+# and for development releases, use "dev".)
+# Do not change unless you know what you are doing!
+updateChannel = ""
+# Add-on license such as GPL 2
+license = "GPL v2"
+# URL for the license document the ad-on is licensed under
+licenseURL = "https://www.gnu.org/licenses/gpl-2.0.html"
+
+[build]
+# The Python files that make up this add-on, scanned for translatable strings.
+pythonSources = ["addon/*.py", "addon/globalPlugins/brailleEssentials/*.py", "addon/appModules/*.py"]
+
+# Files inside the `addon` directory to leave out of the built add-on.
+excludedFiles = []
+
+[l10n]
+# The language this add-on is written in.
+baseLanguage = "en"
+
+# Extra files to scan for translatable strings.
+extraSources = []
+
+[docs]
+# Python-Markdown extensions used when rendering documentation.
+markdownExtensions = []
