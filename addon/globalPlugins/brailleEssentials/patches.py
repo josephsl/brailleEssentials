@@ -600,102 +600,40 @@ def _snap_cursor_to_initial_tab_cell(
 	if (end - start) >= tab_size and start < cursor_pos < end:
 		region.cursorPos = start
 
-
 def _expand_region_tabs(region: Any) -> None:
-	"""Expand tab characters into spaces across any Region subclass.
-
-	Batch-replaces tabs with configured space widths and updates
-	rawTextTypeforms, _rawToContentPos, cursorPos, selection, and
-	brlex_typeforms formatting markers without assuming TextInfoRegion internals.
-	"""
-	if not config.conf["brailleEssentials"].get("tabSpace", False):
+	"""Replace tabs in ``rawText`` with spaces, widening the per-character lists and shifting positions."""
+	text = region.rawText
+	tab = text.find("\t")
+	if tab < 0 or not config.conf["brailleEssentials"]["tabSpace"]:
 		return
-	raw_text = getattr(region, "rawText", None)
-	if not raw_text or "\t" not in raw_text:
-		return
-
 	tab_size = addoncfg.getTabSize()
-	spaces = " " * tab_size
-	space_diff = tab_size - 1
-
-	parts = raw_text.split("\t")
-	region.rawText = spaces.join(parts)
-
-	tab_indices: list[int] = []
-	tab_spans: list[tuple[int, int]] = []
-	t_pos = 0
-	for part in parts[:-1]:
-		t_pos += len(part)
-		tab_indices.append(t_pos)
-		expanded_start = t_pos + len(tab_spans) * space_diff
-		tab_spans.append((expanded_start, expanded_start + tab_size))
-		t_pos += 1
-
-	typeforms = getattr(region, "rawTextTypeforms", None)
-	if isinstance(typeforms, list) and typeforms:
-		new_typeforms: list[int] = []
-		idx = 0
-		for part in parts[:-1]:
-			part_len = len(part)
-			if part_len:
-				new_typeforms.extend(typeforms[idx : idx + part_len])
-				idx += part_len
-			tf = typeforms[idx] if idx < len(typeforms) else louis.plain_text
-			new_typeforms.extend([tf] * tab_size)
-			idx += 1
-		last_part = parts[-1]
-		if last_part:
-			new_typeforms.extend(typeforms[idx : idx + len(last_part)])
-		region.rawTextTypeforms = new_typeforms
-
-	if hasattr(region, "_rawToContentPos"):
-		raw_to_content = getattr(region, "_rawToContentPos", None)
-		has_existing_map = isinstance(raw_to_content, list) and len(raw_to_content) > 0
-		new_raw_to_content: list[int] = []
-		idx = 0
-		for part in parts[:-1]:
-			part_len = len(part)
-			if part_len:
-				if has_existing_map:
-					new_raw_to_content.extend(raw_to_content[idx : idx + part_len])
-				else:
-					new_raw_to_content.extend(range(idx, idx + part_len))
-				idx += part_len
-			if has_existing_map:
-				if idx < len(raw_to_content):
-					cp = raw_to_content[idx]
-				else:
-					cp = raw_to_content[-1] + (idx - len(raw_to_content) + 1)
-			else:
-				cp = idx
-			new_raw_to_content.extend([cp] * tab_size)
-			idx += 1
-		last_part = parts[-1]
-		if last_part:
-			if has_existing_map:
-				new_raw_to_content.extend(raw_to_content[idx : idx + len(last_part)])
-			else:
-				new_raw_to_content.extend(range(idx, idx + len(last_part)))
-		region._rawToContentPos = new_raw_to_content
-
-	if isinstance(region.cursorPos, int) and region.cursorPos >= 0:
-		region.cursorPos += bisect.bisect_left(tab_indices, region.cursorPos) * space_diff
-		_snap_cursor_to_initial_tab_cell(region, tab_spans=tab_spans)
-
-	if isinstance(region.selectionStart, int) and region.selectionStart >= 0:
-		region.selectionStart += bisect.bisect_left(tab_indices, region.selectionStart) * space_diff
-	if isinstance(region.selectionEnd, int) and region.selectionEnd >= 0:
-		region.selectionEnd += bisect.bisect_left(tab_indices, region.selectionEnd) * space_diff
-
-	masks = getattr(region, "brlex_typeforms", None)
-	if isinstance(masks, dict) and masks:
+	if tab_size == 1:
+		region.rawText = text.replace("\t", " ")
+		return
+	extra = tab_size - 1
+	tabs = []
+	while tab >= 0:
+		tabs.append(tab)
+		tab = text.find("\t", tab + 1)
+	# A position moves by ``extra`` for every tab before it; a position on a tab lands on its first space.
+	if region.cursorPos is not None:
+		region.cursorPos += bisect.bisect_left(tabs, region.cursorPos) * extra
+	if region.selectionStart is not None:
+		region.selectionStart += bisect.bisect_left(tabs, region.selectionStart) * extra
+	if region.selectionEnd is not None:
+		region.selectionEnd += bisect.bisect_left(tabs, region.selectionEnd) * extra
+	if region.brlex_typeforms:
 		region.brlex_typeforms = {
-			pos + bisect.bisect_left(tab_indices, pos) * space_diff: mask
-			for pos, mask in masks.items()
+			pos + bisect.bisect_left(tabs, pos) * extra: mask for pos, mask in region.brlex_typeforms.items()
 		}
-	if hasattr(region, "_len_brlex_typeforms") and isinstance(region._len_brlex_typeforms, int):
-		region._len_brlex_typeforms += bisect.bisect_left(tab_indices, region._len_brlex_typeforms) * space_diff
-
+	# Every tab is known now: let replace stop at the last one instead of scanning the rest of the line.
+	region.rawText = text.replace("\t", " " * tab_size, len(tabs))
+	# Widen each tab's entry in place, last tab first so earlier indexes stay valid (bisect above needs ascending order).
+	tabs.reverse()
+	for values in (region.rawTextTypeforms, getattr(region, "_rawToContentPos", None)):
+		if values:
+			for tab in tabs:
+				values[tab:tab] = (values[tab],) * extra
 
 def update_region(self) -> None:
 	"""NVDA's ``Region.update`` plus the add-on's pre- and post-processing.
@@ -1243,9 +1181,7 @@ def _typeform_and_brlex_mask_from_format_field(region, field, formatConfig):
 	return result, 0
 
 
-def _addTextWithFields(
-	self, info: textInfos.TextInfo, formatConfig: dict[str, Any], isSelection: bool = False
-) -> None:
+def _addTextWithFields(self, info: textInfos.TextInfo, formatConfig: dict[str, Any], isSelection: bool = False) -> None:
 	should_move_cursor_to_first_content = (not isSelection) and self.cursorPos is not None
 	ctrl_fields: list[Any] = []
 	typeform = louis.plain_text
@@ -1257,7 +1193,6 @@ def _addTextWithFields(
 		commands = info.getTextWithFields(formatConfig=formatConfig)
 	else:
 		commands = []
-	tab_spans: list[tuple[int, int]] = []
 	for command in commands:
 		if isinstance(command, str):
 			in_clickable = False
@@ -1273,38 +1208,32 @@ def _addTextWithFields(
 			elif should_move_cursor_to_first_content:
 				self.cursorPos = len(self.rawText)
 				should_move_cursor_to_first_content = False
-			if config.conf["brailleEssentials"].get("tabSpace", False) and "\t" in command:
+			command_len = len(command)
+			end_pos = self._currentContentPos + command_len
+			tab = command.find("\t")
+			if tab >= 0 and config.conf["brailleEssentials"].get("tabSpace", False):
 				tab_size = addoncfg.getTabSize()
-				spaces = " " * tab_size
-				parts = command.split("\t")
-				expanded = spaces.join(parts)
-				cmd_start = len(self.rawText)
-				self.rawText += expanded
-				self.rawTextTypeforms.extend((typeform,) * len(expanded))
-				cur_raw = cmd_start
-				for part in parts[:-1]:
-					part_len = len(part)
-					if part_len:
-						end_pos = self._currentContentPos + part_len
-						self._rawToContentPos.extend(range(self._currentContentPos, end_pos))
-						self._currentContentPos = end_pos
-						cur_raw += part_len
-					tab_spans.append((cur_raw, cur_raw + tab_size))
-					self._rawToContentPos.extend([self._currentContentPos] * tab_size)
-					self._currentContentPos += 1
-					cur_raw += tab_size
-				last_part = parts[-1]
-				if last_part:
-					end_pos = self._currentContentPos + len(last_part)
+				if tab_size > 1:
+					# Every space of an expanded tab maps to the content position of the tab.
+					content_pos = self._currentContentPos
+					part_start = tab_count = 0
+					while tab >= 0:
+						self._rawToContentPos.extend(range(content_pos + part_start, content_pos + tab))
+						self._rawToContentPos.extend((content_pos + tab,) * tab_size)
+						tab_count += 1
+						part_start = tab + 1
+						tab = command.find("\t", part_start)
+					self._rawToContentPos.extend(range(content_pos + part_start, end_pos))
+					spaces = " " * tab_size
+					command = command.replace("\t", spaces, tab_count)
+				else:
 					self._rawToContentPos.extend(range(self._currentContentPos, end_pos))
-					self._currentContentPos = end_pos
+					command = command.replace("\t", " ")
 			else:
-				self.rawText += command
-				command_len = len(command)
-				self.rawTextTypeforms.extend((typeform,) * command_len)
-				end_pos = self._currentContentPos + command_len
 				self._rawToContentPos.extend(range(self._currentContentPos, end_pos))
-				self._currentContentPos = end_pos
+			self._currentContentPos = end_pos
+			self.rawText += command
+			self.rawTextTypeforms.extend((typeform,) * len(command))
 			if isSelection:
 				self.selectionEnd = len(self.rawText)
 			self._endsWithField = False
@@ -1383,11 +1312,9 @@ def _addTextWithFields(
 			self._endsWithField = True
 	if isSelection and self.selectionStart is None:
 		self.cursorPos = len(self.rawText)
-	_snap_cursor_to_initial_tab_cell(self, tab_spans=tab_spans)
 	if not self._skipFieldsNotAtStartOfNode:
 		self._skipFieldsNotAtStartOfNode = True
 	info.obj._brailleFormatFieldAttributesCache = format_field_attributes_cache
-
 
 def nextLine(self) -> None:
 	dest = self._readingInfo.copy()
