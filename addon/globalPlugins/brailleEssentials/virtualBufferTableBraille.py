@@ -72,7 +72,7 @@ _NVDAObjectRegion = brailleapi.NVDAObjectRegion
 _roleLabels = brailleapi.roleLabels
 TEXT_SEPARATOR = brailleapi.TEXT_SEPARATOR
 # Private NVDA helper (2024.4+); on older NVDA, Braille Extender's routing script speaks instead.
-_speakOnRouting = brailleapi.resolve_symbol("_speakOnRouting", "braille.regions.textInfo")
+_speakOnRouting = brailleapi.speakOnRouting
 
 ROW_CELL_SEPARATOR = " | "
 ROW_LINE_START = "(| "

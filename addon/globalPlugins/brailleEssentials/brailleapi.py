@@ -45,6 +45,7 @@ Region = resolve_symbol("Region", "braille.regions.base")
 TextRegion = resolve_symbol("TextRegion", "braille.regions.base")
 TextInfoRegion = resolve_symbol("TextInfoRegion", "braille.regions.textInfo")
 CursorManagerRegion = resolve_symbol("CursorManagerRegion", "braille.regions.textInfo")
+ReviewTextInfoRegion = resolve_symbol("ReviewTextInfoRegion", "braille.regions.textInfo")
 NVDAObjectRegion = resolve_symbol("NVDAObjectRegion", "braille.regions.NVDAObject")
 NVDAObjectHasUsefulText = resolve_symbol("NVDAObjectHasUsefulText", "braille.regions.NVDAObject")
 getFocusRegions = resolve_symbol("getFocusRegions", "braille.regions.focus")
@@ -56,6 +57,21 @@ BrailleHandler = resolve_symbol("BrailleHandler", "braille.brailleHandler")
 getControlFieldBraille = resolve_symbol("getControlFieldBraille", "braille.regions.properties")
 getFormatFieldBraille = resolve_symbol("getFormatFieldBraille", "braille.regions.properties")
 getPropertiesBraille = resolve_symbol("getPropertiesBraille", "braille.regions.properties")
+
+# Helpers
+speakOnRouting = resolve_symbol("_speakOnRouting", "braille.regions.textInfo")
+
+def getRoutingIndex (gesture) -> int | None:
+	"""The routed cell of a braille gesture: ``cellIndexes[0]`` since NVDA 2026.3, ``routingIndex`` before."""
+	cell_indexes = getattr(gesture, "cellIndexes", None)
+	if cell_indexes:
+		try:
+			return max(cell_indexes)
+		except TypeError:
+			return cell_indexes[0]
+		except ValueError:
+			return
+	return getattr(gesture, "routingIndex", None)
 
 # Labels: the very dict objects NVDA uses, so in-place edits apply to NVDA too.
 roleLabels = resolve_symbol("roleLabels", "braille.labels")
