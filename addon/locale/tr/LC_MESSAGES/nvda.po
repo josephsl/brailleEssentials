@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: nvdaaddons\n"
 "Report-Msgid-Bugs-To: 'nvda-translations@groups.io'\n"
 "POT-Creation-Date: 2026-11-23 05:14+0000\n"
-"PO-Revision-Date: 2026-11-23 05:17\n"
+"PO-Revision-Date: 2026-11-24 00:16\n"
 "Last-Translator: \n"
 "Language-Team: Turkish\n"
 "Language: tr_TR\n"
@@ -1112,7 +1112,7 @@ msgstr "Düzenleme alanlarındaki yönlendirme imle&çleri davranışı:"
 
 #: addon\globalPlugins\brailleEssentials\settings.py:126
 msgid "Automatically switch to review mode in &terminal windows (cmd, bash, PuTTY, PowerShell Maxima…)"
-msgstr ""
+msgstr "&Terminal pencerelerinde (cmd, bash, PuTTY, PowerShell Maxima…) otomatik olarak inceleme Kipine geç"
 
 #: addon\globalPlugins\brailleEssentials\settings.py:134
 msgid "Announce &volume changes:"
@@ -2543,5 +2543,8 @@ msgid "* Updated the add-on code to BrailleExtender commit 2feb287d (2026-11-08)
 "\t* NVDA will no longer enter browse mode in Microsoft Word automatically if using braille rotor feature.\n"
 "* In Microsoft Word, skip rotor focus-context probing when no braille display is connected, avoiding long UI Automation element scans on large documents (contributed by serrebidev).\n"
 "* NVDA will replace tab characters with appropriate number of space characters (contributed by AdamMagued)."
-msgstr ""
+msgstr "* BrailleExtender Eklenti kodu güncellendi (2 Şubat 2026 - 11 - 08):\n"
+"\t* Braille rotor özelliği kullanılıyorsa, NVDA artık Microsoft Word'de otomatik olarak Tarama Kipine girmeyecek.\n"
+"* Microsoft Word'de, Braille ekranı bağlı olmadığında rotor odak bağlamı yoklamasını atlayarak, büyük belgelerde uzun süren UI Otomasyon öğesi taramalarından kaçının (serrebidev tarafından katkıda bulunulmuştur).\n"
+"* NVDA, sekme karakterlerini uygun sayıda boşluk karakteriyle değiştirecektir (AdamMagued tarafından katkıda bulunulmuştur)."
 
